@@ -1,0 +1,893 @@
+@import "setup";
+
+/*
+ * Author: Anthony Colangelo
+ * http://acolangelo.com/
+ *
+ * Based on HTML5 Boilerplate v0.9.5
+ * http://html5boilerplate.com/
+ * 
+ */
+
+/* CSS RESET
+====================================================================================================*/
+
+
+html, body, div, span, object, iframe,
+h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+abbr, address, cite, code,
+del, dfn, em, img, ins, kbd, q, samp,
+small, strong, sub, sup, var,
+b, i,
+dl, dt, dd, ol, ul, li,
+fieldset, form, label, legend,
+table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, figcaption, figure, 
+footer, header, hgroup, menu, nav, section, summary,
+time, mark, audio, video {
+	margin:0;
+	padding:0;
+	border:0;
+	outline:0;
+	font-size:100%;
+	vertical-align:baseline;
+	background:transparent;
+	}                  
+
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section { 
+    display:block;
+	}
+
+nav ul {
+	list-style:none;
+	}
+
+blockquote, q {
+	quotes:none;
+	}
+
+blockquote:before, blockquote:after, q:before, q:after {
+	content:''; content:none;
+	}
+
+a {
+	margin:0;
+	padding:0;
+	font-size:100%;
+	vertical-align:baseline;
+	background:transparent;
+	}
+
+ins {
+	background-color:#ff9;
+	color:#000;
+	text-decoration:none;
+	}
+
+mark {
+	background-color:#ff9;
+	color:#000;
+	font-style:italic;
+	font-weight:bold;
+	}
+
+del {
+	text-decoration: line-through;
+	}
+
+abbr[title], dfn[title] {
+	border-bottom:1px dotted;
+	cursor:help;
+	}
+
+table {
+	border-collapse:collapse;
+	border-spacing:0;
+	}
+
+hr {
+	display:block;
+	height:1px;
+	border:0;
+	border-top:1px solid #ccc;
+	margin:1em 0;
+	padding:0;
+	}
+
+input, select {
+	vertical-align:middle;
+	}
+
+body {
+	font:13px/1.231 sans-serif;
+	*font-size:small;
+	}
+
+select, input, textarea, button {
+	font:99% sans-serif;
+	}
+
+pre, code, kbd, samp {
+	font-family: monospace, sans-serif;
+	}
+	
+	
+	
+	
+	
+/* BASE STYLES
+====================================================================================================*/
+
+
+html {
+	overflow-y: scroll;
+	}
+
+body, select, input, textarea { 
+	color: @text-color;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	}
+
+h1,h2,h3,h4,h5,h6 {
+	font-weight: bold;
+	}
+	
+a:hover, a:active {
+	outline: none;
+	}
+
+a, a:active, a:visited {
+	color: #607890;
+	}
+	
+a:hover {
+	color: #069;
+	}
+
+a:active {
+	color: #036;
+	}
+
+ul, ol {
+	margin-left: 1.8em;
+	}
+	
+ol {
+	list-style-type: decimal;
+	}
+
+nav ul, nav li {
+	margin: 0;
+	}
+
+small {
+	font-size: 85%;
+	}
+	
+strong, th {
+	font-weight: bold;
+	}
+
+td, td img {
+	vertical-align: top;
+	} 
+
+sub {
+	vertical-align: sub; font-size: smaller;
+	}
+	
+sup {
+	vertical-align: super; font-size: smaller;
+	}
+
+pre { 
+	padding: 15px;
+	white-space: pre; /* CSS2 */
+	white-space: pre-wrap; /* CSS 2.1 */
+	white-space: pre-line; /* CSS 3 (and 2.1 as well, actually) */
+	word-wrap: break-word; /* IE */
+	}
+ 
+textarea {
+	overflow: auto;
+	}
+
+.ie6 legend, .ie7 legend {
+	margin-left: -7px;
+	}
+
+input[type="radio"] {
+	vertical-align: text-bottom;
+	}
+	
+input[type="checkbox"] {
+	vertical-align: bottom;
+	}
+	
+.ie7 input[type="checkbox"] {
+	vertical-align: baseline;
+	}
+	
+.ie6 input {
+	vertical-align: text-bottom;
+	}
+
+label, input[type=button], input[type=submit], button {
+	cursor: pointer;
+	}
+
+button, input, select, textarea {
+	margin: 0;
+	}
+
+input:valid, textarea:valid {
+	
+	}
+	
+input:invalid, textarea:invalid { 
+	border-radius: 1px;
+	-moz-box-shadow: 0px 0px 5px red;
+	-webkit-box-shadow: 0px 0px 5px red; 
+	box-shadow: 0px 0px 5px red;
+	}
+
+.no-boxshadow input:invalid, .no-boxshadow textarea:invalid {
+	background-color: #f0dddd;
+	}
+	
+::-moz-selection{
+	background: fadeout(@green, 75%);
+	color: @text-color;
+	text-shadow: none;
+	}
+		
+::selection {
+	background: fadeout(@green, 75%);
+	color: @text-color;
+	text-shadow: none;
+	}
+	
+a:link {
+	-webkit-tap-highlight-color: #b5d5ff;
+	}
+	
+button {
+	width: auto;
+	overflow: visible;
+	}
+	
+.ie7 img {
+	-ms-interpolation-mode: bicubic;
+	}
+	
+	
+	
+	
+	
+/* HELPER CLASSES
+====================================================================================================*/
+
+
+/* for image replacement */
+.ir {
+	display: block;
+	text-indent: -999em;
+	overflow: hidden;
+	background-repeat: no-repeat;
+	text-align: left;
+	direction: ltr;
+	}
+
+/* Hide for both screenreaders and browsers */
+.hidden {
+	display: none;
+	visibility: hidden;
+	}
+
+/* Hide only visually, but have it available for screenreaders */
+.visuallyhidden {
+	position: absolute !important;
+	clip: rect(1px 1px 1px 1px); /* IE6, IE7 */
+	clip: rect(1px, 1px, 1px, 1px);
+	}
+
+/* Hide visually and from screenreaders, but maintain layout */
+.invisible {
+	visibility: hidden;
+	}
+
+/* >> The Magnificent CLEARFIX: Updated to prevent margin-collapsing on child elements << j.mp/bestclearfix */
+.clearfix:before, .clearfix:after {
+	content: "\0020";
+	display: block;
+	height: 0;
+	visibility: hidden;
+	} 
+
+.clearfix:after {
+	clear: both;
+	}
+	
+/* Fix clearfix */
+.clearfix {
+	zoom: 1;
+	}
+	
+	
+	
+	
+	
+/* PRIMARY STYLES
+====================================================================================================*/
+
+
+html{
+	background-color: #f7f7f7;
+	}
+	
+body{
+	font-weight: lighter;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	}
+	
+#wrap, footer{
+	width: 80%;
+	max-width: 940px;
+	}
+	
+#wrap{
+	margin: 0 auto;
+	padding: 15px 4.25% 50px;
+	.border-radius(20px);
+	-moz-border-top-left-radius: 0;
+	-moz-border-top-right-radius: 0;
+	-webkit-border-top-left-radius: 0;
+	-webkit-border-top-right-radius: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	border: 5px solid #e5e5e5;
+	border-top: none;
+	background-color: #fff;
+	}
+	
+	
+/* HEADER STYLES
+====================================================================================================*/
+
+header{
+	overflow: hidden;
+	margin-bottom: 25px;
+	
+	h1{
+		float: left;
+		width: auto;
+		margin-bottom: 10px;
+		padding: 0;
+		border: none;
+	}
+	
+	h1 a, h1 a:visited{
+		display: block;
+		width: 140px;
+		height: 43px;
+		background: url('../images/social_logo-small.png') no-repeat 0 0;
+		text-indent: -9999px;
+	}
+	
+	h1 a:hover, h1 a:active, h1 a:focus{
+		background-position-y: -43px;
+		outline: none;
+	}
+	
+	nav{
+		clear: both;
+		float: left;
+		width: 100%;
+		font-weight: bold;
+		
+		ul{
+			float: left;
+			font-size: 1.2em;
+		}
+		
+		li{
+			float: left;
+			margin-right: 30px;
+		}
+		
+		li:last-child{
+			margin-right: 0;
+		}
+		
+		a, a:visited{
+			color: @text-color;
+		}
+		
+		a:hover, a:focus, a.current, a.current:visited, a.current:hover, a.current:focus, a.current:active{
+			text-decoration: none;
+			color: @green;
+			outline: none;
+		}
+		
+		a:active{
+			color: darken(@green,10%);
+		}
+		
+		form{
+			display: block;
+			position: relative;
+			float: right;
+			width: 31.522%;
+			padding: .25%;
+			margin-top: -3px;
+			
+			input[type="text"]{
+				float: right;
+			}
+			
+			input[type="submit"]{
+				position: absolute;
+				top: 5px;
+				right: 7px;
+				width: 13px;
+				height: 15px;
+				margin: 0;
+				padding: 0;
+				border: none;
+				text-indent: -13000px;
+				background: url('../images/icon-search.png') center center no-repeat;
+				opacity: .5;
+				.box-shadow-none;
+				.transition;
+			}
+
+			input[type="submit"]:hover, input[type="submit"]:focus{
+				background: url('../images/icon-search.png') center center no-repeat;
+				opacity: .8;
+				outline: none;
+			}
+
+			input[type="submit"]:active{
+				opacity: 1;
+				.box-shadow-none;
+			}
+		}
+	}
+}
+
+#userArea{
+	float: right;
+	line-height: 43px;
+	
+	p{
+		float: left;
+		margin-right: 30px;
+	}
+	
+	p:last-child{
+		margin-right: 0;
+	}
+}
+
+
+
+
+/* CONTENT AND BASIC STYLES
+====================================================================================================*/	
+
+#content{
+	overflow: hidden;
+	width: 100%;
+	
+	> section{
+		float: left;
+		margin-bottom: 50px;
+		
+		article{
+			clear: both;
+			position: relative;
+			
+			h2, p{
+				float: left;
+			}
+			
+			.itemImage{
+				float: left;
+				position: absolute;
+				top: 0px;
+							
+				a, a:visited{
+					display: block;
+					
+					img{
+						display: block;
+					}
+				}
+			}
+		
+			.comments, .tags{
+				margin-bottom: 0;
+				
+				a, a:visited{
+					font-weight: bold;
+					color: @text-color;
+				}
+				
+				a:hover, a:focus{
+					color: @link-hover;
+				}
+				
+				a:active{
+					color: @link-active;
+				}
+			}
+			
+			.comments{
+				float: left;
+			}
+			
+			.tags{
+				float: right;
+				
+				a{
+					margin-right: 10px;
+				}
+				
+				a:last-child{
+					margin-right: 0;
+				}
+			}
+		}
+	}
+	
+	section.large{
+		width: 66%;
+		margin-right: 2%;
+		
+		article{
+			h2, p{
+				width: 61.290322580645161%;
+				padding-left: 38.609677419354838%;
+			}
+			
+			.itemImage{
+				width: 35.483870967741935%;
+				margin-right: 3.225806451612903%;
+				padding-left: 0;
+				
+				a, a:visited{
+					width: 96%;
+					padding: 2%;
+					background-color: @text-color;
+					
+					img{
+						width: 98%;
+						padding: 1%;
+						background-color: #fff;
+					}
+				}
+				
+				a:hover, a:focus{
+					background-color: darken(@text-color,5%);
+				}
+				
+				a:active{
+					background-color: darken(@text-color,10%);
+				}
+			}
+			
+			.comments, .tags{
+				float: none;
+				position: absolute;
+				bottom: 0;
+				width: auto;
+				padding: 0;
+			}
+			
+			.comments{
+				left: 38.609677419354838%;
+			}
+			
+			.tags{
+				right: 0;
+			}
+		}
+	}
+	
+	section.medium{
+		article{
+		
+		}
+	}
+	
+	section.small{
+		width: 32%;
+		
+		article{
+			h2, p{
+				width: 83.333333333%;
+				padding-left: 16.666666666666666%;
+			}
+			
+			.itemImage{
+				width: 13.333333333%;
+				margin-right: 3.333333333%;
+				padding-left: 0;
+			}
+			
+			.comments, .tags{
+				width: auto;
+			}
+			
+			.tags{
+				padding-left: 0;
+			}
+		}
+	}
+}
+
+h1{
+	width: 100%;
+	margin-bottom: 20px;
+	padding-bottom: 2px;
+	border-bottom: 1px solid @text-color;
+	font-size: 1.2em;
+	text-transform: uppercase;
+}
+
+h2{
+	margin-bottom: 2px;
+	
+	a, a:visited{
+		color: @text-color;
+	}
+}
+
+p{
+	margin-bottom: 10px;
+}
+	
+a, a:visited{
+	text-decoration: none;
+	color: @link-color;
+}
+	
+a:hover, a:focus{
+	text-decoration: underline;
+	outline: none;
+}
+
+a:active{
+	color: @link-active;
+}
+
+input{
+	font-weight: lighter;
+}
+
+.slider{
+	position: relative;
+	overflow: hidden;
+	
+	.sliderControls{
+		position: absolute;
+		top: 8px;
+		right: 10px;
+	
+		a, a:visited{
+			display: block;
+			float: left;
+			width: 5px;
+			height: 5px;
+			margin-right: 10px;
+			.border-radius(1px);
+			background-color: @text-light-color;
+			text-indent: -13000px;
+		}
+		
+		a:last-child{
+			margin-right: 0;
+		}
+		
+		a:hover, a:focus{
+			background-color: darken(@text-light-color, 20%);
+		}
+		
+		a:active{
+			background-color: darken(@text-light-color, 30%);
+		}
+		
+		a.current, a.current:visited{
+			background-color: @text-color;
+		}
+	}
+	
+	.sliderItem{
+		
+	}	
+}
+
+#projects.slider{
+	article{
+		min-height: 165px;
+	}
+}
+
+
+
+
+/* FORM STYLES
+====================================================================================================*/	
+
+fieldset{
+	margin-bottom: 20px;
+	
+	label, input{
+		display: block;
+	}
+	
+	.helperLink{
+		float: left;
+		width: auto;
+		max-width: none;
+		text-align: left;
+		line-height: normal;
+	}
+}
+
+label{
+	float: left;
+	margin: 0 10px 5px 0;
+	font-weight: bold;
+}
+
+input[type="text"], input[type="email"], input[type="password"]{
+	width: 89.66666666666%;
+	padding: 1% 8.333333333% 1% 2%;
+	border: 1px solid @text-color;
+	.border-radius;
+	.box-shadow-inset;
+}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus{
+	border-color: darken(@green,10%);
+	outline: none;
+	.box-shadow-inset(0, 1px, 1px, rgba(0,0,0,.15), 0 0 3px @green);
+}
+
+input[type="text"]::-webkit-input-placeholder{
+	font-weight: lighter;
+	color: @text-light-color;
+}
+
+input[type="text"]:-moz-placeholder{
+	font-weight: lighter;
+	color: @text-light-color;
+}
+
+input[type="submit"]{
+	float: right;
+	width: 46.666666666666667%;
+	max-width: 140px;
+	padding: 10px 25px;
+	.border-radius;
+	border: none;
+	.linear-gradient(@green-light-25,@green);
+	font: bold 1.2em "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-shadow: 0 -1px 1px rgba(0,0,0,.25);
+	color: #fff;
+	outline: none;
+	.box-shadow-inset(0, 1px, 3px, rgba(0,0,0,.1));
+}
+	
+input[type="submit"]:hover, input[type="submit"]:focus{
+	.linear-gradient(@green-light-40,@green);
+}
+	
+input[type="submit"]:active{
+	.linear-gradient(@green-light-15,@green-dark-13);
+	.box-shadow-inset(0, 1px, 4px, rgba(0,0,0,.4));
+}
+
+.helperLink{
+	float: left;
+	width: 46.666666666666667%;
+	max-width: 140px;
+	text-align: center;
+	line-height: 39px;
+}
+	
+	
+	
+	
+/* FOOTER STYLES
+====================================================================================================*/
+
+
+	
+footer{
+	overflow: hidden;
+	margin: 10px auto 15px;
+	text-shadow: 0 1px 1px #fff;
+	
+	small{
+		float: left;
+		font-size: 1em;
+	}
+	
+	nav{
+		float: right;
+		
+		li{
+			display: block;
+			float: left;
+			margin-right: 30px;
+		}
+		
+		li:last-child{
+			margin-right: 0;
+		}
+		
+		a, a:visited{
+			color: @text-color;
+		}
+		
+		a:hover, a:focus{
+			text-decoration: none;
+			color: @link-color;
+		}
+		
+		a:active{
+			color: @link-active;
+		}
+	}
+}
+	
+	
+	
+/* MEDIA QUERIES
+====================================================================================================*/
+
+
+@media all and (orientation:portrait) {
+	#wrap{
+		
+		}
+	
+	footer{
+		
+		}
+	}
+
+@media all and (orientation:landscape) { 
+	#wrap{
+		
+		}
+	
+	footer{
+		
+		}
+	}
+
+@media screen and (max-device-width: 480px) {
+	/* Uncomment if you don't want iOS and WinMobile to mobile-optimize the text for you
+	j.mp/textsizeadjust 
+	html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } */
+}
+
+@media print {
+	* { background: transparent !important; color: @text-color !important; text-shadow: none !important; }
+	a, a:visited { color: @text-color !important; text-decoration: underline; }
+	a:after { content: " (" attr(href) ")"; } 
+	abbr:after { content: " (" attr(title) ")"; }
+	.ir a:after { content: ""; }  /* Don't show links for images */
+	pre, blockquote { border: 1px solid #999; page-break-inside: avoid; }
+	thead { display: table-header-group; } /* css-discuss.incutio.com/wiki/Printing_Tables */ 
+	tr, img { page-break-inside: avoid; }
+	@page { margin: 0.5cm; }
+	p, h2, h3 { orphans: 3; widows: 3; }
+	h2, h3{ page-break-after: avoid; }
+	}

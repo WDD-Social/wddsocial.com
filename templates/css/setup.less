@@ -1,0 +1,59 @@
+/* BASIC COLORS
+====================================================================================================*/
+
+@text-color: #444;
+@text-light-color: #b2b2b2;
+@link-color: #2e7599;
+@link-hover: #2e7599;
+@link-active: darken(@link-hover,10%);
+
+
+/* SITE COLOR VALUES
+====================================================================================================*/
+
+@green: #74b336;
+@green-light-15: #89be54;
+@green-light-25: #97c668;
+@green-light-40: #acd186;
+@green-dark-13: #549821;
+
+
+.border-radius (@radius: 5px) {
+	-moz-border-radius: @radius;
+	-webkit-border-radius: @radius;
+	border-radius: @radius;
+}
+
+.box-shadow (@x-pos: 0, @y-pos: 1px, @blur: 1px, @color: rgba(0,0,0,.85)) {
+	-moz-box-shadow: @x-pos @y-pos @blur @color;
+	-webkit-box-shadow: @x-pos @y-pos @blur @color;
+	box-shadow: @x-pos @y-pos @blur @color;
+}
+
+.box-shadow-inset (@x-pos: 0, @y-pos: 1px, @blur: 1px, @color: rgba(0,0,0,.15), @external-shadow: 0 0 0 rgba(0,0,0,0)) {
+	-moz-box-shadow: @x-pos @y-pos @blur @color inset, @external-shadow;
+	-webkit-box-shadow: @x-pos @y-pos @blur @color inset, @external-shadow;
+	box-shadow: @x-pos @y-pos @blur @color inset, @external-shadow;
+}
+
+.box-shadow-none {
+	-moz-box-shadow: none;
+	-webkit-box-shadow: none;
+	box-shadow: none;
+}
+
+.linear-gradient (@start-color: #fff, @end-color: #000){
+	background-color: (@start-color + @end-color) / 2;
+	background-image: -moz-linear-gradient(top, @start-color, @end-color);
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0, @start-color),color-stop(1, @end-color));
+	background-image: -webkit-linear-gradient(@start-color, @end-color);
+	background-image: linear-gradient(top, @start-color, @end-color);
+	filter: e("progid:DXImageTransform.Microsoft.gradient(startColorStr='@start-color', EndColorStr='@end-color')");
+}
+
+.transition (@properties: all, @duration: .25s, @ease: ease-in-out) {
+	-o-transition: @properties @duration @ease;
+	-moz-transition: @properties @duration @ease;
+	-webkit-transition: @properties @duration @ease;
+	transition: @properties @duration @ease;
+}
