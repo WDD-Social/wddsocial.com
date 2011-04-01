@@ -496,6 +496,21 @@ header{
 			}
 		}
 	}
+	
+	.signed-in{
+		a, a:visited{
+			color: @text-color;
+			}
+			
+		a:hover, a:focus{
+			text-decoration: none;
+			color: @link-hover;
+			}
+		
+		a:active{
+			color: lighten(@link-active,5%);
+			}
+		}
 
 
 
@@ -866,6 +881,24 @@ input{
 		min-height: 165px;
 		}
 }
+
+.badge{
+	margin-left: 5px;
+	padding: 1px 8px;
+	.border-radius(10px);
+	background-color: @text-light-color;
+	font-weight: bold;
+	text-decoration: none;
+	color: #fff;
+	}
+	
+.badge:hover, .badge:focus, a:hover .badge, a:focus .badge{
+	background-color: @green;
+	}
+
+.badge:active, a:active .badge{
+	background-color: darken(@green,5%);
+	}
 
 
 
