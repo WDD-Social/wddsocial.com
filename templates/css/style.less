@@ -373,7 +373,7 @@ header{
 		display: block;
 		width: 140px;
 		height: 43px;
-		background: url('../images/site/social_logo-small.png') no-repeat 0 0;
+		background: url('../images/site/social-logo-small.png') no-repeat 0 0;
 		text-indent: -9999px;
 		}
 	
@@ -694,6 +694,23 @@ header{
 						border-top-left-radius: 0;
 						border-top-right-radius: 0;
 						}
+					
+					.download{
+						margin-top: 5px;
+						padding-left: 10%;
+						font-weight: normal;
+						text-align: left;
+						color: @text-color;
+						opacity: 0;
+						.transition;
+						
+						img{
+							float: left;
+							width: 9px;
+							height: 10px;
+							margin: 2px 3px 0 0;
+							}
+						}
 					}
 				
 				.calendar-icon:hover{
@@ -706,8 +723,13 @@ header{
 						
 					.day{
 						background-color: lighten(@text-light-color,20%);
-						color: darken(@text-light-color,40%);
+						color: darken(@text-light-color,35%);
 						border-color: lighten(@text-light-color,5%);
+						}
+						
+					.download{
+						display: block;
+						opacity: .5;
 						}
 					}
 					
@@ -719,8 +741,12 @@ header{
 						
 					.day{
 						background-color: lighten(@text-light-color,15%);
-						color: darken(@text-light-color,45%);
+						color: darken(@text-light-color,40%);
 						border-color: @text-light-color;
+						}
+						
+					.download{
+						opacity: .75;
 						}
 					}
 				}
