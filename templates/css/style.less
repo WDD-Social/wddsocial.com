@@ -638,9 +638,46 @@ header{
 		}
 	
 	section.medium{
+		width: 66%;
+		margin-right: 2%;
+		
 		article{
 			overflow: hidden;
-			margin-bottom: 30px;
+			width: 82.258064516%;
+			margin: 0 0 20px 5.882352941%;
+			
+			h2, p{
+				width: 88.823529412%;
+				padding-left: 11.176470588%;
+				}
+			
+			.item-image{
+				width: 7.843137255%;
+				margin-right: 3.333333333%;
+				padding-left: 0;
+				}
+				
+			.intro strong{
+					a, a:visited{
+						color: @text-color;
+						}
+					
+					a:hover, a:focus{
+						color: @link-hover;
+						}
+					
+					a:active{
+						color: @link-active;
+						}
+				}
+			
+			.comments, .tags{
+				width: auto;
+				}
+			
+			.tags{
+				padding-left: 0;
+				}
 			}
 		}
 	
@@ -794,6 +831,11 @@ header{
 			margin-right: 0;
 			}
 		}
+	
+	#share{
+		float: right;
+		
+		}
 	}
 
 h1{
@@ -882,6 +924,38 @@ input{
 		}
 }
 
+.filterable{
+	position: relative;
+	
+	.filters{
+		position: absolute;
+		top: 3px;
+		right: 0;
+		width: 90%;
+		text-align: right;
+		
+		a, a:visited{
+			margin-right: 2%;
+			font-weight: bold;
+			text-transform: uppercase;
+			color: @text-light-color;
+			}
+		
+		a:hover, a:focus{
+			text-decoration: none;
+			color: darken(@text-light-color, 20%);
+			}
+		
+		a:active{
+			color: darken(@text-light-color, 30%);
+			}
+		
+		a.current, a.current:visited{
+			color: @text-color;
+			}
+		}
+	}
+
 .badge{
 	margin-left: 5px;
 	padding: 1px 8px;
@@ -951,6 +1025,37 @@ input[type="text"]:-moz-placeholder{
 	font-weight: lighter;
 	color: @text-light-color;
 }
+	
+input[type="radio"]{
+	display: none;
+	}
+
+input[type="radio"]:checked + label{
+	color: @text-color;
+	}
+
+.radio{
+	> label{
+		
+		width: 100%;
+		}
+	
+	div{
+		overflow: hidden;
+		width: 80%;
+		padding: 0 10%;
+		
+		label{
+			margin-right: 7.5%;
+			text-transform: uppercase;
+			color: @text-light-color;
+			}
+		
+		label:last-child{
+			margin-right: 0;
+			}
+		}
+	}
 
 input[type="submit"]{
 	float: right;
@@ -1060,7 +1165,19 @@ footer{
 	/* Uncomment if you don't want iOS and WinMobile to mobile-optimize the text for you
 	j.mp/textsizeadjust 
 	html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } */
-}
+	}
+
+@media screen and (max-width: 480px) {
+	#content{
+		
+		> section{
+			overflow: hidden;
+			float: none !important;
+			width: 100% !important;
+			margin: 0 auto 50px;
+			}
+		}
+	}
 
 @media print {
 	* { background: transparent !important; color: @text-color !important; text-shadow: none !important; }

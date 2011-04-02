@@ -1,0 +1,118 @@
+<!doctype html>
+<!--[if lt IE 7 ]><html lang="en" class="no-js ie6"><![endif]-->
+<!--[if IE 7 ]><html lang="en" class="no-js ie7"><![endif]-->
+<!--[if IE 8 ]><html lang="en" class="no-js ie8"><![endif]-->
+<!--[if IE 9 ]><html lang="en" class="no-js ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--><html lang="en" class="no-js"><!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<title>WDD Social | Templates</title>
+		<meta name="description" content="">
+		<meta name="author" content="Anthony Colangelo (http://www.acolangelo.com)">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<link rel="stylesheet/less" href="css/style.less">
+	  	<script src="js/libs/modernizr-1.6.min.js"></script>
+	  	<script src="js/less-1.0.41.min.js"></script>
+	</head>
+	<body>
+		<section id="wrap">
+			<header>
+				<h1><a href="dashboard.html" title="WDD Social Home">WDD Social</a></h1>
+				<section id="user-area" class="signed-in">
+					<p><strong><a href="#" title="View My Profile"><img src="images/avatars/anthony_tiny.jpg" alt="Anthony Colangelo"/>Anthony Colangelo</a></strong></p>
+					<p><a href="#" title="View My Messages">Messages<span class="badge">3</span></a></p>
+					<p><a href="#" title="View and Edit my Account Information">Account</a></p>
+					<p><a href="#" title="Sign Out of WDD Social">Sign Out</a></p>
+				</section><!-- END USER AREA -->
+				<nav>
+					<ul>
+						<li><a href="#" title="People">People</a></li>
+						<li><a href="#" title="Projects">Projects</a></li>
+						<li><a href="#" title="Articles">Articles</a></li>
+						<li><a href="#" title="Courses">Courses</a></li>
+						<li><a href="#" title="Events">Events</a></li>
+						<li><a href="#" title="Jobs">Jobs</a></li>
+					</ul>
+					<form action="#" method="get">
+						<input type="text" name="term" placeholder="Search..." />
+						<input type="submit" value="Search" />
+					</form>
+				</nav>
+			</header>
+			<section id="content">
+				<section id="share" class="small no-margin">
+					<h1>Share</h1>
+					<form action="#" method="post">
+						<fieldset>
+							<label for="title">Title</label>
+							<input type="text" name="title" id="title" />
+						</fieldset>
+						<fieldset class="radio">
+							<label>Type</label>
+							<div>
+								<input type="radio" id="project" name="type" checked />
+								<label for="project">Project</label>
+								
+								<input type="radio" id="article" name="type" />
+								<label for="article">Article</label>
+								
+								<input type="radio" id="event" name="type" />
+								<label for="event">Event</label>
+								
+								<input type="radio" id="job" name="type" />
+								<label for="job">Job</label>
+							</div>
+						</fieldset>
+						<input type="submit" value="Create" />
+					</form>
+				</section><!-- END SHARE -->
+				
+				<section id="latest" class="medium filterable">
+					<h1>Latest</h1>
+					<div class="filters">
+						<a href="dashboard.html" title="All Latest Activity" class="current">All</a> 
+						<a href="dashboard.html#people" title="Latest People">People</a> 
+						<a href="dashboard.html#projects" title="Latest Projects">Projects</a> 
+						<a href="dashboard.html#articles" title="Latest Articles">Articles</a>
+					</div><!-- END FILTERS -->
+					<article>
+						<p class="item-image"><a href="users/olivier" title="View Olivier Lacan's Profile"><img src="images/avatars/olivier_small.jpg" alt="Olivier Lacan"/></a></p>
+						<p class="intro"><strong><a href="users/olivier" title="View Olivier Lacan's Profile">Olivier Lacan</a></strong> wrote an <strong><a href="articles/tower" title="Tower: Git Client for Mac">article</a></strong>.</p>
+						<h2><a href="articles/tower" title="Tower: Git Client for Mac">Tower: Git Client for Mac</a></h2>
+						<p>Tower, the best and easiest to use Git client for Mac just launched today and is offering a great 50% off pricing for students.</p>
+						<p class="comments"><a href="articles/tower#comments" title="Tower: Git Client for Mac | Comments">3 comments</a> <span class="hidden">|</span> <span class="time">10 minutes ago</span></p>
+						<p class="tags"><a href="categories/Git" title="Categories | Git">Git</a> <a href="categories/Apps" title="Categories | Apps">Apps</a></p>
+					</article><!-- END ARTICLE -->
+					
+					<article>
+						<p class="item-image"><a href="users/turtle" title="View Zachary Nicoll's Profile"><img src="images/avatars/zach_small.jpg" alt="Zachary Nicoll"/></a></p>
+						<p class="intro"><strong><a href="users/turtle" title="View Zachary Nicoll's Profile">Zachary Nicoll</a></strong> joined the community.</p>
+						<p>Competently incubate customized metrics for revolutionary processes. We dynamically recaptiualize business bandwidth for turnkey action items.</p>
+						<p>10 minutes ago</p>
+					</article><!-- END ARTICLE -->
+				</section><!-- END LATEST -->
+			</section><!-- END CONTENT -->
+		</section><!-- END WRAP -->
+		<footer>
+			<small>&copy; 2011 WDD Social</small>
+			<nav>
+				<ul>
+					<li><a href="#" title="WDD Social | Developer Resources">Developer</a></li>
+					<li><a href="#" title="WDD Social | About Us">About</a></li>
+					<li><a href="#" title="WDD Social | Contact Us">Contact</a></li>
+					<li><a href="#" title="WDD Social | Terms of Service">Terms</a></li>
+					<li><a href="#" title="WDD Social | Privacy Policy">Privacy</a></li>
+				</ul>
+			</nav>
+		</footer>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+		<script>!window.jQuery && document.write(unescape('%3Cscript src="js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
+		<script src="js/plugins.js"></script>
+		<script src="js/script.js"></script>
+		<!--[if lt IE 7 ]>
+			<script src="js/libs/dd_belatedpng.js"></script>
+			<script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+		<![endif]-->
+	</body>
+</html>
