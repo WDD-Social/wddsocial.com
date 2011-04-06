@@ -537,6 +537,11 @@ h1.mega{
 	font-size: 2.8em;
 	}
 
+h1.form{
+	float: left;
+	width: auto;
+	}
+
 h2{
 	margin-bottom: 2px;
 	text-transform: uppercase;
@@ -553,11 +558,18 @@ h2{
 	a:active{
 		color: @link-active;
 		}
-}
+	}
+
+h2.form{
+	float: right;
+	padding-top: 20px;
+	color: @text-light-color;
+	vertical-align: text-bottom;
+	}
 
 p{
 	margin-bottom: 10px;
-}
+	}
 
 ul, ol{
 	margin-left: 0;
@@ -600,6 +612,7 @@ input, textarea, button{
 	
 	> form{
 		overflow: hidden;
+		clear: both;
 		width: 32%;
 		min-width: 300px;
 		margin: 0 auto 50px;
