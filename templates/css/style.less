@@ -518,6 +518,64 @@ header{
 /* CONTENT AND BASIC STYLES
 ====================================================================================================*/	
 
+h1{
+	width: 100%;
+	margin-bottom: 20px;
+	padding-bottom: 2px;
+	border-bottom: 1px solid @text-color;
+	font-size: 1.2em;
+	text-transform: uppercase;
+}
+
+h2{
+	margin-bottom: 2px;
+	text-transform: uppercase;
+	
+	a, a:visited{
+		text-transform: capitalize;
+		color: @text-color;
+	}
+}
+
+p{
+	margin-bottom: 10px;
+}
+
+ul, ol{
+	margin-left: 0;
+	list-style: inside square;
+	}
+	
+a, a:visited{
+	text-decoration: none;
+	color: @link-color;
+}
+	
+a:hover, a:focus{
+	text-decoration: underline;
+	outline: none;
+}
+
+a:active{
+	color: @link-active;
+}
+
+strong a, strong a:visited{
+	color: @text-color;
+	}
+
+strong a:hover, strong a:focus{
+	color: @link-hover;
+	}
+
+strong a:active{
+	color: @link-active;
+	}
+
+input{
+	font-weight: lighter;
+}
+
 #content{
 	overflow: hidden;
 	width: 100%;
@@ -552,26 +610,21 @@ header{
 				a, a:visited{
 					float: left;
 					display: block;
-					width: 30.5%;
-					margin-right: 3%;
+					width: 31%;
+					margin-right: 3.75%;
 					margin-bottom: 2%;
-					padding: .5% .5% .2%;
-					background-color: @text-color;
 					
 					img{
-						width: 99%;
+						width: 100%;
 						margin: 0 auto;
-						padding: 1%;
-						background-color: #fff;
+						opacity: .9;
 						}
 					}
 				
 				a:hover, a:focus{
-					background-color: darken(@text-color,5%);
-					}
-				
-				a:active{
-					background-color: darken(@text-color,10%);
+					img{
+						opacity: 1;
+						}
 					}
 				
 				a:last-child{
@@ -617,6 +670,26 @@ header{
 				}
 			}
 		}
+		
+	section.mega{
+		width: 100%;
+		
+		img, div.large{
+			float: left;
+			width: 31.414893617%;
+			margin-right: 2.127659574%;
+			}
+		
+		div.small{
+			float: left;
+			width: 14.893617021%;
+			margin-right: 2.127659574%;
+			}
+		
+		div.no-margin{
+			margin-right: 0;
+			}
+		}
 	
 	section.large{
 		width: 66%;
@@ -634,23 +707,18 @@ header{
 				padding-left: 0;
 				
 				a, a:visited{
-					width: 96%;
-					padding: 2%;
-					background-color: @text-color;
+					width: 100%;
 					
 					img{
-						width: 98%;
-						padding: 1%;
-						background-color: #fff;
+						width: 100%;
+						opacity: .9;
 						}
 					}
 				
 				a:hover, a:focus{
-					background-color: darken(@text-color,5%);
-					}
-				
-				a:active{
-					background-color: darken(@text-color,10%);
+					img{
+						opacity: 1;
+						}
 					}
 				}
 			
@@ -867,7 +935,7 @@ header{
 			}
 		}
 	
-	#share{
+	section.side-sticky{
 		float: right;
 		
 		}
@@ -894,44 +962,106 @@ header{
 	
 	}
 
-h1{
-	width: 100%;
-	margin-bottom: 20px;
-	padding-bottom: 2px;
-	border-bottom: 1px solid @text-color;
-	font-size: 1.2em;
-	text-transform: uppercase;
-}
+#media{
+	
+			
+	.images{
+		a, a:visited{
+			float: left;
+			display: block;
+			width: 22.580645161%;
+			margin-right: 3.55%;
+			margin-bottom: 3%;
+			
+			img{
+				width: 100%;
+				margin: 0 auto;
+				opacity: .9;
+				}
+			}
+		
+		a:hover, a:focus{
+			img{
+				opacity: 1;
+				}
+			}
+		
+		a:nth-child(2n+4){
+			margin-right: 0;
+			}
+		}
+	
+	.videos{
+		iframe{
+			width: 100%;
+			height: 50%;
+			}
+		}
+	}
 
-h2{
-	margin-bottom: 2px;
+#contact ul, #team ul{
+	list-style: none;
+	
+	li{	
+		overflow: hidden;
+		clear: both;
+		display: block;
+		margin-bottom: 10px;
+		}
+	
+	img{
+		float: left;
+		display: block;
+		width: 13.333333333%;
+		min-width: 40px;
+		margin-right: 6.666666667%;
+		}
 	
 	a, a:visited{
+		clear: both;
 		color: @text-color;
+		
+		strong{
+			display: block;
+			padding-top: 2px;
+			}
+		}
+		
+	a:hover, a:focus{
+		text-decoration: none;
+		}
 	}
-}
-
-p{
-	margin-bottom: 10px;
-}
 	
-a, a:visited{
-	text-decoration: none;
-	color: @link-color;
-}
+#contact ul{
+	img{
+		opacity: .5;
+		.transition;
+		}
 	
-a:hover, a:focus{
-	text-decoration: underline;
-	outline: none;
-}
+	a:hover, a:focus{
+	
+		img{
+			opacity: 1;
+			}
+		
+		p{
+			color: @link-hover;
+			
+			strong{
+				color: @text-color;
+				}
+			}
+		}
+	}
 
-a:active{
-	color: @link-active;
-}
-
-input{
-	font-weight: lighter;
-}
+#team ul{
+	a:hover, a:focus{
+		strong{
+			text-decoration: underline;
+			color: @link-hover;
+			}
+		}
+	}
 
 .slider{
 	position: relative;

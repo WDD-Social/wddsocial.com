@@ -1,4 +1,14 @@
 $(function() {
+	
+	/* VISUAL TWEAKS AND ENHANCEMENTS
+	=====================================================
+	
+	*/
+	
+	$('.dashboard #latest').css({
+		minHeight: $('.dashboard #share').outerHeight(true) + $('.dashboard #events').outerHeight(true) + $('.dashboard #jobs').outerHeight(true)
+	});
+	
 	$('.filters a').live('click',function(){
 		$(this).parent().find('a.current').removeClass('current');
 		$(this).addClass('current');
