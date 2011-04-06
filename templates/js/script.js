@@ -15,7 +15,7 @@ $(function() {
 		if($(this).html() === 'All'){
 			$(this).parent().parent().find('article').slideDown(500,'easeInOutQuad');
 		}else{
-			var class = $(this).text().toLowerCase();
+			var class = $(this).html().toLowerCase();
 			$(this).parent().parent()
 				.find('article.'+class).slideDown(500,'easeInOutQuad').parent()
 				.find('article:not(article.'+class+')').slideUp(500,'easeInOutQuad');

@@ -236,13 +236,13 @@ input:invalid, textarea:invalid {
 	background-color: #f0dddd;
 	}
 	
-::-moz-selection{
+::selection{
 	background: fadeout(@green, 75%);
 	color: @text-color;
 	text-shadow: none;
 	}
-		
-::selection {
+
+::-moz-selection{
 	background: fadeout(@green, 75%);
 	color: @text-color;
 	text-shadow: none;
@@ -378,7 +378,8 @@ header{
 		}
 	
 	h1 a:hover, h1 a:active, h1 a:focus{
-		background-position-y: -43px;
+		
+		background-position: 0 -43px;
 		outline: none;
 		}
 	
@@ -434,6 +435,8 @@ header{
 				right: 7px;
 				width: 13px;
 				height: 15px;
+				min-width: 0;
+				max-width: 13px;
 				margin: 0;
 				padding: 0;
 				border: none;
@@ -534,7 +537,15 @@ h2{
 	a, a:visited{
 		text-transform: capitalize;
 		color: @text-color;
-	}
+		}
+	
+	a:hover, a:focus{
+		color: @link-hover;
+		}
+	
+	a:active{
+		color: @link-active;
+		}
 }
 
 p{
@@ -572,7 +583,7 @@ strong a:active{
 	color: @link-active;
 	}
 
-input{
+input, textarea, button{
 	font-weight: lighter;
 }
 
@@ -749,7 +760,7 @@ input{
 			width: 82.258064516%;
 			margin: 0 0 30px 5.882352941%;
 			
-			h2, p{
+			h2, p, form{
 				width: 88.823529412%;
 				padding-left: 11.176470588%;
 				}
@@ -937,7 +948,13 @@ input{
 	
 	section.side-sticky{
 		float: right;
-		
+		}
+			
+	section.long-text{
+		p{
+			width: 90%;
+			margin: 0 auto 15px;
+			}
 		}
 	
 	.load-more{
@@ -1120,7 +1137,7 @@ input{
 		width: 90%;
 		text-align: right;
 		
-		a, a:visited{
+		a, a:visited, p{
 			margin-right: 2%;
 			font-weight: bold;
 			text-transform: uppercase;
@@ -1169,9 +1186,9 @@ input{
 fieldset{
 	margin-bottom: 20px;
 	
-	label, input{
+	label, input, textarea{
 		display: block;
-	}
+		}
 	
 	.helper-link{
 		float: left;
@@ -1179,38 +1196,50 @@ fieldset{
 		max-width: none;
 		text-align: left;
 		line-height: normal;
+		}
 	}
-}
 
 label{
 	float: left;
 	margin: 0 10px 5px 0;
 	font-weight: bold;
-}
+	}
 
-input[type="text"], input[type="email"], input[type="password"]{
+input[type="text"], input[type="email"], input[type="password"], textarea{
 	width: 89.66666666666%;
 	padding: 1% 8.333333333% 1% 2%;
 	border: 1px solid @text-color;
 	.border-radius;
 	.box-shadow-inset;
-}
+	}
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus{
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus{
 	border-color: darken(@green,10%);
 	outline: none;
 	.box-shadow-inset(0, 1px, 1px, rgba(0,0,0,.15), 0 0 3px @green);
-}
+	}
 
 input[type="text"]::-webkit-input-placeholder{
 	font-weight: lighter;
 	color: @text-light-color;
-}
-
+	}
+	
 input[type="text"]:-moz-placeholder{
 	font-weight: lighter;
 	color: @text-light-color;
-}
+	}
+
+textarea{
+	min-width: 89.66666666666%;
+	max-width: 89.66666666666%;
+	min-height: 100px;
+	margin-top: 5px;
+	margin-bottom: 20px;
+	}
+	
+textarea.placeholder{
+	color: @text-light-color;
+	}
 	
 input[type="radio"]{
 	display: none;
@@ -1246,8 +1275,9 @@ input[type="radio"]:checked + label{
 input[type="submit"]{
 	float: right;
 	width: 46.666666666666667%;
-	max-width: 140px;
-	padding: 10px 25px;
+	min-width: 140px;
+	max-width: 175px;
+	padding: 10px;
 	.border-radius;
 	border: none;
 	.linear-gradient(@green-light-25,@green);
@@ -1256,16 +1286,16 @@ input[type="submit"]{
 	color: #fff;
 	outline: none;
 	.box-shadow-inset(0, 1px, 3px, rgba(0,0,0,.1));
-}
+	}
 	
 input[type="submit"]:hover, input[type="submit"]:focus{
 	.linear-gradient(@green-light-40,@green);
-}
+	}
 	
 input[type="submit"]:active{
 	.linear-gradient(@green-light-15,@green-dark-13);
 	.box-shadow-inset(0, 1px, 4px, rgba(0,0,0,.4));
-}
+	}
 
 .helper-link{
 	float: left;
@@ -1273,7 +1303,7 @@ input[type="submit"]:active{
 	max-width: 140px;
 	text-align: center;
 	line-height: 39px;
-}
+	}
 	
 	
 	
@@ -1291,7 +1321,7 @@ footer{
 	small{
 		float: left;
 		font-size: 1em;
-	}
+		}
 	
 	nav{
 		float: right;
@@ -1300,26 +1330,26 @@ footer{
 			display: block;
 			float: left;
 			margin-right: 30px;
-		}
+			}
 		
 		li:last-child{
 			margin-right: 0;
-		}
+			}
 		
 		a, a:visited{
 			color: @text-color;
-		}
+			}
 		
 		a:hover, a:focus{
 			text-decoration: none;
 			color: @link-color;
-		}
+			}
 		
 		a:active{
 			color: @link-active;
+			}
 		}
 	}
-}
 	
 	
 	
