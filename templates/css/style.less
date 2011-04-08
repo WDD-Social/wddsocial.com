@@ -519,7 +519,7 @@ header{
 
 
 /* CONTENT AND BASIC STYLES
-====================================================================================================*/	
+====================================================================================================*/
 
 h1{
 	width: 100%;
@@ -528,7 +528,7 @@ h1{
 	border-bottom: 1px solid @text-color;
 	text-transform: uppercase;
 	font-size: 1.2em;
-}
+	}
 
 h1.mega{
 	margin-bottom: 30px;
@@ -579,16 +579,16 @@ ul, ol{
 a, a:visited{
 	text-decoration: none;
 	color: @link-color;
-}
+	}
 	
 a:hover, a:focus{
 	text-decoration: underline;
 	outline: none;
-}
+	}
 
 a:active{
 	color: @link-active;
-}
+	}
 
 strong a, strong a:visited{
 	color: @text-color;
@@ -604,7 +604,7 @@ strong a:active{
 
 input, textarea, button{
 	font-weight: lighter;
-}
+	}
 
 #content{
 	overflow: hidden;
@@ -646,6 +646,7 @@ input, textarea, button{
 		article{
 			clear: both;
 			position: relative;
+			margin-bottom: 2%;
 			
 			h2, p{
 				float: left;
@@ -691,12 +692,12 @@ input, textarea, button{
 					}
 				}
 		
-			.comments, .tags, .job-type{
+			.tags, .job-type{
 				margin-bottom: 0;
 				
 				a, a:visited{
 					font-weight: bold;
-					color: @text-color;
+					color: @text-light-color;
 					}
 				
 				a:hover, a:focus{
@@ -748,6 +749,43 @@ input, textarea, button{
 		div.no-margin{
 			margin-right: 0;
 			}
+		
+		article{
+			clear: none;
+			float: left;
+			width: 32%;
+			margin-right: 2.225%;
+			
+			h2, p{
+				width: 80%;
+				padding-left: 20%;
+				}
+			
+			.item-image{
+				width: 13.333333333%;
+				margin-right: 6.666666667%;
+				padding-left: 0;
+				
+				a, a:visited{
+					width: 100%;
+					
+					img{
+						width: 100%;
+						opacity: .9;
+						}
+					}
+				
+				a:hover, a:focus{
+					img{
+						opacity: 1;
+						}
+					}
+				}
+			}
+		
+		article:nth-child(3n+2){
+			margin-right: 0;
+			}
 		}
 	
 	section.large{
@@ -773,9 +811,7 @@ input, textarea, button{
 			
 		section.content{
 			clear: both;
-			width: 90%;
-			margin: 0 auto;
-			padding-top: 20px;
+			padding-top: 1%;
 			}
 		
 		article{
@@ -841,6 +877,21 @@ input, textarea, button{
 				width: 7.843137255%;
 				margin-right: 3.333333333%;
 				padding-left: 0;
+				
+				a, a:visited{
+					width: 100%;
+					
+					img{
+						width: 100%;
+						opacity: .9;
+						}
+					}
+				
+				a:hover, a:focus{
+					img{
+						opacity: 1;
+						}
+					}
 				}
 				
 			.intro strong{
@@ -1217,13 +1268,13 @@ input, textarea, button{
 	
 	.slider-item{
 		}	
-}
+	}
 
 #projects.slider{
 	article{
 		min-height: 165px;
 		}
-}
+	}
 
 .with-secondary{
 	position: relative;
@@ -1278,6 +1329,10 @@ input, textarea, button{
 .minor{
 	font-weight: lighter;
 	color: @text-light-color;
+	}
+
+.test{
+	clear: both;
 	}
 
 
