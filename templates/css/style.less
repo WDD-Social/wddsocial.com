@@ -610,6 +610,10 @@ input, textarea, button{
 	overflow: hidden;
 	width: 100%;
 	
+	> h1{
+		border-bottom: none;
+		}
+	
 	> form{
 		overflow: hidden;
 		clear: both;
@@ -642,6 +646,30 @@ input, textarea, button{
 	> section{
 		float: left;
 		margin-bottom: 50px;
+		
+		h1{
+			overflow: hidden;
+			
+			a, a:visited{
+				display: block;
+				float: left;
+				margin-right: 1%;
+				color: @text-light-color;
+				}
+			
+			a:hover, a:focus{
+				text-decoration: none;
+				color: darken(@text-light-color, 20%);
+				}
+			
+			a:active{
+				color: darken(@text-light-color, 30%);
+				}
+		
+			a.current, a.current:visited{
+				color: @text-color;
+				}
+			}
 		
 		article{
 			clear: both;
@@ -750,11 +778,16 @@ input, textarea, button{
 			margin-right: 0;
 			}
 		
+		.secondary{
+			width: 40%
+			}
+		
 		article{
 			clear: none;
 			float: left;
 			width: 32%;
-			margin-right: 2.225%;
+			min-height: 130px;
+			margin-right: 2%;
 			
 			h2, p{
 				width: 80%;
@@ -1326,13 +1359,40 @@ input, textarea, button{
 	background-color: darken(@green,5%);
 	}
 
+.pagination{
+	clear: both;
+	padding-top: 3%;
+	font-size: 1.2em;
+	font-weight: bold;
+	text-align: center;
+	text-transform: uppercase;
+	
+	a, a:visited{
+		margin-right: 1%;
+		color: @text-light-color;
+		}
+		
+	a:hover, a:focus{
+		text-decoration: none;
+		color: darken(@text-light-color, 20%);
+		}
+	
+	a:active{
+		color: darken(@text-light-color, 30%);
+		}
+	
+	a.current, a.current:visited{
+		color: @text-color;
+		}
+	
+	a:last-child{
+		margin-right: 0;
+		}
+	}
+
 .minor{
 	font-weight: lighter;
 	color: @text-light-color;
-	}
-
-.test{
-	clear: both;
 	}
 
 
