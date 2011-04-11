@@ -334,7 +334,7 @@ body{
 	}
 	
 #wrap, footer{
-	width: 80%;
+	width: 88%;
 	max-width: 940px;
 	}
 	
@@ -675,7 +675,6 @@ input, textarea, button{
 			clear: both;
 			position: relative;
 			margin-bottom: 2%;
-			/* background-color: red; */
 			
 			h2, p{
 				float: left;
@@ -709,7 +708,7 @@ input, textarea, button{
 					float: left;
 					display: block;
 					width: 31%;
-					margin-right: 3.75%;
+					margin-right: 3.6%;
 					margin-bottom: 2%;
 					
 					img{
@@ -771,33 +770,6 @@ input, textarea, button{
 				width: auto;
 				top: 0;
 				right: 0;
-				
-				a, a:visited{
-					float: left;
-					display: block;
-					text-indent: -13000px;
-					text-align: left;
-					opacity: 0;
-					.transition;
-					}
-					
-				a.flag{
-					width: 10px;
-					height: 15px;
-					padding: 5px;
-					background: url('../images/site/icon-flag.png') no-repeat center center;
-					}
-				
-				a.delete{
-					width: 11px;
-					height: 12px;
-					padding: 5px;
-					background: url('../images/site/icon-delete.png') no-repeat center center;
-					}
-				
-				a.current{
-					opacity: 1;
-					}
 				}
 			}
 			
@@ -817,6 +789,25 @@ input, textarea, button{
 				a.current{
 					opacity: 1;
 					}
+				}
+			}
+		}
+			
+	> section:hover{
+		.secondary{
+			a, a:visited{
+				opacity: .25;
+				}
+			
+			a:hover, a:focus{
+				opacity: .5;
+				}
+			a:active{
+				opacity: .75;
+				}
+			
+			a.current{
+				opacity: 1;
 				}
 			}
 		}
@@ -848,7 +839,7 @@ input, textarea, button{
 			clear: none;
 			float: left;
 			width: 32%;
-			min-height: 140px;
+			min-height: 160px;
 			margin-right: 2%;
 		
 			.secondary{
@@ -928,6 +919,17 @@ input, textarea, button{
 			
 			.tags{
 				right: 0;
+				}
+			}
+		
+		> .secondary{
+			width: auto;
+			top: 0;
+			right: 0;
+			opacity: 1;
+			
+			a, a:visited{
+				padding: 2px;
 				}
 			}
 		}
@@ -1012,6 +1014,7 @@ input, textarea, button{
 				
 				.calendar-icon{
 					display: block;
+					min-width: 35px;
 					font-weight: bold;
 					color: #fff;
 					
@@ -1349,7 +1352,8 @@ input, textarea, button{
 #conversations{
 	form{
 		overflow: hidden;
-		margin-bottom: 20px;
+		width: 98.25%;
+		margin: 0 auto 20px;
 		}
 	
 	> a, > a:visited{
@@ -1439,6 +1443,32 @@ input, textarea, button{
 		a.current, a.current:visited{
 			color: @text-color;
 			}
+				
+		a.flag, a.delete, a.flag:visited, a.delete:visited{
+			float: left;
+			display: block;
+			padding: 5px;
+			text-indent: -13000px;
+			text-align: left;
+			opacity: 0;
+			.transition;
+			}
+			
+		a.flag{
+			width: 10px;
+			height: 15px;
+			background: url('../images/site/icon-flag.png') no-repeat center center;
+			}
+		
+		a.delete{
+			width: 11px;
+			height: 12px;
+			background: url('../images/site/icon-delete.png') no-repeat center center;
+			}
+		
+		a.current{
+			opacity: 1;
+			}
 		}
 	}
 
@@ -1524,7 +1554,7 @@ label{
 	}
 
 input[type="text"], input[type="email"], input[type="password"], textarea{
-	width: 89.66666666666%;
+	width: 89%;
 	padding: 1% 8.333333333% 1% 2%;
 	border: 1px solid @text-color;
 	.border-radius;
@@ -1569,7 +1599,6 @@ input[type="radio"]:checked + label{
 
 .radio{
 	> label{
-		
 		width: 100%;
 		}
 	
@@ -1582,6 +1611,14 @@ input[type="radio"]:checked + label{
 			margin-right: 7.5%;
 			text-transform: uppercase;
 			color: @text-light-color;
+			}
+		
+		label:hover{
+			color: darken(@text-light-color, 20%);
+			}
+		
+		label:active{
+			color: darken(@text-light-color, 30%);
 			}
 		
 		label:last-child{
@@ -1675,16 +1712,12 @@ footer{
 ====================================================================================================*/
 
 .touch{
-	#content{
-		> section{
-			
-			article{
-				.secondary{
-					
-					a, a:visited{
-						opacity: .25;
-						}
-					}
+
+
+	.with-secondary{
+		.secondary{
+			a.flag, a.delete, a.flag:visited, a.delete:visited{
+				opacity: .25;
 				}
 			}
 		}
@@ -1696,23 +1729,9 @@ footer{
 ====================================================================================================*/
 
 
-@media all and (orientation:portrait) {
+@media screen and (max-width: 900px) {
 	#wrap{
-		
-		}
-	
-	footer{
-		
-		}
-	}
-
-@media all and (orientation:landscape) { 
-	#wrap{
-		
-		}
-	
-	footer{
-		
+		/* background-color: @green; */
 		}
 	}
 
