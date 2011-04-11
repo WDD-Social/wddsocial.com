@@ -547,7 +547,7 @@ h2{
 	text-transform: uppercase;
 	
 	a, a:visited{
-		text-transform: capitalize;
+		text-transform: none;
 		color: @text-color;
 		}
 	
@@ -684,12 +684,21 @@ input, textarea, button{
 				float: left;
 				position: absolute;
 				top: 0px;
-							
+				
 				a, a:visited{
 					display: block;
+					width: 100%;
 					
 					img{
 						display: block;
+						width: 100%;
+						opacity: .9;
+						}
+					}
+				
+				a:hover, a:focus{
+					img{
+						opacity: 1;
 						}
 					}
 				}
@@ -798,21 +807,6 @@ input, textarea, button{
 				width: 13.333333333%;
 				margin-right: 6.666666667%;
 				padding-left: 0;
-				
-				a, a:visited{
-					width: 100%;
-					
-					img{
-						width: 100%;
-						opacity: .9;
-						}
-					}
-				
-				a:hover, a:focus{
-					img{
-						opacity: 1;
-						}
-					}
 				}
 			}
 		
@@ -857,21 +851,6 @@ input, textarea, button{
 				width: 35.483870967741935%;
 				margin-right: 3.225806451612903%;
 				padding-left: 0;
-				
-				a, a:visited{
-					width: 100%;
-					
-					img{
-						width: 100%;
-						opacity: .9;
-						}
-					}
-				
-				a:hover, a:focus{
-					img{
-						opacity: 1;
-						}
-					}
 				}
 			
 			.comments, .tags{
@@ -910,21 +889,6 @@ input, textarea, button{
 				width: 7.843137255%;
 				margin-right: 3.333333333%;
 				padding-left: 0;
-				
-				a, a:visited{
-					width: 100%;
-					
-					img{
-						width: 100%;
-						opacity: .9;
-						}
-					}
-				
-				a:hover, a:focus{
-					img{
-						opacity: 1;
-						}
-					}
 				}
 				
 			.intro strong{
@@ -1308,6 +1272,49 @@ input, textarea, button{
 		min-height: 165px;
 		}
 	}
+	
+#conversations{
+	> a, > a:visited{
+		display: block;
+		margin-bottom: 20px;
+		padding: 2%;
+		.border-radius;
+		color: @text-color;
+		cursor: pointer;
+			
+		h2, p{
+			width: 83.333333333%;
+			padding-left: 16.666666666666666%;
+			text-transform: none;
+			}
+		
+		img{
+			float: left;
+			width: 13.333333333%;
+			margin-right: 3.333333333%;
+			opacity: .9;
+			}
+		}
+	
+	> a:hover, > a:focus{
+		text-decoration: none;
+		background-color: rgba(0,0,0,.05);
+		
+		img{
+			opacity: 1;
+			}
+		}
+	
+	> a:active{
+		background-color: rgba(0,0,0,.07);
+		.box-shadow-inset(0,1px,3px,rgba(0,0,0,.15));
+		}
+	
+	> a.current{
+		background-color: rgba(0,0,0,.07);
+		.box-shadow-inset(0,1px,5px,rgba(0,0,0,.25));
+		}
+	}
 
 .with-secondary{
 	position: relative;
@@ -1342,7 +1349,6 @@ input, textarea, button{
 	}
 
 .badge{
-	margin-left: 5px;
 	padding: 1px 8px;
 	.border-radius(10px);
 	background-color: @text-light-color;
