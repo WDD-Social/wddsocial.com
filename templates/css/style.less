@@ -794,19 +794,19 @@ input, textarea, button{
 		}
 			
 	> section:hover{
-		.secondary{
-			a, a:visited{
+		> .secondary{
+			a.flag, a.flag:visited, a.delete, a.delete:visited{
 				opacity: .25;
 				}
 			
-			a:hover, a:focus{
+			a.flag:hover, a.flag:focus,	a.delete:hover, a.delete:focus{
 				opacity: .5;
 				}
-			a:active{
+			a.flag:active, a.delete:active{
 				opacity: .75;
 				}
 			
-			a.current{
+			a.flag.current, a.delete.current{
 				opacity: 1;
 				}
 			}
