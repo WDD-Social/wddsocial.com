@@ -795,14 +795,14 @@ input, textarea, button{
 			
 	> section:hover{
 		> .secondary{
-			a.flag, a.flag:visited, a.delete, a.delete:visited{
+			a.flag, a.flag:visited, a.delete, a.delete:visited, a.edit, a.edit:visited{
 				opacity: .25;
 				}
 			
-			a.flag:hover, a.flag:focus,	a.delete:hover, a.delete:focus{
+			a.flag:hover, a.flag:focus,	a.delete:hover, a.delete:focus,	a.edit:hover, a.edit:focus{
 				opacity: .5;
 				}
-			a.flag:active, a.delete:active{
+			a.flag:active, a.delete:active, a.edit:active{
 				opacity: .75;
 				}
 			
@@ -864,6 +864,22 @@ input, textarea, button{
 		
 		article:nth-child(3n+2){
 			margin-right: 0;
+			}
+		
+		> .secondary{
+			width: auto;
+			top: 0;
+			right: 0;
+			opacity: 1;
+			
+			a, a:visited{
+				padding: 2px;
+				}
+			
+			a.edit, a.edit:visited{
+				margin-right: 0;
+				}
+			
 			}
 		}
 	
@@ -931,6 +947,15 @@ input, textarea, button{
 			a, a:visited{
 				padding: 2px;
 				}
+			
+			a.delete, a.delete:visited{
+				padding-top: 4px;
+				}
+			
+			a.edit, a.edit:visited{
+				margin-right: 5px;
+				}
+			
 			}
 		}
 	
@@ -1119,6 +1144,17 @@ input, textarea, button{
 			
 			.tags{
 				padding-left: 0;
+				}
+			}
+		
+		> .secondary{
+			width: auto;
+			top: 0;
+			right: 0;
+			opacity: 1;
+			
+			a, a:visited{
+				padding: 2px;
 				}
 			}
 		}
@@ -1444,7 +1480,7 @@ input, textarea, button{
 			color: @text-color;
 			}
 				
-		a.flag, a.delete, a.flag:visited, a.delete:visited{
+		a.flag, a.delete, a.edit, a.flag:visited, a.delete:visited, a.edit:visited{
 			float: left;
 			display: block;
 			padding: 5px;
@@ -1464,6 +1500,13 @@ input, textarea, button{
 			width: 11px;
 			height: 12px;
 			background: url('../images/site/icon-delete.png') no-repeat center center;
+			}
+		
+		a.edit{
+			width: 14px;
+			height: 14px;
+			padding: 0 5px 8px;
+			background: url('../images/site/icon-edit.png') no-repeat center center;
 			}
 		
 		a.current{
