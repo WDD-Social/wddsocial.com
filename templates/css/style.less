@@ -1564,12 +1564,31 @@ input, textarea, button{
 		}
 	}
 
+.incomplete{
+	clear: both;
+	float: right;
+	
+	strong{
+		a, a:visited{
+			color: @link-color;
+			}
+			
+		a:hover, a:focus{
+			color: @link-hover;
+			}
+		
+		a:active{
+			color: @link-active;
+			}
+		}
+	}
+
 .minor{
 	font-weight: lighter;
 	color: @text-light-color;
 	}
 
-.date{
+.extra-spacing{
 	margin-top: 20px;
 	}
 
