@@ -1598,8 +1598,14 @@ fieldset{
 
 label{
 	float: left;
+	width: 100%;
 	margin: 0 10px 5px 0;
 	font-weight: bold;
+	}
+
+p.error{
+	margin-bottom: 15px;
+	color: @red;
 	}
 
 input[type="text"], input[type="email"], input[type="password"], textarea{
@@ -1636,6 +1642,11 @@ textarea{
 textarea.placeholder{
 	color: @text-light-color;
 	}
+
+input[type="text"].error, input[type="email"].error, input[type="password"].error, textarea.error{
+	border-color: fadeout(@red,30%);
+	.box-shadow-inset(0, 1px, 1px, rgba(0,0,0,.15), 0 0 3px fadeout(@red,40%));
+	}
 	
 input[type="radio"]{
 	display: none;
@@ -1656,6 +1667,7 @@ input[type="radio"]:checked + label{
 		padding: 0 10%;
 		
 		label{
+			width: auto;
 			margin-right: 7.5%;
 			text-transform: uppercase;
 			color: @text-light-color;
@@ -1672,6 +1684,15 @@ input[type="radio"]:checked + label{
 		label:last-child{
 			margin-right: 0;
 			}
+		}
+	}
+
+.terms{
+	margin-top: 40px;
+	
+	input[type="checkbox"]{
+		display: inline;
+		margin-right: 2%;
 		}
 	}
 

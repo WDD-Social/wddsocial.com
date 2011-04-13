@@ -45,9 +45,10 @@
 				
 				<form action="#" method="post">
 					<h1>Basic</h1>
+					<p class="error"><strong>Please fill out all required fields.</strong></p>
 					<fieldset>
 						<label for="first-name">First Name *</label>
-						<input type="text" name="first-name" id="first-name" />
+						<input type="text" name="first-name" id="first-name" class="error" />
 					</fieldset>
 					<fieldset>
 						<label for="last-name">Last Name *</label>
@@ -126,6 +127,10 @@
 						<input type="text" name="forrst" id="forrst" placeholder="username" />
 						<small>forrst.com/people/username</small>
 					</fieldset>-->
+					<fieldset class="terms">
+						<label>Boring Legal Stuff *</label>
+						<p><input type="checkbox" name="terms" id="terms" />I have read and agree to the <a href="terms.html" title="WDD Social Terms of Service">Terms of Service</a>.</p>
+					</fieldset>
 					<p class="helper-link"><a href="#" title="Already a WDD Social member?">Already a member?</a></p>
 					<input type="submit" value="Sign Up" />
 				</form>
