@@ -1165,10 +1165,21 @@ input, textarea, button{
 	section.image-grid{
 		p{
 			float: left;
-			margin-right: 20px;
+			width: 20%;
+			margin-right: 6.666666667%;
 			
-			a{
+			a, a:visited{
 				display: block;
+				width: 100%;
+				opacity: .9;
+				
+				img{
+					width: 100%;
+					}
+				}
+			
+			a:hover, a:focus{
+				opacity: 1;
 				}
 			}
 			
@@ -1606,6 +1617,10 @@ fieldset{
 		display: block;
 		}
 	
+	label.helper-link{
+		width: auto;
+		}
+	
 	.helper-link{
 		float: left;
 		width: auto;
@@ -1800,8 +1815,6 @@ footer{
 ====================================================================================================*/
 
 .touch{
-
-
 	.with-secondary{
 		.secondary{
 			a.flag, a.delete, a.flag:visited, a.delete:visited{
@@ -1818,8 +1831,22 @@ footer{
 
 
 @media screen and (max-width: 900px) {
-	#wrap{
-		/* background-color: @green; */
+	#content.start-page{
+		
+		section.image-grid{
+			p{
+				width: 26%;
+				margin-right: 11%;
+				}
+				
+			p:nth-child(3n+1){
+				margin-right: 0;
+				}
+			
+			p:last-child{
+				display: none;
+				}
+			}
 		}
 	}
 
@@ -1837,6 +1864,24 @@ footer{
 			float: none !important;
 			width: 100% !important;
 			margin: 0 auto 50px;
+			}
+		}
+		
+	.start-page{
+		#sign-in, #people{
+			display: none;
+			}
+		}
+	
+	footer{
+		small, nav{
+			display: block;
+			width: 100%;
+			text-align: center;
+			}
+		
+		nav{
+			margin: 1% 0 3%;
 			}
 		}
 	}
