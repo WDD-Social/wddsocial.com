@@ -866,7 +866,7 @@ input, textarea, button{
 			margin-right: 0;
 			}
 		
-		> .secondary{
+		> .secondary.icons{
 			width: auto;
 			top: 0;
 			right: 0;
@@ -906,7 +906,7 @@ input, textarea, button{
 			
 		section.content{
 			clear: both;
-			padding-top: 1%;
+			padding-top: 3%;
 			}
 		
 		article{
@@ -1147,16 +1147,15 @@ input, textarea, button{
 				}
 			}
 		
-		> .secondary{
-			width: auto;
-			top: 0;
-			right: 0;
-			opacity: 1;
-			
-			a, a:visited{
-				padding: 2px;
+			> .secondary.icons{
+				width: auto;
+				top: 0;
+				right: 0;
+				
+				a, a:visited{
+					padding: 2px;
+					}
 				}
-			}
 		}
 	
 	section.no-margin{
@@ -1202,9 +1201,11 @@ input, textarea, button{
 		
 		a:hover, a:focus{
 			border-color: #e5e5e5;
+			text-decoration: none;
 			}
 		
 		a:active{
+			border-color: #ccc;
 			background-color: #f2f2f2;
 			}
 		}
@@ -1568,6 +1569,10 @@ input, textarea, button{
 	color: @text-light-color;
 	}
 
+.date{
+	margin-top: 20px;
+	}
+
 
 
 
@@ -1575,6 +1580,7 @@ input, textarea, button{
 ====================================================================================================*/	
 
 fieldset{
+	max-width: 100%;
 	margin-bottom: 20px;
 	
 	label, input, textarea{
@@ -1621,11 +1627,10 @@ input[type="text"]:-moz-placeholder{
 	}
 
 textarea{
-	min-width: 89.66666666666%;
-	max-width: 89.66666666666%;
+	min-width: 88.5%;
+	max-width: 88.5%;
 	min-height: 100px;
-	margin-top: 5px;
-	margin-bottom: 20px;
+	margin: 5px auto 20px;
 	}
 	
 textarea.placeholder{
