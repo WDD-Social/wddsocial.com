@@ -13,7 +13,7 @@ class ProfilePage implements \Framework5\IExecutable {
 	public static function execute() {
 		
 		# sample use of a site controller
-		import('site.controller.WDDSocial\Profile');
+		import('wddsocial.controller.WDDSocial\Profile');
 		
 		
 		# load language pack
