@@ -55,6 +55,5 @@ try {
 
 catch (Exception $e) {
 	# handle exceptions through the application
-	//$app::exception_handler($e);
-	echo $e->getMessage();
+	$app::exception_handler($e);
 }
