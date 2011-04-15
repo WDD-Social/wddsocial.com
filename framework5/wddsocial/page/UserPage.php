@@ -8,7 +8,7 @@ namespace WDDSocial;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class ProfilePage implements \Framework5\IExecutable {
+class UserPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
@@ -28,6 +28,8 @@ class ProfilePage implements \Framework5\IExecutable {
 		);
 		
 		
-				
+		$db = instance('core.controller.Database');
+		
+		
 	}
 }
