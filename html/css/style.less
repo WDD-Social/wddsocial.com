@@ -419,6 +419,7 @@ header{
 		
 		form{
 			display: block;
+			overflow: hidden;
 			position: relative;
 			float: right;
 			width: 31.522%;
@@ -434,7 +435,8 @@ header{
 				top: 5px;
 				right: 7px;
 				width: 13px;
-				height: 15px;
+				height: 60%;
+				min-height: 15px;
 				min-width: 0;
 				max-width: 13px;
 				margin: 0;
@@ -708,7 +710,7 @@ input, textarea, button{
 					float: left;
 					display: block;
 					width: 31%;
-					margin-right: 3.6%;
+					margin-right: 3.5%;
 					margin-bottom: 2%;
 					
 					img{
@@ -1039,7 +1041,7 @@ input, textarea, button{
 				
 				.calendar-icon{
 					display: block;
-					min-width: 35px;
+					/* min-width: 35px; */
 					font-weight: bold;
 					color: #fff;
 					
@@ -1495,6 +1497,7 @@ input, textarea, button{
 		a.flag, a.delete, a.edit, a.flag:visited, a.delete:visited, a.edit:visited{
 			float: left;
 			display: block;
+			margin-right: 0;
 			padding: 5px;
 			text-indent: -13000px;
 			text-align: left;
@@ -1833,180 +1836,33 @@ footer{
 @media screen and (max-width: 950px) {
 	#content{
 		
-		section.mega{
-			width: 100%;
-			
-			img, div.large{
-				width: 31.414893617%;
-				margin-right: 2.127659574%;
-				}
-			
-			div.small{
-				width: 14.893617021%;
-				margin-right: 2.127659574%;
-				}
-			
-			div.no-margin{
-				margin-right: 0;
-				}
-			
-			.secondary{
-				width: 40%;
-				}
-			
-			article{
-				width: 32%;
-				min-height: 160px;
-				margin-right: 2%;
-			
-				.secondary{
-					width: auto;
-					}
-				
-				h2, p{
-					width: 80%;
-					padding-left: 20%;
-					}
-				
-				h2, p:nth-child(3){
-					width: 70%;
-					}
-				
-				.item-image{
-					width: 13.333333333%;
-					margin-right: 6.666666667%;
-					padding-left: 0;
-					}
-				}
-			
-			article:nth-child(3n+2){
-				margin-right: 0;
-				}
-			}
-		
-		section.large{
-			width: 66%;
-			
-			img, div.large{
-				width: 48.387096774%;
-				margin-right: 3.225806452%;
-				margin-bottom: 2%;
-				}
-			
-			div.small{
-				width: 14.893617021%;
-				margin-right: 6.666666667%;
-				}
-			
-			div.no-margin{
-				margin-right: 0;
-				}
-				
-			section.content{
-				padding-top: 3%;
-				}
-			
-			article{
-				h2, p{
-					width: 61.290322580645161%;
-					padding-left: 38.609677419354838%;
-					}
-				
-				.item-image{
-					width: 35.483870967741935%;
-					margin-right: 3.225806451612903%;
-					padding-left: 0;
-					}
-				
-				.comments, .tags{
-					}
-				
-				.comments{
-					left: 38.609677419354838%;
-					}
-				
-				.tags{
-					right: 0;
-					}
-				}
-			}
-		
-		section.medium{
-			width: 66%;
-			
-			article{
-				width: 82.258064516%;
-				margin: 0 0 30px 5.882352941%;
-				
-				h2, p, form{
-					width: 88.823529412%;
-					padding-left: 11.176470588%;
-					}
-				
-				h2, p:nth-child(3), .intro{
-					width: 82.823529412%;
-					}
-				
-				.item-image{
-					width: 7.843137255%;
-					margin-right: 3.333333333%;
-					padding-left: 0;
-					}
-				
-				.comments, .tags{
-					width: auto;
-					}
-				
-				.tags{
-					padding-left: 0;
-					}
-				}
-			}
-		
 		section.small{
-			width: 32%;
 			
 			article{
-				margin-bottom: 20px;
 				
-				h2, p{
-					width: 83.333333333%;
-					padding-left: 16.666666666666666%;
-					}
-				
-				h2{
-					width: 73.333333333%;
+				.tags{
+					a:last-child{
+						display: none;
+						}
 					}
 				
 				.item-image{
-					width: 50.333333333%;
-					margin-right: 3.333333333%;
-					padding-left: 0;
 					
 					.calendar-icon{
-						min-width: 35px;
 						
 						.month{
-							width: 94%;
-							padding: 5% 3%;
-							font-size: .9em;
+							font-size: .7em;
 							}
 							
 						.day{
-							width: 94%;
-							padding: 0 3%;
-							font-size: 1.9em;
+							font-size: 1.5em;
 							}
 						
 						.download{
-							margin-top: 5px;
-							padding-left: 10%;
-							font-weight: normal;
+							text-align: center;
 							
 							img{
-								width: 9px;
-								height: 10px;
-								margin: 2px 3px 0 0;
+								display: none;
 								}
 							}
 						}
@@ -2014,13 +1870,66 @@ footer{
 				}
 			}
 		}
-				
-	.helper-link.not-important{
-		display: none;
+	
+	form{
+		> .helper-link{
+			display: none;
+			}
 		}
 	}
 
 @media screen and (max-width: 830px) {
+	header{
+		nav{
+			ul{
+				font-size: 1.1em;
+				}
+			}
+		}
+		
+	#content{
+		
+		section.mega{
+			width: 100%;
+			}
+		
+		section.large{
+			width: 100%;
+			}
+		
+		section.medium{
+			width: 66%;
+			}
+		
+		section.small{
+			
+			article{
+				
+				h2, p{
+					}
+				
+				h2{
+					}
+				
+				.tags{
+					a:last-child{
+						display: none;
+						}
+					}
+				
+				.item-image{
+					
+					.calendar-icon{
+							
+						.day{
+							font-size: 1.3em;
+							}
+						}
+					}
+				}
+			}
+		}
+	
 	#content.start-page{
 		
 		section.image-grid{
@@ -2036,6 +1945,10 @@ footer{
 			p:last-child{
 				display: none;
 				}
+			}
+			
+		#sign-in{
+			display: none;
 			}
 		}
 	}
@@ -2058,7 +1971,7 @@ footer{
 		}
 		
 	.start-page{
-		#sign-in, #people{
+		#people{
 			display: none;
 			}
 		}
