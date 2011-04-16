@@ -26,26 +26,14 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		session_start();
 		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = true;
+		$_SESSION['authorized'] = false;
 		
 		
 		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
 		
-		
-		$query = $db->query("
-			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, CONCAT_WS(' ', firstName, lastName) AS userName, u.vanityURL AS userURL,
-			getDateDiffEN(p.datetime) AS `date`
-			FROM projects AS p
-			LEFT JOIN users AS u ON (p.userID = u.id)
-			UNION
-			SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, CONCAT_WS(' ', firstName, lastName) AS userName, u.vanityURL AS userURL, getDateDiffEN(a.datetime) AS `DATE`
-			FROM articles AS a
-			LEFT JOIN users AS u ON (a.userID = u.id)
-			UNION
-			SELECT id, CONCAT_WS(' ', firstName, lastName) AS title, bio AS description, vanityURL, `DATETIME`, 'person' AS `TYPE`, id AS userID, CONCAT_WS(' ', firstName, lastName) AS userName, vanityURL AS userURL, getDateDiffEN(`DATETIME`) AS `DATE`
-			FROM users AS u
-			ORDER BY DATETIME DESC
-		");
+		import('wddsocial.sql.SelectorSQL');
+		$sql = new SelectorSQL();
+		$query = $db->query($sql->getLatest);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		while($row = $query->fetch()){  
 			echo "<p>{$row->type}</p>";
