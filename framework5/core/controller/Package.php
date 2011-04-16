@@ -137,7 +137,7 @@ class Package {
 	final private static function _resolve_package_alias($alias) {
 		
 		# if the alias name is not valid format (does not start with :)
-		if (!static::_package_is_alias($alias)) {
+		if (!static::_is_package_alias($alias)) {
 			throw new Exception("Could not resolve alias '$alias'. Not a valid alias");
 		}
 		
