@@ -11,6 +11,8 @@ class IndexPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
+		$db = instance(':db');
+		
 		# load language pack
 		//lang_load('wddsocial.lang.TemplateLang');
 		

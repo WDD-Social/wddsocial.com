@@ -28,6 +28,6 @@ class Settings {
 	
 	# package alias' can be used in place of a package name
 	public static $package_aliases = array(
-		':controller' => 'core.controller.Controller', //example
+		':db' => 'wddsocial.controller.WDDSocial\Database'
 	);
 }
