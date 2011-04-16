@@ -58,7 +58,10 @@ class Request {
 	
 	public static function root_path() {
 		if (!isset(static::$_uri_array)) static::uri_array();
-		for ($i = 0; $i < count(static::$_uri_array) - 1; $i++) {
+		
+		$total = count(static::$_uri_array) - 1;
+				
+		for ($i = 0; $i < $total; $i++) {
 			$buffer .= '../';
 		}
 		return $buffer;
