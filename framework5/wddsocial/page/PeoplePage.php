@@ -27,7 +27,7 @@ class PeoplePage implements \Framework5\IExecutable {
 		$_SESSION['authorized'] = true;
 		
 		
-		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'User rofile'));
+		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'User Profile'));
 		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
 		
 	}
