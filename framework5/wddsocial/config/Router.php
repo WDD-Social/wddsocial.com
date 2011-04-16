@@ -16,9 +16,16 @@ class Router implements \Framework5\IRouter {
 		switch ($request) {
 			case '':
 				return 'wddsocial.page.WDDSocial\IndexPage';
-				
+			
+			case 'people':
+				return 'wddsocial.page.WDDSocial\PeoplePage';
+			
+			//case '':
+			//	return 'wddsocial.page.WDDSocial\';
+			
+			
 			case 'user':
-				return 'wddsocial.page.WDDSocial\ProfilePage';
+				return 'wddsocial.page.WDDSocial\UserPage';
 			
 			case 'about':
 				return 'wddsocial.page.WDDSocial\AboutPage';
