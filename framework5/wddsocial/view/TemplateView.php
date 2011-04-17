@@ -97,6 +97,7 @@ HTML;
 	
 	private static function _userArea() {
 		
+		# if the user is logged in
 		if ($_SESSION['authorized']) {
 			$root = \Framework5\Request::root_path();
 			return <<<HTML
@@ -104,16 +105,19 @@ HTML;
 				<section id="user-area" class="signed-in">
 					<p><strong><a href="user/{$_SESSION['user']->vanityURL}" title="View My Profile"><img src="{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
 				 	<p><a href="{$root}messages" title="View My Messages">Messages <span class="badge">3</span></a></p>
-				 	<p><a href="form.html" title="View and Edit my Account Information">Account</a></p>
-				 	<p><a href="{$root}" title="Sign Out of WDD Social">Sign Out</a></p>
+				 	<p><a href="account" title="View and Edit my Account Information">Account</a></p>
+				 	<p><a href="signout" title="Sign Out of WDD Social">Sign Out</a></p>
 				 </section><!-- END USER AREA -->
 HTML;
-		}else{
+		}
+		
+		# if the user is not logged in
+		else{
 			return <<<HTML
 
 				<section id="user-area" class="signed-out">
-					<p><a href="form.html" title="Sign Up for WDD Social">Sign Up</a></p>
-					<p><a href="form.html" title="Sign In to WDD Social">Sign In</a></p>
+					<p><a href="signup" title="Sign Up for WDD Social">Sign Up</a></p>
+					<p><a href="signin" title="Sign In to WDD Social">Sign In</a></p>
 				</section><!-- END USER AREA -->
 HTML;
 		}

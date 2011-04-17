@@ -38,9 +38,25 @@ class Router implements \Framework5\IRouter {
 			case 'jobs':
 				return 'wddsocial.page.global.WDDSocial\JobsPage';
 			
+			case 'search':
+				return 'wddsocial.page.global.WDDSocial\SearchPage';
 			
-			case 'user':
-				return 'wddsocial.page.global.WDDSocial\UserPage';
+			
+			# global user actions
+			case 'signup':
+				return 'wddsocial.page.user.WDDSocial\SignupPage';
+			
+			case 'signin':
+				return 'wddsocial.page.user.WDDSocial\SigninPage';
+			
+			case 'signout':
+				return 'wddsocial.page.user.WDDSocial\SignoutPage';
+			
+			case 'account':
+				return 'wddsocial.page.user.WDDSocial\AccountPage';
+			
+			case 'messages':
+				return 'wddsocial.page.user.WDDSocial\MessagesPage';
 			
 			
 			# footer navigation
@@ -57,7 +73,14 @@ class Router implements \Framework5\IRouter {
 				return 'wddsocial.page.global.WDDSocial\TermsPage';
 				
 			case 'privacy':
-				return 'wddsocial.page.global.global.WDDSocial\PrivacyPage';
+				return 'wddsocial.page.global.WDDSocial\PrivacyPage';
+			
+			
+			
+			case 'user':
+				return 'wddsocial.page.global.WDDSocial\UserPage';
+			
+			
 			
 			# 404
 			default:
