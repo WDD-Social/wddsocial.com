@@ -26,26 +26,35 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		session_start();
 		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = false;
+		$_SESSION['authorized'] = true;
 		
 		
 		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
 		
 		import('wddsocial.sql.SelectorSQL');
 		$sql = new SelectorSQL();
-		$query = $db->query($sql->getLatest);
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		while($row = $query->fetch()){  
-			echo "<p>{$row->type}</p>";
-			echo "<p>{$row->title}</p>";
-			echo "<p>{$row->description}</p>";
-			echo "<p>{$row->vanityURL}</p>";
-			echo "<p>{$row->userName}</p>";
-			echo "<p>{$row->date}</p>";
-			echo "<p>------------------------------------</p>";
+		
+		if($_SESSION['authorized'] == true){
+			import('wddsocial.model.DisplayVO');
+			$query = $db->query($sql->getLatest);
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+			while($row = $query->fetch()){  
+				echo "<p>{$row->type}</p>";
+				echo "<p>{$row->title}</p>";
+				echo "<p>{$row->description}</p>";
+				echo "<p>{$row->vanityURL}</p>";
+				echo "<p>{$row->userName}</p>";
+				echo "<p>{$row->date}</p>";
+				echo "<p>Comments: {$row->comments}</p>";
+				echo "<pre>";
+				print_r($row->tags);
+				echo "</pre>";
+				echo "<p>------------------------------------</p>";
+			}
+		}else{
+			
 		}
 		
 		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
-		
 	}
 }
