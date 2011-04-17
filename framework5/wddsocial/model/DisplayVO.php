@@ -7,7 +7,7 @@ namespace WDDSocial;
 *
 */
 class DisplayVO{
-	public $id, $title, $description, $vanityURL, $type, $date, $userID, $userName, $userURL, $team = array(), $comments, $tags = array();
+	public $id, $title, $description, $vanityURL, $type, $date, $userID, $userFirstName, $userLastName, $userAvatar, $userURL, $team = array(), $images = array(), $comments, $tags = array();
 	private $db, $sql;
 	
 	public function __construct(){
@@ -113,7 +113,6 @@ class DisplayVO{
 				$query->execute($data);
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					$user = new UserVO();
-					echo "<h1>USER: {$row->firstName}</h1>";
 					$user->firstName = $row->firstName;
 					$user->lastName = $row->lastName;
 					$user->vanityURL = $row->vanityURL;

@@ -14,7 +14,6 @@ class TemplateView implements \Framework5\IView {
 			default:
 				throw new Exception("TemplateView requires parameter section (top or bottom), '{$options['section']}' provided");
 		}
-		
 	}
 	
 	
