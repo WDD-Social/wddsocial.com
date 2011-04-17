@@ -20,12 +20,11 @@ class MediumDisplayView implements \Framework5\IView {
 	
 	private static function projectDisplay($project){
 		$root = \Framework5\Request::root_path();
+		import('wddsocial.helper.NaturalLanguage');
 		
-		// NEED TO ADJUST FOR APOSTROPHE!!!!!!!!
-		// 		Example: Colangelo's vs. Matthews'
-		
-		$userVerbage = ($project->userID === $_SESSION['user']->id)?"View Your Profile":"View {$project->userFirstName} {$project->userLastName}'s Profile";
-		$userDisplayName = ($project->userID === $_SESSION['user']->id)?"You":"{$project->userFirstName} {$project->userLastName}";
+		$possessive = \WDDSocial\NaturalLanguage::possessive("{$project->userFirstName} {$project->userLastName}");
+		$userVerbage = ($project->userID == $_SESSION['user']->id)?"View Your Profile":"View $possessive Profile";
+		$userDisplayName = ($project->userID == $_SESSION['user']->id)?"You":"{$project->userFirstName} {$project->userLastName}";
 		
 		
 		/* CREATE TEAM INTRO
@@ -154,7 +153,7 @@ HTML;
 						<p class="item-image"><a href="{$root}/user/{$person->userURL}" title="{$userVerbage}"><img src="images/avatars/{$person->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
 						<p class="intro"><strong><a href="{$root}/user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> joined the community.</p>
 						<p>{$person->description}</p>
-						<p>{$article->date}</p>
+						<p>{$person->date}</p>
 					</article><!-- END {$person->title} -->
 HTML;
 		return $html;
