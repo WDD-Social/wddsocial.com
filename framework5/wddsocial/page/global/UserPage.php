@@ -12,14 +12,13 @@ class UserPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
-		# sample use of a site controller
-		import('wddsocial.controller.WDDSocial\Profile');
-		
+		# display site header
+		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'About'));
 		
 		# load language pack
 		lang_load('wddsocial.lang.ProfileLang');
 		
-		
+		# display i18n text
 		echo text('ProfileLang:intro', array(
 			'name' => 'Tyler',
 			'age' => '19',
@@ -27,8 +26,8 @@ class UserPage implements \Framework5\IExecutable {
 			'month' => 'jan', 'year' => '2009')
 		);
 		
-		
-		$db = instance('core.controller.Database');
+		# display site footer
+		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
 		
 		
 	}
