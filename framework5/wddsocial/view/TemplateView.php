@@ -6,10 +6,10 @@ class TemplateView implements \Framework5\IView {
 		switch ($options['section']) {
 			case 'top':
 				
-				return static::_templateTop($options['title']);
+				return static::_templateHeader($options['title']);
 			
 			case 'bottom':
-				return static::_templateBottom();
+				return static::_templateFooter();
 			
 			default:
 				throw new Exception("TemplateView requires parameter section (top or bottom), '{$options['section']}' provided");
@@ -18,7 +18,7 @@ class TemplateView implements \Framework5\IView {
 	}
 	
 	
-	private static function _templateTop($title) {
+	private static function _templateHeader($title) {
 		if (!isset($title) or empty($title))
 			throw new Exception("TemplateView top section requires parameter title");
 			
@@ -49,7 +49,7 @@ class TemplateView implements \Framework5\IView {
 	<body>
 		<section id="wrap">
 			<header>
-				<h1><a href="{$root}" title="WDD Social Home">WDD Social</a></h1>
+				<h1><a href="/" title="WDD Social Home">WDD Social</a></h1>
 HTML;
 			$html .= static::_userArea();
 			$html .= static::_navigation();
@@ -62,7 +62,7 @@ HTML;
 
 
 
-	private static function _templateBottom() {
+	private static function _templateFooter() {
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
 		
@@ -70,11 +70,11 @@ HTML;
 		<footer>
 			<nav>
 				<ul>
-					<li><a href="#" title="WDD Social | Developer Resources">Developer</a></li>
-					<li><a href="#" title="WDD Social | About Us">About</a></li>
-					<li><a href="#" title="WDD Social | Contact Us">Contact</a></li>
-					<li><a href="#" title="WDD Social | Terms of Service">Terms</a></li>
-					<li><a href="#" title="WDD Social | Privacy Policy">Privacy</a></li>
+					<li><a href="developer" title="WDD Social | Developer Resources">Developer</a></li>
+					<li><a href="about" title="WDD Social | About Us">About</a></li>
+					<li><a href="contact" title="WDD Social | Contact Us">Contact</a></li>
+					<li><a href="terms" title="WDD Social | Terms of Service">Terms</a></li>
+					<li><a href="privacy" title="WDD Social | Privacy Policy">Privacy</a></li>
 				</ul>
 			</nav>
 			<small>&copy; 2011 WDD Social</small>
