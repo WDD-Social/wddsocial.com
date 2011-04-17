@@ -14,24 +14,77 @@ class Router implements \Framework5\IRouter {
 	public static function resolve($request) {
 		
 		switch ($request) {
+			
+			# site index
 			case '':
-				return 'wddsocial.page.WDDSocial\IndexPage';
+				return 'wddsocial.page.global.WDDSocial\IndexPage';
 			
+			# main navigation
 			case 'people':
-				return 'wddsocial.page.WDDSocial\PeoplePage';
+				return 'wddsocial.page.global.WDDSocial\PeoplePage';
 			
-			//case '':
-			//	return 'wddsocial.page.WDDSocial\';
+			case 'projects':
+				return 'wddsocial.page.global.WDDSocial\ProjectsPage';
+			
+			case 'articles':
+				return 'wddsocial.page.global.WDDSocial\ArticlesPage';
+			
+			case 'courses':
+				return 'wddsocial.page.global.WDDSocial\CoursesPage';
+			
+			case 'events':
+				return 'wddsocial.page.global.WDDSocial\EventsPage';
+			
+			case 'jobs':
+				return 'wddsocial.page.global.WDDSocial\JobsPage';
+			
+			case 'search':
+				return 'wddsocial.page.global.WDDSocial\SearchPage';
+			
+			
+			# global user actions
+			case 'signup':
+				return 'wddsocial.page.user.WDDSocial\SignupPage';
+			
+			case 'signin':
+				return 'wddsocial.page.user.WDDSocial\SigninPage';
+			
+			case 'signout':
+				return 'wddsocial.page.user.WDDSocial\SignoutPage';
+			
+			case 'account':
+				return 'wddsocial.page.user.WDDSocial\AccountPage';
+			
+			case 'messages':
+				return 'wddsocial.page.user.WDDSocial\MessagesPage';
+			
+			
+			# footer navigation
+			case 'developer':
+				return 'wddsocial.page.global.WDDSocial\DeveloperPage';
+			
+			case 'about':
+				return 'wddsocial.page.global.WDDSocial\AboutPage';
+			
+			case 'contact':
+				return 'wddsocial.page.global.WDDSocial\ContactPage';
+			
+			case 'terms':
+				return 'wddsocial.page.global.WDDSocial\TermsPage';
+				
+			case 'privacy':
+				return 'wddsocial.page.global.WDDSocial\PrivacyPage';
+			
 			
 			
 			case 'user':
-				return 'wddsocial.page.WDDSocial\UserPage';
+				return 'wddsocial.page.global.WDDSocial\UserPage';
 			
-			case 'about':
-				return 'wddsocial.page.WDDSocial\AboutPage';
 			
+			
+			# 404
 			default:
-				return 'wddsocial.page.WDDSocial\Http404';
+				return 'wddsocial.page.global.error.WDDSocial\Http404';
 		}
 	}
 }

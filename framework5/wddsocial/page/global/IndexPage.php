@@ -10,27 +10,19 @@ namespace WDDSocial;
 class IndexPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
+		
+		# display page header
+		echo render('wddsocial.view.TemplateView', 
+			array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
+		
+		
+		$db = instance(':db');
+		
 		import('wddsocial.sql.SelectorSQL');
 		import('wddsocial.model.DisplayVO');
 		
-		# load language pack
-		//lang_load('wddsocial.lang.TemplateLang');
 		
-		// SET UP TEST DATA
-		$user->id = 1;
-		$user->typeID = 1;
-		$user->firstName = 'Anthony';
-		$user->lastName = 'Colangelo';
-		$user->vanityURL = 'anthony';
-		$user->avatar = 'c4ca4238a0b923820dcc509a6f75849b';
-		$user->languageID = 'en';
 		
-		session_start();
-		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = true;
-		
-		// CREATE HEADER
-		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
 		
 		// CREATE HOME PAGE (BASED ON IF USER IS SIGNED IN OR NOT)
 		if($_SESSION['authorized'] == true){
@@ -47,6 +39,8 @@ HTML;
 HTML;
 		}
 		
+		
+		# display page footer
 		// END CONTENT AREA
 		echo <<<HTML
 
@@ -56,6 +50,9 @@ HTML;
 		// CREATE FOOTER
 		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
 	}
+	
+	
+	
 	
 	// GETS AND DISPLAYS LATEST CONTENT SECTION
 	private static function getLatest(){

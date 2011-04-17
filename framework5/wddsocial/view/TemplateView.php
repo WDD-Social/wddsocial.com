@@ -6,10 +6,10 @@ class TemplateView implements \Framework5\IView {
 		switch ($options['section']) {
 			case 'top':
 				
-				return static::_templateTop($options['title']);
+				return static::_templateHeader($options['title']);
 			
 			case 'bottom':
-				return static::_templateBottom();
+				return static::_templateFooter();
 			
 			default:
 				throw new Exception("TemplateView requires parameter section (top or bottom), '{$options['section']}' provided");
@@ -17,7 +17,7 @@ class TemplateView implements \Framework5\IView {
 	}
 	
 	
-	private static function _templateTop($title) {
+	private static function _templateHeader($title) {
 		if (!isset($title) or empty($title))
 			throw new Exception("TemplateView top section requires parameter title");
 			
@@ -48,7 +48,7 @@ class TemplateView implements \Framework5\IView {
 	<body>
 		<section id="wrap">
 			<header>
-				<h1><a href="{$root}" title="WDD Social Home">WDD Social</a></h1>
+				<h1><a href="/" title="WDD Social Home">WDD Social</a></h1>
 HTML;
 			$html .= static::_userArea();
 			$html .= static::_navigation();
@@ -61,7 +61,7 @@ HTML;
 
 
 
-	private static function _templateBottom() {
+	private static function _templateFooter() {
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
 		
@@ -69,11 +69,11 @@ HTML;
 		<footer>
 			<nav>
 				<ul>
-					<li><a href="#" title="WDD Social | Developer Resources">Developer</a></li>
-					<li><a href="#" title="WDD Social | About Us">About</a></li>
-					<li><a href="#" title="WDD Social | Contact Us">Contact</a></li>
-					<li><a href="#" title="WDD Social | Terms of Service">Terms</a></li>
-					<li><a href="#" title="WDD Social | Privacy Policy">Privacy</a></li>
+					<li><a href="developer" title="WDD Social | Developer Resources">Developer</a></li>
+					<li><a href="about" title="WDD Social | About Us">About</a></li>
+					<li><a href="contact" title="WDD Social | Contact Us">Contact</a></li>
+					<li><a href="terms" title="WDD Social | Terms of Service">Terms</a></li>
+					<li><a href="privacy" title="WDD Social | Privacy Policy">Privacy</a></li>
 				</ul>
 			</nav>
 			<small>&copy; 2011 WDD Social</small>
@@ -96,6 +96,7 @@ HTML;
 	
 	private static function _userArea() {
 		
+		# if the user is logged in
 		if ($_SESSION['authorized']) {
 			$root = \Framework5\Request::root_path();
 			return <<<HTML
@@ -103,16 +104,19 @@ HTML;
 				<section id="user-area" class="signed-in">
 					<p><strong><a href="user/{$_SESSION['user']->vanityURL}" title="View My Profile"><img src="{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
 				 	<p><a href="{$root}messages" title="View My Messages">Messages <span class="badge">3</span></a></p>
-				 	<p><a href="form.html" title="View and Edit my Account Information">Account</a></p>
-				 	<p><a href="{$root}" title="Sign Out of WDD Social">Sign Out</a></p>
+				 	<p><a href="account" title="View and Edit my Account Information">Account</a></p>
+				 	<p><a href="signout" title="Sign Out of WDD Social">Sign Out</a></p>
 				 </section><!-- END USER AREA -->
 HTML;
-		}else{
+		}
+		
+		# if the user is not logged in
+		else{
 			return <<<HTML
 
 				<section id="user-area" class="signed-out">
-					<p><a href="form.html" title="Sign Up for WDD Social">Sign Up</a></p>
-					<p><a href="form.html" title="Sign In to WDD Social">Sign In</a></p>
+					<p><a href="signup" title="Sign Up for WDD Social">Sign Up</a></p>
+					<p><a href="signin" title="Sign In to WDD Social">Sign In</a></p>
 				</section><!-- END USER AREA -->
 HTML;
 		}
