@@ -43,12 +43,18 @@ class IndexPage implements \Framework5\IExecutable {
 				echo "<p>{$row->title}</p>";
 				echo "<p>{$row->description}</p>";
 				echo "<p>{$row->vanityURL}</p>";
-				echo "<p>{$row->userName}</p>";
+				echo "<p>{$row->userFirstName} {$row->userLastName}</p>";
 				echo "<p>{$row->date}</p>";
 				echo "<p>Comments: {$row->comments}</p>";
-				echo "<pre>";
+				echo "<pre>Tags:";
 				print_r($row->tags);
 				echo "</pre>";
+				echo "<p>Team:</p>";
+				echo "<ul>";
+				foreach ($row->team as $member){
+					echo "<li>{$member->firstName} {$member->lastName} ({$member->vanityURL})</li>";
+				}
+				echo "</ul>";
 				echo "<p>------------------------------------</p>";
 			}
 		}else{

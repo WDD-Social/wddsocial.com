@@ -20,6 +20,9 @@ class DisplayVO{
 		}
 		
 		$this->getTags();
+		if($this->type == 'project' || $this->type == 'article'){
+			$this->getTeam();
+		}
 	}
 	
 	private function getCommentsCount(){
@@ -86,6 +89,38 @@ class DisplayVO{
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					array_push($this->tags,$row->title);
 				}
+				break;
+		}
+	}
+	
+	private function getTeam(){
+		import('wddsocial.model.UserVO');
+		$data = array('id' => $this->id);
+		switch ($this->type){
+			case 'project':
+				$query = $this->db->prepare($this->sql->getProjectTeam);
+				$query->execute($data);
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					$user = new UserVO();
+					$user->firstName = $row->firstName;
+					$user->lastName = $row->lastName;
+					$user->vanityURL = $row->vanityURL;
+					array_push($this->team,$user);
+				}
+				break;
+			case 'article':
+				$query = $this->db->prepare($this->sql->getArticleTeam);
+				$query->execute($data);
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					$user = new UserVO();
+					echo "<h1>USER: {$row->firstName}</h1>";
+					$user->firstName = $row->firstName;
+					$user->lastName = $row->lastName;
+					$user->vanityURL = $row->vanityURL;
+					array_push($this->team,$user);
+				}
+				break;
+			default :
 				break;
 		}
 	}
