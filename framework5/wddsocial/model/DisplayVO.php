@@ -102,6 +102,7 @@ class DisplayVO{
 				$query->execute($data);
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					$user = new UserVO();
+					$user->userID = $row->id;
 					$user->firstName = $row->firstName;
 					$user->lastName = $row->lastName;
 					$user->vanityURL = $row->vanityURL;
@@ -113,6 +114,7 @@ class DisplayVO{
 				$query->execute($data);
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					$user = new UserVO();
+					$user->userID = $row->id;
 					$user->firstName = $row->firstName;
 					$user->lastName = $row->lastName;
 					$user->vanityURL = $row->vanityURL;

@@ -25,33 +25,14 @@ class MediumDisplayView implements \Framework5\IView {
 		$possessive = \WDDSocial\NaturalLanguage::possessive("{$project->userFirstName} {$project->userLastName}");
 		$userVerbage = ($project->userID == $_SESSION['user']->id)?"View Your Profile":"View $possessive Profile";
 		$userDisplayName = ($project->userID == $_SESSION['user']->id)?"You":"{$project->userFirstName} {$project->userLastName}";
-		
-		
-		/* CREATE TEAM INTRO
-if(count($project->team) > 1){
-			$teamIntro = " with ";
-			if(count($project->team) === 3){
-				
-			}else{
-				for($i = 0; $i < count($project->team); $i++){
-					if($i === count($project->team)-1){
-						
-					}else{
-						
-					}
-				}
-			}
-		}else{
-			$teamIntro = "";
-		}
-*/
+		$teamIntro = static::formatTeamString($project->userID,$project->team);
 		
 		$html = <<<HTML
 
 					<article class="projects with-secondary">
 						<div class="secondary">
 HTML;
-		if($project->userID === $_SESSION['user']->id){
+		if($project->userID == $_SESSION['user']->id){
 			$html .= <<<HTML
 
 							<a href="#" title="Edit &ldquo;{$project->title}&rsquo;" class="edit">Edit</a>
@@ -68,7 +49,7 @@ HTML;
 						</div><!-- END SECONDARY -->
 						
 						<p class="item-image"><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}"><img src="images/avatars/{$project->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> posted a <strong><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">project</a></strong> WITH TEAM.</p>
+						<p class="intro"><strong><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> posted a <strong><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
 						<h2><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
 						<!--<p class="images">
@@ -92,19 +73,18 @@ HTML;
 	
 	private static function articleDisplay($article){
 		$root = \Framework5\Request::root_path();
+		import('wddsocial.helper.NaturalLanguage');
 		
-		// NEED TO ADJUST FOR APOSTROPHE!!!!!!!!
-		// 		Example: Colangelo's vs. Matthews'
-		
-		$userVerbage = ($article->userID === $_SESSION['user']->id)?"View Your Profile":"View {$article->userFirstName} {$article->userLastName}'s Profile";
-		$userDisplayName = ($article->userID === $_SESSION['user']->id)?"You":"{$article->userFirstName} {$article->userLastName}";
+		$possessive = \WDDSocial\NaturalLanguage::possessive("{$article->userFirstName} {$article->userLastName}");
+		$userVerbage = ($article->userID == $_SESSION['user']->id)?"View Your Profile":"View $possessive Profile";
+		$userDisplayName = ($article->userID == $_SESSION['user']->id)?"You":"{$article->userFirstName} {$article->userLastName}";
 		
 		$html = <<<HTML
 
 					<article class="articles with-secondary">
 						<div class="secondary">
 HTML;
-		if($article->userID === $_SESSION['user']->id){
+		if($article->userID == $_SESSION['user']->id){
 			$html .= <<<HTML
 
 							<a href="#" title="Edit &ldquo;{$article->title}&rsquo;" class="edit">Edit</a>
@@ -144,8 +124,8 @@ HTML;
 		// NEED TO ADJUST FOR APOSTROPHE!!!!!!!!
 		// 		Example: Colangelo's vs. Matthews'
 		
-		$userVerbage = ($person->userID === $_SESSION['user']->id)?"View Your Profile":"View {$person->userFirstName} {$person->userLastName}'s Profile";
-		$userDisplayName = ($person->userID === $_SESSION['user']->id)?"You":"{$person->userFirstName} {$person->userLastName}";
+		$userVerbage = ($person->userID == $_SESSION['user']->id)?"View Your Profile":"View {$person->userFirstName} {$person->userLastName}'s Profile";
+		$userDisplayName = ($person->userID == $_SESSION['user']->id)?"You":"{$person->userFirstName} {$person->userLastName}";
 		
 		$html = <<<HTML
 
@@ -157,5 +137,71 @@ HTML;
 					</article><!-- END {$person->title} -->
 HTML;
 		return $html;
+	}
+	
+	private static function formatTeamString($ownerID, $team){
+		// REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE)
+		$cleanTeam = $team;
+		foreach($cleanTeam as $member){
+			if($member->userID == $ownerID){
+				$key = array_search($member, $cleanTeam);
+				unset($cleanTeam[$key]);
+			}else if($member->userID == $_SESSION['user']->id){
+				$key = array_search($member, $cleanTeam);
+				$currentUser = $cleanTeam[$key];
+				unset($cleanTeam[$key]);
+				array_unshift($cleanTeam,$currentUser);
+			}
+		}
+		$cleanTeam = array_values($cleanTeam);
+		
+		// PUT CURRENT USER AT FRONT OF ARRAY
+		/*
+foreach($cleanTeam as $member){
+			if($member->userID == $_SESSION['user']->id){
+				$key = array_search($member, $cleanTeam);
+				$currentUser = $cleanTeam[$key];
+				unset($cleanTeam[$key]);
+				array_unshift($cleanTeam,$currentUser);
+			}
+		}
+		$cleanTeam = array_values($cleanTeam);
+*/
+		
+		// CREATE TEAM STRING
+		if(count($cleanTeam) > 0){
+			$teamIntro = " with ";
+			$teamString = array();
+			if(count($cleanTeam) == 1){
+				$teamPossessive = \WDDSocial\NaturalLanguage::possessive("{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
+				$teamUserVerbage = ($cleanTeam[0]->userID == $_SESSION['user']->id)?"View Your Profile":"View $teamPossessive Profile";
+				$teamUserDisplayName = ($cleanTeam[0]->userID == $_SESSION['user']->id)?"You":"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}";
+				$teamIntro .= "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$teamUserVerbage\">$teamUserDisplayName</a></strong>";
+			}else if(count($cleanTeam) == 2){
+				foreach($cleanTeam as $member){
+					$teamPossessive = \WDDSocial\NaturalLanguage::possessive("{$member->firstName} {$member->lastName}");
+					$teamUserVerbage = ($member->userID == $_SESSION['user']->id)?"View Your Profile":"View $teamPossessive Profile";
+					$teamUserDisplayName = ($member->userID == $_SESSION['user']->id)?"You":"{$member->firstName} {$member->lastName}";
+					array_push($teamString, "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$teamUserVerbage\">$teamUserDisplayName</a></strong>");
+				}
+				$teamString = implode(' and ',$teamString);
+				$teamIntro .= $teamString;
+			}else{
+				for($i = 0; $i < count($cleanTeam); $i++){
+					$teamPossessive = \WDDSocial\NaturalLanguage::possessive("{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
+					$teamUserVerbage = ($cleanTeam[$i]->userID == $_SESSION['user']->id)?"View Your Profile":"View $teamPossessive Profile";
+					$teamUserDisplayName = ($cleanTeam[$i]->userID == $_SESSION['user']->id)?"You":"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}";
+					if($i == count($cleanTeam)-1){
+						$teamIntro .= "and <strong><a href=\"{$root}/user/{$cleanTeam[$i]->vanityURL}\" title=\"$teamUserVerbage\">$teamUserDisplayName</a></strong>";
+					}else{
+						$teamIntro .= "<strong><a href=\"{$root}/user/{$cleanTeam[$i]->vanityURL}\" title=\"$teamUserVerbage\">$teamUserDisplayName</a></strong>, ";
+					}
+				}
+			}
+		}else{
+			$teamIntro = "";
+		}
+		
+		return $teamIntro;
 	}
 }
