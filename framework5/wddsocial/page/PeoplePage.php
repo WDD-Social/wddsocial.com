@@ -11,23 +11,11 @@ class PeoplePage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
-		# load language pack
-		//lang_load('wddsocial.lang.TemplateLang');
-		
-		$user->id = 1;
-		$user->typeID = 1;
-		$user->firstName = 'Anthony';
-		$user->lastName = 'Colangelo';
-		$user->vanityURL = 'anthony';
-		$user->avatar = 'c4ca4238a0b923820dcc509a6f75849b';
-		$user->languageID = 'en';
-		
-		session_start();
-		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = true;
-		
-		
+		# display site header
 		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'User Profile'));
+		
+		
+		# display site footer
 		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
 		
 	}

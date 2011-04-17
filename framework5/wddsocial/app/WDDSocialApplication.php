@@ -22,6 +22,20 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		execute('core.module.localization.LocalizationModule');
 		lang_set('en');
 		
+		
+		# testing
+		$user->id = 1;
+		$user->typeID = 1;
+		$user->firstName = 'Anthony';
+		$user->lastName = 'Colangelo';
+		$user->vanityURL = 'anthony';
+		$user->avatar = 'c4ca4238a0b923820dcc509a6f75849b';
+		$user->languageID = 'en';
+		session_start();
+		$_SESSION['user'] = $user;
+		$_SESSION['authorized'] = true;
+		
+		
 		# resolve request to a page controller
 		import('wddsocial.config.Router');
 		$package = \WDDSocial\Router::resolve(Request::segment(0));
