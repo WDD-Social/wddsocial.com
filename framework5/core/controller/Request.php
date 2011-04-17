@@ -53,18 +53,15 @@ class Request {
 	
 	
 	/**
-	* 
+	* Returns the relative path of the root directory from the current uri
 	*/
 	
 	public static function root_path() {
 		if (!isset(static::$_uri_array)) static::uri_array();
 		
-		$total = count(static::$_uri_array) - 1;
-				
-		for ($i = 0; $i < $total; $i++) {
-			$buffer .= '../';
-		}
-		return $buffer;
+		$total = count(static::uri_array()) - 1;		
+		for ($i = 0; $i < $total; $i++) $path .= '../';
+		return $path;
 	}
 	
 	
@@ -81,9 +78,7 @@ class Request {
 	}
 	
 	
-	
-	// private //
-	
+		
 	/**
 	* Generates a request id for logging and debugging information
 	* 
@@ -166,8 +161,6 @@ class Request {
 		}
 		
 		// Do some final cleaning of the URI and return it
-		return ($prefix_slash ? '/' : '').str_replace(array('//', '../'), '/', trim($uri, '/'));
+		return ($prefix_slash ? '/' : '').str_replace(array('//', '../'), '/', ltrim($uri, '/'));
 	}
-
-	
 }
