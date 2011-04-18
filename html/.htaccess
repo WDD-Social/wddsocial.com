@@ -1,3 +1,5 @@
+Action php5-script /gs-bin/php5-latest
+AddHandler php5-script .php
 # Apache configuration file
 # httpd.apache.org/docs/2.2/mod/quickreference.html
 
