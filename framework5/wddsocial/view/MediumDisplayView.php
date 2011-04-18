@@ -3,6 +3,8 @@
 class MediumDisplayView implements \Framework5\IView {	
 	
 	public static function render($options = null) {
+		import('wddsocial.helper.Validator');
+		
 		switch ($options['type']) {
 			case 'project':
 				return static::projectDisplay($options['content']);
@@ -22,9 +24,8 @@ class MediumDisplayView implements \Framework5\IView {
 		$root = \Framework5\Request::root_path();
 		import('wddsocial.helper.NaturalLanguage');
 		
-		$possessive = \WDDSocial\NaturalLanguage::possessive("{$project->userFirstName} {$project->userLastName}");
-		$userVerbage = ($project->userID == $_SESSION['user']->id)?"View Your Profile":"View $possessive Profile";
-		$userDisplayName = ($project->userID == $_SESSION['user']->id)?"You":"{$project->userFirstName} {$project->userLastName}";
+		$userVerbage = \WDDSocial\NaturalLanguage::viewProfile($project->userID,"{$project->userFirstName} {$project->userLastName}");
+		$userDisplayName = \WDDSocial\NaturalLanguage::displayName($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$teamIntro = static::formatTeamString($project->userID,$project->team);
 		
 		$html = <<<HTML
@@ -75,9 +76,8 @@ HTML;
 		$root = \Framework5\Request::root_path();
 		import('wddsocial.helper.NaturalLanguage');
 		
-		$possessive = \WDDSocial\NaturalLanguage::possessive("{$article->userFirstName} {$article->userLastName}");
-		$userVerbage = ($article->userID == $_SESSION['user']->id)?"View Your Profile":"View $possessive Profile";
-		$userDisplayName = ($article->userID == $_SESSION['user']->id)?"You":"{$article->userFirstName} {$article->userLastName}";
+		$userVerbage = \WDDSocial\NaturalLanguage::viewProfile($article->userID,"{$article->userFirstName} {$article->userLastName}");
+		$userDisplayName = \WDDSocial\NaturalLanguage::displayName($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		
 		$html = <<<HTML
 
@@ -120,12 +120,10 @@ HTML;
 	
 	private static function personDisplay($person){
 		$root = \Framework5\Request::root_path();
+		import('wddsocial.helper.NaturalLanguage');
 		
-		// NEED TO ADJUST FOR APOSTROPHE!!!!!!!!
-		// 		Example: Colangelo's vs. Matthews'
-		
-		$userVerbage = ($person->userID == $_SESSION['user']->id)?"View Your Profile":"View {$person->userFirstName} {$person->userLastName}'s Profile";
-		$userDisplayName = ($person->userID == $_SESSION['user']->id)?"You":"{$person->userFirstName} {$person->userLastName}";
+		$userVerbage = \WDDSocial\NaturalLanguage::viewProfile($person->userID,"{$person->userFirstName} {$person->userLastName}");
+		$userDisplayName = \WDDSocial\NaturalLanguage::displayName($person->userID,"{$person->userFirstName} {$person->userLastName}");
 		
 		$html = <<<HTML
 
@@ -140,7 +138,7 @@ HTML;
 	}
 	
 	private static function formatTeamString($ownerID, $team){
-		// REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE)
+		// REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE), AND PUT CURRENT USER AT FRONT OF ARRAY
 		$cleanTeam = $team;
 		foreach($cleanTeam as $member){
 			if($member->userID == $ownerID){
@@ -154,19 +152,6 @@ HTML;
 			}
 		}
 		$cleanTeam = array_values($cleanTeam);
-		
-		// PUT CURRENT USER AT FRONT OF ARRAY
-		/*
-foreach($cleanTeam as $member){
-			if($member->userID == $_SESSION['user']->id){
-				$key = array_search($member, $cleanTeam);
-				$currentUser = $cleanTeam[$key];
-				unset($cleanTeam[$key]);
-				array_unshift($cleanTeam,$currentUser);
-			}
-		}
-		$cleanTeam = array_values($cleanTeam);
-*/
 		
 		// CREATE TEAM STRING
 		if(count($cleanTeam) > 0){
