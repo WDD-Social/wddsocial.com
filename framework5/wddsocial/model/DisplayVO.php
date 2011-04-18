@@ -65,29 +65,49 @@ class DisplayVO{
 			case 'project':
 				$query = $this->db->prepare($this->sql->getProjectCategories);
 				$query->execute($data);
+				$all = array();
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($this->tags,$row->title);
+					array_push($all,$row->title);
+				}
+				$rand = array_rand($all,2);
+				foreach($rand as $tagKey){
+					array_push($this->tags,$all[$tagKey]);
 				}
 				break;
 			case 'article':
 				$query = $this->db->prepare($this->sql->getArticleCategories);
 				$query->execute($data);
+				$all = array();
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($this->tags,$row->title);
+					array_push($all,$row->title);
+				}
+				$rand = array_rand($all,2);
+				foreach($rand as $tagKey){
+					array_push($this->tags,$all[$tagKey]);
 				}
 				break;
 			case 'event':
 				$query = $this->db->prepare($this->sql->getEventCategories);
 				$query->execute($data);
+				$all = array();
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($this->tags,$row->title);
+					array_push($all,$row->title);
+				}
+				$rand = array_rand($all,2);
+				foreach($rand as $tagKey){
+					array_push($this->tags,$all[$tagKey]);
 				}
 				break;
 			case 'job':
 				$query = $this->db->prepare($this->sql->getJobCategories);
 				$query->execute($data);
+				$all = array();
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($this->tags,$row->title);
+					array_push($all,$row->title);
+				}
+				$rand = array_rand($all,2);
+				foreach($rand as $tagKey){
+					array_push($this->tags,$all[$tagKey]);
 				}
 				break;
 		}
