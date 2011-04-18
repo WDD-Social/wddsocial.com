@@ -156,29 +156,25 @@ class SelectorSQL{
 			FROM categories AS c
 			LEFT JOIN projectCategories AS pc ON (c.id = pc.categoryID)
 			WHERE pc.projectID = :id
-			ORDER BY RAND()
-			LIMIT 2",
+			ORDER BY title",
 		'getArticleCategories' => "
 			SELECT title
 			FROM categories AS c
 			LEFT JOIN articleCategories AS ac ON (c.id = ac.categoryID)
 			WHERE ac.articleID = :id
-			ORDER BY RAND()
-			LIMIT 2",
+			ORDER BY title",
 		'getEventCategories' => "
 			SELECT title
 			FROM categories AS c
 			LEFT JOIN eventCategories AS ec ON (c.id = ec.categoryID)
 			WHERE ec.eventID = :id
-			ORDER BY RAND()
-			LIMIT 2",
+			ORDER BY title",
 		'getJobCategories' => "
 			SELECT title
 			FROM categories AS c
 			LEFT JOIN jobCategories AS jc ON (c.id = jc.categoryID)
 			WHERE jc.jobID = :id
-			ORDER BY RAND()
-			LIMIT 2",
+			ORDER BY title",
 		'getProjectTeam' => "
 			SELECT u.id, firstName, lastName, vanityURL
 			FROM users AS u
