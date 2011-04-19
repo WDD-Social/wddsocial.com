@@ -21,6 +21,6 @@ class ModuleConfig {
 	# used for language pack autoloading
 	public static $language_packs = array(
 		'DateLang' => 'wddsocial.lang.DateLang',
-		
+		'TemplateLang' => 'wddsocial.lang.TemplateLang',
 	);
 }

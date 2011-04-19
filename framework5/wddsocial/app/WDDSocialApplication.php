@@ -21,11 +21,6 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		load_module('core.module.i18n.Framework5\I18n');
 		language('en');
 		
-		# load required language packs
-		lang_load('wddsocial.lang.TemplateLang');
-		
-		
-		
 		# testing
 		$user->id = 1;
 		$user->typeID = 1;
