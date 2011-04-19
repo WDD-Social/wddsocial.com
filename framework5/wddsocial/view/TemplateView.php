@@ -3,19 +3,26 @@
 class TemplateView implements \Framework5\IView {	
 	
 	public static function render($options = null) {
+		
+		# retrieve content based on the provided section
 		switch ($options['section']) {
 			case 'top':
-				
 				return static::_templateHeader($options['title']);
 			
 			case 'bottom':
 				return static::_templateFooter();
 			
 			default:
-				throw new Exception("TemplateView requires parameter section (top or bottom), '{$options['section']}' provided");
+				throw new Exception(
+					"TemplateView requires parameter section (top or bottom), '{$options['section']}' provided");
 		}
 	}
 	
+	
+	
+	/**
+	* The site Template Header
+	*/
 	
 	private static function _templateHeader($title) {
 		if (!isset($title) or empty($title))
@@ -58,9 +65,13 @@ HTML;
 HTML;
 		return $html;
 	}
-
-
-
+	
+	
+	
+	/**
+	* The site Template Footer
+	*/
+	
 	private static function _templateFooter() {
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
@@ -94,6 +105,10 @@ HTML;
 	
 	
 	
+	/**
+	* The site Template User Area
+	*/
+	
 	private static function _userArea() {
 		
 		# if the user is logged in
@@ -124,6 +139,9 @@ HTML;
 	
 	
 	
+	/**
+	* The site Navigation and Search area
+	*/
 	
 	private static function _navigation() {
 		$current = \Framework5\Request::segment(0);
@@ -134,19 +152,26 @@ HTML;
 				<nav>
 					<ul>
 HTML;
-
-		$navItems = array('People', 'Projects', 'Articles', 'Courses', 'Events', 'Jobs');
-		foreach ($navItems as $navItem) {
-			$lower = strtolower($navItem);
-			if ($lower == $current) {
-				$class = 'class="current"';
-			}else{
+		
+		$navItems = array(
+			'people' => text('TemplateLang:people'),
+			'projects' => text('TemplateLang:projects'),
+			'articles' => text('TemplateLang:articles'),
+			'courses' => text('TemplateLang:courses'),
+			'events' => text('TemplateLang:events'),
+			'jobs' => text('TemplateLang:jobs')
+		);
+		
+		foreach ($navItems as $key => $value) {
+			$lower = strtolower($key);
+			if ($lower == $current)
+				$class = ' class="current"';
+			else
 				$class = null;
-			}
 			
 			$html .= <<<HTML
 
-						<li><a href="{$root}{$lower}" title="{$navItem}" {$class}>$navItem</a></li>
+						<li><a href="{$root}{$lower}" title="{$navItem}"{$class}>$value</a></li>
 HTML;
 		}
 		
