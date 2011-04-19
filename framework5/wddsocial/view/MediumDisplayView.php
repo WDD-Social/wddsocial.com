@@ -53,11 +53,25 @@ HTML;
 						<p class="intro"><strong><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> posted a <strong><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
 						<h2><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
-						<!--<p class="images">
-							<a href="project.html" title="The Daily Syndication | Image 1"><img src="images/uploads/dailysyndication01_smedium.jpg" alt="The Daily Syndication | Image 1"/></a>
-							<a href="project.html" title="The Daily Syndication | Image 2"><img src="images/uploads/dailysyndication02_smedium.jpg" alt="The Daily Syndication | Image 2"/></a>
-							<a href="project.html" title="The Daily Syndication | Image 3"><img src="images/uploads/dailysyndication03_smedium.jpg" alt="The Daily Syndication | Image 3"/></a>
-						</p>-->
+HTML;
+		if(count($project->images) > 0){
+			$html .= <<<HTML
+
+						<p class="images">			
+HTML;
+			foreach($project->images as $image){
+				$html .= <<<HTML
+
+							<a href="images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+HTML;
+			}
+			$html .= <<<HTML
+
+						</p>			
+HTML;
+		}
+		$html .= <<<HTML
+
 						<p class="comments"><a href="{$root}/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
 HTML;
 		$tagLinks = array();
@@ -105,6 +119,25 @@ HTML;
 						<p class="intro"><strong><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">article</a></strong>.</p>
 						<h2><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
+HTML;
+		if(count($article->images) > 0){
+			$html .= <<<HTML
+
+						<p class="images">			
+HTML;
+			foreach($article->images as $image){
+				$html .= <<<HTML
+
+							<a href="images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+HTML;
+			}
+			$html .= <<<HTML
+
+						</p>			
+HTML;
+		}
+		$html .= <<<HTML
+
 						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
 HTML;
 		$tagLinks = array();
@@ -143,10 +176,10 @@ HTML;
 		// REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE), AND PUT CURRENT USER AT FRONT OF ARRAY
 		$cleanTeam = $team;
 		foreach($cleanTeam as $member){
-			if($member->userID == $ownerID){
+			if($member->id == $ownerID){
 				$key = array_search($member, $cleanTeam);
 				unset($cleanTeam[$key]);
-			}else if(\WDDSocial\UserValidator::is_current($member->userID)){
+			}else if(\WDDSocial\UserValidator::is_current($member->id)){
 				$key = array_search($member, $cleanTeam);
 				$currentUser = $cleanTeam[$key];
 				unset($cleanTeam[$key]);
@@ -160,21 +193,21 @@ HTML;
 			$teamIntro = " with ";
 			$teamString = array();
 			if(count($cleanTeam) == 1){
-				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[0]->userID,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
-				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[0]->userID,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
+				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
+				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
 				$teamIntro .= "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
 			}else if(count($cleanTeam) == 2){
 				foreach($cleanTeam as $member){
-					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->userID,"{$member->firstName} {$member->lastName}");
-					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($member->userID,"{$member->firstName} {$member->lastName}");
+					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
+					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
 					array_push($teamString, "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
 				}
 				$teamString = implode(' and ',$teamString);
 				$teamIntro .= $teamString;
 			}else{
 				for($i = 0; $i < count($cleanTeam); $i++){
-					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[$i]->userID,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
-					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[$i]->userID,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
+					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[$i]->id,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
+					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[$i]->id,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
 					if($i == count($cleanTeam)-1){
 						$teamIntro .= "and <strong><a href=\"{$root}/user/{$cleanTeam[$i]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
 					}else{
