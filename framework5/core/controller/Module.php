@@ -6,7 +6,7 @@ namespace Framework5;
 * 
 */
 
-class Module {
+class Module extends StaticController {
 
 	
 }

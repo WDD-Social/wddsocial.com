@@ -6,7 +6,7 @@ namespace Framework5;
 * Controller to access properties of a package name
 */
 
-class Package {
+class Package extends Controller {
 	
 	private $_info = array(
 		'package_name'		=> null,

@@ -9,7 +9,7 @@ namespace Framework5;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-abstract class ApplicationBase extends Controller {	
+abstract class ApplicationBase extends StaticController {	
 	
 	
 	/**
