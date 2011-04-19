@@ -1,6 +1,6 @@
 <?php
-mysql_connect('external-db.s112587.gridserver.com', 'db112587', '6nO/7/nDQ`jKG6q');
-mysql_select_db('db112587_wddsocial');
+mysql_connect('localhost', 'root', 'root');
+mysql_select_db('localhost');
 $ics = <<<EOF
 BEGIN:VCALENDAR
 METHOD:PUBLISH

@@ -12,17 +12,10 @@ class IndexPage implements \Framework5\IExecutable {
 	public static function execute() {
 		
 		# display page header
-		echo render('wddsocial.view.TemplateView', 
-			array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
-		
-		
-		$db = instance(':db');
+		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
 		
 		import('wddsocial.sql.SelectorSQL');
 		import('wddsocial.model.DisplayVO');
-		
-		
-		
 		
 		// CREATE HOME PAGE (BASED ON IF USER IS SIGNED IN OR NOT)
 		if($_SESSION['authorized'] == true){

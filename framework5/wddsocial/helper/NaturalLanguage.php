@@ -18,9 +18,7 @@ class NaturalLanguage{
 	
 	public static function view_profile($id, $name){
 		import('wddsocial.controller.UserValidator');
-		$withPossessive = "View ";
-		$withPossessive .= static::possessive($name);
-		$withPossessive .= " Profile";
+		$withPossessive = "View " . static::possessive($name) . " Profile";
 		return (\WDDSocial\UserValidator::is_current($id))?"View Your Profile":$withPossessive;
 	}
 	

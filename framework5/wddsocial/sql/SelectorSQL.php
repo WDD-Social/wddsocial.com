@@ -186,7 +186,19 @@ class SelectorSQL{
 			FROM users AS u
 			LEFT JOIN userArticles AS ua ON (u.id = ua.userID)
 			WHERE ua.articleID = :id
-			ORDER BY lastName"
+			ORDER BY lastName",
+		'getProjectImages' => "
+			SELECT id, title, description, `file`
+			FROM images AS i
+			LEFT JOIN projectImages AS pi ON(i.id = pi.imageID)
+			WHERE pi.projectID = :id
+			ORDER BY i.id ASC",
+		'getArticleImages' => "
+			SELECT id, title, description, `file`
+			FROM images AS i
+			LEFT JOIN articleImages AS ai ON(i.id = ai.imageID)
+			WHERE ai.articleID = :id
+			ORDER BY i.id ASC"
 	);
 	
 	public function __get($id){
