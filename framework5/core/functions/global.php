@@ -33,13 +33,19 @@ if (!function_exists('execute')) {
 	}
 }
 
+# import a module
+if (!function_exists('load_module')) {
+	 function load_module($package_name) {
+	 	return \Framework5\Factory::load_module($package_name);
+	}
+}
+
 # render a view
 if (!function_exists('render')) {
 	function render($package_name, $options = null) {
 		return \Framework5\View::render($package_name, $options);
 	}
 }
-
 
 # returns a single instance of a package
 if (!function_exists('instance')) {

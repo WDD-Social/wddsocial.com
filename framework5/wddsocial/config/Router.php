@@ -84,7 +84,7 @@ class Router implements \Framework5\IRouter {
 			
 			# 404
 			default:
-				return 'wddsocial.page.global.error.WDDSocial\Http404';
+				return 'wddsocial.page.error.WDDSocial\Http404';
 		}
 	}
 }
