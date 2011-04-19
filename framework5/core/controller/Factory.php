@@ -142,7 +142,6 @@ class Factory extends Controller {
 	}
 	
 	
-	
 	/**
 	* Returns true if the given class implements the given namespace
 	* 
@@ -163,5 +162,30 @@ class Factory extends Controller {
 			return false;
 		}
 		return true;
+	}
+	
+	
+	/**
+	* Load a module
+	* 
+	*/
+	
+	public static function load_module($package_name) {
+		
+		debug("Loading module '$package_name'");
+		
+		# if the package has not been loaded, import it
+		if (!loaded($package_name)) import($package_name);
+		
+		# get the class name
+		$package = new Package($package_name);
+		$controller = $package->fully_qualified;
+		
+		# check if class implents the Framework5\IScript interface
+		if (!Factory::implement($controller, 'Framework5\IModule'))
+			throw new Exception("Module '$package_name' could not be loaded, class '$controller' does not implement interface '\Framework5\IExecutable'");
+		
+		# execute and return the result
+		return $controller::init($options);
 	}
 }	
