@@ -3,7 +3,6 @@
 class MediumDisplayView implements \Framework5\IView {	
 	
 	public static function render($options = null) {
-		import('wddsocial.controller.UserValidator');
 		
 		switch ($options['type']) {
 			case 'project':
@@ -23,6 +22,7 @@ class MediumDisplayView implements \Framework5\IView {
 	private static function project_display($project){
 		$root = \Framework5\Request::root_path();
 		import('wddsocial.helper.NaturalLanguage');
+		import('wddsocial.controller.UserValidator');
 		
 		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($project->userID,"{$project->userFirstName} {$project->userLastName}");
@@ -33,7 +33,7 @@ class MediumDisplayView implements \Framework5\IView {
 					<article class="projects with-secondary">
 						<div class="secondary">
 HTML;
-		if($project->userID == $_SESSION['user']->id){
+		if(\WDDSocial\UserValidator::is_current($project->userID)){
 			$html .= <<<HTML
 
 							<a href="#" title="Edit &ldquo;{$project->title}&rsquo;" class="edit">Edit</a>
@@ -75,6 +75,7 @@ HTML;
 	private static function article_display($article){
 		$root = \Framework5\Request::root_path();
 		import('wddsocial.helper.NaturalLanguage');
+		import('wddsocial.controller.UserValidator');
 		
 		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
@@ -84,7 +85,7 @@ HTML;
 					<article class="articles with-secondary">
 						<div class="secondary">
 HTML;
-		if($article->userID == $_SESSION['user']->id){
+		if(\WDDSocial\UserValidator::is_current($article->userID)){
 			$html .= <<<HTML
 
 							<a href="#" title="Edit &ldquo;{$article->title}&rsquo;" class="edit">Edit</a>
