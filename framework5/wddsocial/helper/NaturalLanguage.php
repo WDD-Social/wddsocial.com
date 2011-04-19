@@ -16,16 +16,16 @@ class NaturalLanguage{
 		return $string;
 	}
 	
-	public static function viewProfile($id, $name){
-		import('wddsocial.helper.Validator');
+	public static function view_profile($id, $name){
+		import('wddsocial.controller.UserValidator');
 		$withPossessive = "View ";
 		$withPossessive .= static::possessive($name);
 		$withPossessive .= " Profile";
-		return (\WDDSocial\Validator::isCurrentUser($id))?"View Your Profile":$withPossessive;
+		return (\WDDSocial\UserValidator::is_current($id))?"View Your Profile":$withPossessive;
 	}
 	
-	public static function displayName($id, $name){
-		import('wddsocial.helper.Validator');
-		return (\WDDSocial\Validator::isCurrentUser($id))?"You":$name;
+	public static function display_name($id, $name){
+		import('wddsocial.controller.UserValidator');
+		return (\WDDSocial\UserValidator::is_current($id))?"You":$name;
 	}
 }
