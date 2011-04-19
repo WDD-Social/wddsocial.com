@@ -31,7 +31,7 @@ class IndexPage implements \Framework5\IExecutable {
 			<section id="content" class="start-page">
 HTML;
 			echo render('wddsocial.view.ShareView');
-			static::getLatest();
+			static::get_latest();
 		}else{
 			echo <<<HTML
 
@@ -55,7 +55,7 @@ HTML;
 	
 	
 	// GETS AND DISPLAYS LATEST CONTENT SECTION
-	private static function getLatest(){
+	private static function get_latest(){
 		// GET DB INSTANCE AND QUERY
 		$db = instance(':db');
 		$sql = new SelectorSQL();

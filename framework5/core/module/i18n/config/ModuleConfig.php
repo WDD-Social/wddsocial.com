@@ -6,7 +6,7 @@ namespace Framework5;
 * Framework5 configuration file
 */
 
-class LocalizationSettings {
+class ModuleConfig {
 	
 	# languages supported
 	public static $languages = array(
@@ -21,6 +21,6 @@ class LocalizationSettings {
 	# used for language pack autoloading
 	public static $language_packs = array(
 		'DateLang' => 'wddsocial.lang.DateLang',
-		
+		'TemplateLang' => 'wddsocial.lang.TemplateLang',
 	);
 }

@@ -2,41 +2,74 @@
 
 namespace Framework5;
 
-/*
-* Framework5 internationalization support
-* 
-* this package is currently in development and is not yet documented
+/**
+* Framework5 internationalization module loader
 */
 
-class Localization {
+class I18n extends Module implements IModule {
+	
+	/** use:
+	
+	I18n::language('en');
+	
+	
+	*/
+	
+	
+	public static function init() {
+		
+		# set module properties
+		$_module_info = array(
+			'name' 			=> 'I18n',
+			'description' 	=> 'Language localization module',
+			'authors' 		=> 'Tyler Matthews',
+			'version' 		=> '0.3.0',
+			'package'		=> 'core.module.i18n.I18n'
+		);
+		
+		
+		# import required resources
+		#TODO change to parent::module_import(),
+		import('core.module.i18n.config.ModuleConfig');
+		import('core.module.i18n.interface.ILanguagePack');
+		import('core.module.i18n.functions.global');
+		
+		# determine if valid languages array is set in the settings file
+		if (!isset(ModuleConfig::$languages) 
+		or empty(ModuleConfig::$languages))
+		throw new Exception(
+			"Could not import I18n module. Valid languages array must be set in config.ModuleConfig");
+		
+		
+		
+	}
+	
+	
 	
 	private static $_imported_lang_packs = array();
 	
 	private static $_language; # the current language id (en,es,fr)
 	
 	
-	
+		
 	/**
-	* Set the current language
+	* Set or get current language
 	*/
 	
-	public static function lang_set($language) {
-		if (!in_array($language, array_keys(LocalizationSettings::$languages)))
-			throw new Exception("Language could not be set to '$language', not a valid language id");
-		static::$_language = $language;
-		return true;
-	}
-	
-	
-	
-	/**
-	* Returns the current or default language
-	*/
-	
-	public static function lang_get() {
-		if (!isset(static::$_language) or empty(static::$_language)) 
-			return LocalizationSettings::$default_language;
-		return static::$_language;
+	public static function language($language = null) {
+		if ($language) {
+			if (!in_array($language, array_keys(ModuleConfig::$languages)))
+				throw new Exception("Language could not be set to '$language', not a valid language id");
+			static::$_language = $language;
+			return true;
+		}
+		
+		else {
+			if (!isset(static::$_language) or empty(static::$_language)) 
+				return ModuleConfig::$default_language;
+			
+			return static::$_language;
+		}
 	}
 	
 	
@@ -74,7 +107,7 @@ class Localization {
 		
 		# strip base and class from package
 		$base = package_base($package);
-		$lang = static::lang_get();
+		$lang = static::language();
 		$class = package_class($package);
 		
 		# construct package location with current or default language
@@ -129,13 +162,13 @@ class Localization {
 	private static function _lang_autoload($class) {
 		
 		# check if the autoload packages are defined
-		if (!isset(LocalizationSettings::$language_packs))
+		if (!isset(ModuleConfig::$language_packs))
 			return false;
 		
-		if (!array_key_exists($class, LocalizationSettings::$language_packs))
+		if (!array_key_exists($class, ModuleConfig::$language_packs))
 			return false;
 		
-		lang_load(LocalizationSettings::$language_packs[$class]);
+		lang_load(ModuleConfig::$language_packs[$class]);
 		return true;
 	}
 }
