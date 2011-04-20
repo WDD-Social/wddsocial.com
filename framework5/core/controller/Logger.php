@@ -6,7 +6,7 @@ namespace Framework5;
 * Logs framework and application data to the database
 */
 
-class Logger extends Controller {
+class Logger extends StaticController {
 	
 	/**
 	* Debug trace

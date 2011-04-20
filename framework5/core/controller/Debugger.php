@@ -7,7 +7,7 @@ namespace Framework5;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class Debugger extends Controller {
+class Debugger extends StaticController {
 
 	private static $_debug_stack = array(); # holds DebugMessage()
 	

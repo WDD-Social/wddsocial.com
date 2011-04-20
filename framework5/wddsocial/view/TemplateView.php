@@ -1,5 +1,6 @@
 <?php
 
+
 /*
 * 
 * @author tmatthews (tmatthewsdev@gmail.com)
@@ -33,12 +34,13 @@ class TemplateView implements \Framework5\IView {
 	private static function _templateHeader($title) {
 		if (!isset($title) or empty($title))
 			throw new Exception("TemplateView top section requires parameter title");
-			
-		# output
+		
 		$active_nav = \Framework5\Request::segment(0);
 		$root = \Framework5\Request::root_path();
 		
+		# output
 		$html = <<<HTML
+
 <!doctype html>
 <!--[if lt IE 7 ]><html lang="en" class="no-js ie6"><![endif]-->
 <!--[if IE 7 ]><html lang="en" class="no-js ie7"><![endif]-->
@@ -61,7 +63,7 @@ class TemplateView implements \Framework5\IView {
 	<body>
 		<section id="wrap">
 			<header>
-				<h1><a href="{$root}" title="WDD Social Home">WDD Social</a></h1>
+				<h1><a href="/" title="WDD Social Home">WDD Social</a></h1>
 HTML;
 			$html .= static::_userArea();
 			$html .= static::_navigation();
@@ -80,17 +82,20 @@ HTML;
 	
 	private static function _templateFooter() {
 		$root = \Framework5\Request::root_path();
+		$lang = new \Framework5\Lang('wddsocial.lang.TemplateLang');
+		
+		# output
 		return <<<HTML
 		
 		</section><!-- END WRAP -->
 		<footer>
 			<nav>
 				<ul>
-					<li><a href="developer" title="WDD Social | Developer Resources">Developer</a></li>
-					<li><a href="about" title="WDD Social | About Us">About</a></li>
-					<li><a href="contact" title="WDD Social | Contact Us">Contact</a></li>
-					<li><a href="terms" title="WDD Social | Terms of Service">Terms</a></li>
-					<li><a href="privacy" title="WDD Social | Privacy Policy">Privacy</a></li>
+					<li><a href="developer" title="WDD Social | {$lang->text('developer_desc')}">{$lang->text('developer')}</a></li>
+					<li><a href="about" title="WDD Social | {$lang->text('about_desc')}">{$lang->text('about')}</a></li>
+					<li><a href="contact" title="WDD Social | {$lang->text('contact_desc')}">{$lang->text('contact')}</a></li>
+					<li><a href="terms" title="WDD Social | {$lang->text('terms_desc')}">{$lang->text('terms')}</a></li>
+					<li><a href="privacy" title="WDD Social | {$lang->text('privacy_desc')}">{$lang->text('privacy')}</a></li>
 				</ul>
 			</nav>
 			<small>&copy; 2011 WDD Social</small>
@@ -117,16 +122,18 @@ HTML;
 	
 	private static function _userArea() {
 		
+		$root = \Framework5\Request::root_path();
+		$lang = new \Framework5\Lang('wddsocial.lang.TemplateLang');
+		
 		# if the user is logged in
 		if ($_SESSION['authorized']) {
-			$root = \Framework5\Request::root_path();
 			return <<<HTML
 				
 				<section id="user-area" class="signed-in">
-					<p><strong><a href="user/{$_SESSION['user']->vanityURL}" title="View My Profile"><img src="{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
-				 	<p><a href="{$root}messages" title="View My Messages">Messages <span class="badge">3</span></a></p>
-				 	<p><a href="account" title="View and Edit my Account Information">Account</a></p>
-				 	<p><a href="signout" title="Sign Out of WDD Social">Sign Out</a></p>
+					<p><strong><a href="user/{$_SESSION['user']->vanityURL}" title="{$lang->text('user_profile_title')}"><img src="{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
+				 	<p><a href="{$root}messages" title="{$lang->text('messages_title')}">{$lang->text('messages')} <span class="badge">3</span></a></p>
+				 	<p><a href="{$root}account" title="{$lang->text('account_title')}">{$lang->text('account')}</a></p>
+				 	<p><a href="{$root}signout" title="{$lang->text('signout_title')}">{$lang->text('signout')}</a></p>
 				 </section><!-- END USER AREA -->
 HTML;
 		}
@@ -136,8 +143,8 @@ HTML;
 			return <<<HTML
 
 				<section id="user-area" class="signed-out">
-					<p><a href="signup" title="Sign Up for WDD Social">Sign Up</a></p>
-					<p><a href="signin" title="Sign In to WDD Social">Sign In</a></p>
+					<p><a href="signup" title="{$lang->text('signup_title')}">{$lang->text('signup')}</a></p>
+					<p><a href="signin" title="{$lang->text('signin_title')}">{$lang->text('signin')}</a></p>
 				</section><!-- END USER AREA -->
 HTML;
 		}
@@ -150,8 +157,10 @@ HTML;
 	*/
 	
 	private static function _navigation() {
-		$current = \Framework5\Request::segment(0);
+		
 		$root = \Framework5\Request::root_path();
+		$current = \Framework5\Request::segment(0);
+		$lang = new Framework5\Lang('wddsocial.lang.TemplateLang');
 		
 		$html = <<<HTML
 
@@ -160,20 +169,18 @@ HTML;
 HTML;
 		
 		$navItems = array(
-			'people' => text('TemplateLang:people'),
-			'projects' => text('TemplateLang:projects'),
-			'articles' => text('TemplateLang:articles'),
-			'courses' => text('TemplateLang:courses'),
-			'events' => text('TemplateLang:events'),
-			'jobs' => text('TemplateLang:jobs')
+			'people' => $lang->text('people'),
+			'projects' => $lang->text('projects'),
+			'articles' => $lang->text('articles'),
+			'courses' => $lang->text('courses'),
+			'events' => $lang->text('events'),
+			'jobs' => $lang->text('jobs')
 		);
 		
 		foreach ($navItems as $key => $value) {
 			$lower = strtolower($key);
-			if ($lower == $current)
-				$class = ' class="current"';
-			else
-				$class = null;
+			if ($lower == $current) $class = ' class="current"';
+			else $class = null;
 			
 			$html .= <<<HTML
 
@@ -185,8 +192,8 @@ HTML;
 
 					</ul>
 					<form action="{$root}search" method="get">
-						<input type="text" name="term" placeholder="Search..." />
-						<input type="submit" value="Search" />
+						<input type="text" name="term" placeholder="{$lang->text('search_placeholder')}" />
+						<input type="submit" value="{$lang->text('search')}" />
 					</form>
 				</nav>
 HTML;
