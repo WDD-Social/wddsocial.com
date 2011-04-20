@@ -18,8 +18,9 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	public static function execute() {
 		
 		# enable localization module
-		load_module('core.module.i18n.Framework5\I18n');
-		language('en');
+		//load_module('core.module.i18n.I18n\I18nModule');
+		import('core.module.i18n.Lang');
+		Lang::language('en');
 		
 		# testing
 		$user->id = 1;
@@ -33,6 +34,8 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
 		
+		# determine if the user is logged in
+		//Session::logged_in();
 		
 		# resolve request to a page controller
 		import('wddsocial.config.Router');

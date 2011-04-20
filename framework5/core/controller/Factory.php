@@ -6,7 +6,7 @@ namespace Framework5;
 * The Factory class handles package methods and instances 
 */
 
-class Factory extends Controller {
+class Factory extends StaticController {
 	
 	private static $_controllers; # object container
 	private static $_loaded_controllers = array(); # package names of _controllers

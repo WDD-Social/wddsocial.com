@@ -6,13 +6,11 @@ namespace Framework5;
 * Handles http request information
 */
 
-class Request {
+class Request extends StaticController {
 
 	private static $_request_id;
 	private static $_uri;
 	private static $_uri_array;
-	
-	
 	
 	/**
 	* Defines the Request uri property

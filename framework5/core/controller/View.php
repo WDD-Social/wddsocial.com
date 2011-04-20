@@ -6,7 +6,7 @@ namespace Framework5;
 * 
 */
 
-class View extends Controller {
+class View extends StaticController {
 	
 	public static function render($package_name, $options) {
 		

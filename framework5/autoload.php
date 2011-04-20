@@ -30,6 +30,7 @@ call_user_func(function() {
 		
 	# framework core files
 	require PATH_CORE.'controller/Controller.php'; # controller base
+	require PATH_CORE.'controller/StaticController.php'; # static controller base
 	require PATH_CORE.'exception/Exception.php'; # custom exception
 	require PATH_CORE.'config/Settings.php'; # configuration file
 	require PATH_CORE.'config/Router.php'; # primary routing file
