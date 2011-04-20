@@ -1,8 +1,15 @@
 <?php
 
+/*
+* 
+* @author Anthony Colangelo (me@acolangelo.com)
+*/
+
 class MediumDisplayView implements \Framework5\IView {	
 	
 	public static function render($options = null) {
+		import('wddsocial.helper.NaturalLanguage');
+		import('wddsocial.controller.UserValidator');
 		
 		switch ($options['type']) {
 			case 'project':
@@ -21,8 +28,6 @@ class MediumDisplayView implements \Framework5\IView {
 	
 	private static function project_display($project){
 		$root = \Framework5\Request::root_path();
-		import('wddsocial.helper.NaturalLanguage');
-		import('wddsocial.controller.UserValidator');
 		
 		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($project->userID,"{$project->userFirstName} {$project->userLastName}");
@@ -88,8 +93,6 @@ HTML;
 	
 	private static function article_display($article){
 		$root = \Framework5\Request::root_path();
-		import('wddsocial.helper.NaturalLanguage');
-		import('wddsocial.controller.UserValidator');
 		
 		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
@@ -154,7 +157,6 @@ HTML;
 	
 	private static function person_display($person){
 		$root = \Framework5\Request::root_path();
-		import('wddsocial.helper.NaturalLanguage');
 		
 		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
 		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($person->userID,"{$person->userFirstName} {$person->userLastName}");
@@ -172,8 +174,7 @@ HTML;
 	}
 	
 	private static function format_team_string($ownerID, $team){
-		import('wddsocial.controller.UserValidator');
-		// REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE), AND PUT CURRENT USER AT FRONT OF ARRAY
+		# REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE), AND PUT CURRENT USER AT FRONT OF ARRAY
 		$cleanTeam = $team;
 		foreach($cleanTeam as $member){
 			if($member->id == $ownerID){
@@ -188,7 +189,7 @@ HTML;
 		}
 		$cleanTeam = array_values($cleanTeam);
 		
-		// CREATE TEAM STRING
+		# CREATE TEAM STRING
 		if(count($cleanTeam) > 0){
 			$teamIntro = " with ";
 			$teamString = array();

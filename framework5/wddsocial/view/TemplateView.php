@@ -1,5 +1,11 @@
 <?php
 
+/*
+* 
+* @author tmatthews (tmatthewsdev@gmail.com)
+* @author Anthony Colangelo (me@acolangelo.com)
+*/
+
 class TemplateView implements \Framework5\IView {	
 	
 	public static function render($options = null) {
@@ -44,7 +50,7 @@ class TemplateView implements \Framework5\IView {
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
 		<title>WDD Social | {$title}</title>
 		<meta name="description" content="">
-		<meta name="author" content="Anthony Colangelo (http://www.acolangelo.com) and Tyler Matthews (http://www.tmatthewsdev.com)">
+		<meta name="author" content="Anthony Colangelo (http:#www.acolangelo.com) and Tyler Matthews (http:#www.tmatthewsdev.com)">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="{$root}images/site/social-favicon.ico">
 		<link rel="apple-touch-icon" href="{$root}images/site/social-apple-touch-icon.png">
@@ -89,14 +95,14 @@ HTML;
 			</nav>
 			<small>&copy; 2011 WDD Social</small>
 		</footer>
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
+		<script src="https:#ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
 		<script>!window.jQuery && document.write(unescape('%3Cscript src="{$root}js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
 		<script src="{$root}js/plugins.js"></script>
 		<script src="{$root}js/libs/jquery.easing.1.3.js"></script>
 		<script src="{$root}js/script.js"></script>
 		<!--[if lt IE 7 ]>
 			<script src="{$root}js/libs/dd_belatedpng.js"></script>
-			<script> DD_belatedPNG.fix('img, .png_bg'); //fix any <img> or .png_bg background-images </script>
+			<script> DD_belatedPNG.fix('img, .png_bg'); #fix any <img> or .png_bg background-images </script>
 		<![endif]-->
 	</body>
 </html>

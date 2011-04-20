@@ -139,14 +139,20 @@ class SelectorSQL{
 			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
 			FROM events
 			ORDER BY startDateTime ASC
-			LIMIT 0,5",
+			LIMIT 0,3",
 		'getUpcomingPublicEvents' => "
 			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
 			FROM events AS e
 			LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
 			WHERE p.title = 'Public'
 			ORDER BY startDateTime ASC
-			LIMIT 0,5",
+			LIMIT 0,3",
+		'getNewJobs' => "
+			SELECT j.id, userID, j.title, company, jt.title AS jobType, avatar, location, compensation, description, website
+			FROM jobs AS j
+			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
+			ORDER BY `datetime` DESC
+			LIMIT 0,3",
 		'getProjectCommentsCount' => "
 			SELECT COUNT(*) as comments
 			FROM projectComments
@@ -159,10 +165,6 @@ class SelectorSQL{
 			SELECT COUNT(*) as comments
 			FROM eventComments
 			WHERE eventID = :id",
-		'getJobCommentsCount' => "
-			SELECT COUNT(*) as comments
-			FROM jobComments
-			WHERE jobID = :id",
 		'getProjectCategories' => "
 			SELECT title
 			FROM categories AS c
