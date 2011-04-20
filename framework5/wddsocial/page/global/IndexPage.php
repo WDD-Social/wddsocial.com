@@ -38,9 +38,12 @@ class IndexPage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
 	}
 	
+	
+	
 	# GETS AND DISPLAYS LATEST CONTENT SECTION
 	private static function get_latest(){
 		import('wddsocial.model.DisplayVO');
+		
 		# GET DB INSTANCE AND QUERY
 		$db = instance(':db');
 		$sql = new SelectorSQL();
@@ -58,6 +61,8 @@ class IndexPage implements \Framework5\IExecutable {
 		# CREATE SECTION FOOTER
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
 	}
+	
+	
 	
 	# GETS AND DISPLAYS EVENTS
 	private static function get_events(){
@@ -88,6 +93,8 @@ class IndexPage implements \Framework5\IExecutable {
 		# CREATE SECTION FOOTER
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'events'));
 	}
+	
+	
 	
 	# GETS AND DISPLAYS JOBS
 	private static function get_jobs(){

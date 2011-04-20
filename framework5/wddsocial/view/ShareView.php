@@ -2,6 +2,7 @@
 
 class ShareView implements \Framework5\IView {	
 	
+	# CREATES THE SHARE FORM
 	public static function render($options = null) {
 		return <<<HTML
 

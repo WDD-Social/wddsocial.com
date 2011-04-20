@@ -7,6 +7,7 @@
 
 class MediumDisplayView implements \Framework5\IView {	
 	
+	# DETERMINES WHAT TYPE OF CONTENT TO RENDER
 	public static function render($options = null) {
 		import('wddsocial.helper.NaturalLanguage');
 		import('wddsocial.controller.UserValidator');
@@ -26,6 +27,9 @@ class MediumDisplayView implements \Framework5\IView {
 		}
 	}
 	
+	
+	
+	# CREATES A PROJECT ARTICLE
 	private static function project_display($project){
 		$root = \Framework5\Request::root_path();
 		
@@ -38,6 +42,8 @@ class MediumDisplayView implements \Framework5\IView {
 					<article class="projects with-secondary">
 						<div class="secondary">
 HTML;
+		
+		# DETERMINES WHAT TYPE OF SECONDARY CONTROLS TO PRESENT (FLAG OR EDIT/DELETE)
 		if(\WDDSocial\UserValidator::is_current($project->userID)){
 			$html .= <<<HTML
 
@@ -59,6 +65,8 @@ HTML;
 						<h2><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
 HTML;
+		
+		# BUILDS IMAGES IF NEEDED
 		if(count($project->images) > 0){
 			$html .= <<<HTML
 
@@ -79,6 +87,8 @@ HTML;
 
 						<p class="comments"><a href="{$root}/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
 HTML;
+		
+		# BUILDS TAGS
 		$tagLinks = array();
 		foreach($project->tags as $tag){
 			array_push($tagLinks,"<a href=\"{$root}/search/$tag\" title=\"Categories | $tag\">$tag</a>");
@@ -91,6 +101,9 @@ HTML;
 		return $html;
 	}
 	
+	
+	
+	# CREATES AN ARTICLE ARTICLE
 	private static function article_display($article){
 		$root = \Framework5\Request::root_path();
 		
@@ -102,6 +115,8 @@ HTML;
 					<article class="articles with-secondary">
 						<div class="secondary">
 HTML;
+		
+		# DETERMINES WHAT TYPE OF SECONDARY CONTROLS TO PRESENT (FLAG OR EDIT/DELETE)
 		if(\WDDSocial\UserValidator::is_current($article->userID)){
 			$html .= <<<HTML
 
@@ -123,6 +138,8 @@ HTML;
 						<h2><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
 HTML;
+		
+		# BUILDS IMAGES IF NEEDED
 		if(count($article->images) > 0){
 			$html .= <<<HTML
 
@@ -143,6 +160,8 @@ HTML;
 
 						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
 HTML;
+		
+		# BUILDS TAGS
 		$tagLinks = array();
 		foreach($article->tags as $tag){
 			array_push($tagLinks,"<a href=\"{$root}/search/$tag\" title=\"Categories | $tag\">$tag</a>");
@@ -155,6 +174,9 @@ HTML;
 		return $html;
 	}
 	
+	
+	
+	# CREATES A PERSON ARTICLE
 	private static function person_display($person){
 		$root = \Framework5\Request::root_path();
 		
@@ -173,6 +195,9 @@ HTML;
 		return $html;
 	}
 	
+	
+	
+	# CREATES AND FORMATS THE TEAM STRING FOR DISPLAY
 	private static function format_team_string($ownerID, $team){
 		# REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE), AND PUT CURRENT USER AT FRONT OF ARRAY
 		$cleanTeam = $team;
@@ -193,6 +218,8 @@ HTML;
 		if(count($cleanTeam) > 0){
 			$teamIntro = " with ";
 			$teamString = array();
+			
+			# CREATES STRING ACCORDING TO HOW MANY TEAM MEMBERS THERE ARE FOR THIS PIECE OF CONTENT
 			if(count($cleanTeam) == 1){
 				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
 				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");

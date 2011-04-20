@@ -14,6 +14,7 @@ class SelectorSQL{
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE u.id = :id",
+			
 		'getLatest' => "
 			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL,
 			getDateDiffEN(p.datetime) AS `date`
@@ -28,6 +29,7 @@ class SelectorSQL{
 			FROM users AS u
 			ORDER BY DATETIME DESC
 			LIMIT 0,10",
+			
 		'getLatest' => "
 			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, 
 			IF(
@@ -140,11 +142,13 @@ class SelectorSQL{
 		FROM users AS u
 		ORDER BY DATETIME DESC
 		LIMIT 0,10",
+		
 		'getUpcomingEvents' => "
 			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
 			FROM events
 			ORDER BY startDateTime ASC
 			LIMIT 0,3",
+			
 		'getUpcomingPublicEvents' => "
 			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
 			FROM events AS e
@@ -152,66 +156,78 @@ class SelectorSQL{
 			WHERE p.title = 'Public'
 			ORDER BY startDateTime ASC
 			LIMIT 0,3",
+			
 		'getNewJobs' => "
 			SELECT j.id, userID, j.title, company, jt.title AS jobType, avatar, location, compensation, description, website
 			FROM jobs AS j
 			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
 			ORDER BY `datetime` DESC
 			LIMIT 0,3",
+			
 		'getProjectCommentsCount' => "
 			SELECT COUNT(*) as comments
 			FROM projectComments
 			WHERE projectID = :id",
+			
 		'getArticleCommentsCount' => "
 			SELECT COUNT(*) as comments
 			FROM articleComments
 			WHERE articleID = :id",
+			
 		'getEventCommentsCount' => "
 			SELECT COUNT(*) as comments
 			FROM eventComments
 			WHERE eventID = :id",
+			
 		'getProjectCategories' => "
 			SELECT title
 			FROM categories AS c
 			LEFT JOIN projectCategories AS pc ON (c.id = pc.categoryID)
 			WHERE pc.projectID = :id
 			ORDER BY title",
+			
 		'getArticleCategories' => "
 			SELECT title
 			FROM categories AS c
 			LEFT JOIN articleCategories AS ac ON (c.id = ac.categoryID)
 			WHERE ac.articleID = :id
 			ORDER BY title",
+			
 		'getEventCategories' => "
 			SELECT title
 			FROM categories AS c
 			LEFT JOIN eventCategories AS ec ON (c.id = ec.categoryID)
 			WHERE ec.eventID = :id
 			ORDER BY title",
+			
 		'getJobCategories' => "
 			SELECT title
 			FROM categories AS c
 			LEFT JOIN jobCategories AS jc ON (c.id = jc.categoryID)
 			WHERE jc.jobID = :id
 			ORDER BY title",
+			
 		'getProjectTeam' => "
 			SELECT u.id, firstName, lastName, vanityURL
 			FROM users AS u
 			LEFT JOIN userProjects AS up ON (u.id = up.userID)
 			WHERE up.projectID = :id
 			ORDER BY lastName",
+			
 		'getArticleTeam' => "
 			SELECT u.id, firstName, lastName vanityURL
 			FROM users AS u
 			LEFT JOIN userArticles AS ua ON (u.id = ua.userID)
 			WHERE ua.articleID = :id
 			ORDER BY lastName",
+			
 		'getProjectImages' => "
 			SELECT id, title, description, `file`
 			FROM images AS i
 			LEFT JOIN projectImages AS pi ON(i.id = pi.imageID)
 			WHERE pi.projectID = :id
 			ORDER BY i.id ASC",
+			
 		'getArticleImages' => "
 			SELECT id, title, description, `file`
 			FROM images AS i

@@ -7,6 +7,7 @@
 
 class SmallDisplayView implements \Framework5\IView {	
 	
+	# DETERMINES WHAT TYPE OF CONTENT TO RENDER
 	public static function render($options = null) {
 		import('wddsocial.controller.UserValidator');
 		
@@ -20,6 +21,9 @@ class SmallDisplayView implements \Framework5\IView {
 		}
 	}
 	
+	
+	
+	# CREATES AN EVENT ARTICLE
 	private static function event_display($event){
 		$root = \Framework5\Request::root_path();
 		
@@ -29,11 +33,14 @@ class SmallDisplayView implements \Framework5\IView {
 
 					<article class="$class">
 HTML;
+		
+		# DETERMINES IF USER IS SIGNED IN, TO SHOW SECONDARY OR NOT
 		if(\WDDSocial\UserValidator::is_authorized()){
 			$html .=<<<HTML
 						
 						<div class="secondary">
 HTML;
+			# DETERMINES WHAT TYPE OF SECONDARY CONTROLS TO PRESENT (FLAG OR EDIT/DELETE)
 			if(\WDDSocial\UserValidator::is_current($event->userID)){
 				$html .= <<<HTML
 
@@ -65,6 +72,7 @@ HTML;
 						<p>{$event->description}</p>
 						<p class="comments"><a href="event/{$event->vanityURL}#comments" title="{$event->title} | Comments">{$event->comments} comments</a></p>
 HTML;
+		# BUILDS TAGS
 		$tagLinks = array();
 		foreach($event->tags as $tag){
 			array_push($tagLinks,"<a href=\"{$root}/search/$tag\" title=\"Categories | $tag\">$tag</a>");
@@ -77,17 +85,23 @@ HTML;
 		return $html;
 	}
 	
+	
+	
+	# CREATES A JOB ARTICLE
 	private static function job_display($job){
 		$root = \Framework5\Request::root_path();
 		$html = <<<HTML
 
 					<article class="with-secondary">
 HTML;
+		
+		# DETERMINES IF USER IS SIGNED IN, TO SHOW SECONDARY OR NOT
 		if(\WDDSocial\UserValidator::is_authorized()){
 			$html .=<<<HTML
 						
 						<div class="secondary">
 HTML;
+			# DETERMINES WHAT TYPE OF SECONDARY CONTROLS TO PRESENT (FLAG OR EDIT/DELETE)
 			if(\WDDSocial\UserValidator::is_current($job->userID)){
 				$html .= <<<HTML
 
@@ -115,6 +129,7 @@ HTML;
 						<p>{$job->description}</p>
 						<p class="job-type"><a href="{$root}/jobs#{$job->jobType}" title="See {$job->jobType} Job Postings">{$job->jobType}</a></p>
 HTML;
+		# BUILDS TAGS
 		$tagLinks = array();
 		foreach($job->tags as $tag){
 			array_push($tagLinks,"<a href=\"{$root}/search/$tag\" title=\"Categories | $tag\">$tag</a>");

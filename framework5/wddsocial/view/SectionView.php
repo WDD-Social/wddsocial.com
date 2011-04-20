@@ -7,6 +7,7 @@
 
 class SectionView implements \Framework5\IView {
 	
+	# DETERMINES WHAT TYPE OF CONTENT TO RENDER
 	public static function render($options = null) {
 		
 		# retrieve content based on the provided section
@@ -26,6 +27,7 @@ class SectionView implements \Framework5\IView {
 	
 	
 	
+	# OPENS MAIN CONTENT SECTION, WITH OPTIONAL CLASSES
 	private static function begin_content($options){
 		if(count($options['classes']) > 0){
 			$classString = implode(' ', $options['classes']);
@@ -43,6 +45,7 @@ HTML;
 	
 	
 	
+	# ENDS MAIN CONTENT SECTION
 	private static function end_content(){	
 		return <<<HTML
 
@@ -52,7 +55,12 @@ HTML;
 	
 	
 	
+	# OPENS SUBCONTENT SECTION, WITH OPTIONAL CLASSES, EXTRAS
 	private static function begin_content_section($options){
+		if(!isset($options['id']) || !isset($options['header'])){
+			throw new Exception("SectionView begin_content_setion requires parameter id (section ID) and header (h1 text)");
+		}
+		
 		if(count($options['classes']) > 0){
 			$classString = implode(' ', $options['classes']);
 		}
@@ -69,6 +77,7 @@ HTML;
 	
 	
 	
+	# ENDS SUBCONTENT SECTION, WITH OPTIONAL ID, AND LOAD_MORE OPTIONS
 	private static function end_content_section($options){
 		if(isset($options['load_more'])){
 			$html .= <<<HTML
@@ -85,6 +94,7 @@ HTML;
 	
 	
 	
+	# EXTRA CONTENT PIECES (FILTERS, SLIDER CONTROLS, ETC)
 	private static function get_extra($id){
 		$extras = array(
 			'latest_filters' => <<<HTML

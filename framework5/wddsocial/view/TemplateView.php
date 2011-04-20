@@ -9,6 +9,7 @@
 
 class TemplateView implements \Framework5\IView {
 	
+	# DETERMINES WHAT TYPE OF CONTENT TO RENDER
 	public static function render($options = null) {
 		
 		# retrieve content based on the provided section
