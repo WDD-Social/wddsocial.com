@@ -91,9 +91,9 @@ class IndexPage implements \Framework5\IExecutable {
 		/*while($row = $query->fetch()){
 			echo render('wddsocial.view.LargeDisplayView', array('type' => $row->type,'content' => $row));
 		}*/
-		$row = $query->fetch();
-		if(isset($row)){
-			echo render('wddsocial.view.LargeDisplayView', array('type' => $row->type,'content' => $row));
+		$row = $query->fetchAll();
+		if(isset($row[1])){
+			echo render('wddsocial.view.LargeDisplayView', array('type' => $row[1]->type,'content' => $row[1]));
 		}
 		
 		# CREATE SECTION FOOTER
