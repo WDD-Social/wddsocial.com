@@ -7,7 +7,7 @@ namespace WDDSocial;
 *
 */
 class DisplayVO{
-	public $id, $title, $description, $vanityURL, $type, $date, $userID, $userFirstName, $userLastName, $userAvatar, $userURL, $team = array(), $images = array(), $comments, $tags = array();
+	public $id, $title, $description, $vanityURL, $type, $date, $userID, $userFirstName, $userLastName, $userAvatar, $userURL, $team = array(), $images = array(), $tags = array(), $comments;
 	private $db, $sql;
 	
 	public function __construct(){
@@ -43,13 +43,6 @@ class DisplayVO{
 					$this->comments = $row->comments;
 				}
 				break;
-			case 'event':
-				$query = $this->db->prepare($this->sql->getEventCommentsCount);
-				$query->execute($data);
-				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					$this->comments = $row->comments;
-				}
-				break;
 			case 'job':
 				$query = $this->db->prepare($this->sql->getJobCommentsCount);
 				$query->execute($data);
@@ -77,18 +70,6 @@ class DisplayVO{
 				break;
 			case 'article':
 				$query = $this->db->prepare($this->sql->getArticleCategories);
-				$query->execute($data);
-				$all = array();
-				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($all,$row->title);
-				}
-				$rand = array_rand($all,2);
-				foreach($rand as $tagKey){
-					array_push($this->tags,$all[$tagKey]);
-				}
-				break;
-			case 'event':
-				$query = $this->db->prepare($this->sql->getEventCategories);
 				$query->execute($data);
 				$all = array();
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){

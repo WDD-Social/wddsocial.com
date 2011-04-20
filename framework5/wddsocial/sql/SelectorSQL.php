@@ -135,6 +135,18 @@ class SelectorSQL{
 		FROM users AS u
 		ORDER BY DATETIME DESC
 		LIMIT 0,10",
+		'getUpcomingEvents' => "
+			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
+			FROM events
+			ORDER BY startDateTime ASC
+			LIMIT 0,5",
+		'getUpcomingPublicEvents' => "
+			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
+			FROM events AS e
+			LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
+			WHERE p.title = 'Public'
+			ORDER BY startDateTime ASC
+			LIMIT 0,5",
 		'getProjectCommentsCount' => "
 			SELECT COUNT(*) as comments
 			FROM projectComments
