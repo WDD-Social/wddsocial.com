@@ -3,37 +3,37 @@
 class MediumDisplayView implements \Framework5\IView {	
 	
 	public static function render($options = null) {
-		import('wddsocial.helper.Validator');
 		
 		switch ($options['type']) {
 			case 'project':
-				return static::projectDisplay($options['content']);
+				return static::project_display($options['content']);
 			
 			case 'article':
-				return static::articleDisplay($options['content']);
+				return static::article_display($options['content']);
 			
 			case 'person':
-				return static::personDisplay($options['content']);
+				return static::person_display($options['content']);
 			
 			default:
 				throw new Exception("MediumDisplayView requires parameter type (project, article, or person), '{$options['type']}' provided");
 		}
 	}
 	
-	private static function projectDisplay($project){
+	private static function project_display($project){
 		$root = \Framework5\Request::root_path();
 		import('wddsocial.helper.NaturalLanguage');
+		import('wddsocial.controller.UserValidator');
 		
-		$userVerbage = \WDDSocial\NaturalLanguage::viewProfile($project->userID,"{$project->userFirstName} {$project->userLastName}");
-		$userDisplayName = \WDDSocial\NaturalLanguage::displayName($project->userID,"{$project->userFirstName} {$project->userLastName}");
-		$teamIntro = static::formatTeamString($project->userID,$project->team);
+		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
+		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($project->userID,"{$project->userFirstName} {$project->userLastName}");
+		$teamIntro = static::format_team_string($project->userID,$project->team);
 		
 		$html = <<<HTML
 
 					<article class="projects with-secondary">
 						<div class="secondary">
 HTML;
-		if($project->userID == $_SESSION['user']->id){
+		if(\WDDSocial\UserValidator::is_current($project->userID)){
 			$html .= <<<HTML
 
 							<a href="#" title="Edit &ldquo;{$project->title}&rsquo;" class="edit">Edit</a>
@@ -53,11 +53,25 @@ HTML;
 						<p class="intro"><strong><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> posted a <strong><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
 						<h2><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
-						<!--<p class="images">
-							<a href="project.html" title="The Daily Syndication | Image 1"><img src="images/uploads/dailysyndication01_smedium.jpg" alt="The Daily Syndication | Image 1"/></a>
-							<a href="project.html" title="The Daily Syndication | Image 2"><img src="images/uploads/dailysyndication02_smedium.jpg" alt="The Daily Syndication | Image 2"/></a>
-							<a href="project.html" title="The Daily Syndication | Image 3"><img src="images/uploads/dailysyndication03_smedium.jpg" alt="The Daily Syndication | Image 3"/></a>
-						</p>-->
+HTML;
+		if(count($project->images) > 0){
+			$html .= <<<HTML
+
+						<p class="images">			
+HTML;
+			foreach($project->images as $image){
+				$html .= <<<HTML
+
+							<a href="images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+HTML;
+			}
+			$html .= <<<HTML
+
+						</p>			
+HTML;
+		}
+		$html .= <<<HTML
+
 						<p class="comments"><a href="{$root}/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
 HTML;
 		$tagLinks = array();
@@ -72,19 +86,20 @@ HTML;
 		return $html;
 	}
 	
-	private static function articleDisplay($article){
+	private static function article_display($article){
 		$root = \Framework5\Request::root_path();
 		import('wddsocial.helper.NaturalLanguage');
+		import('wddsocial.controller.UserValidator');
 		
-		$userVerbage = \WDDSocial\NaturalLanguage::viewProfile($article->userID,"{$article->userFirstName} {$article->userLastName}");
-		$userDisplayName = \WDDSocial\NaturalLanguage::displayName($article->userID,"{$article->userFirstName} {$article->userLastName}");
+		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
+		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		
 		$html = <<<HTML
 
 					<article class="articles with-secondary">
 						<div class="secondary">
 HTML;
-		if($article->userID == $_SESSION['user']->id){
+		if(\WDDSocial\UserValidator::is_current($article->userID)){
 			$html .= <<<HTML
 
 							<a href="#" title="Edit &ldquo;{$article->title}&rsquo;" class="edit">Edit</a>
@@ -104,6 +119,25 @@ HTML;
 						<p class="intro"><strong><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">article</a></strong>.</p>
 						<h2><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
+HTML;
+		if(count($article->images) > 0){
+			$html .= <<<HTML
+
+						<p class="images">			
+HTML;
+			foreach($article->images as $image){
+				$html .= <<<HTML
+
+							<a href="images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+HTML;
+			}
+			$html .= <<<HTML
+
+						</p>			
+HTML;
+		}
+		$html .= <<<HTML
+
 						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
 HTML;
 		$tagLinks = array();
@@ -118,12 +152,12 @@ HTML;
 		return $html;
 	}
 	
-	private static function personDisplay($person){
+	private static function person_display($person){
 		$root = \Framework5\Request::root_path();
 		import('wddsocial.helper.NaturalLanguage');
 		
-		$userVerbage = \WDDSocial\NaturalLanguage::viewProfile($person->userID,"{$person->userFirstName} {$person->userLastName}");
-		$userDisplayName = \WDDSocial\NaturalLanguage::displayName($person->userID,"{$person->userFirstName} {$person->userLastName}");
+		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
+		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($person->userID,"{$person->userFirstName} {$person->userLastName}");
 		
 		$html = <<<HTML
 
@@ -137,14 +171,15 @@ HTML;
 		return $html;
 	}
 	
-	private static function formatTeamString($ownerID, $team){
+	private static function format_team_string($ownerID, $team){
+		import('wddsocial.controller.UserValidator');
 		// REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE), AND PUT CURRENT USER AT FRONT OF ARRAY
 		$cleanTeam = $team;
 		foreach($cleanTeam as $member){
-			if($member->userID == $ownerID){
+			if($member->id == $ownerID){
 				$key = array_search($member, $cleanTeam);
 				unset($cleanTeam[$key]);
-			}else if($member->userID == $_SESSION['user']->id){
+			}else if(\WDDSocial\UserValidator::is_current($member->id)){
 				$key = array_search($member, $cleanTeam);
 				$currentUser = $cleanTeam[$key];
 				unset($cleanTeam[$key]);
@@ -158,28 +193,25 @@ HTML;
 			$teamIntro = " with ";
 			$teamString = array();
 			if(count($cleanTeam) == 1){
-				$teamPossessive = \WDDSocial\NaturalLanguage::possessive("{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
-				$teamUserVerbage = ($cleanTeam[0]->userID == $_SESSION['user']->id)?"View Your Profile":"View $teamPossessive Profile";
-				$teamUserDisplayName = ($cleanTeam[0]->userID == $_SESSION['user']->id)?"You":"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}";
-				$teamIntro .= "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$teamUserVerbage\">$teamUserDisplayName</a></strong>";
+				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
+				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
+				$teamIntro .= "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
 			}else if(count($cleanTeam) == 2){
 				foreach($cleanTeam as $member){
-					$teamPossessive = \WDDSocial\NaturalLanguage::possessive("{$member->firstName} {$member->lastName}");
-					$teamUserVerbage = ($member->userID == $_SESSION['user']->id)?"View Your Profile":"View $teamPossessive Profile";
-					$teamUserDisplayName = ($member->userID == $_SESSION['user']->id)?"You":"{$member->firstName} {$member->lastName}";
-					array_push($teamString, "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$teamUserVerbage\">$teamUserDisplayName</a></strong>");
+					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
+					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
+					array_push($teamString, "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
 				}
 				$teamString = implode(' and ',$teamString);
 				$teamIntro .= $teamString;
 			}else{
 				for($i = 0; $i < count($cleanTeam); $i++){
-					$teamPossessive = \WDDSocial\NaturalLanguage::possessive("{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
-					$teamUserVerbage = ($cleanTeam[$i]->userID == $_SESSION['user']->id)?"View Your Profile":"View $teamPossessive Profile";
-					$teamUserDisplayName = ($cleanTeam[$i]->userID == $_SESSION['user']->id)?"You":"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}";
+					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[$i]->id,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
+					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[$i]->id,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
 					if($i == count($cleanTeam)-1){
-						$teamIntro .= "and <strong><a href=\"{$root}/user/{$cleanTeam[$i]->vanityURL}\" title=\"$teamUserVerbage\">$teamUserDisplayName</a></strong>";
+						$teamIntro .= "and <strong><a href=\"{$root}/user/{$cleanTeam[$i]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
 					}else{
-						$teamIntro .= "<strong><a href=\"{$root}/user/{$cleanTeam[$i]->vanityURL}\" title=\"$teamUserVerbage\">$teamUserDisplayName</a></strong>, ";
+						$teamIntro .= "<strong><a href=\"{$root}/user/{$cleanTeam[$i]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>, ";
 					}
 				}
 			}

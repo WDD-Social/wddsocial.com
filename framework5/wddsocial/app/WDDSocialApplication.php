@@ -28,7 +28,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		$user->firstName = 'Anthony';
 		$user->lastName = 'Colangelo';
 		$user->vanityURL = 'anthony';
-		$user->avatar = 'c4ca4238a0b923820dcc509a6f75849b';
+		$user->avatar = '24c9e15e52afc47c225b757e7bee1f9d';
 		$user->languageID = 'en';
 		session_start();
 		$_SESSION['user'] = $user;

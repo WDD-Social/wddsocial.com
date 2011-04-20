@@ -1,0 +1,22 @@
+GENERAL NOTES
+===========================================================================
+
+
+USER AVATARS
+
+- avatar filename hash is created by MD5-ing the string 'user'+{$userID}
+
+
+JOB AVATARS
+
+- avatar filename hash is created by MD5-ing the string 'job'+{$jobID}
+
+
+IMAGE UPLOADS
+
+- image filename hash is created by MD5-ing the string 'image'+{$imageID}
+
+
+ICAL FILE CREATION
+
+- UID string is created by MD5-ing the string "$eventID . $eventTitle . $eventCreated . '@wddsocial.com'";
