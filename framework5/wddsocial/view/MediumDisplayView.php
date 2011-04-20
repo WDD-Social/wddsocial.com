@@ -94,14 +94,14 @@ HTML;
 						<p class="comments"><a href="{$root}/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
 HTML;
 		
-		# BUILDS TAGS
-		$tagLinks = array();
-		foreach($project->tags as $tag){
-			array_push($tagLinks,"<a href=\"{$root}/search/$tag\" title=\"Categories | $tag\">$tag</a>");
+		# BUILDS CATEGORIES
+		$categoryLinks = array();
+		foreach($project->categories as $category){
+			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
 		}
-		$tagLinks = implode(' ',$tagLinks);
+		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
-						<p class="tags">$tagLinks</p>
+						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$project->title} -->
 HTML;
 		return $html;
@@ -170,14 +170,14 @@ HTML;
 						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
 HTML;
 		
-		# BUILDS TAGS
-		$tagLinks = array();
-		foreach($article->tags as $tag){
-			array_push($tagLinks,"<a href=\"{$root}/search/$tag\" title=\"Categories | $tag\">$tag</a>");
+		# BUILDS CATEGORIES
+		$categoryLinks = array();
+		foreach($article->categories as $category){
+			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
 		}
-		$tagLinks = implode(' ',$tagLinks);
+		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
-						<p class="tags">$tagLinks</p>
+						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$article->title} -->
 HTML;
 		return $html;

@@ -78,14 +78,14 @@ HTML;
 						<p>{$event->description}</p>
 						<p class="comments"><a href="event/{$event->vanityURL}#comments" title="{$event->title} | Comments">{$event->comments} comments</a></p>
 HTML;
-		# BUILDS TAGS
-		$tagLinks = array();
-		foreach($event->tags as $tag){
-			array_push($tagLinks,"<a href=\"{$root}/search/$tag\" title=\"Categories | $tag\">$tag</a>");
+		# BUILDS CATEGORIES
+		$categoryLinks = array();
+		foreach($event->categories as $category){
+			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
 		}
-		$tagLinks = implode(' ',$tagLinks);
+		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
-						<p class="tags">$tagLinks</p>
+						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$event->title} -->
 HTML;
 		return $html;
@@ -138,14 +138,15 @@ HTML;
 						<p>{$job->description}</p>
 						<p class="job-type"><a href="{$root}/jobs#{$job->jobType}" title="See {$job->jobType} Job Postings">{$job->jobType}</a></p>
 HTML;
-		# BUILDS TAGS
-		$tagLinks = array();
-		foreach($job->tags as $tag){
-			array_push($tagLinks,"<a href=\"{$root}/search/$tag\" title=\"Categories | $tag\">$tag</a>");
+		
+		# BUILDS CATEGORIES
+		$categoryLinks = array();
+		foreach($job->categories as $category){
+			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
 		}
-		$tagLinks = implode(' ',$tagLinks);
+		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
-						<p class="tags">$tagLinks</p>
+						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$job->title} -->
 HTML;
 		return $html;

@@ -7,7 +7,7 @@ namespace WDDSocial;
 *
 */
 class EventVO{
-	public $id, $userID, $icsUID, $title, $description, $vanityURL, $location, $datetime, $type, $month, $day, $startTime, $endTime, $tags = array(), $comments;
+	public $id, $userID, $icsUID, $title, $description, $vanityURL, $location, $datetime, $type, $month, $day, $startTime, $endTime, $categories = array(), $comments;
 	private $db, $sql;
 	
 	public function __construct(){
@@ -49,9 +49,15 @@ class EventVO{
 		while($row = $query->fetch(\PDO::FETCH_OBJ)){
 			array_push($all,$row->title);
 		}
-		$rand = array_rand($all,2);
-		foreach($rand as $tagKey){
-			array_push($this->tags,$all[$tagKey]);
+		if(count($all) > 1){
+			$rand = array_rand($all,2);
+			foreach($rand as $categoryKey){
+				array_push($this->categories,$all[$categoryKey]);
+			}
+		}else{
+			foreach($all as $category){
+				array_push($this->categories,$category);
+			}
 		}
 	}
 }

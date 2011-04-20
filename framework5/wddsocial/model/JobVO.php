@@ -7,7 +7,7 @@ namespace WDDSocial;
 *
 */
 class JobVO{
-	public $id, $userID, $title, $company, $description, $jobType, $avatar, $location, $compensation, $website, $tags = array();
+	public $id, $userID, $title, $company, $description, $jobType, $avatar, $location, $compensation, $website, $categories = array();
 	private $db, $sql;
 	
 	public function __construct(){
@@ -34,9 +34,15 @@ class JobVO{
 		while($row = $query->fetch(\PDO::FETCH_OBJ)){
 			array_push($all,$row->title);
 		}
-		$rand = array_rand($all,2);
-		foreach($rand as $tagKey){
-			array_push($this->tags,$all[$tagKey]);
+		if(count($all) > 1){
+			$rand = array_rand($all,2);
+			foreach($rand as $categoryKey){
+				array_push($this->categories,$all[$categoryKey]);
+			}
+		}else{
+			foreach($all as $category){
+				array_push($this->categories,$category);
+			}
 		}
 	}
 }

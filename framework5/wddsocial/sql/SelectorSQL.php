@@ -154,6 +154,19 @@ class SelectorSQL{
 			
 			
 		/**
+		* Article queries
+		*/
+		
+		'getRecentArticles' =>"
+			SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL
+			FROM articles AS a
+			LEFT JOIN users AS u ON (a.userID = u.id)
+			LEFT JOIN privacyLevels AS p ON (a.privacyLevelID = p.id)
+			WHERE p.title = 'Public'
+			ORDER BY `datetime` DESC",
+		
+			
+		/**
 		* Event queries
 		*/
 		
