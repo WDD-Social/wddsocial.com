@@ -15,6 +15,8 @@ class SmallDisplayView implements \Framework5\IView {
 		import('wddsocial.controller.UserValidator');
 		
 		switch ($options['type']) {
+			case 'article':
+				return static::article_display($options['content']);
 			case 'event':
 				return static::event_display($options['content']);
 			case 'job':
@@ -22,6 +24,36 @@ class SmallDisplayView implements \Framework5\IView {
 			default:
 				throw new Exception("SmallDisplayView requires parameter type (event or job), '{$options['type']}' provided");
 		}
+	}
+	
+	
+	
+	/**
+	* Creates an article article
+	*/
+	
+	private static function article_display($article){
+		$root = \Framework5\Request::root_path();
+		
+		$html = <<<HTML
+
+					<article class="slider-item">
+						<p class="item-image"><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}"><img src="images/avatars/{$article->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<h2><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
+						<p>{$article->description}</p>
+						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a></p>
+HTML;
+		# BUILDS CATEGORIES
+		$categoryLinks = array();
+		foreach($article->categories as $category){
+			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
+		}
+		$categoryLinks = implode(' ',$categoryLinks);
+		$html .= <<<HTML
+						<p class="tags">$categoryLinks</p>
+					</article><!-- END {$article->title} -->
+HTML;
+		return $html;
 	}
 	
 	

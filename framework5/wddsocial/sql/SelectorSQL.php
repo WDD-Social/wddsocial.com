@@ -154,6 +154,17 @@ class SelectorSQL{
 			
 			
 		/**
+		* Project queries
+		*/
+		
+		'getRecentProjects' =>"
+			SELECT id, title, description, vanityURL, `datetime`, 'project' AS `type`
+			FROM projects
+			ORDER BY `datetime` DESC
+			LIMIT 0,5",
+			
+			
+		/**
 		* Article queries
 		*/
 		
@@ -163,7 +174,8 @@ class SelectorSQL{
 			LEFT JOIN users AS u ON (a.userID = u.id)
 			LEFT JOIN privacyLevels AS p ON (a.privacyLevelID = p.id)
 			WHERE p.title = 'Public'
-			ORDER BY `datetime` DESC",
+			ORDER BY `datetime` DESC
+			LIMIT 0,10",
 		
 			
 		/**
@@ -182,7 +194,7 @@ class SelectorSQL{
 			LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
 			WHERE p.title = 'Public'
 			ORDER BY startDateTime ASC
-			LIMIT 0,3",
+			LIMIT 0,10",
 			
 			
 		/**

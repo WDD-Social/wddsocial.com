@@ -31,7 +31,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		
 		session_start();
 		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = true;
+		$_SESSION['authorized'] = false;
 		
 		$lang = (\WDDSocial\UserValidator::is_authorized())?$_SESSION['user']->languageID:'en';
 		# enable localization module

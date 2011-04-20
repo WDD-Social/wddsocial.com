@@ -237,7 +237,7 @@ HTML;
 			if(count($cleanTeam) == 1){
 				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
 				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
-				$teamIntro .= "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
+				$teamIntro .= "<strong><a href=\"{$root}/user/{$cleanTeam[0]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
 			}else if(count($cleanTeam) == 2){
 				foreach($cleanTeam as $member){
 					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
