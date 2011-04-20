@@ -7,7 +7,7 @@
 * @author Anthony Colangelo (me@acolangelo.com)
 */
 
-class TemplateView implements \Framework5\IView {	
+class TemplateView implements \Framework5\IView {
 	
 	public static function render($options = null) {
 		

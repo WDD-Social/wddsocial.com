@@ -12,35 +12,27 @@ class IndexPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		import('wddsocial.sql.SelectorSQL');
+		import('wddsocial.view.SectionView');
 		import('wddsocial.controller.UserValidator');
 		
 		# DISPLAY PAGE HEADER
 		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
-		
-		$class = (\WDDSocial\UserValidator::is_authorized())?'dashboard':'start-page';
-		echo <<<HTML
-
-			<section id="content" class="$class">
-HTML;
-		
+	
 		# CHECK WHICH HOME PAGE TO CREATE, BASED ON AUTHORIZATION
-		if(\WDDSocial\UserValidator::is_authorized()){	
-			# CREATE DASHBOARD
+		if(\WDDSocial\UserValidator::is_authorized()){
+			# CREATE USER DASHBOARD PAGE
+			echo render('wddsocial.view.SectionView', array('section' => 'begin_content', 'classes' => array('dashboard')));
 			echo render('wddsocial.view.ShareView');
 			static::get_latest();
 			static::get_events();
 			static::get_jobs();
 		}else{
 			# CREATE PUBLIC HOME PAGE
+			echo render('wddsocial.view.SectionView', array('section' => 'begin_content', 'classes' => array('start-page')));
 		}
 		
-		
-		# display page footer
 		# END CONTENT AREA
-		echo <<<HTML
-
-			</section><!-- END CONTENT -->
-HTML;
+		echo render('wddsocial.view.SectionView', array('section' => 'end_content'));
 		
 		# CREATE FOOTER
 		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
@@ -54,19 +46,9 @@ HTML;
 		$sql = new SelectorSQL();
 		$query = $db->query($sql->getLatest);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
-		
-		# CREATE SECTION HEADER
-		echo <<<HTML
 
-				<section id="latest" class="medium with-secondary filterable">
-					<h1>Latest</h1>
-					<div class="secondary filters">
-						<a href="dashboard.html#all" title="All Latest Activity" class="current">All</a> 
-						<a href="dashboard.html#people" title="Latest People">People</a> 
-						<a href="dashboard.html#projects" title="Latest Projects">Projects</a> 
-						<a href="dashboard.html#articles" title="Latest Articles">Articles</a>
-					</div><!-- END SECONDARY -->
-HTML;
+		# CREATE SECTION HEADER
+		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'latest', 'classes' => array('medium', 'with-secondary', 'filterable'), 'header' => 'Latest', 'extra' => 'latest_filters'));
 		
 		# CREATE SECTION ITEMS
 		while($row = $query->fetch()){
@@ -74,12 +56,7 @@ HTML;
 		}
 		
 		# CREATE SECTION FOOTER
-		echo <<<HTML
-
-					<p class="load-more"><a href="#" title="Load more posts...">Load More</a></p>
-				</section><!-- END LATEST -->
-				
-HTML;
+		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
 	}
 	
 	# GETS AND DISPLAYS EVENTS
@@ -93,20 +70,11 @@ HTML;
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\EventVO');
 		
 		if(\WDDSocial\UserValidator::is_authorized()){
-			echo <<<HTML
-
-				<section id="events" class="small no-margin side-sticky">
-					<h1>Events</h1>
-HTML;
+			echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'events', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Events'));
 			# SET LIMIT OF POSTS
 			$limit = 3;
 		}else{
-			echo <<<HTML
-
-				<section id="events" class="small no-margin slider">
-					<h1>Events</h1>
-					<div class="slider-controls"><a href="#" title="Featured Events 1" class="current">1</a> <a href="#" title="Featured Events 2">2</a> <a href="#" title="Featured Events 3">3</a> <a href="#" title="Featured Events 4">4</a> <a href="#" title="Featured Events 5">5</a></div>
-HTML;
+			echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'events', 'classes' => array('small', 'no-margin', 'slider'), 'header' => 'Events', 'extra' => 'slider_controls'));
 			# SET LIMIT OF POSTS
 			$limit = 2;
 		}		
@@ -118,10 +86,7 @@ HTML;
 		}
 		
 		# CREATE SECTION FOOTER
-		echo <<<HTML
-
-				</section><!-- END EVENTS -->			
-HTML;
+		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'events'));
 	}
 	
 	# GETS AND DISPLAYS JOBS
@@ -134,11 +99,7 @@ HTML;
 		$query = $db->query($sql->getNewJobs);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 		
-		echo <<<HTML
-
-				<section id="jobs" class="small no-margin side-sticky">
-					<h1>Jobs</h1>
-HTML;
+		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'jobs', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Jobs'));
 		
 		# CREATE SECTION ITEMS
 		while($row = $query->fetch()){
@@ -146,9 +107,6 @@ HTML;
 		}
 		
 		# CREATE SECTION FOOTER
-		echo <<<HTML
-
-				</section><!-- END JOBS -->			
-HTML;
+		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'jobs'));
 	}
 }
