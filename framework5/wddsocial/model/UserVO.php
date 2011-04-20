@@ -9,5 +9,5 @@ namespace WDDSocial;
 */
 
 class UserVO {
-	public $id, $type, $firstName, $lastName, $contactEmail, $fullsailEmail, $vanityURL;
+	public $id, $type, $language, $firstName, $lastName, $email, $fullsailEmail, $avatar, $vanityURL, $bio, $hometown, $age;
 }

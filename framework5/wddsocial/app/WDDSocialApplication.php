@@ -17,25 +17,27 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	
 	public static function execute() {
 		
-		# enable localization module
-		//load_module('core.module.i18n.I18n\I18nModule');
-		import('core.module.i18n.Lang');
-		Lang::language('en');
+		import('wddsocial.controller.UserValidator');
+		import('wddsocial.model.UserVO');
+		import('wddsocial.sql.SelectorSQL');
+		# GET DB INSTANCE AND QUERY
+		$db = instance(':db');
+		$sql = new \WDDSocial\SelectorSQL();
+		$query = $db->prepare($sql->getUserByID);
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+		$data = array('id' => 1);
+		$query->execute($data);
+		$user = $query->fetch();
 		
-		# testing
-		$user->id = 1;
-		$user->typeID = 1;
-		$user->firstName = 'Anthony';
-		$user->lastName = 'Colangelo';
-		$user->vanityURL = 'anthony';
-		$user->avatar = '24c9e15e52afc47c225b757e7bee1f9d';
-		$user->languageID = 'en';
 		session_start();
 		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
 		
-		# determine if the user is logged in
-		//Session::logged_in();
+		$lang = (\WDDSocial\UserValidator::is_authorized())?$_SESSION['user']->languageID:'en';
+		# enable localization module
+		//load_module('core.module.i18n.I18n\I18nModule');
+		import('core.module.i18n.Lang');
+		Lang::language($lang);
 		
 		# resolve request to a page controller
 		import('wddsocial.config.Router');

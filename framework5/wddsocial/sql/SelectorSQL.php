@@ -9,6 +9,11 @@ namespace WDDSocial;
 */
 class SelectorSQL{
 	private $_info = array(
+		'getUserByID' => "
+			SELECT u.id, ut.title AS `type`, languageID, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR,birthday,NOW()) AS age
+			FROM users AS u
+			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
+			WHERE u.id = :id",
 		'getLatest' => "
 			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL,
 			getDateDiffEN(p.datetime) AS `date`
