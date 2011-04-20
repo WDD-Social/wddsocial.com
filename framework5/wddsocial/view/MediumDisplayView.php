@@ -7,7 +7,10 @@
 
 class MediumDisplayView implements \Framework5\IView {	
 	
-	# DETERMINES WHAT TYPE OF CONTENT TO RENDER
+	/**
+	* Determines what type of content to render
+	*/
+	
 	public static function render($options = null) {
 		import('wddsocial.helper.NaturalLanguage');
 		import('wddsocial.controller.UserValidator');
@@ -29,7 +32,10 @@ class MediumDisplayView implements \Framework5\IView {
 	
 	
 	
-	# CREATES A PROJECT ARTICLE
+	/**
+	* Creates a project article
+	*/
+	
 	private static function project_display($project){
 		$root = \Framework5\Request::root_path();
 		
@@ -103,7 +109,10 @@ HTML;
 	
 	
 	
-	# CREATES AN ARTICLE ARTICLE
+	/**
+	* Creates an article article
+	*/
+	
 	private static function article_display($article){
 		$root = \Framework5\Request::root_path();
 		
@@ -176,7 +185,10 @@ HTML;
 	
 	
 	
-	# CREATES A PERSON ARTICLE
+	/**
+	* Creates a person article
+	*/
+	
 	private static function person_display($person){
 		$root = \Framework5\Request::root_path();
 		
@@ -196,8 +208,10 @@ HTML;
 	}
 	
 	
+	/**
+	* Creates and formats the team string for display
+	*/
 	
-	# CREATES AND FORMATS THE TEAM STRING FOR DISPLAY
 	private static function format_team_string($ownerID, $team){
 		# REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE), AND PUT CURRENT USER AT FRONT OF ARRAY
 		$cleanTeam = $team;

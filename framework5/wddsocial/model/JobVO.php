@@ -11,15 +11,22 @@ class JobVO{
 	private $db, $sql;
 	
 	public function __construct(){
-		$this->db = instance(':db');
 		import('wddsocial.sql.SelectorSQL');
+		
+		$this->db = instance(':db');
 		$this->sql = new SelectorSQL();
 		
 		$this->type = 'job';
-		$this->get_tags();
+		$this->get_categories();
 	}
 	
-	private function get_tags(){
+	
+	
+	/**
+	* Gets categories for job
+	*/
+	
+	private function get_categories(){
 		$data = array('id' => $this->id);
 		$query = $this->db->prepare($this->sql->getJobCategories);
 		$query->execute($data);

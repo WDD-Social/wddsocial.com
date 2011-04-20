@@ -7,7 +7,10 @@
 
 class SectionView implements \Framework5\IView {
 	
-	# DETERMINES WHAT TYPE OF CONTENT TO RENDER
+	/**
+	* Determines what type of content to render
+	*/
+	
 	public static function render($options = null) {
 		
 		# retrieve content based on the provided section
@@ -27,7 +30,10 @@ class SectionView implements \Framework5\IView {
 	
 	
 	
-	# OPENS MAIN CONTENT SECTION, WITH OPTIONAL CLASSES
+	/**
+	* Opens main content section, with optional classes
+	*/
+	
 	private static function begin_content($options){
 		if(count($options['classes']) > 0){
 			$classString = implode(' ', $options['classes']);
@@ -45,7 +51,10 @@ HTML;
 	
 	
 	
-	# ENDS MAIN CONTENT SECTION
+	/**
+	* Ends main content section
+	*/
+	
 	private static function end_content(){	
 		return <<<HTML
 

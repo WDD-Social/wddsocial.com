@@ -7,7 +7,10 @@
 
 class SmallDisplayView implements \Framework5\IView {	
 	
-	# DETERMINES WHAT TYPE OF CONTENT TO RENDER
+	/**
+	* Determines what type of content to render
+	*/
+	
 	public static function render($options = null) {
 		import('wddsocial.controller.UserValidator');
 		
@@ -23,7 +26,10 @@ class SmallDisplayView implements \Framework5\IView {
 	
 	
 	
-	# CREATES AN EVENT ARTICLE
+	/**
+	* Creates an event article
+	*/
+	
 	private static function event_display($event){
 		$root = \Framework5\Request::root_path();
 		
@@ -87,7 +93,10 @@ HTML;
 	
 	
 	
-	# CREATES A JOB ARTICLE
+	/**
+	* Creates a job article
+	*/
+	
 	private static function job_display($job){
 		$root = \Framework5\Request::root_path();
 		$html = <<<HTML

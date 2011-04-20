@@ -8,7 +8,10 @@ namespace WDDSocial;
 */
 class NaturalLanguage{
 	
-	# CONVERTS A STRING INTO ITS POSSESSIVE FORM
+	/**
+	* Converts a string into its possessive form
+	*/
+	
 	public static function possessive($string){
 		if(substr($string, -1) == 's'){
 			$string .= "&rsquo;";
@@ -20,7 +23,10 @@ class NaturalLanguage{
 	
 	
 	
-	# CREATES THE VIEW PROFILE TEXT FOR DISPLAY
+	/**
+	* Creates the view profile text for display
+	*/
+	
 	public static function view_profile($id, $name){
 		import('wddsocial.controller.UserValidator');
 		$withPossessive = "View " . static::possessive($name) . " Profile";
@@ -29,7 +35,10 @@ class NaturalLanguage{
 	
 	
 	
-	# CREATES THE DISPLAY NAME OF A USER
+	/**
+	* Creates the display name of a user
+	*/
+	
 	public static function display_name($id, $name){
 		import('wddsocial.controller.UserValidator');
 		return (\WDDSocial\UserValidator::is_current($id))?"You":$name;

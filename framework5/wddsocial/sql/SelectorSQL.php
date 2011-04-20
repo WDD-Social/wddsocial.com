@@ -9,12 +9,21 @@ namespace WDDSocial;
 */
 class SelectorSQL{
 	private $_info = array(
+		/**
+		* User queries
+		*/
+		
 		'getUserByID' => "
 			SELECT u.id, ut.title AS `type`, languageID, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR,birthday,NOW()) AS age
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE u.id = :id",
 			
+			
+		/**
+		* Activity feed queries
+		*/
+		
 		'getLatest' => "
 			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL,
 			getDateDiffEN(p.datetime) AS `date`
@@ -142,6 +151,11 @@ class SelectorSQL{
 		FROM users AS u
 		ORDER BY DATETIME DESC
 		LIMIT 0,10",
+			
+			
+		/**
+		* Event queries
+		*/
 		
 		'getUpcomingEvents' => "
 			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
@@ -150,20 +164,30 @@ class SelectorSQL{
 			LIMIT 0,3",
 			
 		'getUpcomingPublicEvents' => "
-			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
+			SELECT e.id, userID, icsUID, e.title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
 			FROM events AS e
 			LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
 			WHERE p.title = 'Public'
 			ORDER BY startDateTime ASC
 			LIMIT 0,3",
 			
-		'getNewJobs' => "
+			
+		/**
+		* Job queries
+		*/
+			
+		'getRecentJobs' => "
 			SELECT j.id, userID, j.title, company, jt.title AS jobType, avatar, location, compensation, description, website
 			FROM jobs AS j
 			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
 			ORDER BY `datetime` DESC
 			LIMIT 0,3",
 			
+			
+		/**
+		* Comment count queries
+		*/
+		
 		'getProjectCommentsCount' => "
 			SELECT COUNT(*) as comments
 			FROM projectComments
@@ -178,6 +202,11 @@ class SelectorSQL{
 			SELECT COUNT(*) as comments
 			FROM eventComments
 			WHERE eventID = :id",
+			
+			
+		/**
+		* Category queries
+		*/
 			
 		'getProjectCategories' => "
 			SELECT title
@@ -207,6 +236,11 @@ class SelectorSQL{
 			WHERE jc.jobID = :id
 			ORDER BY title",
 			
+			
+		/**
+		* Team queries
+		*/
+			
 		'getProjectTeam' => "
 			SELECT u.id, firstName, lastName, vanityURL
 			FROM users AS u
@@ -220,6 +254,11 @@ class SelectorSQL{
 			LEFT JOIN userArticles AS ua ON (u.id = ua.userID)
 			WHERE ua.articleID = :id
 			ORDER BY lastName",
+			
+			
+		/**
+		* Image queries
+		*/
 			
 		'getProjectImages' => "
 			SELECT id, title, description, `file`

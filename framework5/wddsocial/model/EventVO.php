@@ -17,8 +17,14 @@ class EventVO{
 		
 		$this->type = 'event';
 		$this->get_comments_count();
-		$this->get_tags();
+		$this->get_categories();
 	}
+	
+	
+	
+	/**
+	* Gets comment count for event
+	*/
 	
 	private function get_comments_count(){
 		$data = array('id' => $this->id);
@@ -29,7 +35,13 @@ class EventVO{
 		}
 	}
 	
-	private function get_tags(){
+	
+	
+	/**
+	* Gets categories for event
+	*/
+	
+	private function get_categories(){
 		$data = array('id' => $this->id);
 		$query = $this->db->prepare($this->sql->getEventCategories);
 		$query->execute($data);

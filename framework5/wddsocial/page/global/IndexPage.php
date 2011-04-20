@@ -29,6 +29,7 @@ class IndexPage implements \Framework5\IExecutable {
 		}else{
 			# CREATE PUBLIC HOME PAGE
 			echo render('wddsocial.view.SectionView', array('section' => 'begin_content', 'classes' => array('start-page')));
+			static::get_events();
 		}
 		
 		# END CONTENT AREA
@@ -40,7 +41,10 @@ class IndexPage implements \Framework5\IExecutable {
 	
 	
 	
-	# GETS AND DISPLAYS LATEST CONTENT SECTION
+	/**
+	* Gets and displays latest content section
+	*/
+	
 	private static function get_latest(){
 		import('wddsocial.model.DisplayVO');
 		
@@ -64,7 +68,10 @@ class IndexPage implements \Framework5\IExecutable {
 	
 	
 	
-	# GETS AND DISPLAYS EVENTS
+	/**
+	* Gets and displays events
+	*/
+	
 	private static function get_events(){
 		import('wddsocial.model.EventVO');
 		
@@ -96,14 +103,17 @@ class IndexPage implements \Framework5\IExecutable {
 	
 	
 	
-	# GETS AND DISPLAYS JOBS
+	/**
+	* Gets and displays jobs
+	*/
+	
 	private static function get_jobs(){
 		import('wddsocial.model.JobVO');
 		
 		# GET DB INSTANCE AND QUERY
 		$db = instance(':db');
 		$sql = new SelectorSQL();
-		$query = $db->query($sql->getNewJobs);
+		$query = $db->query($sql->getRecentJobs);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 		
 		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'jobs', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Jobs'));
