@@ -7,11 +7,22 @@ namespace WDDSocial;
 *
 */
 class UserValidator{
+	
+	/**
+	* Checks if a user is the currently signed in user
+	*/
+	
 	public static function is_current($userID){
 		return ($userID == $_SESSION['user']->id)?true:false;
 	}
 	
+	
+	
+	/**
+	* Checks if the current user is authorized
+	*/
+	
 	public static function is_authorized(){
-		return ($_SESSION['user'] == true)?true:false;
+		return ($_SESSION['authorized'] == true)?true:false;
 	}
 }

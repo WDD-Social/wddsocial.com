@@ -7,19 +7,26 @@ namespace WDDSocial;
 *
 */
 class JobVO{
-	public $id, $userID, $title, $company, $description, $jobType, $avatar, $location, $compensation, $website, $tags = array();
+	public $id, $userID, $title, $company, $description, $jobType, $avatar, $location, $compensation, $website, $categories = array();
 	private $db, $sql;
 	
 	public function __construct(){
-		$this->db = instance(':db');
 		import('wddsocial.sql.SelectorSQL');
+		
+		$this->db = instance(':db');
 		$this->sql = new SelectorSQL();
 		
 		$this->type = 'job';
-		$this->get_tags();
+		$this->get_categories();
 	}
 	
-	private function get_tags(){
+	
+	
+	/**
+	* Gets categories for job
+	*/
+	
+	private function get_categories(){
 		$data = array('id' => $this->id);
 		$query = $this->db->prepare($this->sql->getJobCategories);
 		$query->execute($data);
@@ -27,9 +34,15 @@ class JobVO{
 		while($row = $query->fetch(\PDO::FETCH_OBJ)){
 			array_push($all,$row->title);
 		}
-		$rand = array_rand($all,2);
-		foreach($rand as $tagKey){
-			array_push($this->tags,$all[$tagKey]);
+		if(count($all) > 1){
+			$rand = array_rand($all,2);
+			foreach($rand as $categoryKey){
+				array_push($this->categories,$all[$categoryKey]);
+			}
+		}else{
+			foreach($all as $category){
+				array_push($this->categories,$category);
+			}
 		}
 	}
 }

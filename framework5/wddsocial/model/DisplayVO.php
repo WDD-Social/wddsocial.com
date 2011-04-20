@@ -7,7 +7,7 @@ namespace WDDSocial;
 *
 */
 class DisplayVO{
-	public $id, $title, $description, $vanityURL, $type, $date, $userID, $userFirstName, $userLastName, $userAvatar, $userURL, $team = array(), $images = array(), $tags = array(), $comments;
+	public $id, $title, $description, $vanityURL, $type, $date, $userID, $userFirstName, $userLastName, $userAvatar, $userURL, $team = array(), $images = array(), $categories = array(), $comments;
 	private $db, $sql;
 	
 	public function __construct(){
@@ -19,12 +19,18 @@ class DisplayVO{
 			$this->get_comments_count();
 		}
 		
-		$this->get_tags();
+		$this->get_categories();
 		if($this->type == 'project' || $this->type == 'article'){
 			$this->get_team();
 			$this->get_images();
 		}
 	}
+	
+	
+	
+	/**
+	* Gets comment count for content
+	*/
 	
 	private function get_comments_count(){
 		$data = array('id' => $this->id);
@@ -53,7 +59,13 @@ class DisplayVO{
 		}
 	}
 	
-	private function get_tags(){
+	
+	
+	/**
+	* Gets categories for content
+	*/
+	
+	private function get_categories(){
 		$data = array('id' => $this->id);
 		switch ($this->type){
 			case 'project':
@@ -63,9 +75,15 @@ class DisplayVO{
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					array_push($all,$row->title);
 				}
-				$rand = array_rand($all,2);
-				foreach($rand as $tagKey){
-					array_push($this->tags,$all[$tagKey]);
+				if(count($all) > 1){
+					$rand = array_rand($all,2);
+					foreach($rand as $categoryKey){
+						array_push($this->categories,$all[$categoryKey]);
+					}
+				}else{
+					foreach($all as $category){
+						array_push($this->categories,$category);
+					}
 				}
 				break;
 			case 'article':
@@ -75,10 +93,17 @@ class DisplayVO{
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					array_push($all,$row->title);
 				}
-				$rand = array_rand($all,2);
-				foreach($rand as $tagKey){
-					array_push($this->tags,$all[$tagKey]);
+				if(count($all) > 1){
+					$rand = array_rand($all,2);
+					foreach($rand as $categoryKey){
+						array_push($this->categories,$all[$categoryKey]);
+					}
+				}else{
+					foreach($all as $category){
+						array_push($this->categories,$category);
+					}
 				}
+				
 				break;
 			case 'job':
 				$query = $this->db->prepare($this->sql->getJobCategories);
@@ -87,13 +112,25 @@ class DisplayVO{
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					array_push($all,$row->title);
 				}
-				$rand = array_rand($all,2);
-				foreach($rand as $tagKey){
-					array_push($this->tags,$all[$tagKey]);
+				if(count($all) > 1){
+					$rand = array_rand($all,2);
+					foreach($rand as $categoryKey){
+						array_push($this->categories,$all[$categoryKey]);
+					}
+				}else{
+					foreach($all as $category){
+						array_push($this->categories,$category);
+					}
 				}
 				break;
 		}
 	}
+	
+	
+	
+	/**
+	* Gets team members for projects/articles
+	*/
 	
 	private function get_team(){
 		import('wddsocial.model.UserVO');
@@ -119,6 +156,12 @@ class DisplayVO{
 				break;
 		}
 	}
+	
+	
+	
+	/**
+	* Gets images for projects/articles
+	*/
 	
 	private function get_images(){
 		import('wddsocial.model.ImageVO');
