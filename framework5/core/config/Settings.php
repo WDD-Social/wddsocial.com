@@ -3,7 +3,7 @@
 namespace Framework5;
 
 /*
-* Framework5 configuration file
+* Framework5 core configuration file
 */
 
 class Settings {
@@ -12,7 +12,6 @@ class Settings {
 	const PRODUCTION_MODE = 0; # Development 0, Production 1;
 	
 	# execution stats and debug logging
-	
 	public static $debug_mode = true;
 	public static $log_debug = true;
 	public static $log_execution = true;
@@ -23,11 +22,10 @@ class Settings {
 		'host' => 'localhost',
 		'username' => 'root',
 		'password' => 'root',
-		'dbname' => 'sandbox'
-	);
+		'dbname' => 'sandbox');
 	
 	# package alias' can be used in place of a package name
 	public static $package_aliases = array(
-		':db' => 'wddsocial.controller.WDDSocial\Database'
-	);
+		':db' => 'wddsocial.controller.WDDSocial\Database',
+		':sel-sql' => 'wddsocial.sql.WDDSocial\SelectorSQL');
 }
