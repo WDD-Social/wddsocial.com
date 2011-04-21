@@ -20,6 +20,8 @@ class SmallDisplayView implements \Framework5\IView {
 				return static::event_display($options['content']);
 			case 'job':
 				return static::job_display($options['content']);
+			case 'person_imagegrid':
+				return static::person_imagegrid_display($options['content']);
 			default:
 				throw new Exception("SmallDisplayView requires parameter type (event or job), '{$options['type']}' provided");
 		}
@@ -181,5 +183,20 @@ HTML;
 					</article><!-- END {$job->title} -->
 HTML;
 		return $html;
+	}
+	
+	
+	
+	/**
+	* Creates an image-grid element
+	*/
+	
+	private static function person_imagegrid_display($person){
+		$root = \Framework5\Request::root_path();
+		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
+		return <<<HTML
+
+					<p><a href="{$root}/user/{$person->userVanityURL}" title="$userVerbage"><img src="images/avatars/{$person->userAvatar}_medium.jpg" alt="{$person->userFirstName} {$person->userLastName}"/></a></p>
+HTML;
 	}
 }

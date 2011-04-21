@@ -143,20 +143,20 @@ class IndexPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function get_people(){
-		import('wddsocial.model.DisplayVO');
+		import('wddsocial.model.RecentPersonVO');
 		
 		# Get db instance and query
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
-		$query = $db->query($sql->getRecentArticles);
-		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+		$query = $db->query($sql->getRecentlyActivePeople);
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\RecentPersonVO');
 		
 		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'people', 'classes' => array('small', 'image-grid'), 'header' => 'People'));
 		
 		# Create section items
-		/* while($row = $query->fetch()){
-			echo render('wddsocial.view.SmallDisplayView', array('type' => $row->type,'content' => $row));
-		}*/
+		while($row = $query->fetch()){
+			echo render('wddsocial.view.SmallDisplayView', array('type' => 'person_imagegrid','content' => $row));
+		}
 		
 		# Create section footer
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'people'));
