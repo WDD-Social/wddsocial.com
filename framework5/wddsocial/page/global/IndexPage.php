@@ -54,7 +54,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# GET DB INSTANCE AND QUERY
 		$db = instance(':db');
-		$sql = new SelectorSQL();
+		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getLatest);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 
@@ -81,7 +81,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# GET DB INSTANCE AND QUERY
 		$db = instance(':db');
-		$sql = new SelectorSQL();
+		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getRecentProjects);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
@@ -111,8 +111,8 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# GET DB INSTANCE AND QUERY
 		$db = instance(':db');
-		$sql = new SelectorSQL();
-		$query = $db->query($sql->getRecentlyActivePeople);
+		$sql = instance(':sel-sql');
+		$query = $db->query($sql->getRecentArticles);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
 		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'people', 'classes' => array('small', 'image-grid'), 'header' => 'People'));
@@ -137,7 +137,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# GET DB INSTANCE AND QUERY
 		$db = instance(':db');
-		$sql = new SelectorSQL();
+		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getRecentArticles);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
@@ -169,7 +169,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# GET DB INSTANCE AND QUERY
 		$db = instance(':db');
-		$sql = new SelectorSQL();
+		$sql = instance(':sel-sql');
 		$query = (\WDDSocial\UserValidator::is_authorized())?$db->query($sql->getUpcomingEvents):$db->query($sql->getUpcomingPublicEvents);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\EventVO');
 		
@@ -206,7 +206,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# GET DB INSTANCE AND QUERY
 		$db = instance(':db');
-		$sql = new SelectorSQL();
+		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getRecentJobs);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 		

@@ -12,7 +12,6 @@ class SmallDisplayView implements \Framework5\IView {
 	*/
 	
 	public static function render($options = null) {
-		import('wddsocial.controller.UserValidator');
 		
 		switch ($options['type']) {
 			case 'article':

@@ -1,12 +1,14 @@
 <?php
 
 namespace WDDSocial;
+
 /*
-*
+* 
+* 
 * @author: Anthony Colangelo (me@acolangelo.com)
-*
 */
-class UserValidator{
+
+class UserValidator {
 	
 	/**
 	* Checks if a user is the currently signed in user
