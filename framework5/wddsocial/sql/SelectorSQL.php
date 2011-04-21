@@ -26,7 +26,7 @@ class SelectorSQL{
 			SELECT id, CONCAT_WS(' ', firstName, lastName) AS title, bio AS description, vanityURL, `DATETIME`, 'person' AS `TYPE`, id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, vanityURL AS userURL, getDateDiffEN(`DATETIME`) AS `DATE`
 			FROM users AS u
 			ORDER BY DATETIME DESC
-			LIMIT 0,10",
+			LIMIT 0,20",
 			
 		'getLatestNoFunction' => "
 			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, 
