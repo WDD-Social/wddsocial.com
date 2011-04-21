@@ -27,6 +27,7 @@ class FormView implements \Framework5\IView {
 	private static function share() {
 		return <<<HTML
 <form action="form.html" method="post">
+						<p class="error"><strong></strong></p>
 						<fieldset>
 							<label for="title">Title</label>
 							<input type="text" name="title" id="title" />
@@ -61,6 +62,7 @@ HTML;
 	private static function sign_in() {
 		return <<<HTML
 <form action="#" method="post">
+						<p class="error"><strong></strong></p>
 						<fieldset>
 							<label for="email">Email</label>
 							<input type="email" name="email" id="email" />
