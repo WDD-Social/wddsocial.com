@@ -37,7 +37,7 @@ class LargeDisplayView implements \Framework5\IView {
 		$html = <<<HTML
 
 					<article class="slider-item">
-						<p class="item-image"><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}"><img src="images/uploads/{$project->images[0]->file}_large.jpg" alt="{$project->images[0]->title}" /></a></p>
+						<p class="item-image"><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}"><img src="{$root}/images/uploads/{$project->images[0]->file}_large.jpg" alt="{$project->images[0]->title}" /></a></p>
 						<h2><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$teamLinks}</p>
 						<p>{$project->description}</p>

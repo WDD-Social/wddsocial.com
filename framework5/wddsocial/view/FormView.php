@@ -25,8 +25,9 @@ class FormView implements \Framework5\IView {
 	*/
 	
 	private static function share() {
+		$root = \Framework5\Request::root_path();
 		return <<<HTML
-<form action="form.html" method="post">
+<form action="{$root}" method="post">
 						<p class="error"><strong></strong></p>
 						<fieldset>
 							<label for="title">Title</label>
@@ -60,8 +61,9 @@ HTML;
 	*/
 	
 	private static function sign_in() {
+		$root = \Framework5\Request::root_path();
 		return <<<HTML
-<form action="#" method="post">
+<form action="{$root}" method="post">
 						<p class="error"><strong></strong></p>
 						<fieldset>
 							<label for="email">Email</label>

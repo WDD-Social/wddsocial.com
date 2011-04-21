@@ -53,20 +53,20 @@ HTML;
 		if(\WDDSocial\UserValidator::is_current($project->userID)){
 			$html .= <<<HTML
 
-							<a href="#" title="Edit &ldquo;{$project->title}&rsquo;" class="edit">Edit</a>
-							<a href="#" title="Delete &ldquo;{$project->title}&rsquo;" class="delete">Delete</a>
+							<a href="{$root}" title="Edit &ldquo;{$project->title}&rsquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Delete &ldquo;{$project->title}&rsquo;" class="delete">Delete</a>
 HTML;
 		}else{
 			$html .= <<<HTML
 
-							<a href="#" title="Flag &ldquo;{$project->title}&rsquo;" class="flag">Flag</a>
+							<a href="{$root}" title="Flag &ldquo;{$project->title}&rsquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}"><img src="images/avatars/{$project->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<p class="item-image"><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}"><img src="{$root}/images/avatars/{$project->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
 						<p class="intro"><strong><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> posted a <strong><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
 						<h2><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
@@ -81,7 +81,7 @@ HTML;
 			foreach($project->images as $image){
 				$html .= <<<HTML
 
-							<a href="images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+							<a href="{$root}/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 			}
 			$html .= <<<HTML
@@ -129,20 +129,20 @@ HTML;
 		if(\WDDSocial\UserValidator::is_current($article->userID)){
 			$html .= <<<HTML
 
-							<a href="#" title="Edit &ldquo;{$article->title}&rsquo;" class="edit">Edit</a>
-							<a href="#" title="Delete &ldquo;{$article->title}&rsquo;" class="delete">Delete</a>
+							<a href="{$root}" title="Edit &ldquo;{$article->title}&rsquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Delete &ldquo;{$article->title}&rsquo;" class="delete">Delete</a>
 HTML;
 		}else{
 			$html .= <<<HTML
 
-							<a href="#" title="Flag &ldquo;{$article->title}&rsquo;" class="flag">Flag</a>
+							<a href="{$root}" title="Flag &ldquo;{$article->title}&rsquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}"><img src="images/avatars/{$article->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<p class="item-image"><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}"><img src="{$root}/images/avatars/{$article->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
 						<p class="intro"><strong><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">article</a></strong>.</p>
 						<h2><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
@@ -157,7 +157,7 @@ HTML;
 			foreach($article->images as $image){
 				$html .= <<<HTML
 
-							<a href="images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+							<a href="{$root}/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 			}
 			$html .= <<<HTML
@@ -198,7 +198,7 @@ HTML;
 		$html = <<<HTML
 
 					<article class="people">
-						<p class="item-image"><a href="{$root}/user/{$person->userURL}" title="{$userVerbage}"><img src="images/avatars/{$person->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<p class="item-image"><a href="{$root}/user/{$person->userURL}" title="{$userVerbage}"><img src="{$root}/images/avatars/{$person->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
 						<p class="intro"><strong><a href="{$root}/user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> joined the community.</p>
 						<p>{$person->description}</p>
 						<p>{$person->date}</p>
