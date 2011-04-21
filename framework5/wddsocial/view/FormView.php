@@ -13,8 +13,14 @@ class FormView implements \Framework5\IView {
 				return static::share();
 			case 'sign_in':
 				return static::sign_in();
+			case 'sign_in_intro':
+				return static::sign_in_intro();
+			case 'sign_up':
+				return static::sign_up();
+			case 'sign_up_intro':
+				return static::sign_up_intro(); 
 			default:
-				throw new Exception("FormView requires parameter type (share, sign_in), '{$options['type']}' provided");
+				throw new Exception("FormView requires parameter type (share, sign_in, or sign_up), '{$options['type']}' provided");
 		}
 	}
 	
@@ -58,6 +64,19 @@ HTML;
 	
 	
 	/**
+	* 
+	*/
+	
+	private static function sign_in_intro(){
+		return <<<HTML
+
+					<h1 class="mega">Come on in, we&rsquo;ve missed you.</h1>
+HTML;
+	}
+	
+	
+	
+	/**
 	* Creates the sign in form
 	*/
 	
@@ -76,9 +95,101 @@ HTML;
 							<p class="helper-link"><a href="#" title="Did you forget your password?" tabindex="1000">Forgot?</a></p>
 							<input type="password" name="password" id="password" />
 						</fieldset>
-						<p class="helper-link"><a href="form.html" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
+						<p class="helper-link"><a href="{$root}/signup" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
 						<input type="submit" value="Sign In" />
 					</form>
+HTML;
+	}
+	
+	
+	
+	/**
+	* 
+	*/
+	
+	private static function sign_up_intro(){
+		return <<<HTML
+
+					<h1 class="mega form">Join the community. Socialize.</h1>
+					<h2 class="form">* Required</h2>
+HTML;
+	}
+	
+	
+	
+	/**
+	* Creates the sign up form
+	*/
+	
+	private static function sign_up() {
+		$root = \Framework5\Request::root_path();
+		return <<<HTML
+
+					<form action="form_error.html" method="post">
+					<h1>Basic</h1>
+					<p class="error"><strong></strong></p>
+					<fieldset>
+						<label for="first-name">First Name *</label>
+						<input type="text" name="first-name" id="first-name" />
+					</fieldset>
+					<fieldset>
+						<label for="last-name">Last Name *</label>
+						<input type="text" name="last-name" id="last-name" />
+					</fieldset>
+					<fieldset>
+						<label for="email">Email *</label>
+						<input type="email" name="email" id="email" />
+					</fieldset>
+					<fieldset>
+						<label for="full-sail-email">Full Sail Email *</label>
+						<input type="email" name="full-sail-email" id="full-sail-email" />
+						<small>Used for account verification</small>
+					</fieldset>
+					<fieldset>
+						<label for="password">Password *</label>
+						<input type="password" name="password" id="password" />
+						<small>6 or more characters</small>
+					</fieldset>
+					
+					<h1>Background</h1>
+					<fieldset class="radio">
+						<label>I am a...*</label>
+						<div>
+							<input type="radio" id="student" name="user-type" checked />
+							<label for="student">Student</label>
+							
+							<input type="radio" id="teacher" name="user-type" />
+							<label for="teacher">Teacher</label>
+							
+							<input type="radio" id="alum" name="user-type" />
+							<label for="alum">Alum</label>
+						</div>
+					</fieldset>
+					<fieldset>
+						<label for="avatar">Avatar</label>
+						<input type="file" name="avatar" id="avatar" />
+					</fieldset>
+					<fieldset>
+						<label for="hometown">Hometown</label>
+						<input type="text" name="hometown" id="hometown" />
+					</fieldset>
+					<fieldset>
+						<label for="birthday">Birthday</label>
+						<input type="text" name="birthday" id="birthday" />
+					</fieldset>
+					<fieldset>
+						<label for="bio">Bio</label>
+						<textarea></textarea>
+						<small><span class="count">255</span> characters left</small>
+					</fieldset>
+					
+					<fieldset class="terms">
+						<label>Boring Legal Stuff *</label>
+						<p><input type="checkbox" name="terms" id="terms" />I have read and agree to the <a href="terms.html" title="WDD Social Terms of Service">Terms of Service</a>.</p>
+					</fieldset>
+					<p class="helper-link"><a href="{$root}/signin" title="Already a WDD Social member?">Already a member?</a></p>
+					<input type="submit" value="Sign Up" />
+				</form>
 HTML;
 	}
 }

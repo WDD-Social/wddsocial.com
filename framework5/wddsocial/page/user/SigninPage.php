@@ -15,10 +15,13 @@ class SigninPage implements \Framework5\IExecutable {
 			static::process_form();
 		}else{
 			# display site header
-			echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'Sign In'));
+			echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'Sign In to WDD Social'));
 			
 			# open content section
 			echo render('wddsocial.view.SectionView', array('section' => 'begin_content'));
+			
+			# display sign in form
+			echo render('wddsocial.view.FormView', array('type' => 'sign_in_intro'));
 			
 			# display sign in form
 			echo render('wddsocial.view.FormView', array('type' => 'sign_in'));
