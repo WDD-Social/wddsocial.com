@@ -42,7 +42,7 @@ class SmallDisplayView implements \Framework5\IView {
 						<p>{$article->description}</p>
 						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a></p>
 HTML;
-		# BUILDS CATEGORIES
+		# Build categories
 		$categoryLinks = array();
 		foreach($article->categories as $category){
 			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
@@ -71,13 +71,13 @@ HTML;
 					<article class="$class">
 HTML;
 		
-		# DETERMINES IF USER IS SIGNED IN, TO SHOW SECONDARY OR NOT
+		# Determines if user is signed in, to show secondary or not
 		if(\WDDSocial\UserValidator::is_authorized()){
 			$html .=<<<HTML
 						
 						<div class="secondary">
 HTML;
-			# DETERMINES WHAT TYPE OF SECONDARY CONTROLS TO PRESENT (FLAG OR EDIT/DELETE)
+			# Determines what type of secondary controls to present (Flag or Edit/Delete)
 			if(\WDDSocial\UserValidator::is_current($event->userID)){
 				$html .= <<<HTML
 
@@ -109,7 +109,7 @@ HTML;
 						<p>{$event->description}</p>
 						<p class="comments"><a href="event/{$event->vanityURL}#comments" title="{$event->title} | Comments">{$event->comments} comments</a></p>
 HTML;
-		# BUILDS CATEGORIES
+		# Build categories
 		$categoryLinks = array();
 		foreach($event->categories as $category){
 			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
@@ -135,13 +135,13 @@ HTML;
 					<article class="with-secondary">
 HTML;
 		
-		# DETERMINES IF USER IS SIGNED IN, TO SHOW SECONDARY OR NOT
+		# Determines if user is signed in, to show secondary or not
 		if(\WDDSocial\UserValidator::is_authorized()){
 			$html .=<<<HTML
 						
 						<div class="secondary">
 HTML;
-			# DETERMINES WHAT TYPE OF SECONDARY CONTROLS TO PRESENT (FLAG OR EDIT/DELETE)
+			# Determines what type of secondary controls to present (Flag or Edit/Delete)
 			if(\WDDSocial\UserValidator::is_current($job->userID)){
 				$html .= <<<HTML
 
@@ -170,7 +170,7 @@ HTML;
 						<p class="job-type"><a href="{$root}/jobs#{$job->jobType}" title="See {$job->jobType} Job Postings">{$job->jobType}</a></p>
 HTML;
 		
-		# BUILDS CATEGORIES
+		# Build categories
 		$categoryLinks = array();
 		foreach($job->categories as $category){
 			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");

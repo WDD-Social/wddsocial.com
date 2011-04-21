@@ -49,7 +49,7 @@ class MediumDisplayView implements \Framework5\IView {
 						<div class="secondary">
 HTML;
 		
-		# DETERMINES WHAT TYPE OF SECONDARY CONTROLS TO PRESENT (FLAG OR EDIT/DELETE)
+		# Determines what type of secondary controls to present (Flag or Edit/Delete)
 		if(\WDDSocial\UserValidator::is_current($project->userID)){
 			$html .= <<<HTML
 
@@ -72,7 +72,7 @@ HTML;
 						<p>{$project->description}</p>
 HTML;
 		
-		# BUILDS IMAGES IF NEEDED
+		# Build images if needed
 		if(count($project->images) > 0){
 			$html .= <<<HTML
 
@@ -94,7 +94,7 @@ HTML;
 						<p class="comments"><a href="{$root}/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
 HTML;
 		
-		# BUILDS CATEGORIES
+		# Build categories
 		$categoryLinks = array();
 		foreach($project->categories as $category){
 			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
@@ -125,7 +125,7 @@ HTML;
 						<div class="secondary">
 HTML;
 		
-		# DETERMINES WHAT TYPE OF SECONDARY CONTROLS TO PRESENT (FLAG OR EDIT/DELETE)
+		# Determines what type of secondary controls to present (Flag or Edit/Delete)
 		if(\WDDSocial\UserValidator::is_current($article->userID)){
 			$html .= <<<HTML
 
@@ -148,7 +148,7 @@ HTML;
 						<p>{$article->description}</p>
 HTML;
 		
-		# BUILDS IMAGES IF NEEDED
+		# Build images if needed
 		if(count($article->images) > 0){
 			$html .= <<<HTML
 
@@ -170,7 +170,7 @@ HTML;
 						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
 HTML;
 		
-		# BUILDS CATEGORIES
+		# Build categories
 		$categoryLinks = array();
 		foreach($article->categories as $category){
 			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
@@ -213,7 +213,7 @@ HTML;
 	*/
 	
 	private static function format_team_string($ownerID, $team){
-		# REMOVE USER WHO POSTED PROJECT FROM TEAM (FOR INTRO SENTENCE), AND PUT CURRENT USER AT FRONT OF ARRAY
+		# Remove user who posted content from team (for intro sentence), and put current user at front of array
 		$cleanTeam = $team;
 		foreach($cleanTeam as $member){
 			if($member->id == $ownerID){
@@ -228,12 +228,12 @@ HTML;
 		}
 		$cleanTeam = array_values($cleanTeam);
 		
-		# CREATE TEAM STRING
+		# Create team string
 		if(count($cleanTeam) > 0){
 			$teamIntro = " with ";
 			$teamString = array();
 			
-			# CREATES STRING ACCORDING TO HOW MANY TEAM MEMBERS THERE ARE FOR THIS PIECE OF CONTENT
+			# Creates string according to how many team members there are for this piece of content
 			if(count($cleanTeam) == 1){
 				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
 				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");

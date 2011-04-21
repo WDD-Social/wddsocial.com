@@ -64,7 +64,7 @@ HTML;
 	
 	
 	
-	# OPENS SUBCONTENT SECTION, WITH OPTIONAL CLASSES, EXTRAS
+	# Opens subcontent section, with optional classes, extras
 	private static function begin_content_section($options){
 		if(!isset($options['id']) || !isset($options['header'])){
 			throw new Exception("SectionView begin_content_setion requires parameter id (section ID) and header (h1 text)");
@@ -86,7 +86,7 @@ HTML;
 	
 	
 	
-	# ENDS SUBCONTENT SECTION, WITH OPTIONAL ID, AND LOAD_MORE OPTIONS
+	# Ends subcontent section, with optional id, and load_more options
 	private static function end_content_section($options){
 		if(isset($options['load_more'])){
 			$html .= <<<HTML
@@ -103,7 +103,7 @@ HTML;
 	
 	
 	
-	# EXTRA CONTENT PIECES (FILTERS, SLIDER CONTROLS, ETC)
+	# Extra content pieces (filters, slider controls, etc)
 	private static function get_extra($id){
 		$extras = array(
 			'latest_filters' => <<<HTML

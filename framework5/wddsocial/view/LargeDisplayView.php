@@ -44,7 +44,7 @@ class LargeDisplayView implements \Framework5\IView {
 						<p class="comments"><a href="{$root}/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a></p>
 HTML;
 		
-		# BUILDS CATEGORIES
+		# Build categories
 		$categoryLinks = array();
 		foreach($project->categories as $category){
 			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
@@ -66,7 +66,7 @@ HTML;
 	private static function format_team($team){
 		if(count($team) > 0){
 			
-			# CREATES STRING ACCORDING TO HOW MANY TEAM MEMBERS THERE ARE FOR THIS PIECE OF CONTENT
+			# Creates string according to how many team members there are for this piece of content
 			if(count($team) == 1){
 				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($team[0]->id,"{$team[0]->firstName} {$team[0]->lastName}");
 				$teamString .= "<a href=\"{$root}/user/{$team[0]->vanityURL}\" title=\"$userVerbage\">{$team[0]->firstName} {$team[0]->lastName}</a>";

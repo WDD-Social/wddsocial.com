@@ -15,19 +15,19 @@ class IndexPage implements \Framework5\IExecutable {
 		import('wddsocial.view.SectionView');
 		import('wddsocial.controller.UserValidator');
 		
-		# DISPLAY PAGE HEADER
+		# Display page header
 		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
 	
-		# CHECK WHICH HOME PAGE TO CREATE, BASED ON AUTHORIZATION
+		# Check which home page to create, based on authorization
 		if(\WDDSocial\UserValidator::is_authorized()){
-			# CREATE USER DASHBOARD PAGE
+			# Create user dashboard page
 			echo render('wddsocial.view.SectionView', array('section' => 'begin_content', 'classes' => array('dashboard')));
 			static::get_share();
 			static::get_latest();
 			static::get_events();
 			static::get_jobs();
 		}else{
-			# CREATE PUBLIC HOME PAGE
+			# Create public home page
 			echo render('wddsocial.view.SectionView', array('section' => 'begin_content', 'classes' => array('start-page')));
 			static::get_projects();
 			static::get_sign_in();
@@ -36,10 +36,10 @@ class IndexPage implements \Framework5\IExecutable {
 			static::get_events();
 		}
 		
-		# END CONTENT AREA
+		# End content area
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content'));
 		
-		# CREATE FOOTER
+		# Create footer
 		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
 	}
 	
@@ -115,7 +115,7 @@ class IndexPage implements \Framework5\IExecutable {
 	private static function get_projects(){
 		import('wddsocial.model.DisplayVO');
 		
-		# GET DB INSTANCE AND QUERY
+		# Get db instance and query
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getRecentProjects);
@@ -123,7 +123,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'projects', 'classes' => array('large', 'slider'), 'header' => 'Projects', 'extra' => 'slider_controls'));
 		
-		# CREATE SECTION ITEMS ***GETS 10 PROJECTS***
+		# Create section items ***GETS 10 PROJECTS***
 		/*while($row = $query->fetch()){
 			echo render('wddsocial.view.LargeDisplayView', array('type' => $row->type,'content' => $row));
 		}*/
@@ -132,7 +132,7 @@ class IndexPage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.LargeDisplayView', array('type' => $row[0]->type,'content' => $row[0]));
 		}
 		
-		# CREATE SECTION FOOTER
+		# Create section footer
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'projects'));
 	}
 	
@@ -145,7 +145,7 @@ class IndexPage implements \Framework5\IExecutable {
 	private static function get_people(){
 		import('wddsocial.model.DisplayVO');
 		
-		# GET DB INSTANCE AND QUERY
+		# Get db instance and query
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getRecentArticles);
@@ -153,12 +153,12 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'people', 'classes' => array('small', 'image-grid'), 'header' => 'People'));
 		
-		# CREATE SECTION ITEMS
+		# Create section items
 		/* while($row = $query->fetch()){
 			echo render('wddsocial.view.SmallDisplayView', array('type' => $row->type,'content' => $row));
 		}*/
 		
-		# CREATE SECTION FOOTER
+		# Create section footer
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'people'));
 	}
 	
@@ -171,7 +171,7 @@ class IndexPage implements \Framework5\IExecutable {
 	private static function get_articles(){
 		import('wddsocial.model.DisplayVO');
 		
-		# GET DB INSTANCE AND QUERY
+		# Get db instance and query
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getRecentArticles);
@@ -179,7 +179,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'articles', 'classes' => array('small', 'slider'), 'header' => 'Articles'));
 		
-		# CREATE SECTION ITEMS ***GETS 10 ARTICLES***
+		# Create section items ***GETS 10 ARTICLES***
 		/* while($row = $query->fetch()){
 			echo render('wddsocial.view.SmallDisplayView', array('type' => $row->type,'content' => $row));
 		}*/
@@ -190,7 +190,7 @@ class IndexPage implements \Framework5\IExecutable {
 			}
 		}
 		
-		# CREATE SECTION FOOTER
+		# Create section footer
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'articles'));
 	}
 	
@@ -203,7 +203,7 @@ class IndexPage implements \Framework5\IExecutable {
 	private static function get_events(){
 		import('wddsocial.model.EventVO');
 		
-		# GET DB INSTANCE AND QUERY
+		# Get db instance and query
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = (\WDDSocial\UserValidator::is_authorized())?$db->query($sql->getUpcomingEvents):$db->query($sql->getUpcomingPublicEvents);
@@ -211,11 +211,11 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		if(\WDDSocial\UserValidator::is_authorized()){
 			echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'events', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Events'));
-			# SET LIMIT OF POSTS
+			# Set limit of posts
 			$limit = 3;
 		}else{
 			echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'events', 'classes' => array('small', 'no-margin', 'slider'), 'header' => 'Events', 'extra' => 'slider_controls'));
-			# SET LIMIT OF POSTS
+			# Set limit of posts
 			$limit = 2;
 		}		
 		
@@ -227,7 +227,7 @@ class IndexPage implements \Framework5\IExecutable {
 			}
 		}
 		
-		# CREATE SECTION FOOTER
+		# Create section footer
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'events'));
 	}
 	
@@ -240,7 +240,7 @@ class IndexPage implements \Framework5\IExecutable {
 	private static function get_jobs(){
 		import('wddsocial.model.JobVO');
 		
-		# GET DB INSTANCE AND QUERY
+		# Get db instance and query
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getRecentJobs);
@@ -248,12 +248,12 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'jobs', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Jobs'));
 		
-		# CREATE SECTION ITEMS
+		# Create section items
 		while($row = $query->fetch()){
 			echo render('wddsocial.view.SmallDisplayView', array('type' => $row->type,'content' => $row));
 		}
 		
-		# CREATE SECTION FOOTER
+		# Create section footer
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'jobs'));
 	}
 }
