@@ -65,7 +65,7 @@ HTML;
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
-					<form action="{$root}" method="post">
+					<form action="{$root}/signin" method="post">
 						<p class="error"><strong></strong></p>
 						<fieldset>
 							<label for="email">Email</label>
