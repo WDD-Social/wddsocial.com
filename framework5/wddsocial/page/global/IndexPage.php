@@ -110,12 +110,10 @@ class IndexPage implements \Framework5\IExecutable {
 		import('wddsocial.model.DisplayVO');
 		
 		# GET DB INSTANCE AND QUERY
-		/*
-$db = instance(':db');
+		$db = instance(':db');
 		$sql = new SelectorSQL();
-		$query = $db->query($sql->getRecentArticles);
+		$query = $db->query($sql->getRecentlyActivePeople);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
-*/
 		
 		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'people', 'classes' => array('small', 'image-grid'), 'header' => 'People'));
 		

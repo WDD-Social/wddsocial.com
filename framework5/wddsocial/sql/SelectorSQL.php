@@ -175,6 +175,10 @@ class SelectorSQL{
 			UNION
 			SELECT u.id AS contentID, CONCAT_WS(' ',firstName,lastName) AS contentTitle, u.vanityURL AS contentVanityURL, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, avatar AS userAvatar, u.vanityURL AS userVanityURL, u.datetime AS `datetime`, getDateDiffEN(u.datetime) AS `date`, 'person' AS `type`
 			FROM users AS u
+			UNION
+			SELECT c.id AS contentID, '' AS contentTitle, '' AS contentVanityURL, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, avatar AS userAvatar, u.vanityURL AS userVanityURL, c.datetime AS `datetime`, getDateDiffEN(c.datetime) AS `date`, 'comment' AS `type`
+			FROM comments AS c
+			LEFT JOIN users AS u ON (u.id = c.userID)
 			ORDER BY `datetime` DESC
 			LIMIT 0,100) AS f
 			GROUP BY f.userID
