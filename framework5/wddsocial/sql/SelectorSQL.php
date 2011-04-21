@@ -10,17 +10,6 @@ namespace WDDSocial;
 class SelectorSQL{
 	private $_info = array(
 		/**
-		* User queries
-		*/
-		
-		'getUserByID' => "
-			SELECT u.id, ut.title AS `type`, languageID, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR,birthday,NOW()) AS age
-			FROM users AS u
-			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
-			WHERE u.id = :id",
-			
-			
-		/**
 		* Activity feed queries
 		*/
 		
@@ -39,7 +28,7 @@ class SelectorSQL{
 			ORDER BY DATETIME DESC
 			LIMIT 0,10",
 			
-		'getLatest' => "
+		'getLatestNoFunction' => "
 			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, 
 			IF(
 			TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
@@ -162,6 +151,34 @@ class SelectorSQL{
 			FROM projects
 			ORDER BY `datetime` DESC
 			LIMIT 0,5",
+			
+			
+		/**
+		* People queries
+		*/
+		
+		'getUserByID' => "
+			SELECT u.id, ut.title AS `type`, languageID, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR,birthday,NOW()) AS age
+			FROM users AS u
+			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
+			WHERE u.id = :id",
+			
+		'getRecentlyActivePeople' =>"
+			SELECT DISTINCT f.contentID, f.contentTitle, f.contentVanityURL, f.userID, f.userFirstName, f.userLastName, f.userAvatar, f.userVanityURL, f.datetime, f.date, f.type
+			FROM (SELECT p.id AS contentID, p.title AS contentTitle, p.vanityURL AS contentVanityURL, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, avatar AS userAvatar, u.vanityURL AS userVanityURL, p.datetime AS `datetime`, getDateDiffEN(p.datetime) AS `date`, 'project' AS `type`
+			FROM projects AS p
+			LEFT JOIN users AS u ON (u.id = p.userID)
+			UNION
+			SELECT a.id AS contentID, a.title AS contentTitle, a.vanityURL AS contentVanityURL, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, avatar AS userAvatar, u.vanityURL AS userVanityURL, a.datetime AS `datetime`, getDateDiffEN(a.datetime) AS `date`, 'article' AS `type`
+			FROM articles AS a
+			LEFT JOIN users AS u ON (u.id = a.userID)
+			UNION
+			SELECT u.id AS contentID, CONCAT_WS(' ',firstName,lastName) AS contentTitle, u.vanityURL AS contentVanityURL, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, avatar AS userAvatar, u.vanityURL AS userVanityURL, u.datetime AS `datetime`, getDateDiffEN(u.datetime) AS `date`, 'person' AS `type`
+			FROM users AS u
+			ORDER BY `datetime` DESC
+			LIMIT 0,100) AS f
+			GROUP BY f.userID
+			LIMIT 0,16",
 			
 			
 		/**
