@@ -14,7 +14,7 @@ class FormView implements \Framework5\IView {
 			case 'sign_in':
 				return static::sign_in();
 			default:
-				throw new Exception("FormView requires parameter type (share), '{$options['type']}' provided");
+				throw new Exception("FormView requires parameter type (share, sign_in), '{$options['type']}' provided");
 		}
 	}
 	
@@ -27,7 +27,8 @@ class FormView implements \Framework5\IView {
 	private static function share() {
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
-<form action="{$root}" method="post">
+
+					<form action="{$root}" method="post">
 						<p class="error"><strong></strong></p>
 						<fieldset>
 							<label for="title">Title</label>
@@ -63,7 +64,8 @@ HTML;
 	private static function sign_in() {
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
-<form action="{$root}" method="post">
+
+					<form action="{$root}" method="post">
 						<p class="error"><strong></strong></p>
 						<fieldset>
 							<label for="email">Email</label>
