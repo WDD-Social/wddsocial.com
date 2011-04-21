@@ -11,8 +11,8 @@ class FormView implements \Framework5\IView {
 		switch ($options['type']) {
 			case 'share':
 				return static::share();
-			case 'signin_home':
-				return static::signin_home();
+			case 'sign_in':
+				return static::sign_in();
 			default:
 				throw new Exception("FormView requires parameter type (share), '{$options['type']}' provided");
 		}
@@ -26,10 +26,7 @@ class FormView implements \Framework5\IView {
 	
 	private static function share() {
 		return <<<HTML
-
-				<section id="share" class="small no-margin side-sticky">
-					<h1>Share</h1>
-					<form action="form.html" method="post">
+<form action="form.html" method="post">
 						<fieldset>
 							<label for="title">Title</label>
 							<input type="text" name="title" id="title" />
@@ -52,22 +49,18 @@ class FormView implements \Framework5\IView {
 						</fieldset>
 						<input type="submit" value="Create" />
 					</form>
-				</section><!-- END SHARE -->
 HTML;
 	}
 	
 	
 	
 	/**
-	* Creates the share form
+	* Creates the sign in form
 	*/
 	
-	private static function signin_home() {
+	private static function sign_in() {
 		return <<<HTML
-
-				<section id="sign-in" class="small no-margin">
-					<h1>Sign In</h1>
-					<form action="dashboard.html" method="post">
+<form action="#" method="post">
 						<fieldset>
 							<label for="email">Email</label>
 							<input type="email" name="email" id="email" />
@@ -80,7 +73,6 @@ HTML;
 						<p class="helper-link"><a href="form.html" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
 						<input type="submit" value="Sign In" />
 					</form>
-				</section><!-- END SIGN IN -->
 HTML;
 	}
 }

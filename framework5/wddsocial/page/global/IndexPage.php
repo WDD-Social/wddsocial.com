@@ -22,7 +22,7 @@ class IndexPage implements \Framework5\IExecutable {
 		if(\WDDSocial\UserValidator::is_authorized()){
 			# CREATE USER DASHBOARD PAGE
 			echo render('wddsocial.view.SectionView', array('section' => 'begin_content', 'classes' => array('dashboard')));
-			echo render('wddsocial.view.FormView', array('type' => 'share'));
+			static::get_share();
 			static::get_latest();
 			static::get_events();
 			static::get_jobs();
@@ -30,7 +30,7 @@ class IndexPage implements \Framework5\IExecutable {
 			# CREATE PUBLIC HOME PAGE
 			echo render('wddsocial.view.SectionView', array('section' => 'begin_content', 'classes' => array('start-page')));
 			static::get_projects();
-			echo render('wddsocial.view.FormView', array('type' => 'signin_home'));
+			static::get_sign_in();
 			static::get_people();
 			static::get_articles();
 			static::get_events();
@@ -46,28 +46,64 @@ class IndexPage implements \Framework5\IExecutable {
 	
 	
 	/**
+	* Gets the share form
+	*/
+	
+	private static function get_share(){
+		
+		# Create section header
+		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'share', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Share'));
+		
+		# Create form
+		echo render('wddsocial.view.FormView', array('type' => 'share'));
+				
+		# Create section footer
+		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'share'));
+	}
+	
+	
+	
+	/**
 	* Gets and displays latest content section
 	*/
 	
 	private static function get_latest(){
 		import('wddsocial.model.DisplayVO');
 		
-		# GET DB INSTANCE AND QUERY
+		# Get db instance and query
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getLatest);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 
-		# CREATE SECTION HEADER
+		# Create section header
 		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'latest', 'classes' => array('medium', 'with-secondary', 'filterable'), 'header' => 'Latest', 'extra' => 'latest_filters'));
 		
-		# CREATE SECTION ITEMS
+		# Create section items
 		while($row = $query->fetch()){
 			echo render('wddsocial.view.MediumDisplayView', array('type' => $row->type,'content' => $row));
 		}
 		
-		# CREATE SECTION FOOTER
+		# Create section footer
 		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
+	}
+	
+	
+	
+	/**
+	* Gets and displays articles
+	*/
+	
+	private static function get_sign_in(){
+		
+		# Create section header
+		echo render('wddsocial.view.SectionView', array('section' => 'begin_content_section', 'id' => 'sign-in', 'classes' => array('small', 'no-margin'), 'header' => 'Sign In'));
+		
+		# Create form
+		echo render('wddsocial.view.FormView', array('type' => 'sign_in'));
+				
+		# Create section footer
+		echo render('wddsocial.view.SectionView', array('section' => 'end_content_section', 'id' => 'sign-in'));
 	}
 	
 	
