@@ -139,7 +139,7 @@ class SelectorSQL{
 		) AS `date`
 		FROM users AS u
 		ORDER BY DATETIME DESC
-		LIMIT 0,10",
+		LIMIT 0,20",
 			
 			
 		/**
