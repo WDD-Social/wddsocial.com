@@ -26,7 +26,7 @@ class SelectorSQL{
 			SELECT id, CONCAT_WS(' ', firstName, lastName) AS title, bio AS description, vanityURL, `DATETIME`, 'person' AS `TYPE`, id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, vanityURL AS userURL, getDateDiffEN(`DATETIME`) AS `DATE`
 			FROM users AS u
 			ORDER BY DATETIME DESC
-			LIMIT 0,10",
+			LIMIT 0,20",
 			
 		'getLatestNoFunction' => "
 			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, 
@@ -139,7 +139,7 @@ class SelectorSQL{
 		) AS `date`
 		FROM users AS u
 		ORDER BY DATETIME DESC
-		LIMIT 0,10",
+		LIMIT 0,20",
 			
 			
 		/**
@@ -175,9 +175,22 @@ class SelectorSQL{
 			UNION
 			SELECT u.id AS contentID, CONCAT_WS(' ',firstName,lastName) AS contentTitle, u.vanityURL AS contentVanityURL, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, avatar AS userAvatar, u.vanityURL AS userVanityURL, u.datetime AS `datetime`, getDateDiffEN(u.datetime) AS `date`, 'person' AS `type`
 			FROM users AS u
+			UNION
+			SELECT c.id AS contentID, p.title AS contentTitle, p.vanityURL AS contentVanityURL, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, avatar AS userAvatar, u.vanityURL AS userVanityURL, c.datetime AS `datetime`, getDateDiffEN(c.datetime) AS `date`, 'projectComment' AS `type`
+			FROM comments AS c
+			INNER JOIN projectComments AS pc ON (c.id = pc.commentID)
+			LEFT JOIN projects AS p ON (p.id = pc.projectID)
+			LEFT JOIN users AS u ON (u.id = c.userID)
+			UNION
+			SELECT c.id AS contentID, a.title AS contentTitle, a.vanityURL AS contentVanityURL, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, avatar AS userAvatar, u.vanityURL AS userVanityURL, c.datetime AS `datetime`, getDateDiffEN(c.datetime) AS `date`, 'articleComment' AS `type`
+			FROM comments AS c
+			INNER JOIN articleComments AS ac ON (c.id = ac.commentID)
+			LEFT JOIN articles AS a ON (a.id = ac.articleID)
+			LEFT JOIN users AS u ON (u.id = c.userID)
 			ORDER BY `datetime` DESC
 			LIMIT 0,100) AS f
 			GROUP BY f.userID
+			ORDER BY f.datetime DESC
 			LIMIT 0,16",
 			
 			

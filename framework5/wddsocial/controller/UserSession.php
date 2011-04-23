@@ -39,12 +39,6 @@ class UserSession {
 		# set session
 		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
-
-	}
-	
-	
-		/* backup
-		import('wddsocial.model.UserVO');
 		
 		# 
 		$db = instance(':db');
@@ -59,7 +53,5 @@ class UserSession {
 		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
 		*/
-	
-	
 	
 }

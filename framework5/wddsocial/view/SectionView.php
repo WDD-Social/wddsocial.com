@@ -64,7 +64,7 @@ HTML;
 	
 	
 	
-	# OPENS SUBCONTENT SECTION, WITH OPTIONAL CLASSES, EXTRAS
+	# Opens subcontent section, with optional classes, extras
 	private static function begin_content_section($options){
 		if(!isset($options['id']) || !isset($options['header'])){
 			throw new Exception("SectionView begin_content_setion requires parameter id (section ID) and header (h1 text)");
@@ -86,12 +86,12 @@ HTML;
 	
 	
 	
-	# ENDS SUBCONTENT SECTION, WITH OPTIONAL ID, AND LOAD_MORE OPTIONS
+	# Ends subcontent section, with optional id, and load_more options
 	private static function end_content_section($options){
 		if(isset($options['load_more'])){
 			$html .= <<<HTML
 
-					<p class="load-more"><a href="#" title="Load more {$options['load_more']}...">Load More</a></p>
+					<p class="load-more"><a href="{$root}" title="Load more {$options['load_more']}...">Load More</a></p>
 HTML;
 		}
 		$html .= <<<HTML
@@ -103,19 +103,19 @@ HTML;
 	
 	
 	
-	# EXTRA CONTENT PIECES (FILTERS, SLIDER CONTROLS, ETC)
+	# Extra content pieces (filters, slider controls, etc)
 	private static function get_extra($id){
 		$extras = array(
 			'latest_filters' => <<<HTML
 <div class="secondary filters">
-						<a href="dashboard.html#all" title="All Latest Activity" class="current">All</a> 
-						<a href="dashboard.html#people" title="Latest People">People</a> 
-						<a href="dashboard.html#projects" title="Latest Projects">Projects</a> 
-						<a href="dashboard.html#articles" title="Latest Articles">Articles</a>
+						<a href="{$root}#all" title="All Latest Activity" class="current">All</a> 
+						<a href="{$root}#people" title="Latest People">People</a> 
+						<a href="{$root}#projects" title="Latest Projects">Projects</a> 
+						<a href="{$root}#articles" title="Latest Articles">Articles</a>
 					</div><!-- END SECONDARY -->
 HTML
 			,'slider_controls' => <<<HTML
-<div class="slider-controls"><a href="#" title="Featured 1" class="current">1</a> <a href="#" title="Featured 2">2</a> <a href="#" title="Featured 3">3</a> <a href="#" title="Featured 4">4</a> <a href="#" title="Featured 5">5</a></div>
+<div class="slider-controls"><a href="{$root}" title="Featured 1" class="current">1</a> <a href="{$root}" title="Featured 2">2</a> <a href="{$root}" title="Featured 3">3</a> <a href="{$root}" title="Featured 4">4</a> <a href="{$root}" title="Featured 5">5</a></div>
 HTML
 		);
 		
