@@ -39,8 +39,10 @@ class UserSession {
 		# set session
 		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
+	
+	
+		/* backup
 		
-		# 
 		$db = instance(':db');
 		$sql = new SelectorSQL();
 		$query = $db->prepare($sql->getUserByID);
@@ -53,5 +55,5 @@ class UserSession {
 		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
 		*/
-	
+	}
 }
