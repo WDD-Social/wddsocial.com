@@ -86,7 +86,7 @@ class Request extends StaticController {
 	private static function _generate_request_id() {
 		
 		# insert trace into database
-		$db = instance('core.controller.Database');
+		$db = instance('core.controller.Framework5\Database');
 		$data = array(EXEC_START_TIME, static::uri());
 		$query = $db->prepare("INSERT INTO fw5_request_log (time, uri) VALUES (?, ?);");
 		$query->execute($data);

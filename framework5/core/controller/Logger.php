@@ -21,7 +21,7 @@ class Logger extends StaticController {
 		$data = array($request_id, $message, time());
 		
 		# insert trace into database
-		$db = instance('core.controller.Database');
+		$db = instance('core.controller.Framework5\Database');
 		$query = $db->prepare("INSERT INTO fw5_trace_log (request_id, message, timestamp) VALUES (?, ?, ?);");
 		$query->execute($data);
 		
@@ -51,7 +51,7 @@ class Logger extends StaticController {
 		);
 		
 		# insert trace into database
-		$db = instance('core.controller.Database');
+		$db = instance('core.controller.Framework5\Database');
 		$query = $db->prepare(
 			"INSERT INTO fw5_exception_log (request_id, type, timestamp, message, code, file, line, trace) VALUES (?, ?, ?, ?, ?, ?, ?, ?);");
 		$query->execute($data);
@@ -79,7 +79,7 @@ class Logger extends StaticController {
 		$data = array($request_id, EXEC_START_TIME, $exec_time, $memory_peak);
 		
 		# insert trace into database
-		$db = instance('core.controller.Database');
+		$db = instance('core.controller.Framework5\Database');
 		$query = $db->prepare(
 			"INSERT INTO fw5_execution_log (request_id, start_time, exec_time, memory_peak) VALUES (?, ?, ?, ?);");
 		$query->execute($data);
@@ -106,7 +106,7 @@ class Logger extends StaticController {
 		$data = array($request_id, serialize($stack));
 		
 		# insert trace into database
-		$db = instance('core.controller.Database');
+		$db = instance('core.controller.Framework5\Database');
 		$query = $db->prepare(
 			"INSERT INTO fw5_debug_log (request_id, data) VALUES (?, ?);");
 		$query->execute($data);
