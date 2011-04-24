@@ -9,7 +9,7 @@ namespace WDDSocial;
 */
 
 class UserVO {
-	public $id, $language, $firstName, $lastName, $avatar, $bio, $hometown, $age, $type, $contact = array(), $email, $fullsailEmail, $vanityURL;
+	public $id, $language, $firstName, $lastName, $avatar, $bio, $hometown, $age, $type, $contact = array(), $email, $fullsailEmail, $vanityURL, $extra = array();
 	
 	public function __construct(){
 		$this->contact['website']=$this->website;
