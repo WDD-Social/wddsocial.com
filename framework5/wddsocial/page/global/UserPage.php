@@ -12,23 +12,44 @@ class UserPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
-		# display site header
-		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'User Profile'));
+		$user = static::getUser(\Framework5\Request::segment(1));
+		if($user == false){
+			echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => "User Not Found"));
+			echo "<h1>User Not Found</h1>";
+			echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
+		}else{
+			# display site header
+			echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
+			echo render('wddsocial.view.SectionView', array('section' => 'begin_content'));
+			echo render('wddsocial.view.UserView', array('section' => 'intro', 'user' => $user));
+			/*echo "<pre>";
+			print_r($user);
+			echo "</pre>";*/
+			
+			echo render('wddsocial.view.SectionView', array('section' => 'end_content'));
+			
+			# display site footer
+			echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
+		}
+			
 		
-		# load language pack
-		lang_load('wddsocial.lang.ProfileLang');
 		
-		# display i18n text
-		echo text('ProfileLang:intro', array(
-			'name' => 'Tyler',
-			'age' => '19',
-			'location' => 'New Jersey',
-			'month' => 'jan', 'year' => '2009')
-		);
+	}
+	
+	/**
+	* Gets the user and data
+	*/
+	
+	private static function getUser($vanityURL){
+		import('wddsocial.model.UserVO');
 		
-		# display site footer
-		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
-		
-		
+		# Get db instance and query
+		$db = instance(':db');
+		$sql = instance(':sel-sql');
+		$data = array('vanityURL' => $vanityURL);
+		$query = $db->prepare($sql->getUserByVanityURL);
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+		$query->execute($data);
+		return $query->fetch();
 	}
 }

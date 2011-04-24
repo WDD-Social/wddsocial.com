@@ -9,5 +9,14 @@ namespace WDDSocial;
 */
 
 class UserVO {
-	public $id, $type, $language, $firstName, $lastName, $email, $fullsailEmail, $avatar, $vanityURL, $bio, $hometown, $age;
+	public $id, $language, $firstName, $lastName, $avatar, $bio, $hometown, $age, $type, $contact = array(), $email, $fullsailEmail, $vanityURL;
+	
+	public function __construct(){
+		$this->contact['website']=$this->website;
+		$this->contact['twitter']=$this->twitter;
+		$this->contact['facebook']=$this->facebook;
+		$this->contact['github']=$this->github;
+		$this->contact['dribbble']=$this->dribbble;
+		$this->contact['forrst']=$this->forrst;
+	}
 }

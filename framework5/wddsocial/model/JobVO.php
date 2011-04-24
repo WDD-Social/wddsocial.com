@@ -14,7 +14,7 @@ class JobVO{
 		import('wddsocial.sql.SelectorSQL');
 		
 		$this->db = instance(':db');
-		$this->sql = new SelectorSQL();
+		$this->sql = instance(':sel-sql');
 		
 		$this->type = 'job';
 		$this->get_categories();

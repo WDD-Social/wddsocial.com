@@ -26,7 +26,7 @@ class UserSession {
 		# set session
 		session_start();
 		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = false;
+		$_SESSION['authorized'] = true;
 	}
 	
 		/* backup

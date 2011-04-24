@@ -13,7 +13,7 @@ class EventVO{
 	public function __construct(){
 		$this->db = instance(':db');
 		import('wddsocial.sql.SelectorSQL');
-		$this->sql = new SelectorSQL();
+		$this->sql = instance(':sel-sql');
 		
 		$this->type = 'event';
 		$this->get_comments_count();
