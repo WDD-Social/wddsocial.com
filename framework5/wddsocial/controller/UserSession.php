@@ -30,7 +30,7 @@ class UserSession {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->prepare($sql->getUserByID);
-		import('wddsocial.model.UserVO');
+		import('wddsocial.model.WDDSocial\UserVO');
 		$query->setFetchMode(\PDO::FETCH_CLASS, 'WDDSocial\UserVO');
 		$data = array('id' => 1);
 		$query->execute($data);

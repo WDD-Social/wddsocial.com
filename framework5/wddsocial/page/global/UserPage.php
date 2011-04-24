@@ -13,10 +13,11 @@ class UserPage implements \Framework5\IExecutable {
 	public static function execute() {
 		
 		# display site header
-		echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'User Profile'));
+		echo render('wddsocial.view.WDDSocial\TemplateView', 
+			array('section' => 'top', 'title' => 'User Profile'));
 		
 		# load language pack
-		lang_load('wddsocial.lang.ProfileLang');
+		lang_load('wddsocial.lang.WDDSocial\ProfileLang');
 		
 		# display i18n text
 		echo text('ProfileLang:intro', array(
@@ -27,7 +28,7 @@ class UserPage implements \Framework5\IExecutable {
 		);
 		
 		# display site footer
-		echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
+		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
 		
 		
 	}

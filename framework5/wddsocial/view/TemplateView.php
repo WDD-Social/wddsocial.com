@@ -1,5 +1,6 @@
 <?php
 
+namespace WDDSocial;
 
 /*
 * 
@@ -164,7 +165,7 @@ HTML;
 		
 		$root = \Framework5\Request::root_path();
 		$current = \Framework5\Request::segment(0);
-		$lang = new Framework5\Lang('wddsocial.lang.TemplateLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.TemplateLang');
 		
 		$html = <<<HTML
 

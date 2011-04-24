@@ -15,22 +15,23 @@ class SignupPage implements \Framework5\IExecutable {
 			static::process_form();
 		}else{
 			# display site header
-			echo render('wddsocial.view.TemplateView', array('section' => 'top', 'title' => 'Sign Up for WDD Social'));
+			echo render('wddsocial.view.WDDSocial\TemplateView', 
+				array('section' => 'top', 'title' => 'Sign Up for WDD Social'));
 			
 			# open content section
-			echo render('wddsocial.view.SectionView', array('section' => 'begin_content'));
+			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			
 			# display sign up form
-			echo render('wddsocial.view.FormView', array('type' => 'sign_up_intro'));
+			echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'sign_up_intro'));
 			
 			# display sign up form
-			echo render('wddsocial.view.FormView', array('type' => 'sign_up'));
+			echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'sign_up'));
 			
 			# end content section
-			echo render('wddsocial.view.SectionView', array('section' => 'end_content'));
+			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'end_content'));
 			
 			# display site footer
-			echo render('wddsocial.view.TemplateView', array('section' => 'bottom'));
+			echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
 		}
 	}
 	

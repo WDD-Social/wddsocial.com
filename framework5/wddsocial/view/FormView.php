@@ -1,5 +1,7 @@
 <?php
 
+namespace WDDSocial;
+
 class FormView implements \Framework5\IView {		
 	
 	/**

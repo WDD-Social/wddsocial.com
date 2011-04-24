@@ -12,7 +12,7 @@ class EventVO{
 	
 	public function __construct(){
 		$this->db = instance(':db');
-		import('wddsocial.sql.SelectorSQL');
+		import('wddsocial.sql.WDDSocial\SelectorSQL');
 		$this->sql = new SelectorSQL();
 		
 		$this->type = 'event';

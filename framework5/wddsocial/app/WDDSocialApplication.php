@@ -17,19 +17,19 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	
 	public static function execute() {
 		
-		import('wddsocial.controller.UserValidator');
-		import('wddsocial.sql.SelectorSQL');
+		import('wddsocial.controller.WDDSocial\UserValidator');
+		import('wddsocial.sql.WDDSocial\SelectorSQL');
 				
 		# enable localization module
-		import('core.module.i18n.Lang');
+		import('core.module.i18n.Framework5\Lang');
 		Lang::language($lang);
 		
 		# resolve request to a page controller
-		import('wddsocial.config.Router');
+		import('wddsocial.config.WDDSocial\Router');
 		$package = \WDDSocial\Router::resolve(Request::segment(0));
 		
 		# check user session
-		import('wddsocial.controller.UserSession');
+		import('wddsocial.controller.WDDSocial\UserSession');
 		\WDDSocial\UserSession::status();
 		
 		# execute the controller

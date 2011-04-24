@@ -133,7 +133,7 @@ class DisplayVO{
 	*/
 	
 	private function get_team(){
-		import('wddsocial.model.UserVO');
+		import('wddsocial.model.WDDSocial\UserVO');
 		$data = array('id' => $this->id);
 		switch ($this->type){
 			case 'project':
@@ -164,7 +164,7 @@ class DisplayVO{
 	*/
 	
 	private function get_images(){
-		import('wddsocial.model.ImageVO');
+		import('wddsocial.model.WDDSocial\ImageVO');
 		$data = array('id' => $this->id);
 		switch ($this->type){
 			case 'project':

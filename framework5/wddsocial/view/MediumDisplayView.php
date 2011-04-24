@@ -1,5 +1,7 @@
 <?php
 
+namespace WDDSocial;
+
 /*
 * 
 * @author Anthony Colangelo (me@acolangelo.com)
@@ -12,8 +14,8 @@ class MediumDisplayView implements \Framework5\IView {
 	*/
 	
 	public static function render($options = null) {
-		import('wddsocial.helper.NaturalLanguage');
-		import('wddsocial.controller.UserValidator');
+		import('wddsocial.helper.WDDSocial\NaturalLanguage');
+		import('wddsocial.controller.WDDSocial\UserValidator');
 		
 		switch ($options['type']) {
 			case 'project':
