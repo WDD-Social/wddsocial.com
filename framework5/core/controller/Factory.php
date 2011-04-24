@@ -40,6 +40,10 @@ class Factory extends StaticController {
 		# import the file
 		require $package->path;
 		
+		# ensure that the fully quailfied class is loaded 
+		if (!class_exists($package->fully_qualified))
+			throw new Exception("Package was imported, but class {$package->fully_qualified} does not exist");
+		
 		# add location to array
 		array_push(static::$_imported_paths, $package->path);
 		return true;
