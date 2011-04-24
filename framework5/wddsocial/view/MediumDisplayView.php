@@ -14,6 +14,7 @@ class MediumDisplayView implements \Framework5\IView {
 	*/
 	
 	public static function render($options = null) {
+		
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		

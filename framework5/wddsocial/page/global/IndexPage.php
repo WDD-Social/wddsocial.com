@@ -11,7 +11,7 @@ namespace WDDSocial;
 class IndexPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
-		import('wddsocial.sql.WDDSocial\SelectorSQL');
+
 		import('wddsocial.view.WDDSocial\SectionView');
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		

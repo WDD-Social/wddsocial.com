@@ -11,10 +11,10 @@ class EventVO{
 	private $db, $sql;
 	
 	public function __construct(){
-		$this->db = instance(':db');
-		import('wddsocial.sql.WDDSocial\SelectorSQL');
-		$this->sql = new SelectorSQL();
 		
+		import('wddsocial.sql.WDDSocial\SelectorSQL');
+		$this->db = instance(':db');
+		$this->sql = instance(':sel-sql');
 		$this->type = 'event';
 		$this->get_comments_count();
 		$this->get_categories();

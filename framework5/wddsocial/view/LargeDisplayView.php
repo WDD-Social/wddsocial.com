@@ -15,7 +15,6 @@ class LargeDisplayView implements \Framework5\IView {
 	
 	public static function render($options = null) {
 		import('wddsocial.helper.NaturalLanguage');
-		import('wddsocial.controller.UserValidator');
 		
 		switch ($options['type']) {
 			case 'project':
