@@ -11,28 +11,37 @@ namespace WDDSocial;
 class UserSession {
 	
 	public static function status() {
+		
+		session_start();
+		
+		if ($_SESSION['authorized']) {
+			
+		}
+			
+		static::fake_user();
+		
+	}
 	
-		import('wddsocial.model.UserVO');
+	
+	
+	public static function fake_user() {
 		
 		# get user information
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->prepare($sql->getUserByID);
+		import('wddsocial.model.UserVO');
 		$query->setFetchMode(\PDO::FETCH_CLASS, 'WDDSocial\UserVO');
 		$data = array('id' => 1);
 		$query->execute($data);
 		$user = $query->fetch();
 		
 		# set session
-		session_start();
 		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
-	}
 	
 		/* backup
-		import('wddsocial.model.UserVO');
 		
-		# 
 		$db = instance(':db');
 		$sql = new SelectorSQL();
 		$query = $db->prepare($sql->getUserByID);
@@ -45,7 +54,5 @@ class UserSession {
 		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
 		*/
-	
-	
-	
+	}
 }
