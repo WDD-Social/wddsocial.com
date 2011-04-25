@@ -170,7 +170,7 @@ class SelectorSQL{
 			WHERE vanityURL = :vanityURL",
 		
 		'getStudentDetailByID' => "
-			SELECT startDate, location
+			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, location
 			FROM studentDetail
 			WHERE userID = :id",
 		
@@ -181,7 +181,7 @@ class SelectorSQL{
 			WHERE userID = :id",
 		
 		'getAlumDetailByID' => "
-			SELECT DATE_FORMAT(graduationDate,'') AS graduationDate, employerTitle, employerLink
+			SELECT DATE_FORMAT(graduationDate,'%M, %Y') AS graduationDate, employerTitle, employerLink
 			FROM alumDetail
 			WHERE userID = :id",
 			

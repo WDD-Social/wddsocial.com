@@ -41,7 +41,6 @@ class UserSession {
 		$_SESSION['authorized'] = true;
 	
 		/* backup
-		
 		$db = instance(':db');
 		$sql = new SelectorSQL();
 		$query = $db->prepare($sql->getUserByID);
