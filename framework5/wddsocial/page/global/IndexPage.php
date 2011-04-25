@@ -131,7 +131,7 @@ class IndexPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function get_projects(){
-		import('wddsocial.model.DisplayVO');
+		import('wddsocial.model.WDDSocial\DisplayVO');
 		
 		# Get db instance and query
 		$db = instance(':db');

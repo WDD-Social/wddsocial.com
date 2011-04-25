@@ -168,6 +168,22 @@ class SelectorSQL{
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE vanityURL = :vanityURL",
+		
+		'getStudentDetailByID' => "
+			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, location
+			FROM studentDetail
+			WHERE userID = :id",
+		
+		'getTeacherCoursesByID' => "
+			SELECT courseID, title, `month`
+			FROM teacherCourses AS tc
+			LEFT JOIN courses AS c ON (c.id = tc.courseID)
+			WHERE userID = :id",
+		
+		'getAlumDetailByID' => "
+			SELECT DATE_FORMAT(graduationDate,'%M, %Y') AS graduationDate, employerTitle, employerLink
+			FROM alumDetail
+			WHERE userID = :id",
 			
 		'getRecentlyActivePeople' =>"
 			SELECT DISTINCT f.contentID, f.contentTitle, f.contentVanityURL, f.userID, f.userFirstName, f.userLastName, f.userAvatar, f.userVanityURL, f.datetime, f.date, f.type
