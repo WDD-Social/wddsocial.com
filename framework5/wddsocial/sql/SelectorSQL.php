@@ -184,6 +184,18 @@ class SelectorSQL{
 			SELECT DATE_FORMAT(graduationDate,'%M, %Y') AS graduationDate, employerTitle, employerLink
 			FROM alumDetail
 			WHERE userID = :id",
+		
+		'getUserLikesByID' => "
+			SELECT c.title
+			FROM userLikes AS ul
+			LEFT JOIN categories AS c ON (c.id = ul.categoryID)
+			WHERE userID = :id",
+		
+		'getUserDislikesByID' => "
+			SELECT c.title
+			FROM userDislikes AS ud
+			LEFT JOIN categories AS c ON (c.id = ud.categoryID)
+			WHERE userID = :id",
 			
 		'getRecentlyActivePeople' =>"
 			SELECT DISTINCT f.contentID, f.contentTitle, f.contentVanityURL, f.userID, f.userFirstName, f.userLastName, f.userAvatar, f.userVanityURL, f.datetime, f.date, f.type
