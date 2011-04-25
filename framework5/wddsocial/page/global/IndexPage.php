@@ -17,7 +17,7 @@ class IndexPage implements \Framework5\IExecutable {
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		
 		# Display page header
-		echo render('wddsocial.view.WDDSocial\TemplateView',
+		echo render(':template',
 			array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
 		
 		# Check which home page to create, based on authorization
@@ -47,8 +47,7 @@ class IndexPage implements \Framework5\IExecutable {
 			array('section' => 'end_content'));
 		
 		# Create footer
-		echo render('wddsocial.view.WDDSocial\TemplateView', 
-			array('section' => 'bottom'));
+		echo render(':template', array('section' => 'bottom'));
 	}
 	
 	

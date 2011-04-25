@@ -27,5 +27,6 @@ class Settings {
 	# package alias' can be used in place of a package name
 	public static $package_aliases = array(
 		':db' => 'wddsocial.controller.WDDSocial\Database',
-		':sel-sql' => 'wddsocial.sql.WDDSocial\SelectorSQL');
+		':sel-sql' => 'wddsocial.sql.WDDSocial\SelectorSQL',
+		':template' => 'wddsocial.view.WDDSocial\TemplateView');
 }
