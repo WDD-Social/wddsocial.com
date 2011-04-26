@@ -175,7 +175,7 @@ class SelectorSQL{
 			WHERE userID = :id",
 		
 		'getTeacherCoursesByID' => "
-			SELECT courseID, title, `month`
+			SELECT id, title, `month`
 			FROM teacherCourses AS tc
 			LEFT JOIN courses AS c ON (c.id = tc.courseID)
 			WHERE userID = :id",

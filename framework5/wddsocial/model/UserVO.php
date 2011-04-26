@@ -39,11 +39,12 @@ class UserVO {
 				$this->extra['location'] = $row->location;
 		        break;
 		    case 'Teacher':
+		    	$this->extra['courses'] = array();
 		        $query = $db->prepare($sql->getTeacherCoursesByID);
-				$query->setFetchMode(\PDO::FETCH_OBJ);
+		        $query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\CourseVO');
 				$query->execute($data);
-				while($row = $query->fetch()){
-					$this->extra[$row->courseID] = $row->title;
+				while($course = $query->fetch()){
+					array_push($this->extra['courses'],$course);
 				}
 		        break;
 		    case 'Alum':

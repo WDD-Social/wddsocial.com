@@ -91,6 +91,8 @@ HTML;
 	}
 	
 	private static function getUserIntro($user){
+		$root = \Framework5\Request::root_path();
+		
 		$sentence = "<strong>{$user->firstName}</strong> is a";
 		if(isset($user->age)){
 			$sentence .= " <strong>{$user->age}-year-old</strong>";
@@ -111,11 +113,23 @@ HTML;
 			$sentence .= " from <strong>{$user->hometown}</strong>";
 		}
 		switch ($user->type) {
-		    case 'Student':
-		        if(isset($user->extra['startDate'])){
-		        	$sentence .= " who began Full Sail in <strong>{$user->extra['startDate']}</strong>";
-		        }
-		        break;
+			case 'Student':
+				if(isset($user->extra['startDate'])){
+					$sentence .= " who began Full Sail in <strong>{$user->extra['startDate']}</strong>";
+				}
+				break;
+			case 'Teacher':
+				if(isset($user->extra['courses']) && count($user->extra['courses']) > 0){
+					$sentence .= " who teaches";
+					for($i = 0; $i < count($user->extra['courses']); $i++){
+						if($i == count($user->extra['courses'])-1){
+							$sentence .= " and <strong><a href=\"{$root}course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>";
+						}else{
+							$sentence .= " <strong><a href=\"{$root}course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>,";
+						}
+					}
+				}
+				break;
 		}
 		$sentence .= ".";
 		return $sentence;
