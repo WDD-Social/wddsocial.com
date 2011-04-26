@@ -31,115 +31,131 @@ class SelectorSQL{
 		'getLatestNoFunction' => "
 			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, 
 			IF(
-			TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
-			IF(
-				TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+				TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
 				IF(
-					TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 7,
+					TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(WEEK, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
-						'Last week'
+						TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 7,
+						IF(
+							TIMESTAMPDIFF(WEEK, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+							'Last week'
+						),
+						IF(
+							TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							'Yesterday'
+						)
 					),
 					IF(
-						TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
-						'Yesterday'
+						TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
 					)
 				),
 				IF(
-					TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-					CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
-					CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
-				)
-			),
-			IF(
-				TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
-				'Just now',
-				IF(
-					TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-					CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
-					CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
-				)
-			)
-		) AS `date`
-		FROM projects AS p
-		LEFT JOIN users AS u ON (p.userID = u.id)
-		UNION
-		SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL,
-		IF(
-			TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
-			IF(
-				TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
-				IF(
-					TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 7,
+					TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					'Just now',
 					IF(
-						TIMESTAMPDIFF(WEEK, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
-						'Last week'
+						TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM projects AS p
+			LEFT JOIN users AS u ON (p.userID = u.id)
+			UNION
+			SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL,
+			IF(
+				TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 7,
+						IF(
+							TIMESTAMPDIFF(WEEK, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
+							'Last week'
+						),
+						IF(
+							TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							'Yesterday'
+						)
 					),
 					IF(
-						TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
-						'Yesterday'
+						TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
 					)
 				),
 				IF(
-					TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-					CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
-					CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
-				)
-			),
-			IF(
-				TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
-				'Just now',
-				IF(
-					TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-					CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
-					CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
-				)
-			)
-		) AS `date`
-		FROM articles AS a
-		LEFT JOIN users AS u ON (a.userID = u.id)
-		UNION
-		SELECT id, CONCAT_WS(' ', firstName, lastName) AS title, bio AS description, vanityURL, `DATETIME`, 'person' AS `TYPE`, id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, vanityURL AS userURL,
-		IF(
-			TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
-			IF(
-				TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
-				IF(
-					TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 7,
+					TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					'Just now',
 					IF(
-						TIMESTAMPDIFF(WEEK, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						DATE_FORMAT(u.datetime,'%M %D, %Y at %l:%i %p'),
-						'Last week'
+						TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM articles AS a
+			LEFT JOIN users AS u ON (a.userID = u.id)
+			UNION
+			SELECT id, CONCAT_WS(' ', firstName, lastName) AS title, bio AS description, vanityURL, `DATETIME`, 'person' AS `TYPE`, id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, vanityURL AS userURL,
+			IF(
+				TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 7,
+						IF(
+							TIMESTAMPDIFF(WEEK, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							DATE_FORMAT(u.datetime,'%M %D, %Y at %l:%i %p'),
+							'Last week'
+						),
+						IF(
+							TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							'Yesterday'
+						)
 					),
 					IF(
-						TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
-						'Yesterday'
+						TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
 					)
 				),
 				IF(
-					TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-					CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
-					CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+					TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+					)
 				)
-			),
-			IF(
-				TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
-				'Just now',
-				IF(
-					TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-					CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
-					CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
-				)
-			)
-		) AS `date`
-		FROM users AS u
-		ORDER BY DATETIME DESC
-		LIMIT 0,20",
+			) AS `date`
+			FROM users AS u
+			ORDER BY DATETIME DESC
+			LIMIT 0,20",
+		
+		'getUserLatest' => "
+			SELECT p.id, p.title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, getDateDiffEN(p.datetime) AS `date`
+			FROM projects AS p
+			LEFT JOIN users AS u ON (p.userID = u.id)
+			LEFT JOIN userProjects AS up ON (p.id = up.projectID)
+			WHERE u.id = :id OR up.userID = :id
+			UNION
+			SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, getDateDiffEN(a.datetime) AS `DATE`
+			FROM articles AS a
+			LEFT JOIN users AS u ON (a.userID = u.id)
+			LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
+			WHERE u.id = :id OR ua.userID = :id
+			ORDER BY DATETIME DESC
+			LIMIT 0,20
+			",
 			
 			
 		/**
