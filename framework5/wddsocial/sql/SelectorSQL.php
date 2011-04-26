@@ -249,6 +249,7 @@ class SelectorSQL{
 		'getUpcomingEvents' => "
 			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
 			FROM events
+			WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
 			ORDER BY startDateTime ASC
 			LIMIT 0,3",
 			
@@ -256,7 +257,7 @@ class SelectorSQL{
 			SELECT e.id, userID, icsUID, e.title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
 			FROM events AS e
 			LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
-			WHERE p.title = 'Public'
+			WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
 			ORDER BY startDateTime ASC
 			LIMIT 0,10",
 			
