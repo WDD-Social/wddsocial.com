@@ -130,6 +130,20 @@ HTML;
 					}
 				}
 				break;
+			case 'Alum':
+				if(isset($user->extra['graduationDate'])){
+					$sentence .= " who graduated in <strong>{$user->extra['graduationDate']}</strong>";
+				}
+				if(isset($user->extra['employerTitle'])){
+					$employerLink = (isset($user->extra['employerLink']))?'http://'.$user->extra['employerLink']:"http://www.google.com/search?q={$user->extra['employerTitle']}";
+					if(isset($user->extra['graduationDate'])){
+						$sentence .= ", and";
+					}else{
+						$sentence .= " who";
+					}
+					$sentence .= " works for <strong><a href=\"$employerLink\" title=\"{$user->extra['employerTitle']}\">{$user->extra['employerTitle']}</a></strong>";
+				}
+				break;
 		}
 		$sentence .= ".";
 		return $sentence;
