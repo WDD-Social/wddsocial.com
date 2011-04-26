@@ -116,6 +116,13 @@ HTML;
 						<a href="{$root}#articles" title="Latest Articles">Articles</a>
 					</div><!-- END SECONDARY -->
 HTML
+			,'user_latest_filters' => <<<HTML
+<div class="secondary filters">
+						<a href="{$root}#all" title="All Latest Activity" class="current">All</a> 
+						<a href="{$root}#projects" title="Latest Projects">Projects</a> 
+						<a href="{$root}#articles" title="Latest Articles">Articles</a>
+					</div><!-- END SECONDARY -->
+HTML
 			,'slider_controls' => <<<HTML
 <div class="slider-controls"><a href="{$root}" title="Featured 1" class="current">1</a> <a href="{$root}" title="Featured 2">2</a> <a href="{$root}" title="Featured 3">3</a> <a href="{$root}" title="Featured 4">4</a> <a href="{$root}" title="Featured 5">5</a></div>
 HTML

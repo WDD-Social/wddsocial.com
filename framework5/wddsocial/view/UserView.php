@@ -34,10 +34,11 @@ class UserView implements \Framework5\IView {
 	*/
 	
 	private static function intro($user){
+		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
 		$html = <<<HTML
 
 				<section id="user" class="mega with-secondary">
-					<h1>{$user->firstName} {$user->lastName}</h1>
+					<h1>$userDisplayName</h1>
 HTML;
 		
 		if(\WDDSocial\UserValidator::is_current($user->id)){
@@ -92,8 +93,8 @@ HTML;
 	
 	private static function getUserIntro($user){
 		$root = \Framework5\Request::root_path();
+		$sentence = (\WDDSocial\UserValidator::is_current($user->id))?"<strong>You</strong> are a":"<strong>{$user->firstName}</strong> is a";
 		
-		$sentence = "<strong>{$user->firstName}</strong> is a";
 		if(isset($user->age)){
 			$sentence .= " <strong>{$user->age}-year-old</strong>";
 		}
