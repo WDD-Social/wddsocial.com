@@ -38,20 +38,6 @@ class UserSession {
 		
 		# set session
 		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = false;
-	
-		/* backup
-		$db = instance(':db');
-		$sql = new SelectorSQL();
-		$query = $db->prepare($sql->getUserByID);
-		$query->setFetchMode(\PDO::FETCH_CLASS, 'WDDSocial\UserVO');
-		$data = array('id' => 1);
-		$query->execute($data);
-		$user = $query->fetch();
-		
-		session_start();
-		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
-		*/
 	}
 }
