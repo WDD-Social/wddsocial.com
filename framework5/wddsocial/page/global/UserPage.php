@@ -25,9 +25,11 @@ class UserPage implements \Framework5\IExecutable {
 				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
-			echo "<pre>";
+			/*
+echo "<pre>";
 			print_r($user);
 			echo "</pre>";
+*/
 			
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'end_content'));
 			
