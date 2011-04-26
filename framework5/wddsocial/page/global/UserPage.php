@@ -26,15 +26,21 @@ class UserPage implements \Framework5\IExecutable {
 			echo render(':template', 
 				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			
+			# display user intro
 			echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
+			
+			# display user's latest activity
 			static::getUserLatest($user->id);
+			
+			# display users' contact info
+			//echo render('wddsocial.view.WDDSocial\UserView',array('section' => 'contact', ''));
+			
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
-			/*
-echo "<pre>";
+			echo "<pre>";
 			print_r($user);
 			echo "</pre>";
-*/
 			
 		}
 		
