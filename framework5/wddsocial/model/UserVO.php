@@ -94,6 +94,6 @@ class UserVO {
 				$complete++;
 			}
 		}
-		$this->contact['complete'] = $complete/$total;
+		//$this->contact['complete'] = $complete/$total;
 	}
 }

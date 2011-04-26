@@ -38,6 +38,6 @@ class UserSession {
 		
 		# set session
 		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = false;
+		$_SESSION['authorized'] = true;
 	}
 }

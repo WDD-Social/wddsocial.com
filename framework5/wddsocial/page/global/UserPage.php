@@ -34,13 +34,15 @@ class UserPage implements \Framework5\IExecutable {
 			static::getUserLatest($user->id);
 			
 			# display users' contact info
-			//echo render('wddsocial.view.WDDSocial\UserView',array('section' => 'contact', ''));
+			echo render('wddsocial.view.WDDSocial\UserView',array('section' => 'contact', 'user' => $user));
 			
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
-			echo "<pre>";
+			/*
+echo "<pre>";
 			print_r($user);
 			echo "</pre>";
+*/
 			
 		}
 		

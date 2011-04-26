@@ -69,9 +69,9 @@ HTML;
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}"><img src="{$root}/images/avatars/{$project->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}/user/{$project->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> posted a <strong><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
-						<h2><a href="{$root}/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
+						<p class="item-image"><a href="{$root}user/{$project->userURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$project->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="{$root}user/{$project->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> posted a <strong><a href="{$root}project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
+						<h2><a href="{$root}project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
 HTML;
 		
@@ -84,7 +84,7 @@ HTML;
 			foreach($project->images as $image){
 				$html .= <<<HTML
 
-							<a href="{$root}/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+							<a href="{$root}images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 			}
 			$html .= <<<HTML
@@ -94,13 +94,13 @@ HTML;
 		}
 		$html .= <<<HTML
 
-						<p class="comments"><a href="{$root}/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
+						<p class="comments"><a href="{$root}project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
 		foreach($project->categories as $category){
-			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -145,9 +145,9 @@ HTML;
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}"><img src="{$root}/images/avatars/{$article->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">article</a></strong>.</p>
-						<h2><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
+						<p class="item-image"><a href="{$root}user/{$article->userURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$article->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="{$root}user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">article</a></strong>.</p>
+						<h2><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
 HTML;
 		
@@ -160,7 +160,7 @@ HTML;
 			foreach($article->images as $image){
 				$html .= <<<HTML
 
-							<a href="{$root}/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+							<a href="{$root}images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 			}
 			$html .= <<<HTML
@@ -170,13 +170,13 @@ HTML;
 		}
 		$html .= <<<HTML
 
-						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
+						<p class="comments"><a href="{$root}article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
 		foreach($article->categories as $category){
-			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -201,8 +201,8 @@ HTML;
 		$html = <<<HTML
 
 					<article class="people">
-						<p class="item-image"><a href="{$root}/user/{$person->userURL}" title="{$userVerbage}"><img src="{$root}/images/avatars/{$person->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}/user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> joined the community.</p>
+						<p class="item-image"><a href="{$root}user/{$person->userURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$person->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="{$root}user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> joined the community.</p>
 						<p>{$person->description}</p>
 						<p>{$person->date}</p>
 					</article><!-- END {$person->title} -->
@@ -240,12 +240,12 @@ HTML;
 			if(count($cleanTeam) == 1){
 				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
 				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
-				$teamIntro .= "<strong><a href=\"{$root}/user/{$cleanTeam[0]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
+				$teamIntro .= "<strong><a href=\"{$root}user/{$cleanTeam[0]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
 			}else if(count($cleanTeam) == 2){
 				foreach($cleanTeam as $member){
 					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
 					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
-					array_push($teamString, "<strong><a href=\"{$root}/user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
+					array_push($teamString, "<strong><a href=\"{$root}user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
 				}
 				$teamString = implode(' and ',$teamString);
 				$teamIntro .= $teamString;
@@ -254,9 +254,9 @@ HTML;
 					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[$i]->id,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
 					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[$i]->id,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
 					if($i == count($cleanTeam)-1){
-						$teamIntro .= "and <strong><a href=\"{$root}/user/{$cleanTeam[$i]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
+						$teamIntro .= "and <strong><a href=\"{$root}user/{$cleanTeam[$i]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
 					}else{
-						$teamIntro .= "<strong><a href=\"{$root}/user/{$cleanTeam[$i]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>, ";
+						$teamIntro .= "<strong><a href=\"{$root}user/{$cleanTeam[$i]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>, ";
 					}
 				}
 			}

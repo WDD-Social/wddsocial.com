@@ -24,11 +24,21 @@ class NaturalLanguage{
 	
 	
 	/**
+	* Returns either possessive name or 'Your'
+	*/
+	
+	public static function ownership($id, $name){
+		$possessive = static::possessive($name);
+		return (\WDDSocial\UserValidator::is_current($id))?"Your":$possessive;
+	}
+	
+	
+	
+	/**
 	* Creates the view profile text for display
 	*/
 	
 	public static function view_profile($id, $name){
-		import('wddsocial.controller.UserValidator');
 		$withPossessive = "View " . static::possessive($name) . " Profile";
 		return (\WDDSocial\UserValidator::is_current($id))?"View Your Profile":$withPossessive;
 	}
@@ -40,7 +50,6 @@ class NaturalLanguage{
 	*/
 	
 	public static function display_name($id, $name){
-		import('wddsocial.controller.UserValidator');
 		return (\WDDSocial\UserValidator::is_current($id))?"You":$name;
 	}
 }
