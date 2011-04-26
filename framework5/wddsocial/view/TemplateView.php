@@ -25,7 +25,7 @@ class TemplateView implements \Framework5\IView {
 				return static::_templateFooter();
 			
 			default:
-				throw new Exception(
+				throw new \Framework5\Exception(
 					"TemplateView requires parameter section (top or bottom), '{$options['section']}' provided");
 		}
 	}

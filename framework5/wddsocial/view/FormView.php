@@ -22,7 +22,7 @@ class FormView implements \Framework5\IView {
 			case 'sign_up_intro':
 				return static::sign_up_intro(); 
 			default:
-				throw new Exception("FormView requires parameter type (share, sign_in, or sign_up), '{$options['type']}' provided");
+				throw new \Framework5\Exception("FormView requires parameter type (share, sign_in, or sign_up), '{$options['type']}' provided");
 		}
 	}
 	

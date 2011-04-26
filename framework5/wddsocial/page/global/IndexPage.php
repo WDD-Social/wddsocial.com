@@ -137,7 +137,7 @@ class IndexPage implements \Framework5\IExecutable {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getRecentProjects);
-		$query->setFetchMode(\PDO::FETCH_CLASS,'DisplayVO');
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'begin_content_section', 'id' => 'projects', 
@@ -174,7 +174,7 @@ class IndexPage implements \Framework5\IExecutable {
 		$query = $db->query($sql->getRecentlyActivePeople);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\RecentPersonVO');
 		
-		echo render('wddsocial.view.SectionView', 
+		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'begin_content_section', 'id' => 'people', 
 				'classes' => array('small', 'image-grid'), 
 				'header' => 'People'));
@@ -203,7 +203,7 @@ class IndexPage implements \Framework5\IExecutable {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getRecentArticles);
-		$query->setFetchMode(\PDO::FETCH_CLASS,'DisplayVO');
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'begin_content_section', 'id' => 'articles', 

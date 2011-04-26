@@ -14,13 +14,13 @@ class LargeDisplayView implements \Framework5\IView {
 	*/
 	
 	public static function render($options = null) {
-		import('wddsocial.helper.NaturalLanguage');
+		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		
 		switch ($options['type']) {
 			case 'project':
 				return static::project_display($options['content']);
 			default:
-				throw new Exception("LargeDisplayView requires parameter type (project), '{$options['type']}' provided");
+				throw new \Framework5\Exception("LargeDisplayView requires parameter type (project), '{$options['type']}' provided");
 		}
 	}
 	

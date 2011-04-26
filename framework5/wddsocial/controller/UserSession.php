@@ -38,7 +38,7 @@ class UserSession {
 		
 		# set session
 		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = true;
+		$_SESSION['authorized'] = false;
 	
 		/* backup
 		$db = instance(':db');

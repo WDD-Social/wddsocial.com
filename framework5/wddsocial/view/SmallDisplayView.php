@@ -25,7 +25,7 @@ class SmallDisplayView implements \Framework5\IView {
 			case 'person_imagegrid':
 				return static::person_imagegrid_display($options['content']);
 			default:
-				throw new Exception("SmallDisplayView requires parameter type (event or job), '{$options['type']}' provided");
+				throw new \Framework5\Exception("SmallDisplayView requires parameter type (event or job), '{$options['type']}' provided");
 		}
 	}
 	

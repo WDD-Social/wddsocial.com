@@ -23,7 +23,7 @@ class UserView implements \Framework5\IView {
 			case 'contact':
 				return static::contact($options['user']);
 			default:
-				throw new Exception("UserView requires parameter section (intro or contact), '{$options['section']}' provided");
+				throw new \Framework5\Exception("UserView requires parameter section (intro or contact), '{$options['section']}' provided");
 		}
 	}
 	

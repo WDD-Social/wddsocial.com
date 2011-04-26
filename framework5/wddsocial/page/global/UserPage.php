@@ -14,7 +14,7 @@ class UserPage implements \Framework5\IExecutable {
 		
 		$user = static::getUser(\Framework5\Request::segment(1));
 		if($user == false){
-			echo render('wddsocial.view.WDDSocial\TemplateView', 
+			echo render(':template', 
 				array('section' => 'top', 'title' => "User Not Found"));
 			echo "<h1>User Not Found</h1>";
 			echo render('wddsocial.view.WDDSocial\TemplateView', 
