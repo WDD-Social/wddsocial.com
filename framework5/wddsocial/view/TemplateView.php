@@ -68,7 +68,7 @@ class TemplateView implements \Framework5\IView {
 	<body>
 		<section id="wrap">
 			<header>
-				<h1><a href="/" title="WDD Social Home">WDD Social</a></h1>
+				<h1><a href="{$root}" title="WDD Social Home">WDD Social</a></h1>
 HTML;
 			$html .= static::_userArea();
 			$html .= static::_navigation();
@@ -135,7 +135,7 @@ HTML;
 			return <<<HTML
 				
 				<section id="user-area" class="signed-in">
-					<p><strong><a href="user/{$_SESSION['user']->vanityURL}" title="{$lang->text('user_profile_title')}"><img src="{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
+					<p><strong><a href="{$root}user/{$_SESSION['user']->vanityURL}" title="{$lang->text('user_profile_title')}"><img src="{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
 				 	<p><a href="{$root}messages" title="{$lang->text('messages_title')}">{$lang->text('messages')} <span class="badge">3</span></a></p>
 				 	<p><a href="{$root}account" title="{$lang->text('account_title')}">{$lang->text('account')}</a></p>
 				 	<p><a href="{$root}signout" title="{$lang->text('signout_title')}">{$lang->text('signout')}</a></p>

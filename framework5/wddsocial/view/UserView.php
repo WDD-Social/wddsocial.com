@@ -48,11 +48,11 @@ HTML;
 					</div><!-- END SECONDARY -->
 HTML;
 		}
-		
+		$userIntro = static::getUserIntro($user);
 		$html .= <<<HTML
 					
 					<img src="{$root}/images/avatars/{$user->avatar}_full.jpg" alt="{$user->firstName} {$user->lastName}" />
-					<p><strong>{$user->firstName}</strong> is a <strong>{$user->age}&dash;year&dash;old, {$user->extra['location']} student</strong> from <strong>{$user->hometown}</strong> who began Full Sail  in <strong>{$user->extra['startDate']}</strong>.</p>
+					<p>$userIntro</p>
 					<div class="large">
 						<h2>Bio</h2>
 						<p>{$user->bio}</p>
@@ -85,11 +85,39 @@ HTML;
 
 						</ul>
 					</div><!-- END DISLIKES -->
-					
-					<!-- COMPLETE PROFILE PROMPT -->
-					<p class="incomplete">Hmm, your profile seems to be missing a few things, would you like to <strong><a href="form.html" title="">complete it now?</a></strong></p>
 				</section><!-- END USER -->
 HTML;
 		return $html;
+	}
+	
+	private static function getUserIntro($user){
+		$sentence = "<strong>{$user->firstName}</strong> is a";
+		if(isset($user->age)){
+			$sentence .= " <strong>{$user->age}-year-old</strong>";
+		}
+		if($user->type == 'Student'){
+			if(isset($user->age)){
+				$sentence .= ",";
+			}else{
+				$sentence .= " an";
+			}
+			if(isset($user->extra['location'])){
+				$sentence .= " <strong>{$user->extra['location']}</strong>";
+			}
+		}
+		$userType = strtolower($user->type);
+		$sentence .= " <strong>{$userType}</strong>";
+		if(isset($user->hometown)){
+			$sentence .= " from <strong>{$user->hometown}</strong>";
+		}
+		switch ($user->type) {
+		    case 'Student':
+		        if(isset($user->extra['startDate'])){
+		        	$sentence .= " who began Full Sail in <strong>{$user->extra['startDate']}</strong>";
+		        }
+		        break;
+		}
+		$sentence .= ".";
+		return $sentence;
 	}
 }
