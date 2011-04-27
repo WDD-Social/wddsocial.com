@@ -226,17 +226,6 @@ class SelectorSQL{
 			
 			
 		/**
-		* Project queries
-		*/
-		
-		'getRecentProjects' =>"
-			SELECT id, title, description, vanityURL, `datetime`, 'project' AS `type`
-			FROM projects
-			ORDER BY `datetime` DESC
-			LIMIT 0,5",
-			
-			
-		/**
 		* People queries
 		*/
 		
@@ -457,10 +446,84 @@ class SelectorSQL{
 			
 			
 		/**
+		* Project queries
+		*/
+		
+		'getRecentProjects' => "
+			SELECT id, title, description, vanityURL, `datetime`, 'project' AS `type`
+			FROM projects
+			ORDER BY `datetime` DESC
+			LIMIT 0,5",
+		
+		'getProjectByVanityURL' => "
+			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`,
+			IF(
+				TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+					)
+				)
+			) AS `date`,
+			IF(
+				TIMESTAMPDIFF(MINUTE, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						DATE_FORMAT(completeDate,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+					)
+				)
+			) AS `completeDate`
+			FROM projects
+			",
+			
+			
+		/**
 		* Article queries
 		*/
 		
-		'getRecentArticles' =>"
+		'getRecentArticles' => "
 			SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL
 			FROM articles AS a
 			LEFT JOIN users AS u ON (a.userID = u.id)
