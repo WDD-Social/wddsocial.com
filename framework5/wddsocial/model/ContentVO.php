@@ -8,7 +8,7 @@ namespace WDDSocial;
 */
 
 class ContentVO {
-	/* public $id, $language, $firstName, $lastName, $avatar, $bio, $hometown, $age, $type, $contact = array(), $email, $fullsailEmail, $vanityURL, $extra = array(); */
+	public $id, $userID, $title, $type, $description, $content, $categories = array(), $links = array(), $team = array(), $images = array(), $videos = array(), $comments = array();
 	
 	public function __construct(){
 		
