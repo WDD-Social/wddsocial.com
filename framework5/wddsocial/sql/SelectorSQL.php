@@ -516,6 +516,7 @@ class SelectorSQL{
 				)
 			) AS `completeDate`
 			FROM projects
+			WHERE vanityURL = :vanityURL
 			",
 			
 			
@@ -531,6 +532,41 @@ class SelectorSQL{
 			WHERE p.title = 'Public'
 			ORDER BY `datetime` DESC
 			LIMIT 0,10",
+		
+		'getArticleByVanityURL' => "
+			SELECT id, userID, title, description, content, vanityURL, 'article' AS `type`,
+			IF(
+				TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM articles
+			WHERE vanityURL = :vanityURL
+			",
 		
 			
 		/**
@@ -551,6 +587,11 @@ class SelectorSQL{
 			WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
 			ORDER BY startDateTime ASC
 			LIMIT 0,10",
+		
+		'getEventByVanityURL' => "
+			SELECT id, userID, title, description, vanityURL, 'event' AS `type`, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`
+			FROM events
+			WHERE vanityURL = :vanityURL",
 			
 			
 		/**
@@ -563,6 +604,11 @@ class SelectorSQL{
 			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
 			ORDER BY `datetime` DESC
 			LIMIT 0,3",
+		
+		'getJobByVanityURL' => "
+			SELECT id, userID, title, description, vanityURL, 'job' AS `type`
+			FROM jobs
+			WHERE vanityURL = :vanityURL",
 			
 			
 		/**
@@ -623,18 +669,24 @@ class SelectorSQL{
 		*/
 			
 		'getProjectTeam' => "
-			SELECT u.id, firstName, lastName, vanityURL
+			SELECT u.id, firstName, lastName, vanityURL, title AS role
 			FROM users AS u
 			LEFT JOIN userProjects AS up ON (u.id = up.userID)
 			WHERE up.projectID = :id
 			ORDER BY lastName",
 			
 		'getArticleTeam' => "
-			SELECT u.id, firstName, lastName vanityURL
+			SELECT u.id, firstName, lastName, vanityURL
 			FROM users AS u
 			LEFT JOIN userArticles AS ua ON (u.id = ua.userID)
 			WHERE ua.articleID = :id
 			ORDER BY lastName",
+		
+		'getCourseTeam' => "
+			SELECT id, firstName, lastName, avatar, vanityURL, bio
+			FROM users AS u
+			LEFT JOIN teacherCourses AS tc ON (u.id = tc.userID)
+			WHERE tc.courseID = :id",
 			
 			
 		/**
@@ -653,7 +705,188 @@ class SelectorSQL{
 			FROM images AS i
 			LEFT JOIN articleImages AS ai ON(i.id = ai.imageID)
 			WHERE ai.articleID = :id
-			ORDER BY i.id ASC"
+			ORDER BY i.id ASC",
+			
+		'getEventImages' => "
+			SELECT id, title, description, `file`
+			FROM images AS i
+			LEFT JOIN eventImages AS ei ON(i.id = ei.imageID)
+			WHERE ei.eventID = :id
+			ORDER BY i.id ASC",
+			
+		'getJobImages' => "
+			SELECT id, title, description, `file`
+			FROM images AS i
+			LEFT JOIN jobImages AS ji ON(i.id = ji.imageID)
+			WHERE ji.jobID = :id
+			ORDER BY i.id ASC",
+			
+			
+		/**
+		* Video queries
+		*/
+			
+		'getProjectVideos' => "
+			SELECT v.id, embedCode
+			FROM videos AS v
+			LEFT JOIN projectVideos AS pv ON(v.id = pv.videoID)
+			WHERE pv.projectID = :id
+			ORDER BY v.id ASC",
+			
+		'getArticleVideos' => "
+			SELECT v.id, embedCode
+			FROM videos AS v
+			LEFT JOIN articleVideos AS av ON(v.id = av.videoID)
+			WHERE av.articleID = :id
+			ORDER BY v.id ASC",
+			
+		'getEventVideos' => "
+			SELECT v.id, embedCode
+			FROM videos AS v
+			LEFT JOIN eventVideos AS ev ON(v.id = ev.videoID)
+			WHERE ev.eventID = :id
+			ORDER BY v.id ASC",
+			
+		'getJobVideos' => "
+			SELECT v.id, embedCode
+			FROM videos AS v
+			LEFT JOIN jobVideos AS jv ON(v.id = jv.videoID)
+			WHERE jv.jobID = :id
+			ORDER BY v.id ASC",
+			
+			
+		/**
+		* Comment queries
+		*/
+			
+		'getProjectComments' => "
+			SELECT c.id, c.userID, content,
+			IF(
+				TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM comments AS c
+			LEFT JOIN projectComments AS pc ON (c.id = pc.commentID)
+			WHERE pc.projectID = :id
+			ORDER BY `date` ASC",
+			
+		'getArticleComments' => "
+			SELECT c.id, c.userID, content,
+			IF(
+				TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM comments AS c
+			LEFT JOIN articleComments AS ac ON (c.id = ac.commentID)
+			WHERE ac.articleID = :id
+			ORDER BY `date` ASC",
+		
+		'getEventComments' => "
+			SELECT c.id, c.userID, content,
+			IF(
+				TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM comments AS c
+			LEFT JOIN eventComments AS ec ON (c.id = ec.commentID)
+			WHERE ec.eventID = :id
+			ORDER BY `date` ASC",
+			
+			
+		/**
+		* Link queries
+		*/
+			
+		'getProjectLinks' => "
+			",
+			
+		'getArticleLinks' => "
+			",
+		
+		'getCourseLinks' => "
+			",
+		
+		'getEventLinks' => "
+			",
+		
+		'getJobLinks' => "
+			"
+			
 	);
 	
 	public function __get($id){
