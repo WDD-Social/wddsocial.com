@@ -59,6 +59,11 @@ HTML;
 							<a href="{$root}" title="Edit &ldquo;{$project->title}&rsquo;" class="edit">Edit</a>
 							<a href="{$root}" title="Delete &ldquo;{$project->title}&rsquo;" class="delete">Delete</a>
 HTML;
+		}else if(\WDDSocial\UserValidator::is_project_owner($project->id)){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Edit &ldquo;{$project->title}&rsquo;" class="edit">Edit</a>
+HTML;
 		}else{
 			$html .= <<<HTML
 
@@ -134,6 +139,11 @@ HTML;
 
 							<a href="{$root}" title="Edit &ldquo;{$article->title}&rsquo;" class="edit">Edit</a>
 							<a href="{$root}" title="Delete &ldquo;{$article->title}&rsquo;" class="delete">Delete</a>
+HTML;
+		}else if(\WDDSocial\UserValidator::is_article_owner($article->id)){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Edit &ldquo;{$article->title}&rsquo;" class="edit">Edit</a>
 HTML;
 		}else{
 			$html .= <<<HTML

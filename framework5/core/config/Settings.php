@@ -28,5 +28,6 @@ class Settings {
 	public static $package_aliases = array(
 		':db' => 'wddsocial.controller.WDDSocial\Database',
 		':sel-sql' => 'wddsocial.sql.WDDSocial\SelectorSQL',
+		':val-sql' => 'wddsocial.sql.WDDSocial\ValidatorSQL',
 		':template' => 'wddsocial.view.WDDSocial\TemplateView');
 }

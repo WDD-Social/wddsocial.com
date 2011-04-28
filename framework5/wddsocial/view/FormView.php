@@ -72,7 +72,7 @@ HTML;
 	private static function sign_in_intro(){
 		return <<<HTML
 
-					<h1 class="mega">Come on in, we&rsquo;ve missed you.</h1>
+					<h1 class="mega">Welcome back, we&rsquo;ve missed you!</h1>
 HTML;
 	}
 	

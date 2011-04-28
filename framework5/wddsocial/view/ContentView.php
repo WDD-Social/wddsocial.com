@@ -21,7 +21,7 @@ class ContentView implements \Framework5\IView {
 			case 'overview':
 				return static::overview($options['content']);
 			case 'team':
-				return static::members($options['members']);
+				return static::members($options['content']);
 			default:
 				throw new \Framework5\Exception("ContentView requires parameter section (overview), '{$options['section']}' provided");
 		}
@@ -44,6 +44,43 @@ class ContentView implements \Framework5\IView {
 						<a href="{$root}" title="Delete &ldquo;{$content->title}&rsquo;" class="delete">Delete</a>
 					</div><!-- END SECONDARY -->
 HTML;
+		}else{
+			switch ($content->type) {
+				case 'project':
+					if(\WDDSocial\UserValidator::is_project_owner($content->id)){
+						$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+					</div><!-- END SECONDARY -->
+HTML;
+					}else{
+						$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Flag &ldquo;{$content->title}&rsquo;" class="flag">Flag</a>
+					</div><!-- END SECONDARY -->
+HTML;
+					}
+					break;
+				case 'article':
+					if(\WDDSocial\UserValidator::is_article_owner($content->id)){
+						$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+					</div><!-- END SECONDARY -->
+HTML;
+					}else{
+						$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Flag &ldquo;{$content->title}&rsquo;" class="flag">Flag</a>
+					</div><!-- END SECONDARY -->
+HTML;
+					}
+					break;
+			}
 		}
 		if(count($content->images) > 0){
 			$html .= <<<HTML
@@ -169,5 +206,55 @@ HTML;
 	
 	private static function members($content){
 		$root = \Framework5\Request::root_path();
+		$html = "";
+		switch ($content->type) {
+			case 'project':
+				if(\WDDSocial\UserValidator::is_project_owner($content->id)){
+					$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+					</div><!-- END SECONDARY -->
+HTML;
+				}
+				break;
+			case 'article':
+				if(\WDDSocial\UserValidator::is_article_owner($content->id)){
+					$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+					</div><!-- END SECONDARY -->
+HTML;
+				}
+				break;
+			default :
+				if(\WDDSocial\UserValidator::is_current($content->userID)){
+					$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+					</div><!-- END SECONDARY -->
+HTML;
+				}
+				break;
+		}
+		if(count($content->team) > 0){
+			$html .= <<<HTML
+
+					<ul>
+HTML;
+			
+			$html .= <<<HTML
+
+					</ul>
+HTML;
+		}else{
+			$html .= <<<HTML
+
+					<p>No one has been added. Well, that&rsquo;s pretty lonely.</p>
+HTML;
+		}
+		return $html;
 	}
 }

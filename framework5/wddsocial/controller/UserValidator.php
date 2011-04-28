@@ -18,12 +18,38 @@ class UserValidator {
 		return ($userID == $_SESSION['user']->id)?true:false;
 	}
 	
+	
+	
 	/**
 	* Checks if the current user is an owner of a project
 	*/
 	
+	
+	
 	public static function is_project_owner($projectID){
-		//return ($userID == $_SESSION['user']->id)?true:false;
+		$db = instance(':db');
+		$sql = instance(':val-sql');
+		$data = array('id' => $projectID);
+		$query = $db->prepare($sql->getProjectOwners);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$query->execute($data);
+		return static::if_current_is_in_array($query->fetchAll());
+	}
+	
+	
+	
+	/**
+	* Checks if the current user is an owner of an article
+	*/
+	
+	public static function is_article_owner($articleID){
+		$db = instance(':db');
+		$sql = instance(':val-sql');
+		$data = array('id' => $articleID);
+		$query = $db->prepare($sql->getArticleOwners);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$query->execute($data);
+		return static::if_current_is_in_array($query->fetchAll());
 	}
 	
 	
@@ -34,5 +60,21 @@ class UserValidator {
 	
 	public static function is_authorized(){
 		return ($_SESSION['authorized'] == true)?true:false;
+	}
+	
+	
+	
+	/**
+	* Checks if the current user is authorized
+	*/
+	
+	public static function if_current_is_in_array($array){
+		$return = false;
+		foreach($array as $item){
+			if($item->userID == $_SESSION['user']->id){
+				$return = true;
+			}
+		}
+		return $return;
 	}
 }

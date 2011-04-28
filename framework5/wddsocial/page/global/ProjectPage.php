@@ -29,7 +29,7 @@ class ProjectPage implements \Framework5\IExecutable {
 			
 			# display project overview
 			static::displayProjectOverview($project);
-			static::displayProjectTeam($project->team);
+			static::displayProjectTeam($project);
 			static::displayProjectMedia($project->images,$project->videos);
 			
 			echo render('wddsocial.view.WDDSocial\SectionView',
@@ -84,10 +84,10 @@ class ProjectPage implements \Framework5\IExecutable {
 	* Gets the requested project and data
 	*/
 	
-	private static function displayProjectTeam($team){
+	private static function displayProjectTeam($project){
 		echo render('wddsocial.view.WDDSocial\SectionView', 
-			array('section' => 'begin_content_section', 'id' => 'team', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Team'));
-		/* echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $project)); */
+			array('section' => 'begin_content_section', 'id' => 'team', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Team'));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'team', 'content' => $project));
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'end_content_section', 'id' => 'team'));
 	}
