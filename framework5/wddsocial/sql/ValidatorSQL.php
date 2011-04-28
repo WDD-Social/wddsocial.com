@@ -9,6 +9,15 @@ namespace WDDSocial;
 */
 class ValidatorSQL{
 	private $_info = array(
+		'getProjectOwners' => "
+			SELECT userID
+			FROM userProjects
+			WHERE projectID = :id",
+		
+		'getArticleOwners' => "
+			SELECT userID
+			FROM userArticles
+			WHERE articleID = :id"
 	);
 	
 	public function __get($id){
