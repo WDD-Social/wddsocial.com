@@ -30,7 +30,7 @@ class ProjectPage implements \Framework5\IExecutable {
 			# display project overview
 			static::displayProjectOverview($project);
 			static::displayProjectTeam($project);
-			static::displayProjectMedia($project->images,$project->videos);
+			static::displayProjectMedia($project);
 			
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
@@ -41,8 +41,6 @@ class ProjectPage implements \Framework5\IExecutable {
 				array('section' => 'bottom'));
 		
 		echo "<pre>";
-		print_r($_POST);
-		echo "<hr/>";
 		print_r($project);
 		echo "</pre>";
 	}
@@ -89,7 +87,7 @@ class ProjectPage implements \Framework5\IExecutable {
 	private static function displayProjectTeam($project){
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'begin_content_section', 'id' => 'team', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Team'));
-		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'team', 'content' => $project));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'members', 'content' => $project));
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'end_content_section', 'id' => 'team'));
 	}
@@ -100,10 +98,10 @@ class ProjectPage implements \Framework5\IExecutable {
 	* Gets the requested project and data
 	*/
 	
-	private static function displayProjectMedia($images, $videos){
+	private static function displayProjectMedia($project){
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'begin_content_section', 'id' => 'media', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Media', 'extra' => 'media_filters'));
-		/* echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $project)); */
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'media', 'content' => $project, 'active' => 'images'));
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'end_content_section', 'id' => 'media'));
 	}

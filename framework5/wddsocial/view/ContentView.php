@@ -20,8 +20,10 @@ class ContentView implements \Framework5\IView {
 		switch ($options['section']) {
 			case 'overview':
 				return static::overview($options['content']);
-			case 'team':
+			case 'members':
 				return static::members($options['content']);
+			case 'media':
+				return static::media($options['content'],$options['active']);
 			default:
 				throw new \Framework5\Exception("ContentView requires parameter section (overview), '{$options['section']}' provided");
 		}
@@ -107,7 +109,7 @@ HTML;
 		}else{
 			$html .= <<<HTML
 
-						<p>No description has been added. How lame is that?</p>
+						<p class="empty">No description has been added. Lame.</p>
 HTML;
 		}
 		switch ($content->type) {
@@ -285,9 +287,65 @@ HTML;
 		}else{
 			$html .= <<<HTML
 
-					<p>No one has been added. Well, that&rsquo;s pretty lonely.</p>
+					<p class="empty">No one has been added. Well, that&rsquo;s pretty lonely.</p>
 HTML;
 		}
+		
+		return $html;
+	}
+	
+	
+	
+	/**
+	* Display content media
+	*/
+	
+	private static function media($content,$active){
+		$root = \Framework5\Request::root_path();
+		$html = <<<HTML
+
+					<div class="$active">
+HTML;
+		
+		switch ($active) {
+			case 'images':
+				if(count($content->images) > 0){
+					foreach($content->images as $image){
+						$html .= <<<HTML
+
+						<a href="{$root}images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+HTML;
+					}
+				}else{
+					$html .= <<<HTML
+
+						<p class="empty">Welp! No images have been added, so this page will look a little plain...</p>
+HTML;
+				}
+				
+				break;
+			case 'videos':
+				if(count($content->videos) > 0){
+					foreach($content->videos as $video){
+						$html .= <<<HTML
+
+						{$video->embedCode}
+HTML;
+					}
+				}else{
+					$html .= <<<HTML
+
+						<p class="empty">Uh oh, no videos have been added.</p>
+HTML;
+				}
+				
+				break;
+		}
+		
+		$html .= <<<HTML
+
+					</div><!-- END $active -->
+HTML;
 		
 		return $html;
 	}
