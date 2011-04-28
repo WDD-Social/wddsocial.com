@@ -492,7 +492,7 @@ class SelectorSQL{
 					TIMESTAMPDIFF(HOUR, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
 						TIMESTAMPDIFF(DAY, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
-						DATE_FORMAT(completeDate,'%M %D, %Y at %l:%i %p'),
+						DATE_FORMAT(completeDate,'%M, %Y'),
 						IF(
 							TIMESTAMPDIFF(DAY, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
 							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),

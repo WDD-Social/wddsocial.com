@@ -34,6 +34,7 @@ class UserView implements \Framework5\IView {
 	*/
 	
 	private static function intro($user){
+		$root = \Framework5\Request::root_path();
 		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
 		$html = <<<HTML
 

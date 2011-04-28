@@ -18,6 +18,14 @@ class UserValidator {
 		return ($userID == $_SESSION['user']->id)?true:false;
 	}
 	
+	/**
+	* Checks if the current user is an owner of a project
+	*/
+	
+	public static function is_project_owner($projectID){
+		//return ($userID == $_SESSION['user']->id)?true:false;
+	}
+	
 	
 	
 	/**

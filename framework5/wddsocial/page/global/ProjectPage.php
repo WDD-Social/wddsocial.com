@@ -13,33 +13,24 @@ class ProjectPage implements \Framework5\IExecutable {
 	public static function execute() {	
 		
 		$project = static::getProject(\Framework5\Request::segment(1));
-		
-		echo "<pre>";
-		print_r($project);
-		echo "</pre>";
 			
-		/*
-if($user == false){
+		if($project == false){
 			echo render(':template', 
 				array('section' => 'top', 'title' => "User Not Found"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
-			echo "<h1>User Not Found</h1>";
+			echo "<h1>Project Not Found</h1>";
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
 		}else{
 			# display site header
 			echo render(':template', 
-				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
+				array('section' => 'top', 'title' => "{$project->title}"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			
-			# display user intro
-			echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
-			
-			# display user's latest activity
-			static::getUserLatest($user->id);
-			
-			# display users' contact info
-			echo render('wddsocial.view.WDDSocial\UserView',array('section' => 'contact', 'user' => $user));
+			# display project overview
+			static::displayProjectOverview($project);
+			static::displayProjectTeam($project->team);
+			static::displayProjectMedia($project->images,$project->videos);
 			
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
@@ -48,7 +39,10 @@ if($user == false){
 		
 		echo render(':template', 
 				array('section' => 'bottom'));
-*/
+		
+		echo "<pre>";
+		print_r($project);
+		echo "</pre>";
 	}
 	
 	
@@ -70,4 +64,45 @@ if($user == false){
 		return $query->fetch();
 	}
 	
+	
+	
+	/**
+	* Gets the requested project and data
+	*/
+	
+	private static function displayProjectOverview($project){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'project', 'classes' => array('large', 'with-secondary'), 'header' => $project->title));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $project));
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'project'));
+	}
+	
+	
+	
+	/**
+	* Gets the requested project and data
+	*/
+	
+	private static function displayProjectTeam($team){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'team', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Team'));
+		/* echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $project)); */
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'team'));
+	}
+	
+	
+	
+	/**
+	* Gets the requested project and data
+	*/
+	
+	private static function displayProjectMedia($images, $videos){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'media', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Media'));
+		/* echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $project)); */
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'media'));
+	}
 }
