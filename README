@@ -12,6 +12,11 @@ JOB AVATARS
 - avatar filename hash is created by MD5-ing the string 'job'+{$jobID}
 
 
+JOB VANITY URL
+
+- job vanity hash is created by MD5-ing the string 'job'+{$jobID} and using the first 6 characters
+
+
 IMAGE UPLOADS
 
 - image filename hash is created by MD5-ing the string 'image'+{$imageID}
