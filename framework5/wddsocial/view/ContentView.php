@@ -207,6 +207,7 @@ HTML;
 	private static function members($content){
 		$root = \Framework5\Request::root_path();
 		$html = "";
+		
 		switch ($content->type) {
 			case 'project':
 				if(\WDDSocial\UserValidator::is_project_owner($content->id)){
@@ -239,11 +240,43 @@ HTML;
 				}
 				break;
 		}
+		
 		if(count($content->team) > 0){
 			$html .= <<<HTML
 
 					<ul>
 HTML;
+			foreach($content->team as $member){
+				if(\WDDSocial\UserValidator::is_current($member->id)){
+					$key = array_search($member, $content->team);
+					$currentUser = $content->team[$key];
+					unset($content->team[$key]);
+					array_unshift($content->team,$currentUser);
+				}
+			}
+			
+			foreach($content->team as $member){
+				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
+				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
+				$userDetail = '';
+				switch ($content->type) {
+					case 'project':
+						$userDetail = $member->role;
+						break;
+					default :
+						$userDetail = $member->bio;
+						break;
+				}
+				$html .= <<<HTML
+
+						<li>
+							<a href="{$root}user/{$member->vanityURL}" title="{$userVerbage}">
+							<img src="{$root}images/avatars/{$member->avatar}_medium.jpg" alt="{$userDisplayName}" />
+							<p><strong>{$userDisplayName}</strong> {$userDetail}</p>
+							</a>
+						</li>
+HTML;
+			}
 			
 			$html .= <<<HTML
 
@@ -255,6 +288,7 @@ HTML;
 					<p>No one has been added. Well, that&rsquo;s pretty lonely.</p>
 HTML;
 		}
+		
 		return $html;
 	}
 }

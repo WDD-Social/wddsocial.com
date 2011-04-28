@@ -669,14 +669,14 @@ class SelectorSQL{
 		*/
 			
 		'getProjectTeam' => "
-			SELECT u.id, firstName, lastName, vanityURL, title AS role
+			SELECT u.id, firstName, lastName, avatar, vanityURL, title AS role
 			FROM users AS u
 			LEFT JOIN userProjects AS up ON (u.id = up.userID)
 			WHERE up.projectID = :id
 			ORDER BY lastName",
 			
 		'getArticleTeam' => "
-			SELECT u.id, firstName, lastName, vanityURL
+			SELECT u.id, firstName, lastName, avatar, vanityURL, bio
 			FROM users AS u
 			LEFT JOIN userArticles AS ua ON (u.id = ua.userID)
 			WHERE ua.articleID = :id
