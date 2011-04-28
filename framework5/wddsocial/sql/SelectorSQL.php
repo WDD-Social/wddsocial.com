@@ -873,19 +873,39 @@ class SelectorSQL{
 		*/
 			
 		'getProjectLinks' => "
-			",
+			SELECT l.id, title, link
+			FROM links AS l
+			LEFT JOIN projectLinks AS pl ON (l.id = pl.linkID)
+			WHERE pl.projectID = :id
+			ORDER BY title ASC",
 			
 		'getArticleLinks' => "
-			",
+			SELECT l.id, title, link
+			FROM links AS l
+			LEFT JOIN articleLinks AS al ON (l.id = al.linkID)
+			WHERE al.articleID = :id
+			ORDER BY title ASC",
 		
 		'getCourseLinks' => "
-			",
+			SELECT l.id, title, link
+			FROM links AS l
+			LEFT JOIN courseLinks AS cl ON (l.id = cl.linkID)
+			WHERE cl.courseID = :id
+			ORDER BY title ASC",
 		
 		'getEventLinks' => "
-			",
+			SELECT l.id, title, link
+			FROM links AS l
+			LEFT JOIN eventLinks AS el ON (l.id = el.linkID)
+			WHERE el.eventID = :id
+			ORDER BY title ASC",
 		
 		'getJobLinks' => "
-			"
+			SELECT l.id, title, link
+			FROM links AS l
+			LEFT JOIN jobLinks AS jl ON (l.id = jl.linkID)
+			WHERE jl.jobID = :id
+			ORDER BY title ASC"
 			
 	);
 	
