@@ -41,6 +41,8 @@ class ProjectPage implements \Framework5\IExecutable {
 				array('section' => 'bottom'));
 		
 		echo "<pre>";
+		print_r($_POST);
+		echo "<hr/>";
 		print_r($project);
 		echo "</pre>";
 	}
@@ -100,7 +102,7 @@ class ProjectPage implements \Framework5\IExecutable {
 	
 	private static function displayProjectMedia($images, $videos){
 		echo render('wddsocial.view.WDDSocial\SectionView', 
-			array('section' => 'begin_content_section', 'id' => 'media', 'classes' => array('small', 'no-margin', 'side-sticky'), 'header' => 'Media'));
+			array('section' => 'begin_content_section', 'id' => 'media', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Media', 'extra' => 'media_filters'));
 		/* echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $project)); */
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'end_content_section', 'id' => 'media'));

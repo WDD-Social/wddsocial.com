@@ -110,21 +110,27 @@ HTML;
 		$extras = array(
 			'latest_filters' => <<<HTML
 <div class="secondary filters">
-						<a href="{$root}#all" title="All Latest Activity" class="current">All</a> 
-						<a href="{$root}#people" title="Latest People">People</a> 
-						<a href="{$root}#projects" title="Latest Projects">Projects</a> 
-						<a href="{$root}#articles" title="Latest Articles">Articles</a>
+						<a href="{$_SERVER['REQUEST_URI']}#all" title="All Latest Activity" class="current">All</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#people" title="Latest People">People</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#projects" title="Latest Projects">Projects</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#articles" title="Latest Articles">Articles</a>
 					</div><!-- END SECONDARY -->
 HTML
 			,'user_latest_filters' => <<<HTML
 <div class="secondary filters">
-						<a href="{$root}#all" title="All Latest Activity" class="current">All</a> 
-						<a href="{$root}#projects" title="Latest Projects">Projects</a> 
-						<a href="{$root}#articles" title="Latest Articles">Articles</a>
+						<a href="{$_SERVER['REQUEST_URI']}#all" title="All Latest Activity" class="current">All</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#projects" title="Latest Projects">Projects</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#articles" title="Latest Articles">Articles</a>
 					</div><!-- END SECONDARY -->
 HTML
 			,'slider_controls' => <<<HTML
-<div class="slider-controls"><a href="{$root}" title="Featured 1" class="current">1</a> <a href="{$root}" title="Featured 2">2</a> <a href="{$root}" title="Featured 3">3</a> <a href="{$root}" title="Featured 4">4</a> <a href="{$root}" title="Featured 5">5</a></div>
+<div class="slider-controls"><a href="{$_SERVER['REQUEST_URI']}" title="Featured 1" class="current">1</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 2">2</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 3">3</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 4">4</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 5">5</a></div>
+HTML
+			,'media_filters' => <<<HTML
+<div class="secondary filters">
+						<a href="{$_SERVER['REQUEST_URI']}#images" title="Related Images" class="current">Images</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#videos" title="Related Videos">Videos</a>
+					</div><!-- END SECONDARY -->
 HTML
 		);
 		

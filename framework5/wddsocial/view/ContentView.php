@@ -114,7 +114,7 @@ HTML;
 			case 'project':
 				$html .= <<<HTML
 
-						<p>Completed in <strong>{$content->completeDate}</strong>.</p>
+						<p>Completed in {$content->completeDate}.</p>
 						<p>Posted {$content->date}</p>
 HTML;
 				break;
