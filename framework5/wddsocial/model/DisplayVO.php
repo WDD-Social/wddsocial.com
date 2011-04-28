@@ -12,7 +12,6 @@ class DisplayVO{
 	
 	public function __construct(){
 		$this->db = instance(':db');
-		import('wddsocial.sql.SelectorSQL');
 		$this->sql = instance(':sel-sql');
 		
 		if($type != 'person'){
