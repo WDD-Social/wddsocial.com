@@ -3,9 +3,9 @@
 namespace WDDSocial;
 
 /*
-* Sample script 
 * 
-* @author tmatthews (tmatthewsdev@gmail.com)
+* 
+* @author: Anthony Colangelo (me@acolangelo.com)
 */
 
 class ProjectPage implements \Framework5\IExecutable {
@@ -54,22 +54,20 @@ if($user == false){
 	
 	
 	/**
-	* Gets the user and data
+	* Gets the requested project and data
 	*/
 	
 	private static function getProject($vanityURL){
 		import('wddsocial.model.WDDSocial\ContentVO');
 		
-		/*
-# Get db instance and query
+		# Get db instance and query
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$data = array('vanityURL' => $vanityURL);
-		$query = $db->prepare($sql->getUserByVanityURL);
-		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+		$query = $db->prepare($sql->getProjectByVanityURL);
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 		$query->execute($data);
 		return $query->fetch();
-*/
 	}
 	
 }
