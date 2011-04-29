@@ -599,7 +599,7 @@ class SelectorSQL{
 		*/
 			
 		'getRecentJobs' => "
-			SELECT j.id, userID, j.title, company, jt.title AS jobType, avatar, location, compensation, description, website
+			SELECT j.id, userID, j.title, vanityURL, company, jt.title AS jobType, avatar, location, compensation, description, website
 			FROM jobs AS j
 			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
 			ORDER BY `datetime` DESC
