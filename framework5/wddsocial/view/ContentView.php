@@ -24,8 +24,10 @@ class ContentView implements \Framework5\IView {
 				return static::members($options['content']);
 			case 'media':
 				return static::media($options['content'],$options['active']);
+			case 'comments':
+				return static::comments($options['comments']);
 			default:
-				throw new \Framework5\Exception("ContentView requires parameter section (overview), '{$options['section']}' provided");
+				throw new \Framework5\Exception("ContentView requires parameter section (overview, members, media, or comments), '{$options['section']}' provided");
 		}
 	}
 	
@@ -346,6 +348,82 @@ HTML;
 
 					</div><!-- END $active -->
 HTML;
+		
+		return $html;
+	}
+	
+	
+	
+	/**
+	* Display content comments
+	*/
+	
+	private static function comments($comments){
+		$root = \Framework5\Request::root_path();
+		$html = "";
+		$commentCount = count($comments);
+		$commentVerbage = 'comment';
+		if($commentCount > 1 || $commentCount < 1){
+			$commentVerbage .= 's';
+		}
+		$html .= <<<HTML
+
+					<div class="secondary">
+						<p>{$commentCount} {$commentVerbage}</p> 
+					</div><!-- END SECONDARY -->
+HTML;
+		
+		if($commentCount > 0){
+			foreach($comments as $comment){
+				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($comment->userID,"{$comment->firstName} {$comment->lastName}");
+				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($comment->userID,"{$comment->firstName} {$comment->lastName}");
+				
+				$html .= <<<HTML
+
+					<article class="with-secondary">
+HTML;
+				if(!\WDDSocial\UserValidator::is_current($comment->userID)){
+					$possessive = \WDDSocial\NaturalLanguage::possessive("{$comment->firstName} {$comment->lastName}");
+					$html .= <<<HTML
+
+						<div class="secondary">
+							<a href="#" title="Flag {$possessive} Comment;" class="flag">Flag</a>
+						</div><!-- END SECONDARY -->
+HTML;
+				}
+				$html .= <<<HTML
+						
+						<p class="item-image"><a href="{$root}user/{$comment->vanityURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$comment->avatar}_medium.jpg" alt="{$userDisplayName}"/></a></p>
+						<h2><a href="{$root}user/{$comment->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
+						<p>{$comment->content}</p>
+						<p class="comments">{$comment->date}</p>
+					</article>
+HTML;
+			}
+		}else{
+			$html .= <<<HTML
+
+					<p class="empty">No one has commented yet, why don&rsquo;t you start the conversation?</p>
+HTML;
+		}
+		
+		if(\WDDSocial\UserValidator::is_authorized()){
+			$user = $_SESSION['user'];
+			$userVerbage = \WDDSocial\NaturalLanguage::view_profile($user->id,"{$user->firstName} {$user->lastName}");
+			$userDisplayName = \WDDSocial\NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
+			
+			$html .= <<<HTML
+
+					<article>
+						<p class="item-image"><a href="{$root}user/{$user->vanityURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$user->avatar}_medium.jpg" alt="{$userDisplayName}"/></a></p>
+						<h2><a href="{$root}user/{$user->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
+HTML;
+			$html .= render('wddsocial.view.WDDSocial\FormView', array('type' => 'comment'));
+			$html .= <<<HTML
+
+					</article>
+HTML;
+		}
 		
 		return $html;
 	}

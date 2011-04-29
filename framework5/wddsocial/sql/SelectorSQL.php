@@ -760,110 +760,113 @@ class SelectorSQL{
 		*/
 			
 		'getProjectComments' => "
-			SELECT c.id, c.userID, content,
+			SELECT c.id, content, u.id AS userID, firstName, lastName, avatar, vanityURL,
 			IF(
-				TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
 				IF(
-					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
-						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
-							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
 							'Yesterday'
 						)
 					),
 					IF(
-						TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+						TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
 					)
 				),
 				IF(
-					TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
 					'Just now',
 					IF(
-						TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+						TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
 					)
 				)
 			) AS `date`
 			FROM comments AS c
 			LEFT JOIN projectComments AS pc ON (c.id = pc.commentID)
+			LEFT JOIN users AS u ON (u.id = c.userID)
 			WHERE pc.projectID = :id
 			ORDER BY `date` ASC",
 			
 		'getArticleComments' => "
-			SELECT c.id, c.userID, content,
+			SELECT c.id, content, u.id AS userID, firstName, lastName, avatar, vanityURL,
 			IF(
-				TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
 				IF(
-					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
-						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
-							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
 							'Yesterday'
 						)
 					),
 					IF(
-						TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+						TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
 					)
 				),
 				IF(
-					TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
 					'Just now',
 					IF(
-						TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+						TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
 					)
 				)
 			) AS `date`
 			FROM comments AS c
 			LEFT JOIN articleComments AS ac ON (c.id = ac.commentID)
+			LEFT JOIN users AS u ON (u.id = c.userID)
 			WHERE ac.articleID = :id
 			ORDER BY `date` ASC",
 		
 		'getEventComments' => "
-			SELECT c.id, c.userID, content,
+			SELECT c.id, content, u.id AS userID, firstName, lastName, avatar, vanityURL,
 			IF(
-				TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
+				TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 59,
 				IF(
-					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
+					TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
-						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
-							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
+							TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'days ago'),
 							'Yesterday'
 						)
 					),
 					IF(
-						TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
+						TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'hour ago')
 					)
 				),
 				IF(
-					TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
+					TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) = 0,
 					'Just now',
 					IF(
-						TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
+						TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)), 'minute ago')
 					)
 				)
 			) AS `date`
 			FROM comments AS c
 			LEFT JOIN eventComments AS ec ON (c.id = ec.commentID)
+			LEFT JOIN users AS u ON (u.id = c.userID)
 			WHERE ec.eventID = :id
 			ORDER BY `date` ASC",
 			
