@@ -22,6 +22,8 @@ class ContentView implements \Framework5\IView {
 				return static::overview($options['content']);
 			case 'members':
 				return static::members($options['content']);
+			case 'location':
+				return static::location($options['content']);
 			case 'media':
 				return static::media($options['content'],$options['active']);
 			case 'comments':
@@ -44,8 +46,8 @@ class ContentView implements \Framework5\IView {
 			$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
-						<a href="{$root}" title="Delete &ldquo;{$content->title}&rsquo;" class="delete">Delete</a>
+						<a href="{$root}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
+						<a href="{$root}" title="Delete &ldquo;{$content->title}&rdquo;" class="delete">Delete</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}else{
@@ -55,14 +57,14 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+						<a href="{$root}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
-					}else{
+					}else if(\WDDSocial\UserValidator::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Flag &ldquo;{$content->title}&rsquo;" class="flag">Flag</a>
+						<a href="{$root}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -72,14 +74,23 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+						<a href="{$root}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
-					}else{
+					}else if(\WDDSocial\UserValidator::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Flag &ldquo;{$content->title}&rsquo;" class="flag">Flag</a>
+						<a href="{$root}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
+					</div><!-- END SECONDARY -->
+HTML;
+					}
+				default :
+					if(\WDDSocial\UserValidator::is_authorized()){
+						$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -211,6 +222,7 @@ HTML;
 	private static function members($content){
 		$root = \Framework5\Request::root_path();
 		$html = "";
+		$possessiveTitle = \WDDSocial\NaturalLanguage::possessive($content->title);
 		
 		switch ($content->type) {
 			case 'project':
@@ -218,7 +230,7 @@ HTML;
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+						<a href="{$root}" title="Edit &ldquo;$possessiveTitle Team&rdquo;" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -228,7 +240,7 @@ HTML;
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+						<a href="{$root}" title="Edit &ldquo;{$possessiveTitle} Authors&rdquo;" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -238,7 +250,7 @@ HTML;
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit &ldquo;{$content->title}&rsquo;" class="edit">Edit</a>
+						<a href="{$root}" title="Edit &ldquo;{$possessiveTitle} Members&rdquo;" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -309,6 +321,45 @@ HTML;
 HTML;
 		}
 		
+		return $html;
+	}
+	
+	
+	
+	/**
+	* Display event location and time
+	*/
+	
+	private static function location($content){
+		$root = \Framework5\Request::root_path();
+		$html = "";
+		$possessiveTitle = \WDDSocial\NaturalLanguage::possessive($content->title);
+		
+		if(\WDDSocial\UserValidator::is_current($content->userID)){
+			$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Edit {$possessiveTitle} Location and Time" class="edit">Edit</a>
+					</div><!-- END SECONDARY -->
+HTML;
+		}
+		$html .= <<<HTML
+
+					<article class="location-and-time">
+HTML;
+			
+		$html .= <<<HTML
+
+						<p class="item-image"><a href="{$root}/files/ics/{$content->icsUID}.ics" title="Download {$content->title} iCal File" class="calendar-icon">
+							<span class="month">{$content->month}</span> 
+							<span class="day">{$content->day}</span> 
+							<span class="download"><img src="{$root}/images/site/icon-download.png" alt="Download iCal File"/>iCal</span>
+						</a></p>
+						<h2>{$content->location}</h2>
+						<p>{$content->startTime} - {$content->endTime}</p>
+						<p><a href="{$root}/files/ics/{$content->icsUID}.ics" title="Download {$content->title} iCal File">Download iCal File</a></p>
+					</article><!-- END {$content->title} -->
+HTML;
 		return $html;
 	}
 	
@@ -398,12 +449,20 @@ HTML;
 
 					<article class="with-secondary">
 HTML;
-				if(!\WDDSocial\UserValidator::is_current($comment->userID)){
+				if(\WDDSocial\UserValidator::is_current($comment->userID)){
+					$html .= <<<HTML
+
+						<div class="secondary">
+							<a href="{$root}" title="Edit Your Comment" class="edit">Edit</a> 
+							<a href="{$root}" title="Delete Your Comment" class="delete">Delete</a>
+						</div><!-- END SECONDARY -->
+HTML;
+				}else if(\WDDSocial\UserValidator::is_authorized()){
 					$possessive = \WDDSocial\NaturalLanguage::possessive("{$comment->firstName} {$comment->lastName}");
 					$html .= <<<HTML
 
 						<div class="secondary">
-							<a href="#" title="Flag {$possessive} Comment;" class="flag">Flag</a>
+							<a href="{$root}" title="Flag {$possessive} Comment" class="flag">Flag</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}
