@@ -246,10 +246,13 @@ HTML;
 		}
 		
 		if(count($content->team) > 0){
-			$html .= <<<HTML
+			if($content->type != 'article'){
+				$html .= <<<HTML
 
 					<ul>
 HTML;
+			}
+			
 			foreach($content->team as $member){
 				if(\WDDSocial\UserValidator::is_current($member->id)){
 					$key = array_search($member, $content->team);
@@ -271,7 +274,8 @@ HTML;
 						$userDetail = $member->bio;
 						break;
 				}
-				$html .= <<<HTML
+				if($content->type != 'article'){
+					$html .= <<<HTML
 
 						<li>
 							<a href="{$root}user/{$member->vanityURL}" title="{$userVerbage}">
@@ -280,12 +284,24 @@ HTML;
 							</a>
 						</li>
 HTML;
+				}else{
+					$html .= <<<HTML
+
+					<article>
+						<p class="item-image"><a href="{$root}user/{$member->vanityURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$member->avatar}_medium.jpg" alt="{$userDisplayName}" /></a></p>
+						<h2><a href="{$root}user/{$member->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
+						<p>$userDetail</p>
+					</article>
+HTML;
+				}
+				
 			}
-			
-			$html .= <<<HTML
+			if($content->type != 'article'){
+				$html .= <<<HTML
 
 					</ul>
 HTML;
+			}
 		}else{
 			$html .= <<<HTML
 
@@ -401,10 +417,12 @@ HTML;
 HTML;
 			}
 		}else{
-			$html .= <<<HTML
+			if(\WDDSocial\UserValidator::is_authorized()){
+				$html .= <<<HTML
 
 					<p class="empty">No one has commented yet, why don&rsquo;t you start the conversation?</p>
 HTML;
+			}
 		}
 		
 		if(\WDDSocial\UserValidator::is_authorized()){
@@ -422,6 +440,11 @@ HTML;
 			$html .= <<<HTML
 
 					</article>
+HTML;
+		}else{
+			$html .= <<<HTML
+
+					<p class="empty">You must be signed in to add a comment. <a href="{$root}signin" title="Sign In to WDD Social">Would you like to sign in?</a></p>
 HTML;
 		}
 		
