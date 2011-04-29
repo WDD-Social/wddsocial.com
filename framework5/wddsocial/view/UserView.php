@@ -197,6 +197,10 @@ HTML;
 		$html .= <<<HTML
 
 					<ul>
+HTML;
+		
+		if(\WDDSocial\UserValidator::is_authorized()){
+			$html .= <<<HTML
 						<li>
 							<a href="{$root}messages/{$user->vanityURL}" title="Send {$user->firstName} a message">
 							<img src="{$root}images/site/icon-contact-mail.png" alt="Send {$user->firstName} a message" />
@@ -204,6 +208,7 @@ HTML;
 							</a>
 						</li>
 HTML;
+		}
 		
 		if(isset($user->contact['website'])){
 			$html .= <<<HTML

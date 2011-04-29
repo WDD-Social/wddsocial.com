@@ -16,7 +16,7 @@ class ProjectPage implements \Framework5\IExecutable {
 			
 		if($project == false){
 			echo render(':template', 
-				array('section' => 'top', 'title' => "User Not Found"));
+				array('section' => 'top', 'title' => "Project Not Found"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			echo "<h1>Project Not Found</h1>";
 			echo render('wddsocial.view.WDDSocial\SectionView',

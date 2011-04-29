@@ -56,18 +56,18 @@ HTML;
 		if(\WDDSocial\UserValidator::is_current($project->userID)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$project->title}&rsquo;" class="edit">Edit</a>
-							<a href="{$root}" title="Delete &ldquo;{$project->title}&rsquo;" class="delete">Delete</a>
+							<a href="{$root}" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Delete &ldquo;{$project->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}else if(\WDDSocial\UserValidator::is_project_owner($project->id)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$project->title}&rsquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
 HTML;
-		}else{
+		}else if(\WDDSocial\UserValidator::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Flag &ldquo;{$project->title}&rsquo;" class="flag">Flag</a>
+							<a href="{$root}" title="Flag &ldquo;{$project->title}&rdquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
@@ -137,18 +137,18 @@ HTML;
 		if(\WDDSocial\UserValidator::is_current($article->userID)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$article->title}&rsquo;" class="edit">Edit</a>
-							<a href="{$root}" title="Delete &ldquo;{$article->title}&rsquo;" class="delete">Delete</a>
+							<a href="{$root}" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Delete &ldquo;{$article->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}else if(\WDDSocial\UserValidator::is_article_owner($article->id)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$article->title}&rsquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
 HTML;
-		}else{
+		}else if(\WDDSocial\UserValidator::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Flag &ldquo;{$article->title}&rsquo;" class="flag">Flag</a>
+							<a href="{$root}" title="Flag &ldquo;{$article->title}&rdquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
