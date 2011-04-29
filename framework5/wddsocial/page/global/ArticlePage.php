@@ -16,7 +16,7 @@ class ArticlePage implements \Framework5\IExecutable {
 			
 		if($article == false){
 			echo render(':template', 
-				array('section' => 'top', 'title' => "User Not Found"));
+				array('section' => 'top', 'title' => "Article Not Found"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			echo "<h1>Article Not Found</h1>";
 			echo render('wddsocial.view.WDDSocial\SectionView',

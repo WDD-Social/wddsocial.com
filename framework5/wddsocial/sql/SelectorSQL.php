@@ -589,7 +589,7 @@ class SelectorSQL{
 			LIMIT 0,10",
 		
 		'getEventByVanityURL' => "
-			SELECT id, userID, title, description, vanityURL, 'event' AS `type`, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`
+			SELECT id, userID, icsUID, title, description, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`
 			FROM events
 			WHERE vanityURL = :vanityURL",
 			

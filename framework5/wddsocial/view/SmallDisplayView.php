@@ -85,13 +85,13 @@ HTML;
 			if(\WDDSocial\UserValidator::is_current($event->userID)){
 				$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$event->title}&rsquo;" class="edit">Edit</a>
-							<a href="{$root}" title="Delete &ldquo;{$event->title}&rsquo;" class="delete">Delete</a>
+							<a href="{$root}" title="Edit &ldquo;{$event->title}&rdquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Delete &ldquo;{$event->title}&rdquo;" class="delete">Delete</a>
 HTML;
-			}else{
+			}else if(\WDDSocial\UserValidator::is_authorized()){
 				$html .= <<<HTML
 
-							<a href="{$root}" title="Flag &ldquo;{$event->title}&rsquo;" class="flag">Flag</a>
+							<a href="{$root}" title="Flag &ldquo;{$event->title}&rdquo;" class="flag">Flag</a>
 HTML;
 			}
 			$html .=<<<HTML
@@ -149,13 +149,13 @@ HTML;
 			if(\WDDSocial\UserValidator::is_current($job->userID)){
 				$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$job->title} | {$job->company}&rsquo;" class="edit">Edit</a>
-							<a href="{$root}" title="Delete &ldquo;{$job->title} | {$job->company}&rsquo;" class="delete">Delete</a>
+							<a href="{$root}" title="Edit &ldquo;{$job->title} | {$job->company}&rdquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Delete &ldquo;{$job->title} | {$job->company}&rdquo;" class="delete">Delete</a>
 HTML;
-			}else{
+			}else if(\WDDSocial\UserValidator::is_authorized()){
 				$html .= <<<HTML
 
-							<a href="{$root}" title="Flag &ldquo;{$job->title} | {$job->company}&rsquo;" class="flag">Flag</a>
+							<a href="{$root}" title="Flag &ldquo;{$job->title} | {$job->company}&rdquo;" class="flag">Flag</a>
 HTML;
 			}
 			$html .=<<<HTML
