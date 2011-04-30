@@ -10,19 +10,47 @@ namespace WDDSocial;
 
 class UserSession {
 	
-	public static function status() {
-		
+	
+	private static $_error_message;
+	
+	
+	
+	/**
+	* Initialize session
+	*/
+	
+	public static function init() {
 		session_start();
-		
-		if ($_SESSION['authorized']) {
-			
-		}
-			
-		static::fake_user();
-		
+		static::fake_user(); #tmp
 	}
 	
 	
+	
+	/**
+	* Process user signin
+	*/
+	
+	public static function signin($email, $password) {
+		
+		# validate input
+		if (!isset($email) or empty($email)) {
+			
+		}
+		if (!isset($password) or empty($password)) {
+		
+		}
+		
+		# query database
+		
+		
+		return true;
+	}
+	
+	
+	
+	/**
+	* 
+	*/
 	
 	public static function fake_user() {
 		
@@ -38,6 +66,26 @@ class UserSession {
 		
 		# set session
 		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = true;
+		$_SESSION['authorized'] = false;
+	}
+	
+	
+	
+	/**
+	* Checks if a user is the currently signed in user
+	*/
+	
+	public static function is_current($userID){
+		return ($userID == $_SESSION['user']->id)?true:false;
+	}
+	
+	
+	
+	/**
+	* Checks if the current user is authorized
+	*/
+	
+	public static function is_authorized(){
+		return ($_SESSION['authorized'] == true)?true:false;
 	}
 }

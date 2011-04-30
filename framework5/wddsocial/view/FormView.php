@@ -2,7 +2,7 @@
 
 namespace WDDSocial;
 
-class FormView implements \Framework5\IView {		
+class FormView implements \Framework5\IView {
 	
 	/**
 	* Determines what type of content to render
@@ -13,10 +13,6 @@ class FormView implements \Framework5\IView {
 		switch ($options['type']) {
 			case 'share':
 				return static::share();
-			case 'sign_in':
-				return static::sign_in();
-			case 'sign_in_intro':
-				return static::sign_in_intro();
 			case 'sign_up':
 				return static::sign_up();
 			case 'sign_up_intro':
@@ -62,47 +58,7 @@ class FormView implements \Framework5\IView {
 					</form>
 HTML;
 	}
-	
-	
-	
-	/**
-	* 
-	*/
-	
-	private static function sign_in_intro(){
-		return <<<HTML
-
-					<h1 class="mega">Welcome back, we&rsquo;ve missed you!</h1>
-HTML;
-	}
-	
-	
-	
-	/**
-	* Creates the sign in form
-	*/
-	
-	private static function sign_in() {
-		$root = \Framework5\Request::root_path();
-		return <<<HTML
-
-					<form action="{$root}/signin" method="post">
-						<p class="error"><strong></strong></p>
-						<fieldset>
-							<label for="email">Email</label>
-							<input type="email" name="email" id="email" />
-						</fieldset>
-						<fieldset>
-							<label for="password" class="helper-link">Password</label>
-							<p class="helper-link"><a href="#" title="Did you forget your password?" tabindex="1000">Forgot?</a></p>
-							<input type="password" name="password" id="password" />
-						</fieldset>
-						<p class="helper-link"><a href="{$root}/signup" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
-						<input type="submit" value="Sign In" />
-					</form>
-HTML;
-	}
-	
+		
 	
 	
 	/**

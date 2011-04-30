@@ -11,56 +11,86 @@ class SigninPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
-		if(isset($_POST['email']) && isset($_POST['password'])){
+		# handle form submission
+		if (isset($_POST['submit']))
 			static::process_form();
-		}else{
+		
+		# display signin page
+		else {
 			# display site header
 			echo render('wddsocial.view.WDDSocial\TemplateView', 
 				array('section' => 'top', 'title' => 'Sign In to WDD Social'));
 			
 			# open content section
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render('wddsocial.view.WDDSocial\SectionView', 
+				array('section' => 'begin_content'));
 			
 			# display sign in form
-			echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'sign_in_intro'));
-			
-			# display sign in form
-			echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'sign_in'));
-			
+			echo render('wddsocial.view.form.WDDSocial\SigninView');
+						
 			# end content section
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'end_content'));
+			echo render('wddsocial.view.WDDSocial\SectionView', 
+				array('section' => 'end_content'));
 			
 			# display site footer
 			echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
 		}
 	}
 	
-	public static function process_form(){
-		# display site header
-		echo render('wddsocial.view.WDDSocial\TemplateView', 
-			array('section' => 'top', 'title' => 'Sign In'));
+	
+	
+	/**
+	* 
+	* 
+	* @author tmatthews (tmatthewsdev@gmail.com)
+	*/
+	
+	public static function process_form() {
 		
-		# open content section
-		echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
-		
-		echo render('wddsocial.view.WDDSocial\SectionView', 
-			array('section' => 'begin_content_section', 'id' => 'details', 
-				'classes' => array('small'), 'header' => 'User Details'));
-		
-		echo <<<HTML
-
-				<p>Email: {$_POST['email']}</p>
-				<p>Password: {$_POST['password']}</p>
-HTML;
+		$success = true;
 				
-		# Create section footer
-		echo render('wddsocial.view.WDDSocial\SectionView', 
-			array('section' => 'end_content_section', 'id' => 'details'));
+		# filter input variables
+		$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+		$password = filter_input(INPUT_POST, 'password');
 		
-		# end content section
-		echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'end_content'));
+		if (!$password) {
+			$message = "You must enter a valid password";
+			$success = false;
+		}
 		
-		# display site footer
-		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
+		if (!$email) {
+			$message = "You must enter a valid email address";
+			$success = false;
+		}
+		
+		# validation and auth success
+		if ($success and UserSession::signin($email, $password)) {
+			header('Location: /'); # redirect to user dashboard
+		}
+		
+		# login failure, error page
+		else {
+			# if signin failed, get the error message
+			if ($success) $message = UserSession::error_message();
+			
+			# display site header
+			echo render('wddsocial.view.WDDSocial\TemplateView', 
+				array('section' => 'top', 'title' => 'Sign In to WDD Social'));
+			
+			# open content section
+			echo render('wddsocial.view.WDDSocial\SectionView', 
+				array('section' => 'begin_content'));
+			
+			# display sign in form
+			echo render('wddsocial.view.form.WDDSocial\SigninView', 
+				array('error' => $message, 'email' => $email));
+						
+			# end content section
+			echo render('wddsocial.view.WDDSocial\SectionView', 
+				array('section' => 'end_content'));
+			
+			# display site footer
+			echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
+		}
 	}
 }
