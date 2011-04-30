@@ -1760,7 +1760,7 @@ input[type="radio"]:checked + label{
 		}
 	}
 
-input[type="submit"]{
+input[type="submit"], button, a.button{
 	float: right;
 	width: 46.666666666666667%;
 	min-width: 140px;
@@ -1770,17 +1770,23 @@ input[type="submit"]{
 	border: none;
 	.linear-gradient(@green-light-25,@green);
 	font: bold 1.2em "Helvetica Neue", Helvetica, Arial, sans-serif;
+	text-align: center;
+	text-decoration: none;
 	text-shadow: 0 -1px 1px rgba(0,0,0,.25);
 	color: #fff;
 	outline: none;
 	.box-shadow-inset(0, 1px, 3px, rgba(0,0,0,.1));
 	}
+
+a.button{
+	margin-top: 20px;
+	}
 	
-input[type="submit"]:hover, input[type="submit"]:focus{
+input[type="submit"]:hover, input[type="submit"]:focus, button:hover, button:focus, a.button:hover, a.button:focus{
 	.linear-gradient(@green-light-40,@green);
 	}
 	
-input[type="submit"]:active{
+input[type="submit"]:active, button:active, a.button:active{
 	.linear-gradient(@green-light-15,@green-dark-13);
 	.box-shadow-inset(0, 1px, 4px, rgba(0,0,0,.4));
 	}

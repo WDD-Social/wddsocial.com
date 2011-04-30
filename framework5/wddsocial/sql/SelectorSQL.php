@@ -589,7 +589,7 @@ class SelectorSQL{
 			LIMIT 0,10",
 		
 		'getEventByVanityURL' => "
-			SELECT id, userID, icsUID, title, description, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`
+			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`
 			FROM events
 			WHERE vanityURL = :vanityURL",
 			
@@ -606,8 +606,9 @@ class SelectorSQL{
 			LIMIT 0,3",
 		
 		'getJobByVanityURL' => "
-			SELECT id, userID, title, description, vanityURL, 'job' AS `type`
-			FROM jobs
+			SELECT j.id, userID, j.title, description, content, vanityURL, 'job' AS `type`, company, jt.title AS jobType, avatar, location, compensation, website, email
+			FROM jobs AS j
+			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
 			WHERE vanityURL = :vanityURL",
 			
 			
