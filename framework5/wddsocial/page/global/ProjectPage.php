@@ -16,7 +16,7 @@ class ProjectPage implements \Framework5\IExecutable {
 			
 		if($project == false){
 			echo render(':template', 
-				array('section' => 'top', 'title' => "User Not Found"));
+				array('section' => 'top', 'title' => "Project Not Found"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			echo "<h1>Project Not Found</h1>";
 			echo render('wddsocial.view.WDDSocial\SectionView',
@@ -31,6 +31,7 @@ class ProjectPage implements \Framework5\IExecutable {
 			static::displayProjectOverview($project);
 			static::displayProjectTeam($project);
 			static::displayProjectMedia($project);
+			static::displayProjectComments($project->comments);
 			
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
@@ -39,10 +40,6 @@ class ProjectPage implements \Framework5\IExecutable {
 		
 		echo render(':template', 
 				array('section' => 'bottom'));
-		
-		echo "<pre>";
-		print_r($project);
-		echo "</pre>";
 	}
 	
 	
@@ -104,5 +101,19 @@ class ProjectPage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'media', 'content' => $project, 'active' => 'images'));
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'end_content_section', 'id' => 'media'));
+	}
+	
+	
+	
+	/**
+	* Gets the requested project and data
+	*/
+	
+	private static function displayProjectComments($comments){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'comments', 'classes' => array('medium', 'with-secondary'), 'header' => 'Comments'));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'comments', 'comments' => $comments));
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'comments'));
 	}
 }

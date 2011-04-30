@@ -17,6 +17,8 @@ class FormView implements \Framework5\IView {
 				return static::sign_up();
 			case 'sign_up_intro':
 				return static::sign_up_intro(); 
+			case 'comment':
+				return static::comment(); 
 			default:
 				throw new \Framework5\Exception("FormView requires parameter type (share, sign_in, or sign_up), '{$options['type']}' provided");
 		}
@@ -148,6 +150,23 @@ HTML;
 					<p class="helper-link"><a href="{$root}/signin" title="Already a WDD Social member?">Already a member?</a></p>
 					<input type="submit" value="Sign Up" />
 				</form>
+HTML;
+	}
+	
+	
+	
+	/**
+	* Creates the comment form
+	*/
+	
+	private static function comment() {
+		$root = \Framework5\Request::root_path();
+		return <<<HTML
+
+						<form action="{$root}" method="post">
+							<textarea class="placeholder">Write your comment...</textarea>
+							<input type="submit" value="Post Comment" />
+						</form>
 HTML;
 	}
 }

@@ -15,7 +15,9 @@ class UserValidator {
 	*/
 	
 	public static function is_current($userID){
-		return ($userID == $_SESSION['user']->id)?true:false;
+		if(static::is_authorized()){
+			return ($userID == $_SESSION['user']->id)?true:false;
+		}
 	}
 	
 	
@@ -27,13 +29,15 @@ class UserValidator {
 	
 	
 	public static function is_project_owner($projectID){
-		$db = instance(':db');
-		$sql = instance(':val-sql');
-		$data = array('id' => $projectID);
-		$query = $db->prepare($sql->getProjectOwners);
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$query->execute($data);
-		return static::if_current_is_in_array($query->fetchAll());
+		if(static::is_authorized()){
+			$db = instance(':db');
+			$sql = instance(':val-sql');
+			$data = array('id' => $projectID);
+			$query = $db->prepare($sql->getProjectOwners);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$query->execute($data);
+			return static::if_current_is_in_array($query->fetchAll());
+		}
 	}
 	
 	
@@ -43,13 +47,15 @@ class UserValidator {
 	*/
 	
 	public static function is_article_owner($articleID){
-		$db = instance(':db');
-		$sql = instance(':val-sql');
-		$data = array('id' => $articleID);
-		$query = $db->prepare($sql->getArticleOwners);
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$query->execute($data);
-		return static::if_current_is_in_array($query->fetchAll());
+		if(static::is_authorized()){
+			$db = instance(':db');
+			$sql = instance(':val-sql');
+			$data = array('id' => $articleID);
+			$query = $db->prepare($sql->getArticleOwners);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$query->execute($data);
+			return static::if_current_is_in_array($query->fetchAll());
+		}
 	}
 	
 	

@@ -13,33 +13,25 @@ class EventPage implements \Framework5\IExecutable {
 	public static function execute() {	
 		
 		$event = static::getEvent(\Framework5\Request::segment(1));
-		
-		echo "<pre>";
-		print_r($event);
-		echo "</pre>";
 			
-		/*
-if($user == false){
+		if($event == false){
 			echo render(':template', 
-				array('section' => 'top', 'title' => "User Not Found"));
+				array('section' => 'top', 'title' => "Event Not Found"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
-			echo "<h1>User Not Found</h1>";
+			echo "<h1>Event Not Found</h1>";
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
 		}else{
 			# display site header
 			echo render(':template', 
-				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
+				array('section' => 'top', 'title' => "{$event->title}"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			
-			# display user intro
-			echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
-			
-			# display user's latest activity
-			static::getUserLatest($user->id);
-			
-			# display users' contact info
-			echo render('wddsocial.view.WDDSocial\UserView',array('section' => 'contact', 'user' => $user));
+			# display Event overview
+			static::displayEventOverview($event);
+			static::displayEventDetails($event);
+			static::displayEventMedia($event);
+			static::displayEventComments($event->comments);
 			
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
@@ -48,13 +40,12 @@ if($user == false){
 		
 		echo render(':template', 
 				array('section' => 'bottom'));
-*/
 	}
 	
 	
 	
 	/**
-	* Gets the requested event and data
+	* Gets the requested Event and data
 	*/
 	
 	private static function getEvent($vanityURL){
@@ -70,4 +61,59 @@ if($user == false){
 		return $query->fetch();
 	}
 	
+	
+	
+	/**
+	* Gets the requested Event and data
+	*/
+	
+	private static function displayEventOverview($event){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'event', 'classes' => array('large', 'with-secondary'), 'header' => $event->title));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $event));
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'event'));
+	}
+	
+	
+	
+	/**
+	* Gets the requested Event and data
+	*/
+	
+	private static function displayEventDetails($event){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'location', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Location and Time'));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'event_location', 'content' => $event));
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'location'));
+	}
+	
+	
+	
+	/**
+	* Gets the requested Event and data
+	*/
+	
+	private static function displayEventMedia($event){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'media', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Media', 'extra' => 'media_filters'));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'media', 'content' => $event, 'active' => 'images'));
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'media'));
+	}
+	
+	
+	
+	/**
+	* Gets the requested Event and data
+	*/
+	
+	private static function displayEventComments($comments){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'comments', 'classes' => array('medium', 'with-secondary'), 'header' => 'Comments'));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'comments', 'comments' => $comments));
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'comments'));
+	}
 }
