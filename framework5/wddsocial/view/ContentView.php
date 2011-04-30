@@ -427,7 +427,7 @@ HTML;
 
 						<p class="item-image"><a href="http://{$content->website}" title="{$content->company}"><img src="{$root}images/jobs/{$content->avatar}_medium.jpg" alt="{$content->company}"/></a></p>
 						<h2><a href="http://{$content->website}" title="{$content->company}">{$content->company}</a></h2>
-						<p>{$content->location}</p>
+						<p><a href="http://maps.google.com/?q={$content->location}" title="Search Google Maps for {$content->location}">{$content->location}</a></p>
 						<p>This job is {$jobType}.</p>
 HTML;
 		if($content->compensation != ''){

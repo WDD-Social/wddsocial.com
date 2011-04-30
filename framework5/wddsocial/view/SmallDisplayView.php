@@ -169,7 +169,7 @@ HTML;
 						<p class="item-image"><a href="http://{$job->website}" title="{$job->company}"><img src="{$root}/images/jobs/{$job->avatar}_medium.jpg" alt="{$job->company}"/></a></p>
 						<h2><a href="{$root}/job/{$job->vanityURL}" title="{$job->title} | {$job->company}">{$job->title}</a></h2>
 						<p class="company"><a href="http://{$job->website}" title="{$job->company}">{$job->company}</a></p>
-						<p>{$job->location}</p>
+						<p><a href="http://maps.google.com/?q={$job->location}" title="Search Google Maps for {$job->location}">{$job->location}</a></p>
 						<p>{$job->description}</p>
 						<p class="job-type"><a href="{$root}/jobs#{$job->jobType}" title="See {$job->jobType} Job Postings">{$job->jobType}</a></p>
 HTML;
