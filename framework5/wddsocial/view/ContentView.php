@@ -22,8 +22,10 @@ class ContentView implements \Framework5\IView {
 				return static::overview($options['content']);
 			case 'members':
 				return static::members($options['content']);
-			case 'location':
-				return static::location($options['content']);
+			case 'event_location':
+				return static::event_location($options['content']);
+			case 'job_details':
+				return static::job_details($options['content']);
 			case 'media':
 				return static::media($options['content'],$options['active']);
 			case 'comments':
@@ -175,12 +177,31 @@ HTML;
 					<div class="small no-margin">
 						<h2>Links</h2>
 HTML;
-		if(count($content->links) > 0){
-			$html .= <<<HTML
+		$linkCount = 0;
+		$html .= <<<HTML
 
 						<ul>
 HTML;
+		if($content->type == 'job'){
+			if($content->website != ''){
+				$linkCount++;
+				$html .= <<<HTML
+
+							<li><a href="http://{$content->website}" title="{$content->company}">{$content->company}</a></li>
+HTML;
+			}
+			if($content->email != ''){
+				$linkCount++;
+				$html .= <<<HTML
+
+							<li><a href="mailto:{$content->email}" title="Email {$content->company}">Email</a></li>
+HTML;
+			}
+		}
+
+		if(count($content->links) > 0){
 			foreach($content->links as $link){
+				$linkCount++;
 				$html .= <<<HTML
 
 							<li><a href="http://{$link->link}" title="{$link->title}">{$link->title}</a></li>
@@ -190,7 +211,9 @@ HTML;
 
 						</ul>
 HTML;
-		}else{
+		}
+		
+		if($linkCount < 1){
 			$html .= <<<HTML
 
 						<p>No links have been added. That&rsquo;s no fun.</p>
@@ -206,6 +229,15 @@ HTML;
 
 					<section class="content">
 						<p>{$content->content}</p>
+HTML;
+			if($content->type == 'job'){
+				$html .= <<<HTML
+
+						<p><a href="mailto:{$content->email}" title="Apply for this job" class="button">Apply Now</a></p>
+HTML;
+			}
+			$html .= <<<HTML
+
 					</section><!-- END CONTENT -->
 HTML;
 		}
@@ -330,7 +362,7 @@ HTML;
 	* Display event location and time
 	*/
 	
-	private static function location($content){
+	private static function event_location($content){
 		$root = \Framework5\Request::root_path();
 		$html = "";
 		$possessiveTitle = \WDDSocial\NaturalLanguage::possessive($content->title);
@@ -359,6 +391,53 @@ HTML;
 						<p>{$content->startTime} - {$content->endTime}</p>
 						<p><a href="{$root}/files/ics/{$content->icsUID}.ics" title="Download {$content->title} iCal File">Download iCal File</a></p>
 					</article><!-- END {$content->title} -->
+HTML;
+		return $html;
+	}
+	
+	
+	
+	/**
+	* Display event location and time
+	*/
+	
+	private static function job_details($content){
+		$root = \Framework5\Request::root_path();
+		$html = "";
+		if($content->jobType == 'Internship'){
+			$jobType = "an <strong><a href=\"{$root}jobs\" title=\"{$content->jobType} Jobs\">{$content->jobType}</a></strong>";
+		}else{
+			$jobType = "a <strong><a href=\"{$root}jobs\" title=\"{$content->jobType} Jobs\">{$content->jobType}</a></strong> gig";
+		}
+		
+		if(\WDDSocial\UserValidator::is_current($content->userID)){
+			$html .= <<<HTML
+
+					<div class="secondary icons">
+						<a href="{$root}" title="Edit {$content->title} at {$content->company} Details" class="edit">Edit</a>
+					</div><!-- END SECONDARY -->
+HTML;
+		}
+		$html .= <<<HTML
+
+					<article class="with-secondary">
+HTML;
+			
+		$html .= <<<HTML
+
+						<p class="item-image"><a href="http://{$content->website}" title="{$content->company}"><img src="{$root}images/jobs/{$content->avatar}_medium.jpg" alt="{$content->company}"/></a></p>
+						<h2><a href="http://{$content->website}" title="{$content->company}">{$content->company}</a></h2>
+						<p>{$content->location}</p>
+						<p>This job is {$jobType}.</p>
+HTML;
+		if($content->compensation != ''){
+			$html .= <<<HTML
+
+						<p>Compensation is <strong>{$content->compensation}</strong></p>
+HTML;
+		}
+		$html .= <<<HTML
+					</article>
 HTML;
 		return $html;
 	}

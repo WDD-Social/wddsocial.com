@@ -84,7 +84,7 @@ class EventPage implements \Framework5\IExecutable {
 	private static function displayEventDetails($event){
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'begin_content_section', 'id' => 'location', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Location and Time'));
-		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'location', 'content' => $event));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'event_location', 'content' => $event));
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'end_content_section', 'id' => 'location'));
 	}

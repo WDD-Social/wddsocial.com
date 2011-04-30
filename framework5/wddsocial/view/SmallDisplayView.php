@@ -167,7 +167,7 @@ HTML;
 		$html .= <<<HTML
 
 						<p class="item-image"><a href="http://{$job->website}" title="{$job->company}"><img src="{$root}/images/jobs/{$job->avatar}_medium.jpg" alt="{$job->company}"/></a></p>
-						<h2><a href="{$root}/job/{$job->id}" title="{$job->title} | {$job->company}">{$job->title}</a></h2>
+						<h2><a href="{$root}/job/{$job->vanityURL}" title="{$job->title} | {$job->company}">{$job->title}</a></h2>
 						<p class="company"><a href="http://{$job->website}" title="{$job->company}">{$job->company}</a></p>
 						<p>{$job->location}</p>
 						<p>{$job->description}</p>

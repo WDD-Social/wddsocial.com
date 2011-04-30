@@ -13,33 +13,24 @@ class JobPage implements \Framework5\IExecutable {
 	public static function execute() {	
 		
 		$job = static::getJob(\Framework5\Request::segment(1));
-		
-		echo "<pre>";
-		print_r($job);
-		echo "</pre>";
 			
-		/*
-if($user == false){
+		if($job == false){
 			echo render(':template', 
-				array('section' => 'top', 'title' => "User Not Found"));
+				array('section' => 'top', 'title' => "Job Not Found"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
-			echo "<h1>User Not Found</h1>";
+			echo "<h1>Job Not Found</h1>";
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
 		}else{
 			# display site header
 			echo render(':template', 
-				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
+				array('section' => 'top', 'title' => "{$job->title}"));
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			
-			# display user intro
-			echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
-			
-			# display user's latest activity
-			static::getUserLatest($user->id);
-			
-			# display users' contact info
-			echo render('wddsocial.view.WDDSocial\UserView',array('section' => 'contact', 'user' => $user));
+			# display Job overview
+			static::displayJobOverview($job);
+			static::displayJobDetails($job);
+			static::displayJobMedia($job);
 			
 			echo render('wddsocial.view.WDDSocial\SectionView',
 					array('section' => 'end_content'));
@@ -48,13 +39,12 @@ if($user == false){
 		
 		echo render(':template', 
 				array('section' => 'bottom'));
-*/
 	}
 	
 	
 	
 	/**
-	* Gets the requested event and data
+	* Gets the requested Job and data
 	*/
 	
 	private static function getJob($vanityURL){
@@ -70,4 +60,45 @@ if($user == false){
 		return $query->fetch();
 	}
 	
+	
+	
+	/**
+	* Gets the requested Job and data
+	*/
+	
+	private static function displayJobOverview($job){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'Job', 'classes' => array('large', 'with-secondary'), 'header' => $job->title));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $job));
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'Job'));
+	}
+	
+	
+	
+	/**
+	* Gets the requested Job and data
+	*/
+	
+	private static function displayJobDetails($job){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'details', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Details'));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'job_details', 'content' => $job));
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'details'));
+	}
+	
+	
+	
+	/**
+	* Gets the requested Job and data
+	*/
+	
+	private static function displayJobMedia($job){
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'begin_content_section', 'id' => 'media', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Media', 'extra' => 'media_filters'));
+		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'media', 'content' => $job, 'active' => 'images'));
+		echo render('wddsocial.view.WDDSocial\SectionView', 
+			array('section' => 'end_content_section', 'id' => 'media'));
+	}
 }
