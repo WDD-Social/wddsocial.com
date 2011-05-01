@@ -909,7 +909,17 @@ class SelectorSQL{
 			FROM links AS l
 			LEFT JOIN jobLinks AS jl ON (l.id = jl.linkID)
 			WHERE jl.jobID = :id
-			ORDER BY title ASC"
+			ORDER BY title ASC",
+			
+			
+		/**
+		* Misc queries
+		*/
+			
+		'getUserTypeIDByTitle' => "
+			SELECT id
+			FROM userTypes
+			WHERE title = :title"
 			
 	);
 	
