@@ -260,15 +260,13 @@ HTML;
 				$teamString = implode(' and ',$teamString);
 				$teamIntro .= $teamString;
 			}else{
-				for($i = 0; $i < count($cleanTeam); $i++){
-					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[$i]->id,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
-					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[$i]->id,"{$cleanTeam[$i]->firstName} {$cleanTeam[$i]->lastName}");
-					if($i == count($cleanTeam)-1){
-						$teamIntro .= "and <strong><a href=\"{$root}user/{$cleanTeam[$i]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
-					}else{
-						$teamIntro .= "<strong><a href=\"{$root}user/{$cleanTeam[$i]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>, ";
-					}
+				$strings = array();
+				foreach($cleanTeam as $member){
+					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
+					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
+					array_push($strings,"<strong><a href=\"{$root}user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
 				}
+				$teamIntro .= \WDDSocial\NaturalLanguage::comma_list($strings);
 			}
 		}else{
 			$teamIntro = "";
