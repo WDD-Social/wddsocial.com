@@ -18,7 +18,7 @@ class FormView implements \Framework5\IView {
 			case 'sign_in_intro':
 				return static::sign_in_intro();
 			case 'sign_up':
-				return static::sign_up();
+				return static::sign_up($options['error']);
 			case 'sign_up_intro':
 				return static::sign_up_intro(); 
 			case 'comment':
@@ -125,13 +125,13 @@ HTML;
 	* Creates the sign up form
 	*/
 	
-	private static function sign_up() {
+	private static function sign_up($error) {
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
 					<form action="{$root}signup" method="post" enctype="multipart/form-data">
 					<h1>Basic</h1>
-					<p class="error"><strong></strong></p>
+					<p class="error"><strong>$error</strong></p>
 					<fieldset>
 						<label for="first-name">First Name *</label>
 						<input type="text" name="first-name" id="first-name" />
@@ -159,13 +159,13 @@ HTML;
 					<fieldset class="radio">
 						<label>I am a...*</label>
 						<div>
-							<input type="radio" id="student" name="user_type" value="student" checked />
+							<input type="radio" id="student" name="user-type" value="student" checked />
 							<label for="student">Student</label>
 							
-							<input type="radio" id="teacher" name="user_type" value="teacher" />
+							<input type="radio" id="teacher" name="user-type" value="teacher" />
 							<label for="teacher">Teacher</label>
 							
-							<input type="radio" id="alum" name="user_type" value="alum" />
+							<input type="radio" id="alum" name="user-type" value="alum" />
 							<label for="alum">Alum</label>
 						</div>
 					</fieldset>
@@ -189,9 +189,9 @@ HTML;
 					
 					<fieldset class="terms">
 						<label>Boring Legal Stuff *</label>
-						<p><input type="checkbox" name="terms" id="terms" />I have read and agree to the <a href="terms.html" title="WDD Social Terms of Service">Terms of Service</a>.</p>
+						<p><input type="checkbox" name="terms" id="terms" />I have read and agree to the <a href="{$root}terms" title="WDD Social Terms of Service">Terms of Service</a>.</p>
 					</fieldset>
-					<p class="helper-link"><a href="{$root}/signin" title="Already a WDD Social member?">Already a member?</a></p>
+					<p class="helper-link"><a href="{$root}signin" title="Already a WDD Social member?">Already a member?</a></p>
 					<input type="hidden" name="process" value="signup" />
 					<input type="submit" value="Sign Up" />
 				</form>
