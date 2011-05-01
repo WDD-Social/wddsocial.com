@@ -233,18 +233,28 @@ class SelectorSQL{
 			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, DATE_ADD(NOW(), INTERVAL 3 HOUR)) AS age, ut.title AS `type`, website, twitter, facebook, github, dribbble, forrst
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
-			WHERE u.id = :id",
+			WHERE u.id = :id
+			LIMIT 1",
+		
+		'getUserByEmailAndPassword' => "
+			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, DATE_ADD(NOW(), INTERVAL 3 HOUR)) AS age, ut.title AS `type`, website, twitter, facebook, github, dribbble, forrst
+			FROM users AS u
+			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
+			WHERE email = :email AND `password` = MD5(:password)
+			LIMIT 1",
 		
 		'getUserByVanityURL' => "
 			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, DATE_ADD(NOW(), INTERVAL 3 HOUR)) AS age, ut.title AS `type`, website, twitter, facebook, github, dribbble, forrst
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
-			WHERE vanityURL = :vanityURL",
+			WHERE vanityURL = :vanityURL
+			LIMIT 1",
 		
 		'getStudentDetailByID' => "
 			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, location
 			FROM studentDetail
-			WHERE userID = :id",
+			WHERE userID = :id
+			LIMIT 1",
 		
 		'getTeacherCoursesByID' => "
 			SELECT id, title, `month`
@@ -255,7 +265,8 @@ class SelectorSQL{
 		'getAlumDetailByID' => "
 			SELECT DATE_FORMAT(graduationDate,'%M, %Y') AS graduationDate, employerTitle, employerLink
 			FROM alumDetail
-			WHERE userID = :id",
+			WHERE userID = :id
+			LIMIT 1",
 		
 		'getUserLikesByID' => "
 			SELECT c.title
@@ -517,7 +528,7 @@ class SelectorSQL{
 			) AS `completeDate`
 			FROM projects
 			WHERE vanityURL = :vanityURL
-			",
+			LIMIT 1",
 			
 			
 		/**
@@ -566,7 +577,7 @@ class SelectorSQL{
 			) AS `date`
 			FROM articles
 			WHERE vanityURL = :vanityURL
-			",
+			LIMIT 1",
 		
 			
 		/**
@@ -591,7 +602,8 @@ class SelectorSQL{
 		'getEventByVanityURL' => "
 			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`
 			FROM events
-			WHERE vanityURL = :vanityURL",
+			WHERE vanityURL = :vanityURL
+			LIMIT 1",
 			
 			
 		/**
@@ -609,7 +621,8 @@ class SelectorSQL{
 			SELECT j.id, userID, j.title, description, content, vanityURL, 'job' AS `type`, company, jt.title AS jobType, avatar, location, compensation, website, email
 			FROM jobs AS j
 			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
-			WHERE vanityURL = :vanityURL",
+			WHERE vanityURL = :vanityURL
+			LIMIT 1",
 			
 			
 		/**
@@ -919,7 +932,8 @@ class SelectorSQL{
 		'getUserTypeIDByTitle' => "
 			SELECT id
 			FROM userTypes
-			WHERE title = :title"
+			WHERE title = :title
+			LIMIT 1"
 			
 	);
 	
