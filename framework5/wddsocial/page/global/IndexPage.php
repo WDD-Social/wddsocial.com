@@ -21,7 +21,7 @@ class IndexPage implements \Framework5\IExecutable {
 			array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
 		
 		# Check which home page to create, based on authorization
-		if (UserValidator::is_authorized()){
+		if (\WDDSocial\UserValidator::is_authorized()){
 			# Create user dashboard page
 			echo render('wddsocial.view.WDDSocial\SectionView',
 				array('section' => 'begin_content', 'classes' => array('dashboard')));
