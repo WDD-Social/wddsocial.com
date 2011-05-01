@@ -11,7 +11,7 @@ class SignupPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
-		if(true == false){
+		if(isset($_POST['process']) && $_POST['process'] == 'signup'){
 			static::process_form();
 		}else{
 			# display site header
@@ -36,6 +36,11 @@ class SignupPage implements \Framework5\IExecutable {
 	}
 	
 	public static function process_form(){
-		
+		import('wddsocial.controller.WDDSocial\Uploader');
+		\WDDSocial\Uploader::upload_user_avatar($_FILES['avatar'],'test');
+		echo "<pre>";
+		print_r($_POST);
+		print_r($_FILES);
+		echo "</pre>";
 	}
 }
