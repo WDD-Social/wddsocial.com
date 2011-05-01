@@ -236,6 +236,12 @@ class SelectorSQL{
 			WHERE u.id = :id
 			LIMIT 1",
 		
+		'getUserAvatarByID' => "
+			SELECT avatar
+			FROM users
+			WHERE id = :id
+			LIMIT 1",
+		
 		'getUserByEmailAndPassword' => "
 			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, DATE_ADD(NOW(), INTERVAL 3 HOUR)) AS age, ut.title AS `type`, website, twitter, facebook, github, dribbble, forrst
 			FROM users AS u
