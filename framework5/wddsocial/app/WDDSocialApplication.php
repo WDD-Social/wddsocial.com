@@ -18,6 +18,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	public static function execute() {
 		
 		import('wddsocial.controller.WDDSocial\UserValidator');
+		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		import('wddsocial.sql.WDDSocial\SelectorSQL');
 				
 		# enable localization module
