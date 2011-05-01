@@ -88,7 +88,7 @@ HTML;
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
-					<form action="{$root}/signin" method="post">
+					<form action="{$root}signin" method="post">
 						<p class="error"><strong></strong></p>
 						<fieldset>
 							<label for="email">Email</label>
@@ -99,7 +99,7 @@ HTML;
 							<p class="helper-link"><a href="#" title="Did you forget your password?" tabindex="1000">Forgot?</a></p>
 							<input type="password" name="password" id="password" />
 						</fieldset>
-						<p class="helper-link"><a href="{$root}/signup" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
+						<p class="helper-link"><a href="{$root}signup" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
 						<input type="submit" value="Sign In" />
 					</form>
 HTML;
@@ -129,7 +129,7 @@ HTML;
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
-					<form action="form_error.html" method="post">
+					<form action="{$root}signup" method="post" enctype="multipart/form-data">
 					<h1>Basic</h1>
 					<p class="error"><strong></strong></p>
 					<fieldset>
@@ -159,13 +159,13 @@ HTML;
 					<fieldset class="radio">
 						<label>I am a...*</label>
 						<div>
-							<input type="radio" id="student" name="user-type" checked />
+							<input type="radio" id="student" name="user_type" value="student" checked />
 							<label for="student">Student</label>
 							
-							<input type="radio" id="teacher" name="user-type" />
+							<input type="radio" id="teacher" name="user_type" value="teacher" />
 							<label for="teacher">Teacher</label>
 							
-							<input type="radio" id="alum" name="user-type" />
+							<input type="radio" id="alum" name="user_type" value="alum" />
 							<label for="alum">Alum</label>
 						</div>
 					</fieldset>
@@ -183,7 +183,7 @@ HTML;
 					</fieldset>
 					<fieldset>
 						<label for="bio">Bio</label>
-						<textarea></textarea>
+						<textarea id="bio"></textarea>
 						<small><span class="count">255</span> characters left</small>
 					</fieldset>
 					
@@ -192,6 +192,7 @@ HTML;
 						<p><input type="checkbox" name="terms" id="terms" />I have read and agree to the <a href="terms.html" title="WDD Social Terms of Service">Terms of Service</a>.</p>
 					</fieldset>
 					<p class="helper-link"><a href="{$root}/signin" title="Already a WDD Social member?">Already a member?</a></p>
+					<input type="hidden" name="process" value="signup" />
 					<input type="submit" value="Sign Up" />
 				</form>
 HTML;
