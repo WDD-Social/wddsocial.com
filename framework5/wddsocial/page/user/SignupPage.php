@@ -142,8 +142,6 @@ class SignupPage implements \Framework5\IExecutable {
 					import('wddsocial.controller.WDDSocial\Uploader');
 					\WDDSocial\Uploader::upload_user_avatar($_FILES['avatar'],"$avatar");
 				}
-				
-				echo 'wddsocial.page.global.WDDSocial\IndexPage';
 			}
 		}
 	}

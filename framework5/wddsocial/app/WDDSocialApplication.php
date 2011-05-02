@@ -25,13 +25,12 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		import('core.module.i18n.Framework5\Lang');
 		Lang::language($lang);
 		
+		import('wddsocial.controller.WDDSocial\UserSession');
+		\WDDSocial\UserSession::status();
+		
 		# resolve request to a page controller
 		import('wddsocial.config.WDDSocial\Router');
 		$package = \WDDSocial\Router::resolve(Request::segment(0));
-		
-		# check user session
-		import('wddsocial.controller.WDDSocial\UserSession');
-		\WDDSocial\UserSession::status();
 		
 		# execute the controller
 		execute($package);

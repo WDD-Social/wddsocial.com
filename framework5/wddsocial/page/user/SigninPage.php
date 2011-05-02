@@ -36,6 +36,9 @@ class SigninPage implements \Framework5\IExecutable {
 	}
 	
 	public static function process_form(){
+		import('wddsocial.controller.WDDSocial\UserSession');
+		\WDDSocial\UserSession::fake_user_login(1);
+		
 		# display site header
 		echo render('wddsocial.view.WDDSocial\TemplateView', 
 			array('section' => 'top', 'title' => 'Sign In'));
