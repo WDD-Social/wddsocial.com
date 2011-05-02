@@ -16,13 +16,14 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	*/
 	
 	public static function execute() {
-		
+
+		# import application global dependencies
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		import('wddsocial.sql.WDDSocial\SelectorSQL');
-				
+		
 		# enable localization module
 		import('core.module.i18n.Framework5\Lang');
-		Lang::language($lang);
+		Lang::language('en');
 		
 		# resolve request to a page controller
 		import('wddsocial.config.WDDSocial\Router');
@@ -30,7 +31,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		
 		# check user session
 		import('wddsocial.controller.WDDSocial\UserSession');
-		\WDDSocial\UserSession::status();
+		\WDDSocial\UserSession::init();
 		
 		# execute the controller
 		execute($package);
