@@ -29,5 +29,6 @@ class Settings {
 		':db' => 'wddsocial.controller.WDDSocial\Database',
 		':sel-sql' => 'wddsocial.sql.WDDSocial\SelectorSQL',
 		':val-sql' => 'wddsocial.sql.WDDSocial\ValidatorSQL',
+		':admin-sql' => 'wddsocial.sql.WDDSocial\AdminSQL',
 		':template' => 'wddsocial.view.WDDSocial\TemplateView');
 }

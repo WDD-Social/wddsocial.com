@@ -52,4 +52,21 @@ class NaturalLanguage{
 	public static function display_name($id, $name){
 		return (\WDDSocial\UserValidator::is_current($id))?"You":$name;
 	}
+	
+	
+	
+	/**
+	* Creates a comma delimited list of strings
+	*/
+	
+	public static function comma_list($strings){
+		for($i = 0; $i < count($strings); $i++){
+			if($i == count($strings)-1){
+				$list .= "and {$strings[$i]}";
+			}else{
+				$list .= "{$strings[$i]}, ";
+			}
+		}
+		return $list;
+	}
 }

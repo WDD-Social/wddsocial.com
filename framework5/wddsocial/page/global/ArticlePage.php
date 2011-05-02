@@ -84,7 +84,7 @@ class ArticlePage implements \Framework5\IExecutable {
 	private static function displayArticleAuthors($article){
 		$headerText = 'Author';
 		if(count($article->team) > 1 || count($article->team) < 1){
-			$headerTest .= 's';
+			$headerText .= 's';
 		}
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'begin_content_section', 'id' => 'authors', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => $headerText));

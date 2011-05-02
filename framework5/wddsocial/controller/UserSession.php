@@ -21,7 +21,6 @@ class UserSession {
 	
 	public static function init() {
 		session_start();
-		//static::fake_user(); #tmp
 	}
 	
 	
@@ -37,6 +36,20 @@ class UserSession {
 			return false;
 		if (!isset($password) or empty($password))
 			return false;
+	}
+	
+	
+	
+	public static function fake_user_logout() {
+		
+		$_SESSION['user'] = NULL;
+		$_SESSION['authorized'] = false;
+		
+	}
+	
+	
+	
+	public static function fake_user_login($id){
 		
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
@@ -53,13 +66,14 @@ class UserSession {
 		$query = $db->prepare($sql->getUserByID);
 		import('wddsocial.model.WDDSocial\UserVO');
 		$query->setFetchMode(\PDO::FETCH_CLASS, 'WDDSocial\UserVO');
-		$data = array('id' => 1);
+		$data = array('id' => $id);
 		$query->execute($data);
 		$user = $query->fetch();
 		
 		# set session
 		$_SESSION['user'] = $user;
 		$_SESSION['authorized'] = true;
+		
 		return true;
 	}
 		
