@@ -43,10 +43,6 @@ class SigninPage implements \Framework5\IExecutable {
 		import('wddsocial.controller.WDDSocial\UserSession');
 		\WDDSocial\UserSession::fake_user_login(1);
 		
-		# display site header
-		echo render('wddsocial.view.WDDSocial\TemplateView', 
-			array('section' => 'top', 'title' => 'Sign In'));
-		
 		$success = true;
 				
 		# filter input variables
