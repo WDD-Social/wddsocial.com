@@ -10,10 +10,6 @@ namespace WDDSocial;
 
 class UserSession {
 	
-	private static $_error_message;
-	
-	
-	
 	/**
 	* Initialize session
 	*/
@@ -45,12 +41,11 @@ class UserSession {
 		$data = array('email' => $email, 'password' => $password);
 		$query->execute($data);
 		
-		trace($query->rowCount());
-		
-		$user = $query->fetch();
-		
+		if ($query->rowCount() == 0)
+			return false;
+				
 		# set session
-		$_SESSION['user'] = $user;
+		$_SESSION['user'] = $query->fetch();
 		$_SESSION['authorized'] = true;
 		
 		return true;

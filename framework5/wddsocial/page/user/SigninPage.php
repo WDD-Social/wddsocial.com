@@ -3,11 +3,16 @@
 namespace WDDSocial;
 
 /*
+* User signin page
 * 
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
 class SignInPage implements \Framework5\IExecutable {
+	
+	/**
+	* display signin page
+	*/
 	
 	public static function execute() {
 		
@@ -42,33 +47,30 @@ class SignInPage implements \Framework5\IExecutable {
 	
 	
 	
+	/**
+	* Handle user signup form
+	*/
+	
 	public static function process_form() {
-		
-		$success = true;
-				
+						
 		# filter input variables
 		$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 		$password = filter_input(INPUT_POST, 'password');
 		
-		if (!$password) {
-			$message = "You must enter a valid password";
-			$success = false;
-		}
-		
-		if (!$email) {
-			$message = "You must enter a valid email address";
-			$success = false;
-		}
+		# validate input
+		$message = false;
+		if (!$password) $message = "You must enter a valid password";
+		if (!$email) $message = "You must enter a valid email address";
 		
 		# validation and auth success
-		if ($success and UserSession::signin($email, $password)) {
+		if (!$message and UserSession::signin($email, $password)) {
 			header('Location: /'); # redirect to user dashboard
 		}
 		
 		# login failure, error page
 		else {
 			# if signin failed, get the error message
-			if ($success) $message = UserSession::error_message();
+			if (!$message) $message = 'Incorrect username/password';
 			
 			# display site header
 			echo render('wddsocial.view.WDDSocial\TemplateView', 
