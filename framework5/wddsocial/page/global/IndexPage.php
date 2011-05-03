@@ -116,7 +116,7 @@ class IndexPage implements \Framework5\IExecutable {
 				'classes' => array('small', 'no-margin'), 'header' => 'Sign In'));
 		
 		# Create form
-		echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'sign_in'));
+		echo render('wddsocial.view.form.WDDSocial\SigninView');
 				
 		# Create section footer
 		echo render('wddsocial.view.WDDSocial\SectionView', 

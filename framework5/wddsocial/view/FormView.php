@@ -20,7 +20,7 @@ class FormView implements \Framework5\IView {
 			case 'comment':
 				return static::comment(); 
 			default:
-				throw new \Framework5\Exception("FormView requires parameter type (share, sign_in, or sign_up), '{$options['type']}' provided");
+				throw new \Framework5\Exception("FormView requires parameter type (share, sign_up, sign_up_intro, or comment), '{$options['type']}' provided");
 		}
 	}
 	
@@ -57,46 +57,6 @@ class FormView implements \Framework5\IView {
 							</div>
 						</fieldset>
 						<input type="submit" value="Create" />
-					</form>
-HTML;
-	}
-	
-	
-	
-	/**
-	* 
-	*/
-	
-	private static function sign_in_intro(){
-		return <<<HTML
-
-					<h1 class="mega">Welcome back, we&rsquo;ve missed you!</h1>
-HTML;
-	}
-	
-	
-	
-	/**
-	* Creates the sign in form
-	*/
-	
-	private static function sign_in() {
-		$root = \Framework5\Request::root_path();
-		return <<<HTML
-
-					<form action="{$root}signin" method="post">
-						<p class="error"><strong></strong></p>
-						<fieldset>
-							<label for="email">Email</label>
-							<input type="email" name="email" id="email" />
-						</fieldset>
-						<fieldset>
-							<label for="password" class="helper-link">Password</label>
-							<p class="helper-link"><a href="#" title="Did you forget your password?" tabindex="1000">Forgot?</a></p>
-							<input type="password" name="password" id="password" />
-						</fieldset>
-						<p class="helper-link"><a href="{$root}signup" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
-						<input type="submit" value="Sign In" />
 					</form>
 HTML;
 	}
