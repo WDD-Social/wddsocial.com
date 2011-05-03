@@ -39,9 +39,14 @@ class BasicElements implements \Framework5\IView {
 							<input type="text" name="title" id="title" value="{$options['data']['title']}" />
 						</fieldset>
 						<fieldset>
-							<label for="description">Description</label>
-							<textarea id="description"></textarea>
+							<label for="description">Short Description</label>
+							<textarea id="description" class="short"></textarea>
 							<small><span class="count">128</span> characters left</small>
+						</fieldset>
+						<fieldset>
+							<label for="content">Long Description</label>
+							<textarea id="content"></textarea>
+							<small>You&rsquo;ve got 65,536 characters to use, so make it count.</small>
 						</fieldset>
 						<fieldset>
 							<label for="vanityURL">Custom Vanity URL</label>
