@@ -22,6 +22,10 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		import('wddsocial.sql.WDDSocial\SelectorSQL');
 		
+		# check user session
+		import('wddsocial.controller.WDDSocial\UserSession');
+		\WDDSocial\UserSession::init();
+		
 		# enable localization module
 		import('core.module.i18n.Framework5\Lang');
 		Lang::language('en');
@@ -29,10 +33,6 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		# resolve request to a page controller
 		import('wddsocial.config.WDDSocial\Router');
 		$package = \WDDSocial\Router::resolve(Request::segment(0));
-		
-		# check user session
-		import('wddsocial.controller.WDDSocial\UserSession');
-		\WDDSocial\UserSession::init();
 		
 		# execute the controller
 		execute($package);
