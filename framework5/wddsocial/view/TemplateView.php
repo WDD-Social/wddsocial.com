@@ -68,7 +68,7 @@ class TemplateView implements \Framework5\IView {
 	<body>
 		<section id="wrap">
 			<header>
-				<h1><a href="{$root}" title="WDD Social Home">WDD Social</a></h1>
+				<h1><a href="/" title="WDD Social Home">WDD Social</a></h1>
 HTML;
 			$html .= static::_userArea();
 			$html .= static::_navigation();

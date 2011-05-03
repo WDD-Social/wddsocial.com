@@ -7,16 +7,12 @@ namespace WDDSocial;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class SignoutPage implements \Framework5\IExecutable {
+class SignOutPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
+		import('wddsocial.controller.WDDSocial\UserSession');
+		\WDDSocial\UserSession::fake_user_signout();
 		
-		# display site header
-		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'top', 'title' => 'Sign Out'));
-		
-		
-		# display site footer
-		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
-		
+		header('Location: /');
 	}
 }
