@@ -76,7 +76,6 @@ class SignUpView implements \Framework5\IView {
 						<p><input type="checkbox" name="terms" id="terms" />I have read and agree to the <a href="{$root}terms" title="WDD Social Terms of Service">Terms of Service</a>.</p>
 					</fieldset>
 					<p class="helper-link"><a href="{$root}signin" title="Already a WDD Social member?">Already a member?</a></p>
-					<input type="hidden" name="process" value="signup" />
 					<input type="submit" value="Sign Up" />
 				</form>
 HTML;

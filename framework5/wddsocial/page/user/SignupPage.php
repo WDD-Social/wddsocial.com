@@ -11,7 +11,7 @@ class SignUpPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
-		if(isset($_POST['process']) && $_POST['process'] == 'signup'){
+		if(isset($_POST['submit'])){
 			static::process_form();
 		}else{
 			static::display_form();

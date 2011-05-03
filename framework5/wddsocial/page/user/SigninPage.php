@@ -17,7 +17,7 @@ class SignInPage implements \Framework5\IExecutable {
 	public static function execute() {
 		
 		# handle form submission
-		if (isset($_POST['process']) && $_POST['process'] == 'signin'){
+		if (isset($_POST['submit'])){
 			static::process_form();
 		}
 		
