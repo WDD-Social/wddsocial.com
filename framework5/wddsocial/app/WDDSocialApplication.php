@@ -33,6 +33,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		# check user session
 		import('wddsocial.controller.WDDSocial\UserSession');
 		\WDDSocial\UserSession::init();
+		\WDDSocial\UserSession::fake_user_signin(2); #TMP
 		
 		# execute the controller
 		execute($package);
