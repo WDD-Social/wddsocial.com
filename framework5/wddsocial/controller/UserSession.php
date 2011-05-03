@@ -40,19 +40,13 @@ class UserSession {
 		$sql = instance(':sel-sql');
 		
 		# check login information
-		$query = $db->prepare($sql->getUserIDByLogin);
-		import('wddsocial.model.WDDSocial\UserVO');
-		$query->setFetchMode(\PDO::FETCH_CLASS, 'WDDSocial\UserVO');
+		$query = $db->prepare($sql->getUserByLogin);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$data = array('email' => $email, 'password' => $password);
 		$query->execute($data);
-		$user_id = $query->fetch();
 		
-		# get user info for session
-		$query = $db->prepare($sql->getUserByID);
-		import('wddsocial.model.WDDSocial\UserVO');
-		$query->setFetchMode(\PDO::FETCH_CLASS, 'WDDSocial\UserVO');
-		$data = array('id' => $id);
-		$query->execute($data);
+		trace($query->rowCount());
+		
 		$user = $query->fetch();
 		
 		# set session
@@ -84,7 +78,7 @@ class UserSession {
 		# get user info for session
 		$query = $db->prepare($sql->getUserByID);
 		import('wddsocial.model.WDDSocial\UserVO');
-		$query->setFetchMode(\PDO::FETCH_CLASS, 'WDDSocial\UserVO');
+		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$data = array('id' => $id);
 		$query->execute($data);
 		$user = $query->fetch();

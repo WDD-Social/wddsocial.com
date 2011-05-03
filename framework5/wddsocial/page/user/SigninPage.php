@@ -42,11 +42,7 @@ class SignInPage implements \Framework5\IExecutable {
 	
 	
 	
-	public static function process_form(){
-		
-		UserSession::fake_user_signin(2);
-		header('Location: /');
-		return true;
+	public static function process_form() {
 		
 		$success = true;
 				
