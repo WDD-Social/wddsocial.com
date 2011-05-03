@@ -44,13 +44,13 @@ class Router implements \Framework5\IRouter {
 			
 			# global user actions
 			case 'signup':
-				return 'wddsocial.page.user.WDDSocial\SignUpPage';
+				return 'wddsocial.page.user.WDDSocial\SignupPage';
 			
 			case 'signin':
-				return 'wddsocial.page.user.WDDSocial\SignInPage';
+				return 'wddsocial.page.user.WDDSocial\SigninPage';
 			
 			case 'signout':
-				return 'wddsocial.page.user.WDDSocial\SignOutPage';
+				return 'wddsocial.page.user.WDDSocial\SignoutPage';
 			
 			case 'account':
 				return 'wddsocial.page.user.WDDSocial\AccountPage';
