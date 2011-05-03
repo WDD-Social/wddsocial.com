@@ -64,7 +64,7 @@ class IndexPage implements \Framework5\IExecutable {
 				array('small', 'no-margin', 'side-sticky'), 'header' => 'Share'));
 		
 		# Create form
-		echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'share'));
+		echo render('wddsocial.view.form.WDDSocial\ShareView');
 		
 		# Create section footer
 		echo render('wddsocial.view.WDDSocial\SectionView', 
@@ -117,7 +117,7 @@ class IndexPage implements \Framework5\IExecutable {
 				'classes' => array('small', 'no-margin'), 'header' => 'Sign In'));
 		
 		# Create form
-		echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'sign_in'));
+		echo render('wddsocial.view.form.WDDSocial\SigninView');
 				
 		# Create section footer
 		echo render('wddsocial.view.WDDSocial\SectionView', 

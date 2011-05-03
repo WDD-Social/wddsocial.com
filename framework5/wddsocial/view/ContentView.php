@@ -580,7 +580,7 @@ HTML;
 						<p class="item-image"><a href="{$root}user/{$user->vanityURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$user->avatar}_medium.jpg" alt="{$userDisplayName}"/></a></p>
 						<h2><a href="{$root}user/{$user->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
 HTML;
-			$html .= render('wddsocial.view.WDDSocial\FormView', array('type' => 'comment'));
+			$html .= render('wddsocial.view.form.WDDSocial\CommentView');
 			$html .= <<<HTML
 
 					</article>

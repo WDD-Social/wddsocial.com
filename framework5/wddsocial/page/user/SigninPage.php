@@ -7,7 +7,7 @@ namespace WDDSocial;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class SigninPage implements \Framework5\IExecutable {
+class SignInPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
@@ -22,10 +22,10 @@ class SigninPage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			
 			# display sign in form
-			echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'sign_in_intro'));
+			echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_in_intro'));
 			
 			# display sign in form
-			echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'sign_in'));
+			echo render('wddsocial.view.form.WDDSocial\SignInView');
 			
 			# end content section
 			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'end_content'));
@@ -34,6 +34,8 @@ class SigninPage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
 		}
 	}
+	
+	
 	
 	public static function process_form(){
 		import('wddsocial.controller.WDDSocial\UserSession');

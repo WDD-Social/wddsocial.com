@@ -13,7 +13,7 @@ class UserSession {
 	public static function status() {
 		
 		session_start();
-		
+		static::fake_user_login(1);
 	}
 	
 	
