@@ -35,7 +35,7 @@ class ShareView implements \Framework5\IView {
 								<label for="job">Job</label>
 							</div>
 						</fieldset>
-						<input type="submit" value="Create" />
+						<input type="submit" name="submit" value="Create" />
 					</form>
 HTML;
 	}

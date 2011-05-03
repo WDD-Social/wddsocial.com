@@ -25,7 +25,7 @@ class SignInView implements \Framework5\IView {
 							<input type="password" name="password" id="password" />
 						</fieldset>
 						<p class="helper-link"><a href="{$root}signup" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
-						<input type="submit" value="Sign In" />
+						<input type="submit" name="submit" value="Sign In" />
 					</form>
 HTML;
 	}
