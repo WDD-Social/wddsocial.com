@@ -242,8 +242,8 @@ class SelectorSQL{
 			WHERE id = :id
 			LIMIT 1",
 		
-		'getUserByEmailAndPassword' => "
-			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, DATE_ADD(NOW(), INTERVAL 3 HOUR)) AS age, ut.title AS `type`, website, twitter, facebook, github, dribbble, forrst
+		'getUserByLogin' => "
+			SELECT u.id, firstName, lastName, avatar, vanityURL, ut.title AS `type`
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE email = :email AND `password` = MD5(:password)

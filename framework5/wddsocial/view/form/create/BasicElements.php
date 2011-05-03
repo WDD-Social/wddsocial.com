@@ -26,16 +26,17 @@ class BasicElements implements \Framework5\IView {
 	
 	private static function header($options){
 		$root = \Framework5\Request::root_path();
+		$capitalizedTitle = ucfirst($options['data']['type']);
 		$vanity = strtolower(trim($options['data']['title']));
 		return <<<HTML
 
-					<h1 class="mega">Create a new {$options['data']['type']}</h1>
+					<h1 class="mega">Create a New {$capitalizedTitle}</h1>
 					<form action="{$root}create" method="post">
 						<h1>Basics</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<input type="hidden" name="type" value="{$options['data']['type']}" />
 						<fieldset>
-							<label for="title">Title</label>
+							<label for="title">$capitalizedTitle Title</label>
 							<input type="text" name="title" id="title" value="{$options['data']['title']}" />
 						</fieldset>
 						<fieldset>
