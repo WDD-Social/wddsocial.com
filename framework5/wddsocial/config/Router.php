@@ -92,6 +92,9 @@ class Router implements \Framework5\IRouter {
 			case 'job':
 				return 'wddsocial.page.global.WDDSocial\JobPage';
 			
+			case 'create':
+				return 'wddsocial.page.form.WDDSocial\CreatePage';
+			
 			
 			
 			# 404
