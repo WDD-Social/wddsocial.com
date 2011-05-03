@@ -7,7 +7,7 @@ namespace WDDSocial;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class SignUpPage implements \Framework5\IExecutable {
+class SignupPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
