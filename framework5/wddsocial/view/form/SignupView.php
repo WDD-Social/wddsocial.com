@@ -18,19 +18,19 @@ class SignUpView implements \Framework5\IView {
 					<p class="error"><strong>{$options['error']}</strong></p>
 					<fieldset>
 						<label for="first-name">First Name *</label>
-						<input type="text" name="first-name" id="first-name" />
+						<input type="text" name="first-name" id="first-name" value="{$options['data']['first-name']}" />
 					</fieldset>
 					<fieldset>
 						<label for="last-name">Last Name *</label>
-						<input type="text" name="last-name" id="last-name" />
+						<input type="text" name="last-name" id="last-name" value="{$options['data']['last-name']}" />
 					</fieldset>
 					<fieldset>
 						<label for="email">Email *</label>
-						<input type="email" name="email" id="email" />
+						<input type="email" name="email" id="email" value="{$options['data']['email']}" />
 					</fieldset>
 					<fieldset>
 						<label for="full-sail-email">Full Sail Email *</label>
-						<input type="email" name="full-sail-email" id="full-sail-email" />
+						<input type="email" name="full-sail-email" id="full-sail-email" value="{$options['data']['full-sail-email']}" />
 						<small>Used for account verification</small>
 					</fieldset>
 					<fieldset>
@@ -59,15 +59,15 @@ class SignUpView implements \Framework5\IView {
 					</fieldset>
 					<fieldset>
 						<label for="hometown">Hometown</label>
-						<input type="text" name="hometown" id="hometown" />
+						<input type="text" name="hometown" id="hometown" value="{$options['data']['hometown']}" />
 					</fieldset>
 					<fieldset>
 						<label for="birthday">Birthday</label>
-						<input type="text" name="birthday" id="birthday" />
+						<input type="text" name="birthday" id="birthday" value="{$options['data']['birthday']}" />
 					</fieldset>
 					<fieldset>
 						<label for="bio">Bio</label>
-						<textarea id="bio"></textarea>
+						<textarea id="bio">{$options['data']['bio']}</textarea>
 						<small><span class="count">255</span> characters left</small>
 					</fieldset>
 					
