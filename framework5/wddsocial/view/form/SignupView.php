@@ -7,7 +7,7 @@ namespace WDDSocial;
 * @author Anthony Colangelo (me@acolangelo.com)
 */
 
-class SignUpView implements \Framework5\IView {		
+class SignupView implements \Framework5\IView {		
 	
 	public static function render($options = null) {
 		$root = \Framework5\Request::root_path();
