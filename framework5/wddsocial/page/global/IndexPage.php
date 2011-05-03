@@ -12,11 +12,10 @@ namespace WDDSocial;
 class IndexPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
-
-		import('wddsocial.view.WDDSocial\SectionView');
-		import('wddsocial.controller.WDDSocial\UserValidator');
 		
-		# Display page header
+		import('wddsocial.view.WDDSocial\SectionView');
+		
+		# site header
 		echo render(':template',
 			array('section' => 'top', 'title' => 'Connecting the Full Sail University Web Community'));
 		
@@ -31,8 +30,8 @@ class IndexPage implements \Framework5\IExecutable {
 			static::get_jobs();
 		}
 		
+		# display public home page
 		else {
-			# Create public home page
 			echo render('wddsocial.view.WDDSocial\SectionView',
 				array('section' => 'begin_content', 'classes' => array('start-page')));
 			static::get_projects();
@@ -42,11 +41,11 @@ class IndexPage implements \Framework5\IExecutable {
 			static::get_events();
 		}
 		
-		# End content area
+		# end content area
 		echo render('wddsocial.view.WDDSocial\SectionView', 
 			array('section' => 'end_content'));
 		
-		# Create footer
+		# site footer
 		echo render(':template', array('section' => 'bottom'));
 	}
 	
