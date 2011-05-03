@@ -25,7 +25,7 @@ class SelectorSQL{
 						THEN 
 							IF TIMESTAMPDIFF(HOUR, contentDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23
 								THEN
-									IF TIMESTAMPDIFF(DAY, contentDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14
+									IF TIMESTAMPDIFF(DAY, contentDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30
 										THEN RETURN DATE_FORMAT(contentDate,"%M %D, %Y at %l:%i %p");
 									ELSEIF TIMESTAMPDIFF(DAY, contentDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1
 										THEN RETURN CONCAT_WS(" ", TIMESTAMPDIFF(DAY, contentDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)), "days ago");
@@ -56,7 +56,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -89,7 +89,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -122,7 +122,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(u.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -157,7 +157,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -192,7 +192,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -294,7 +294,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, p.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -327,7 +327,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, a.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -360,7 +360,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(u.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, u.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -392,7 +392,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -427,7 +427,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -479,7 +479,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -508,7 +508,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(completeDate,'%M, %Y'),
 						IF(
 							TIMESTAMPDIFF(DAY, completeDate, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -557,7 +557,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, `datetime`, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -786,7 +786,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -823,7 +823,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,
@@ -860,7 +860,7 @@ class SelectorSQL{
 				IF(
 					TIMESTAMPDIFF(HOUR, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 23,
 					IF(
-						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 14,
+						TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 30,
 						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
 						IF(
 							TIMESTAMPDIFF(DAY, c.datetime, DATE_ADD(NOW(), INTERVAL 3 HOUR)) > 1,

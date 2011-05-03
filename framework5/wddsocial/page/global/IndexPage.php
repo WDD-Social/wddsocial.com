@@ -63,7 +63,7 @@ class IndexPage implements \Framework5\IExecutable {
 				array('small', 'no-margin', 'side-sticky'), 'header' => 'Share'));
 		
 		# Create form
-		echo render('wddsocial.view.WDDSocial\FormView', array('type' => 'share'));
+		echo render('wddsocial.view.form.WDDSocial\ShareView');
 		
 		# Create section footer
 		echo render('wddsocial.view.WDDSocial\SectionView', 

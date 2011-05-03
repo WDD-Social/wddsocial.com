@@ -7,13 +7,14 @@ namespace WDDSocial;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class SigninPage implements \Framework5\IExecutable {
+class SignInPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
 		# handle form submission
-		if (isset($_POST['submit']))
+		if (isset($_POST['process']) && $_POST['process'] == 'signin'){
 			static::process_form();
+		}
 		
 		# display signin page
 		else {
@@ -22,12 +23,14 @@ class SigninPage implements \Framework5\IExecutable {
 				array('section' => 'top', 'title' => 'Sign In to WDD Social'));
 			
 			# open content section
-			echo render('wddsocial.view.WDDSocial\SectionView', 
-				array('section' => 'begin_content'));
+			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
 			
 			# display sign in form
-			echo render('wddsocial.view.form.WDDSocial\SigninView');
-						
+			echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_in_intro'));
+			
+			# display sign in form
+			echo render('wddsocial.view.form.WDDSocial\SignInView');
+			
 			# end content section
 			echo render('wddsocial.view.WDDSocial\SectionView', 
 				array('section' => 'end_content'));
