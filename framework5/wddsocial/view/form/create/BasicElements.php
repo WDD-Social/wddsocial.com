@@ -42,12 +42,12 @@ class BasicElements implements \Framework5\IView {
 						<fieldset>
 							<label for="description">Short Description</label>
 							<textarea id="description" class="short"></textarea>
-							<small><span class="count">128</span> characters left</small>
+							<small>Keep it short, <span class="count">128</span> characters left</small>
 						</fieldset>
 						<fieldset>
 							<label for="content">Long Description</label>
 							<textarea id="content"></textarea>
-							<small>You&rsquo;ve got 65,536 characters to use, so make it count.</small>
+							<small>You&rsquo;ve got <span class="count">65,536</span> characters to use, so make it count.</small>
 						</fieldset>
 						<fieldset>
 							<label for="vanityURL">Custom Vanity URL</label>
