@@ -11,13 +11,15 @@ class MessagesPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
+		UserSession::protect();
+		
 		# display site header
-		echo render('wddsocial.view.WDDSocial\TemplateView', 
+		echo render(':template', 
 			array('section' => 'top', 'title' => 'Messages'));
 		
 		
 		# display site footer
-		echo render('wddsocial.view.WDDSocial\TemplateView', 
+		echo render(':template', 
 			array('section' => 'bottom'));
 		
 	}

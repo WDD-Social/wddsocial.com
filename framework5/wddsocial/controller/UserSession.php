@@ -55,11 +55,11 @@ class UserSession {
 	
 	
 	/**
-	* Signs a user out, destroys session data
+	* Signs a user out and destroys session data
 	*/
 	
 	public static function signout() {
-		$_SESSION['user'] = NULL;
+		$_SESSION['user'] = null;
 		$_SESSION['authorized'] = false;
 	}
 	
@@ -70,7 +70,8 @@ class UserSession {
 	*/
 	
 	public static function is_current($userID){
-		return ($userID == $_SESSION['user']->id)?true:false;
+		if ($userID == $_SESSION['user']->id) return true;
+		else return false;
 	}
 	
 	
@@ -80,6 +81,20 @@ class UserSession {
 	*/
 	
 	public static function is_authorized(){
-		return ($_SESSION['authorized'] == true)?true:false;
+		if ($_SESSION['authorized'] and isset($_SESSION['user'])) return true;
+		else return false;
+	}
+	
+	
+	
+	/**
+	* Protects a page from an unauthorized user
+	*/
+	
+	public static function protect() {
+		if (!static::is_authorized()) {
+			$_SESSION['last_page'] = \Framework5\Request::uri();
+			redirect('/signin');
+		}
 	}
 }
