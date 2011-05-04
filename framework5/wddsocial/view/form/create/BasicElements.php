@@ -27,7 +27,7 @@ class BasicElements implements \Framework5\IView {
 	private static function header($options){
 		$root = \Framework5\Request::root_path();
 		$capitalizedTitle = ucfirst($options['data']['type']);
-		$vanity = strtolower(trim($options['data']['title']));
+		$vanity = strtolower(str_replace(' ','',$options['data']['title']));
 		return <<<HTML
 
 					<h1 class="mega">Create a New {$capitalizedTitle}</h1>
@@ -44,11 +44,11 @@ class BasicElements implements \Framework5\IView {
 							<textarea id="description" class="short"></textarea>
 							<small>Keep it short, <span class="count">128</span> characters left</small>
 						</fieldset>
-						<fieldset>
+						<!--<fieldset>
 							<label for="content">Long Description</label>
 							<textarea id="content"></textarea>
 							<small>You&rsquo;ve got <span class="count">65,536</span> characters to use, so make it count.</small>
-						</fieldset>
+						</fieldset>-->
 						<fieldset>
 							<label for="vanityURL">Custom Vanity URL</label>
 							<input type="text" name="vanityURL" id="vanityURL" placeholder="Optional" />
