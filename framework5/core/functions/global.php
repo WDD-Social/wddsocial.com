@@ -78,6 +78,13 @@ if (!function_exists('package')) {
 	}
 }
 
+# redirect function
+if (!function_exists('redirect')) {
+	function redirect($location) {
+		header("Location: $location");
+	}
+}
+
 # helper function to determine the value of variables
 if (!function_exists('trace')) {
 	function trace($message) {
