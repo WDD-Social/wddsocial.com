@@ -7,7 +7,7 @@ namespace WDDSocial;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class SignUpPage implements \Framework5\IExecutable {
+class SignupPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
@@ -20,7 +20,7 @@ class SignUpPage implements \Framework5\IExecutable {
 	
 	
 	
-	private static function display_form($errorMessage = ''){
+	private static function display_form($error = '', $data = array()){
 		echo render('wddsocial.view.WDDSocial\TemplateView', 
 				array('section' => 'top', 'title' => 'Sign Up for WDD Social'));
 			
@@ -31,7 +31,7 @@ class SignUpPage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_up_intro'));
 		
 		# display sign up form
-		echo render('wddsocial.view.form.WDDSocial\SignUpView');
+		echo render('wddsocial.view.form.WDDSocial\SignUpView', array('error' => $error, 'data' => $data));
 		
 		# end content section
 		echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'end_content'));
@@ -43,20 +43,22 @@ class SignUpPage implements \Framework5\IExecutable {
 	
 	
 	public static function process_form(){
-		if(
-			$_POST['terms'] != 'on' || 
-			($_POST['first-name'] == NULL || 
-			$_POST['last-name'] == NULL || 
-			$_POST['email'] == NULL || 
-			$_POST['full-sail-email'] == NULL || 
-			$_POST['password'] == NULL)){
-			
-			if($_POST['terms'] != 'on'){
-				static::display_form("You must agree to our <a href=\"{$root}terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>, and complete all required fields.");
+		
+		if($_POST['terms'] != 'on'){
+			static::display_form("You must agree to our <a href=\"{$root}terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>, and complete all required fields.");
+		
+		$required = array('terms','first-name','last-name','email','full-sail-email','password');
+		$incomplete = false;
+		foreach($required as $value){
+			if($_POST[$value] == NULL)
+				$incomplete = true;
+		}
+		if($incomplete){
+			if($_POST['terms'] == NULL){
+				static::display_form("You must agree to our <a href=\"{$root}terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>, and complete all required fields.",$_POST);
 			}else{
-				static::display_form("Please complete all required fields.");
+				static::display_form("Please complete all required fields.",$_POST);
 			}
-			
 		}else{
 			# Get db instance and query
 			$db = instance(':db');
@@ -95,7 +97,7 @@ class SignUpPage implements \Framework5\IExecutable {
 					$errors = implode(' and ',$errors);
 					$errorMessage .= "$errors";
 				}else{
-					$errorMessage .=  \WDDSocial\NaturalLanguage::comma_list($errors);
+					$errorMessage .=  NaturalLanguage::comma_list($errors);
 				}
 				$errorMessage .= " you provided are already in use. Your information must be unique.";
 				static::display_form($errorMessage);

@@ -8,7 +8,7 @@ namespace WDDSocial;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class SignInPage implements \Framework5\IExecutable {
+class SigninPage implements \Framework5\IExecutable {
 	
 	/**
 	* display signin page
