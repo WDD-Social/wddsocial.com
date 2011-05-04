@@ -18,4 +18,8 @@ class Uploader {
 		Resizer::image($image,$name,"_small",$dest,15,15,true);
 		unlink("$dest/$name");
 	}
+	
+	public static function clean_video_tag($embedCode){
+		echo "<h1>$embedCode</h1>";
+	}
 }
