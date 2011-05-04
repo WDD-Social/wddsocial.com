@@ -30,7 +30,7 @@ class SigninPage implements \Framework5\IExecutable {
 			# open content section
 			echo render(':section', array('section' => 'begin_content'));
 			
-			# display sign in form
+			# display sign in form header
 			echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_in_intro'));
 			
 			# display sign in form
@@ -79,6 +79,9 @@ class SigninPage implements \Framework5\IExecutable {
 			# open content section
 			echo render(':section', 
 				array('section' => 'begin_content'));
+			
+			# display sign in form header
+			echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_in_intro'));
 			
 			# display sign in form
 			echo render('wddsocial.view.form.WDDSocial\SigninView', 
