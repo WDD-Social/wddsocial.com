@@ -43,7 +43,13 @@ class SignUpPage implements \Framework5\IExecutable {
 	
 	
 	public static function process_form(){
-		if($_POST['terms'] != 'on' || $_POST['first-name'] == NULL || $_POST['last-name'] == NULL || $_POST['email'] == NULL || $_POST['full-sail-email'] == NULL || $_POST['password'] == NULL){
+		if(
+			$_POST['terms'] != 'on' || 
+			($_POST['first-name'] == NULL || 
+			$_POST['last-name'] == NULL || 
+			$_POST['email'] == NULL || 
+			$_POST['full-sail-email'] == NULL || 
+			$_POST['password'] == NULL)){
 			
 			if($_POST['terms'] != 'on'){
 				static::display_form("You must agree to our <a href=\"{$root}terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>, and complete all required fields.");
@@ -141,8 +147,8 @@ class SignUpPage implements \Framework5\IExecutable {
 					'vanityURL' => $vanityURL,
 					'bio' => $_POST['bio'],
 					'hometown' => $_POST['hometown'],
-					'birthday' => $_POST['birthday']
-				);
+					'birthday' => $_POST['birthday']);
+				
 				# Insert user into database
 				$query->execute($data);
 				
@@ -164,8 +170,12 @@ class SignUpPage implements \Framework5\IExecutable {
 				
 				if($_FILES['avatar']['error'] != 4){
 					import('wddsocial.controller.WDDSocial\Uploader');
-					\WDDSocial\Uploader::upload_user_avatar($_FILES['avatar'],"$avatar");
+					Uploader::upload_user_avatar($_FILES['avatar'],"$avatar");
 				}
+				
+				# auto signin user
+				if (UserSession::signin($_POST['email'], $_POST['password']))
+					header('Location: /');
 			}
 		}
 	}
