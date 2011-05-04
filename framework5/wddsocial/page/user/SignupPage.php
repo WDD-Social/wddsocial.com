@@ -11,55 +11,69 @@ class SignupPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		
-		if(isset($_POST['submit'])){
-			static::process_form();
-		}else{
-			static::display_form();
-		}
-	}
-	
-	
-	
-	private static function display_form($error = '', $data = array()){
-		echo render('wddsocial.view.WDDSocial\TemplateView', 
-				array('section' => 'top', 'title' => 'Sign Up for WDD Social'));
+		# handle form submission
+		if (isset($_POST['submit'])){
+			$response = static::process_form();
 			
+			# auto signin user on success
+			if ($response->status) {
+				if (UserSession::signin($_POST['email'], $_POST['password']))
+					header('Location: /');
+			}
+		}
+		
+		# display site header
+		echo render(':template',
+			array('section' => 'top', 'title' => 'Sign Up for WDD Social'));
+		
 		# open content section
 		echo render(':section', array('section' => 'begin_content'));
 		
 		# display sign up form
-		echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_up_intro'));
+		echo render('wddsocial.view.form.WDDSocial\ExtraView', 
+			array('type' => 'sign_up_intro'));
 		
 		# display sign up form
-		echo render('wddsocial.view.form.WDDSocial\SignUpView', array('error' => $error, 'data' => $data));
+		echo render('wddsocial.view.form.WDDSocial\SignUpView', 
+			array('error' => $error, 'data' => $data));
 		
 		# end content section
 		echo render(':section', array('section' => 'end_content'));
 		
 		# display site footer
-		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
+		echo render(':template', array('section' => 'bottom'));
 	}
 	
 	
 	
-	public static function process_form(){
+	
+	public static function process_form() {
 		
-		if($_POST['terms'] != 'on'){
-			static::display_form("You must agree to our <a href=\"{$root}terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>, and complete all required fields.");
+		# filter input variables
+		$v = filter_input(INPUT_POST, 'v', FILTER_VALIDATE_EMAIL);
 		
+		# check if user accepted terms
+		if ($_POST['terms'] != 'on') {
+			static::display_form("You must agree to our <a href=\"{$root}terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>");
+		}
+		
+		# check for required form values
 		$required = array('terms','first-name','last-name','email','full-sail-email','password');
 		$incomplete = false;
-		foreach($required as $value){
-			if($_POST[$value] == NULL)
-				$incomplete = true;
+		foreach ($required as $value) {
+			if($_POST[$value] == NULL) $incomplete = true;
 		}
-		if($incomplete){
+		
+		# 
+		if ($incomplete){
 			if($_POST['terms'] == NULL){
 				static::display_form("You must agree to our <a href=\"{$root}terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>, and complete all required fields.",$_POST);
 			}else{
 				static::display_form("Please complete all required fields.",$_POST);
 			}
-		}else{
+		}
+		
+		else{
 			# Get db instance and query
 			$db = instance(':db');
 			$sel_sql = instance(':sel-sql');
@@ -101,7 +115,9 @@ class SignupPage implements \Framework5\IExecutable {
 				}
 				$errorMessage .= " you provided are already in use. Your information must be unique.";
 				static::display_form($errorMessage);
-			}else{
+			}
+			
+			else{
 				
 				# Error checking and validation complete, add user to database 
 				
@@ -112,8 +128,8 @@ class SignupPage implements \Framework5\IExecutable {
 				$query = $db->prepare($val_sql->checkIfVanityURLExists);
 				$query->setFetchMode(\PDO::FETCH_OBJ);
 				
-				for($i = 0; $i < 100; $i++){
-					if($i < 1){
+				for ($i = 0; $i < 100; $i++) {
+					if ($i < 1) {
 						$vanityURL = $_POST['first-name'] . $_POST['last-name'];
 					}else{
 						$vanityURL = $_POST['first-name'] . $_POST['last-name'] . $i;
@@ -122,9 +138,10 @@ class SignupPage implements \Framework5\IExecutable {
 					$data = array('vanityURL' => $vanityURL);
 					$query->execute($data);
 					$row = $query->fetch();
-					if($row->count > 0){	
+					if ($row->count > 0) {	
 						continue;
-					}else{
+					}
+					else{
 						break;
 					}
 				}
@@ -174,10 +191,6 @@ class SignupPage implements \Framework5\IExecutable {
 					import('wddsocial.controller.WDDSocial\Uploader');
 					Uploader::upload_user_avatar($_FILES['avatar'],"$avatar");
 				}
-				
-				# auto signin user
-				if (UserSession::signin($_POST['email'], $_POST['password']))
-					header('Location: /');
 			}
 		}
 	}
