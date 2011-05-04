@@ -22,4 +22,24 @@ class Uploader {
 	public static function clean_video_tag($embedCode){
 		echo "<h1>$embedCode</h1>";
 	}
+	
+	public static function create_ics_file($event){
+		echo "<pre>";
+		echo render('wddsocial.view.WDDSocial\iCalView', array('section' => 'header'));
+		echo render('wddsocial.view.WDDSocial\iCalView', array('section' => 'event', 'event' => $event));
+		echo render('wddsocial.view.WDDSocial\iCalView', array('section' => 'footer'));
+		echo "</pre>";
+		
+		/* TO DISPLAY:
+		import('wddsocial.controller.WDDSocial\Uploader');
+		$db = instance(':db');
+		$sql = instance(':sel-sql');
+		$data = array('id' => 1);
+		$query = $db->prepare($sql->getEventICSValues);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$query->execute($data);
+		$event = $query->fetch();
+		Uploader::create_ics_file($event);
+		*/
+	}
 }

@@ -57,6 +57,7 @@ DTEND;TZID=America/New_York:$eventEnd
 TRANSP:OPAQUE
 SUMMARY:$eventTitle
 DESCRIPTION:$eventDescription
+LOCATION:$eventLocation
 DTSTART;TZID=America/New_York:$eventStart
 DTSTAMP:$eventCreated
 SEQUENCE:1
