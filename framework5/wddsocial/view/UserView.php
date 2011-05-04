@@ -23,7 +23,7 @@ class UserView implements \Framework5\IView {
 			case 'contact':
 				return static::contact($options['user']);
 			default:
-				throw new \Framework5\Exception("UserView requires parameter section (intro or contact), '{$options['section']}' provided");
+				throw new \Exception("UserView requires parameter section (intro or contact), '{$options['section']}' provided");
 		}
 	}
 	
@@ -35,14 +35,14 @@ class UserView implements \Framework5\IView {
 	
 	private static function intro($user){
 		$root = \Framework5\Request::root_path();
-		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
+		$userDisplayName = NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
 		$html = <<<HTML
 
 				<section id="user" class="mega with-secondary">
 					<h1>$userDisplayName</h1>
 HTML;
 		
-		if(\WDDSocial\UserValidator::is_current($user->id)){
+		if(UserSession::is_current($user->id)){
 			$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -100,7 +100,7 @@ HTML;
 	
 	private static function getUserIntro($user){
 		$root = \Framework5\Request::root_path();
-		$sentence = (\WDDSocial\UserValidator::is_current($user->id))?"<strong>You</strong> are a":"<strong>{$user->firstName}</strong> is a";
+		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are a":"<strong>{$user->firstName}</strong> is a";
 		
 		if(isset($user->age)){
 			$sentence .= " <strong>{$user->age}-year-old</strong>";
@@ -175,7 +175,7 @@ HTML;
 		}
 		$percentage = $complete/$total;
 		
-		$ownership = \WDDSocial\NaturalLanguage::ownership($user->id,"{$user->firstName} {$user->lastName}"); 
+		$ownership = NaturalLanguage::ownership($user->id,"{$user->firstName} {$user->lastName}"); 
 		
 		# Create section header
 		$html = <<<HTML
@@ -185,7 +185,7 @@ HTML;
 HTML;
 		
 		# Create secondary
-		if(\WDDSocial\UserValidator::is_current($user->id)){
+		if(UserSession::is_current($user->id)){
 			$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -199,7 +199,7 @@ HTML;
 					<ul>
 HTML;
 		
-		if(\WDDSocial\UserValidator::is_authorized()){
+		if(UserSession::is_authorized()){
 			$html .= <<<HTML
 						<li>
 							<a href="{$root}messages/{$user->vanityURL}" title="Send {$user->firstName} a message">
@@ -287,7 +287,7 @@ HTML;
 					</ul>
 HTML;
 		
-		if(\WDDSocial\UserValidator::is_current($user->id) && $percentage < .5){
+		if(UserSession::is_current($user->id) && $percentage < .5){
 			$html .= <<<HTML
 
 					<p class="incomplete extra-spacing">People want to talk to you, but they need to know how! Why don&rsquo;t you <strong><a href="{$root}account" title="">add some contact info?</a></strong></p>

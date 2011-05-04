@@ -29,7 +29,7 @@ class MediumDisplayView implements \Framework5\IView {
 				return static::person_display($options['content']);
 			
 			default:
-				throw new \Framework5\Exception("MediumDisplayView requires parameter type (project, article, or person), '{$options['type']}' provided");
+				throw new \Exception("MediumDisplayView requires parameter type (project, article, or person), '{$options['type']}' provided");
 		}
 	}
 	
@@ -42,8 +42,8 @@ class MediumDisplayView implements \Framework5\IView {
 	private static function project_display($project){
 		$root = \Framework5\Request::root_path();
 		
-		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
-		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($project->userID,"{$project->userFirstName} {$project->userLastName}");
+		$userVerbage = NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
+		$userDisplayName = NaturalLanguage::display_name($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$teamIntro = static::format_team_string($project->userID,$project->team);
 		
 		$html = <<<HTML
@@ -53,18 +53,18 @@ class MediumDisplayView implements \Framework5\IView {
 HTML;
 		
 		# Determines what type of secondary controls to present (Flag or Edit/Delete)
-		if(\WDDSocial\UserValidator::is_current($project->userID)){
+		if(UserSession::is_current($project->userID)){
 			$html .= <<<HTML
 
 							<a href="{$root}" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
 							<a href="{$root}" title="Delete &ldquo;{$project->title}&rdquo;" class="delete">Delete</a>
 HTML;
-		}else if(\WDDSocial\UserValidator::is_project_owner($project->id)){
+		}else if(UserValidator::is_project_owner($project->id)){
 			$html .= <<<HTML
 
 							<a href="{$root}" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
 HTML;
-		}else if(\WDDSocial\UserValidator::is_authorized()){
+		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
 							<a href="{$root}" title="Flag &ldquo;{$project->title}&rdquo;" class="flag">Flag</a>
@@ -124,8 +124,8 @@ HTML;
 	private static function article_display($article){
 		$root = \Framework5\Request::root_path();
 		
-		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
-		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
+		$userVerbage = NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
+		$userDisplayName = NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		
 		$html = <<<HTML
 
@@ -134,18 +134,18 @@ HTML;
 HTML;
 		
 		# Determines what type of secondary controls to present (Flag or Edit/Delete)
-		if(\WDDSocial\UserValidator::is_current($article->userID)){
+		if(UserSession::is_current($article->userID)){
 			$html .= <<<HTML
 
 							<a href="{$root}" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
 							<a href="{$root}" title="Delete &ldquo;{$article->title}&rdquo;" class="delete">Delete</a>
 HTML;
-		}else if(\WDDSocial\UserValidator::is_article_owner($article->id)){
+		}else if(UserValidator::is_article_owner($article->id)){
 			$html .= <<<HTML
 
 							<a href="{$root}" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
 HTML;
-		}else if(\WDDSocial\UserValidator::is_authorized()){
+		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
 							<a href="{$root}" title="Flag &ldquo;{$article->title}&rdquo;" class="flag">Flag</a>
@@ -205,8 +205,8 @@ HTML;
 	private static function person_display($person){
 		$root = \Framework5\Request::root_path();
 		
-		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
-		$userDisplayName = \WDDSocial\NaturalLanguage::display_name($person->userID,"{$person->userFirstName} {$person->userLastName}");
+		$userVerbage = NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
+		$userDisplayName = NaturalLanguage::display_name($person->userID,"{$person->userFirstName} {$person->userLastName}");
 		
 		$html = <<<HTML
 
@@ -232,7 +232,7 @@ HTML;
 			if($member->id == $ownerID){
 				$key = array_search($member, $cleanTeam);
 				unset($cleanTeam[$key]);
-			}else if(\WDDSocial\UserValidator::is_current($member->id)){
+			}else if(UserSession::is_current($member->id)){
 				$key = array_search($member, $cleanTeam);
 				$currentUser = $cleanTeam[$key];
 				unset($cleanTeam[$key]);
@@ -248,13 +248,13 @@ HTML;
 			
 			# Creates string according to how many team members there are for this piece of content
 			if(count($cleanTeam) == 1){
-				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
-				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
+				$userVerbage = NaturalLanguage::view_profile($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
+				$userDisplayName = NaturalLanguage::display_name($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
 				$teamIntro .= "<strong><a href=\"{$root}user/{$cleanTeam[0]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
 			}else if(count($cleanTeam) == 2){
 				foreach($cleanTeam as $member){
-					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
-					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
+					$userVerbage = NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
+					$userDisplayName = NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
 					array_push($teamString, "<strong><a href=\"{$root}user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
 				}
 				$teamString = implode(' and ',$teamString);
@@ -262,11 +262,11 @@ HTML;
 			}else{
 				$strings = array();
 				foreach($cleanTeam as $member){
-					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
-					$userDisplayName = \WDDSocial\NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
+					$userVerbage = NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
+					$userDisplayName = NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
 					array_push($strings,"<strong><a href=\"{$root}user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
 				}
-				$teamIntro .= \WDDSocial\NaturalLanguage::comma_list($strings);
+				$teamIntro .= NaturalLanguage::comma_list($strings);
 			}
 		}else{
 			$teamIntro = "";

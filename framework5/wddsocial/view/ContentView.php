@@ -44,7 +44,7 @@ class ContentView implements \Framework5\IView {
 	private static function overview($content){
 		$root = \Framework5\Request::root_path();
 		$html = "";
-		if(\WDDSocial\UserValidator::is_current($content->userID)){
+		if(UserSession::is_current($content->userID)){
 			$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -55,14 +55,14 @@ HTML;
 		}else{
 			switch ($content->type) {
 				case 'project':
-					if(\WDDSocial\UserValidator::is_project_owner($content->id)){
+					if(UserValidator::is_project_owner($content->id)){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
 						<a href="{$root}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
-					}else if(\WDDSocial\UserValidator::is_authorized()){
+					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -72,14 +72,14 @@ HTML;
 					}
 					break;
 				case 'article':
-					if(\WDDSocial\UserValidator::is_article_owner($content->id)){
+					if(UserValidator::is_article_owner($content->id)){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
 						<a href="{$root}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
-					}else if(\WDDSocial\UserValidator::is_authorized()){
+					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -88,7 +88,7 @@ HTML;
 HTML;
 					}
 				default :
-					if(\WDDSocial\UserValidator::is_authorized()){
+					if(\WDDSocial\UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -260,11 +260,11 @@ HTML;
 	private static function members($content){
 		$root = \Framework5\Request::root_path();
 		$html = "";
-		$possessiveTitle = \WDDSocial\NaturalLanguage::possessive($content->title);
+		$possessiveTitle = NaturalLanguage::possessive($content->title);
 		
 		switch ($content->type) {
 			case 'project':
-				if(\WDDSocial\UserValidator::is_project_owner($content->id)){
+				if(UserValidator::is_project_owner($content->id)){
 					$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -274,7 +274,7 @@ HTML;
 				}
 				break;
 			case 'article':
-				if(\WDDSocial\UserValidator::is_article_owner($content->id)){
+				if(UserValidator::is_article_owner($content->id)){
 					$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -284,7 +284,7 @@ HTML;
 				}
 				break;
 			default :
-				if(\WDDSocial\UserValidator::is_current($content->userID)){
+				if(UserSession::is_current($content->userID)){
 					$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -304,7 +304,7 @@ HTML;
 			}
 			
 			foreach($content->team as $member){
-				if(\WDDSocial\UserValidator::is_current($member->id)){
+				if(UserSession::is_current($member->id)){
 					$key = array_search($member, $content->team);
 					$currentUser = $content->team[$key];
 					unset($content->team[$key]);
@@ -313,8 +313,8 @@ HTML;
 			}
 			
 			foreach($content->team as $member){
-				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
-				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
+				$userVerbage = NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
+				$userDisplayName = NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
 				$userDetail = '';
 				switch ($content->type) {
 					case 'project':
@@ -371,9 +371,9 @@ HTML;
 	private static function event_location($content){
 		$root = \Framework5\Request::root_path();
 		$html = "";
-		$possessiveTitle = \WDDSocial\NaturalLanguage::possessive($content->title);
+		$possessiveTitle = NaturalLanguage::possessive($content->title);
 		
-		if(\WDDSocial\UserValidator::is_current($content->userID)){
+		if(UserSession::is_current($content->userID)){
 			$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -416,7 +416,7 @@ HTML;
 			$jobType = "a <strong><a href=\"{$root}jobs\" title=\"{$content->jobType} Jobs\">{$content->jobType}</a></strong> gig";
 		}
 		
-		if(\WDDSocial\UserValidator::is_current($content->userID)){
+		if(UserSession::is_current($content->userID)){
 			$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -527,14 +527,14 @@ HTML;
 		
 		if($commentCount > 0){
 			foreach($comments as $comment){
-				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($comment->userID,"{$comment->firstName} {$comment->lastName}");
-				$userDisplayName = \WDDSocial\NaturalLanguage::display_name($comment->userID,"{$comment->firstName} {$comment->lastName}");
+				$userVerbage = NaturalLanguage::view_profile($comment->userID,"{$comment->firstName} {$comment->lastName}");
+				$userDisplayName = NaturalLanguage::display_name($comment->userID,"{$comment->firstName} {$comment->lastName}");
 				
 				$html .= <<<HTML
 
 					<article class="with-secondary">
 HTML;
-				if(\WDDSocial\UserValidator::is_current($comment->userID)){
+				if(UserSession::is_current($comment->userID)){
 					$html .= <<<HTML
 
 						<div class="secondary">
@@ -542,8 +542,8 @@ HTML;
 							<a href="{$root}" title="Delete Your Comment" class="delete">Delete</a>
 						</div><!-- END SECONDARY -->
 HTML;
-				}else if(\WDDSocial\UserValidator::is_authorized()){
-					$possessive = \WDDSocial\NaturalLanguage::possessive("{$comment->firstName} {$comment->lastName}");
+				}else if(UserSession::is_authorized()){
+					$possessive = NaturalLanguage::possessive("{$comment->firstName} {$comment->lastName}");
 					$html .= <<<HTML
 
 						<div class="secondary">
@@ -561,7 +561,7 @@ HTML;
 HTML;
 			}
 		}else{
-			if(\WDDSocial\UserValidator::is_authorized()){
+			if(UserSession::is_authorized()){
 				$html .= <<<HTML
 
 					<p class="empty">No one has commented yet, why don&rsquo;t you start the conversation?</p>
@@ -569,10 +569,10 @@ HTML;
 			}
 		}
 		
-		if(\WDDSocial\UserValidator::is_authorized()){
+		if(UserSession::is_authorized()){
 			$user = $_SESSION['user'];
-			$userVerbage = \WDDSocial\NaturalLanguage::view_profile($user->id,"{$user->firstName} {$user->lastName}");
-			$userDisplayName = \WDDSocial\NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
+			$userVerbage = NaturalLanguage::view_profile($user->id,"{$user->firstName} {$user->lastName}");
+			$userDisplayName = NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
 			
 			$html .= <<<HTML
 

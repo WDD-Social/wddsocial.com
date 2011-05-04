@@ -25,7 +25,7 @@ class SmallDisplayView implements \Framework5\IView {
 			case 'person_imagegrid':
 				return static::person_imagegrid_display($options['content']);
 			default:
-				throw new \Framework5\Exception("SmallDisplayView requires parameter type (event or job), '{$options['type']}' provided");
+				throw new \Exception("SmallDisplayView requires parameter type (event or job), '{$options['type']}' provided");
 		}
 	}
 	
@@ -68,7 +68,7 @@ HTML;
 	private static function event_display($event){
 		$root = \Framework5\Request::root_path();
 		
-		$class = (\WDDSocial\UserValidator::is_authorized())?'with-secondary':'slider-item';
+		$class = (UserSession::is_authorized())?'with-secondary':'slider-item';
 		
 		$html = <<<HTML
 
@@ -76,19 +76,19 @@ HTML;
 HTML;
 		
 		# Determines if user is signed in, to show secondary or not
-		if(\WDDSocial\UserValidator::is_authorized()){
+		if(UserSession::is_authorized()){
 			$html .=<<<HTML
 						
 						<div class="secondary">
 HTML;
 			# Determines what type of secondary controls to present (Flag or Edit/Delete)
-			if(\WDDSocial\UserValidator::is_current($event->userID)){
+			if(UserSession::is_current($event->userID)){
 				$html .= <<<HTML
 
 							<a href="{$root}" title="Edit &ldquo;{$event->title}&rdquo;" class="edit">Edit</a>
 							<a href="{$root}" title="Delete &ldquo;{$event->title}&rdquo;" class="delete">Delete</a>
 HTML;
-			}else if(\WDDSocial\UserValidator::is_authorized()){
+			}else if(UserSession::is_authorized()){
 				$html .= <<<HTML
 
 							<a href="{$root}" title="Flag &ldquo;{$event->title}&rdquo;" class="flag">Flag</a>
@@ -140,19 +140,19 @@ HTML;
 HTML;
 		
 		# Determines if user is signed in, to show secondary or not
-		if(\WDDSocial\UserValidator::is_authorized()){
+		if(UserSession::is_authorized()){
 			$html .=<<<HTML
 						
 						<div class="secondary">
 HTML;
 			# Determines what type of secondary controls to present (Flag or Edit/Delete)
-			if(\WDDSocial\UserValidator::is_current($job->userID)){
+			if(UserSession::is_current($job->userID)){
 				$html .= <<<HTML
 
 							<a href="{$root}" title="Edit &ldquo;{$job->title} | {$job->company}&rdquo;" class="edit">Edit</a>
 							<a href="{$root}" title="Delete &ldquo;{$job->title} | {$job->company}&rdquo;" class="delete">Delete</a>
 HTML;
-			}else if(\WDDSocial\UserValidator::is_authorized()){
+			}else if(UserSession::is_authorized()){
 				$html .= <<<HTML
 
 							<a href="{$root}" title="Flag &ldquo;{$job->title} | {$job->company}&rdquo;" class="flag">Flag</a>
@@ -195,7 +195,7 @@ HTML;
 	
 	private static function person_imagegrid_display($person){
 		$root = \Framework5\Request::root_path();
-		$userVerbage = \WDDSocial\NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
+		$userVerbage = NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
 		return <<<HTML
 
 					<p><a href="{$root}/user/{$person->userVanityURL}" title="$userVerbage"><img src="{$root}/images/avatars/{$person->userAvatar}_medium.jpg" alt="{$person->userFirstName} {$person->userLastName}"/></a></p>
