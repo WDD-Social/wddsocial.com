@@ -70,7 +70,7 @@ class SigninPage implements \Framework5\IExecutable {
 		# login failure, error page
 		else {
 			# if signin failed, get the error message
-			if (!$message) $message = 'Incorrect username/password';
+			if (!$message) $message = 'Incorrect username or password, please try again.';
 			
 			# display site header
 			echo render('wddsocial.view.WDDSocial\TemplateView', 
