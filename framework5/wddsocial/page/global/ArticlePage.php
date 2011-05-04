@@ -17,15 +17,15 @@ class ArticlePage implements \Framework5\IExecutable {
 		if($article == false){
 			echo render(':template', 
 				array('section' => 'top', 'title' => "Article Not Found"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			echo "<h1>Article Not Found</h1>";
-			echo render('wddsocial.view.WDDSocial\SectionView',
+			echo render(':section',
 					array('section' => 'end_content'));
 		}else{
 			# display site header
 			echo render(':template', 
 				array('section' => 'top', 'title' => "{$article->title}"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			
 			# display Article overview
 			static::displayArticleOverview($article);
@@ -33,7 +33,7 @@ class ArticlePage implements \Framework5\IExecutable {
 			static::displayArticleMedia($article);
 			static::displayArticleComments($article->comments);
 			
-			echo render('wddsocial.view.WDDSocial\SectionView',
+			echo render(':section',
 					array('section' => 'end_content'));
 			
 		}
@@ -68,10 +68,10 @@ class ArticlePage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayArticleOverview($article){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'Article', 'classes' => array('large', 'with-secondary'), 'header' => $article->title));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $article));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'Article'));
 	}
 	
@@ -86,10 +86,10 @@ class ArticlePage implements \Framework5\IExecutable {
 		if(count($article->team) > 1 || count($article->team) < 1){
 			$headerText .= 's';
 		}
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'authors', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => $headerText));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'members', 'content' => $article));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'authors'));
 	}
 	
@@ -100,10 +100,10 @@ class ArticlePage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayArticleMedia($article){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'media', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Media', 'extra' => 'media_filters'));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'media', 'content' => $article, 'active' => 'images'));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'media'));
 	}
 	
@@ -114,10 +114,10 @@ class ArticlePage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayArticleComments($comments){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'comments', 'classes' => array('medium', 'with-secondary'), 'header' => 'Comments'));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'comments', 'comments' => $comments));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'comments'));
 	}
 }

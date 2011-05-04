@@ -25,7 +25,7 @@ class SignupPage implements \Framework5\IExecutable {
 				array('section' => 'top', 'title' => 'Sign Up for WDD Social'));
 			
 		# open content section
-		echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+		echo render(':section', array('section' => 'begin_content'));
 		
 		# display sign up form
 		echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_up_intro'));
@@ -34,7 +34,7 @@ class SignupPage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.form.WDDSocial\SignUpView', array('error' => $error, 'data' => $data));
 		
 		# end content section
-		echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'end_content'));
+		echo render(':section', array('section' => 'end_content'));
 		
 		# display site footer
 		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));

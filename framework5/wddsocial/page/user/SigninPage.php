@@ -28,7 +28,7 @@ class SigninPage implements \Framework5\IExecutable {
 				array('section' => 'top', 'title' => 'Sign In to WDD Social'));
 			
 			# open content section
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			
 			# display sign in form
 			echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_in_intro'));
@@ -37,7 +37,7 @@ class SigninPage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.form.WDDSocial\SignInView');
 			
 			# end content section
-			echo render('wddsocial.view.WDDSocial\SectionView', 
+			echo render(':section', 
 				array('section' => 'end_content'));
 			
 			# display site footer
@@ -77,7 +77,7 @@ class SigninPage implements \Framework5\IExecutable {
 				array('section' => 'top', 'title' => 'Sign In to WDD Social'));
 			
 			# open content section
-			echo render('wddsocial.view.WDDSocial\SectionView', 
+			echo render(':section', 
 				array('section' => 'begin_content'));
 			
 			# display sign in form
@@ -85,7 +85,7 @@ class SigninPage implements \Framework5\IExecutable {
 				array('error' => $message, 'email' => $email));
 						
 			# end content section
-			echo render('wddsocial.view.WDDSocial\SectionView', 
+			echo render(':section', 
 				array('section' => 'end_content'));
 			
 			# display site footer

@@ -17,22 +17,22 @@ class JobPage implements \Framework5\IExecutable {
 		if($job == false){
 			echo render(':template', 
 				array('section' => 'top', 'title' => "Job Not Found"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			echo "<h1>Job Not Found</h1>";
-			echo render('wddsocial.view.WDDSocial\SectionView',
+			echo render(':section',
 					array('section' => 'end_content'));
 		}else{
 			# display site header
 			echo render(':template', 
 				array('section' => 'top', 'title' => "{$job->title}"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			
 			# display Job overview
 			static::displayJobOverview($job);
 			static::displayJobDetails($job);
 			static::displayJobMedia($job);
 			
-			echo render('wddsocial.view.WDDSocial\SectionView',
+			echo render(':section',
 					array('section' => 'end_content'));
 			
 		}
@@ -67,10 +67,10 @@ class JobPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayJobOverview($job){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'Job', 'classes' => array('large', 'with-secondary'), 'header' => $job->title));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $job));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'Job'));
 	}
 	
@@ -81,10 +81,10 @@ class JobPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayJobDetails($job){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'details', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Details'));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'job_details', 'content' => $job));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'details'));
 	}
 	
@@ -95,10 +95,10 @@ class JobPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayJobMedia($job){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'media', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Media', 'extra' => 'media_filters'));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'media', 'content' => $job, 'active' => 'images'));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'media'));
 	}
 }

@@ -17,15 +17,15 @@ class EventPage implements \Framework5\IExecutable {
 		if($event == false){
 			echo render(':template', 
 				array('section' => 'top', 'title' => "Event Not Found"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			echo "<h1>Event Not Found</h1>";
-			echo render('wddsocial.view.WDDSocial\SectionView',
+			echo render(':section',
 					array('section' => 'end_content'));
 		}else{
 			# display site header
 			echo render(':template', 
 				array('section' => 'top', 'title' => "{$event->title}"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			
 			# display Event overview
 			static::displayEventOverview($event);
@@ -33,7 +33,7 @@ class EventPage implements \Framework5\IExecutable {
 			static::displayEventMedia($event);
 			static::displayEventComments($event->comments);
 			
-			echo render('wddsocial.view.WDDSocial\SectionView',
+			echo render(':section',
 					array('section' => 'end_content'));
 			
 		}
@@ -68,10 +68,10 @@ class EventPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayEventOverview($event){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'event', 'classes' => array('large', 'with-secondary'), 'header' => $event->title));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'overview', 'content' => $event));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'event'));
 	}
 	
@@ -82,10 +82,10 @@ class EventPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayEventDetails($event){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'location', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Location and Time'));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'event_location', 'content' => $event));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'location'));
 	}
 	
@@ -96,10 +96,10 @@ class EventPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayEventMedia($event){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'media', 'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 'header' => 'Media', 'extra' => 'media_filters'));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'media', 'content' => $event, 'active' => 'images'));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'media'));
 	}
 	
@@ -110,10 +110,10 @@ class EventPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function displayEventComments($comments){
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'comments', 'classes' => array('medium', 'with-secondary'), 'header' => 'Comments'));
 		echo render('wddsocial.view.WDDSocial\ContentView', array('section' => 'comments', 'comments' => $comments));
-		echo render('wddsocial.view.WDDSocial\SectionView', 
+		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'comments'));
 	}
 }

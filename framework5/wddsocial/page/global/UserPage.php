@@ -17,15 +17,15 @@ class UserPage implements \Framework5\IExecutable {
 		if($user == false){
 			echo render(':template', 
 				array('section' => 'top', 'title' => "User Not Found"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			echo "<h1>User Not Found</h1>";
-			echo render('wddsocial.view.WDDSocial\SectionView',
+			echo render(':section',
 					array('section' => 'end_content'));
 		}else{
 			# display site header
 			echo render(':template', 
 				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			
 			# display user intro
 			echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
@@ -36,13 +36,8 @@ class UserPage implements \Framework5\IExecutable {
 			# display users' contact info
 			echo render('wddsocial.view.WDDSocial\UserView',array('section' => 'contact', 'user' => $user));
 			
-			echo render('wddsocial.view.WDDSocial\SectionView',
+			echo render(':section',
 					array('section' => 'end_content'));
-			/*
-echo "<pre>";
-			print_r($user);
-			echo "</pre>";
-*/
 			
 		}
 		
@@ -87,7 +82,7 @@ echo "<pre>";
 		$query->execute($data);
 		
 		# Create section header
-		echo render('wddsocial.view.WDDSocial\SectionView',
+		echo render(':section',
 			array('section' => 'begin_content_section', 'id' => 'latest',
 				'classes' => array('medium', 'with-secondary', 'filterable'),
 				'header' => 'Latest', 'extra' => 'user_latest_filters'));
@@ -99,7 +94,7 @@ echo "<pre>";
 		}
 		
 		# Create section footer
-		echo render('wddsocial.view.WDDSocial\SectionView',
+		echo render(':section',
 			array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
 	}
 }
