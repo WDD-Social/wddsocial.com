@@ -23,12 +23,14 @@ class SigninPage implements \Framework5\IExecutable {
 			# redirect user on success
 			if ($response->status) {
 				# redirect user to last page
-				if ($_SESSION['last_page'])
+				if ($_SESSION['last_page']) {
 					$location = $_SESSION['last_page'];
 					$_SESSION['last_page'] = null;
 					redirect($location);
-				else
+				}
+				else {
 					redirect('/');
+				}
 			}
 		}
 		
@@ -77,7 +79,7 @@ class SigninPage implements \Framework5\IExecutable {
 		}
 		
 		# attempt user signin
-		if(UserSession::signin($email, $password)) {
+		if (UserSession::signin($email, $password)) {
 			return new FormResponse(true);
 		}
 		else {
