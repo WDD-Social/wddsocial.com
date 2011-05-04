@@ -64,7 +64,7 @@ class SigninPage implements \Framework5\IExecutable {
 		
 		# validation and auth success
 		if (!$message and UserSession::signin($email, $password)) {
-			header('Location: /'); # redirect to user dashboard
+			redirect('/'); # redirect to user dashboard
 		}
 		
 		# login failure, error page

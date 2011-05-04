@@ -11,8 +11,7 @@ class SignoutPage implements \Framework5\IExecutable {
 	
 	public static function execute() {
 		import('wddsocial.controller.WDDSocial\UserSession');
-		\WDDSocial\UserSession::fake_user_signout();
-		
-		header('Location: /');
+		UserSession::signout();
+		redirect('/');
 	}
 }
