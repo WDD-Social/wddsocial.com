@@ -59,7 +59,7 @@ class UserSession {
 	*/
 	
 	public static function signout() {
-		$_SESSION['user'] = NULL;
+		$_SESSION['user'] = null;
 		$_SESSION['authorized'] = false;
 	}
 	
