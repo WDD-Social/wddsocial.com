@@ -15,18 +15,8 @@ class ProjectDetails implements \Framework5\IView {
 
 						<h1>Project Details</h1>
 						<fieldset>
-							<label for="title">Title</label>
-							<input type="text" name="title" id="title" value="{$options['data']['title']}" />
-						</fieldset>
-						<fieldset>
-							<label for="description">Description</label>
-							<textarea id="description"></textarea>
-							<small><span class="count">128</span> characters left</small>
-						</fieldset>
-						<fieldset>
-							<label for="vanityURL">Custom Vanity URL</label>
-							<input type="text" name="vanityURL" id="vanityURL" placeholder="Optional" />
-							<small>Example: wddsocial.com/{$options['data']['type']}/{$vanity}</small>
+							<label for="completed-date">When was this project completed?</label>
+							<input type="date" name="completed-date" id="completed-date" />
 						</fieldset>
 HTML;
 	}

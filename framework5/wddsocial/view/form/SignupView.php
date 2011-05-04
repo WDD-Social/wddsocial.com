@@ -63,7 +63,7 @@ class SignupView implements \Framework5\IView {
 					</fieldset>
 					<fieldset>
 						<label for="birthday">Birthday</label>
-						<input type="text" name="birthday" id="birthday" value="{$options['data']['birthday']}" />
+						<input type="date" name="birthday" id="birthday" value="{$options['data']['birthday']}" />
 					</fieldset>
 					<fieldset>
 						<label for="bio">Bio</label>

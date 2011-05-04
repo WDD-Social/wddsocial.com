@@ -20,13 +20,19 @@ class CreatePage implements \Framework5\IExecutable {
 		}
 		
 		# display site header
-		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'top', 'title' => "Create new {$_POST['type']}"));
+		echo render(':template', array('section' => 'top', 'title' => "Create new {$_POST['type']}"));
 		
 		# open content section
 		echo render(':section', array('section' => 'begin_content'));
 		
 		# display basic form header
 		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $_POST));
+		
+		switch ($_POST['type']) {
+			case 'project':
+				echo render('wddsocial.view.form.create.WDDSocial\ProjectDetails');
+				break;
+		}
 		
 		# display form footer
 		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'footer'));
@@ -35,6 +41,6 @@ class CreatePage implements \Framework5\IExecutable {
 		echo render(':section', array('section' => 'end_content'));
 		
 		# display site footer
-		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
+		echo render(':template', array('section' => 'bottom'));
 	}
 }
