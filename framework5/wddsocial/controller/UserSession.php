@@ -65,33 +65,6 @@ class UserSession {
 	
 	
 	
-	public static function fake_user_signin($id){
-		
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
-		
-		# get user info for session
-		$query = $db->prepare($sql->getUserByID);
-		import('wddsocial.model.WDDSocial\UserVO');
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$data = array('id' => $id);
-		$query->execute($data);
-		$user = $query->fetch();
-		
-		# set session
-		$_SESSION['user'] = $user;
-		$_SESSION['authorized'] = true;
-		
-		return true;
-	}
-	
-	public static function fake_user_signout() {
-		$_SESSION['user'] = NULL;
-		$_SESSION['authorized'] = false;
-	}
-
-	
-	
 	/**
 	* Checks if a user is the currently signed in user
 	*/
