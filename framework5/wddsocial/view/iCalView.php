@@ -10,7 +10,7 @@ class iCalView implements \Framework5\IView {
 	
 	public static function render($options = null) {
 		
-		switch ($options['type']) {
+		switch ($options['section']) {
 			case 'header':
 				return static::header();
 			case 'footer':
@@ -18,7 +18,7 @@ class iCalView implements \Framework5\IView {
 			case 'event':
 				return static::event($options['event']);
 			default:
-				throw new \Framework5\Exception("iCalView requires parameter type (header, footer, or event), '{$options['type']}' provided");
+				throw new \Framework5\Exception("iCalView requires parameter type (header, footer, or event), '{$options['section']}' provided");
 		}
 	}
 	
@@ -69,6 +69,7 @@ ICS;
 
 END:VCALENDAR
 ICS;
+	}
 	
 	
 	
@@ -80,16 +81,17 @@ ICS;
 		return <<<ICS
 
 BEGIN:VEVENT
-CREATED:$event->created
-UID:$event->uid
-DTEND;TZID=America/New_York:$event->end
+CREATED:{$event->created}
+UID:{$event->uid}
+DTEND;TZID=America/New_York:{$event->end}
 TRANSP:OPAQUE
-SUMMARY:$event->title
-DESCRIPTION:$event->description
-DTSTART;TZID=America/New_York:$event->start
-DTSTAMP:$event->created
+SUMMARY:{$event->title}
+DESCRIPTION:{$event->description}
+LOCATION:{$event->location}
+DTSTART;TZID=America/New_York:{$event->start}
+DTSTAMP:{$event->created}
 SEQUENCE:1
-URL;VALUE=URI:$event->link
+URL;VALUE=URI:http://wddsocial.com/event/{$event->vanityURL}
 END:VEVENT
 ICS;
 	}

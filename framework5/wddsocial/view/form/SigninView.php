@@ -13,7 +13,7 @@ class SignInView implements \Framework5\IView {
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
-					<form action="{$root}signin" method="post">
+					<form action="{$root}signin" method="post" class="small">
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="email">Email</label>
