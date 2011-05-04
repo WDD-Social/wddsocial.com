@@ -24,7 +24,7 @@ class SigninPage implements \Framework5\IExecutable {
 		# display signin page
 		else {
 			# display site header
-			echo render('wddsocial.view.WDDSocial\TemplateView', 
+			echo render(':template', 
 				array('section' => 'top', 'title' => 'Sign In to WDD Social'));
 			
 			# open content section
@@ -41,7 +41,7 @@ class SigninPage implements \Framework5\IExecutable {
 				array('section' => 'end_content'));
 			
 			# display site footer
-			echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
+			echo render(':template', array('section' => 'bottom'));
 		}
 	}
 	
@@ -73,7 +73,7 @@ class SigninPage implements \Framework5\IExecutable {
 			if (!$message) $message = 'Incorrect username or password, please try again.';
 			
 			# display site header
-			echo render('wddsocial.view.WDDSocial\TemplateView', 
+			echo render(':template', 
 				array('section' => 'top', 'title' => 'Sign In to WDD Social'));
 			
 			# open content section
@@ -89,7 +89,7 @@ class SigninPage implements \Framework5\IExecutable {
 				array('section' => 'end_content'));
 			
 			# display site footer
-			echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
+			echo render(':template', array('section' => 'bottom'));
 		}
 	}
 }
