@@ -24,9 +24,8 @@ class SigninPage implements \Framework5\IExecutable {
 			if ($response->status) {
 				# redirect user to last page
 				if ($_SESSION['last_page']) {
-					$location = $_SESSION['last_page'];
+					redirect($_SESSION['last_page']);
 					$_SESSION['last_page'] = null;
-					redirect($location);
 				}
 				else {
 					redirect('/');
