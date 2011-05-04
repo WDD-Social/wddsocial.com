@@ -20,9 +20,15 @@ class SigninPage implements \Framework5\IExecutable {
 		if (isset($_POST['submit'])){
 			$response = static::process_form();
 			
-			# redirect to user dashboard on success
+			# redirect user on success
 			if ($response->status) {
-				redirect('/');
+				# redirect user to last page
+				if ($_SESSION['last_page'])
+					$location = $_SESSION['last_page'];
+					$_SESSION['last_page'] = null;
+					redirect($location);
+				else
+					redirect('/');
 			}
 		}
 		
