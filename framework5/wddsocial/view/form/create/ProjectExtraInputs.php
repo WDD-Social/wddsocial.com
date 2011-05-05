@@ -7,7 +7,7 @@ namespace WDDSocial;
 * @author Anthony Colangelo (me@acolangelo.com)
 */
 
-class ProjectDetails implements \Framework5\IView {		
+class ProjectExtraInputs implements \Framework5\IView {		
 	
 	public static function render($options = null) {
 		return <<<HTML
