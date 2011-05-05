@@ -38,7 +38,7 @@ HTML;
 		}
 		$html .= <<<HTML
 
-							<small>YouTube or Vimeo Embed Code</small>
+							<small><strong>YouTube</strong> or <strong>Vimeo</strong> Embed Code</small>
 							<a href="#" title="Add Another Video" class="add-more">Add Another Video</a>
 						</fieldset>
 HTML;
