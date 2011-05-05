@@ -46,7 +46,7 @@ class CreatePage implements \Framework5\IExecutable {
 					$teamTitle = 'Authors';
 					break;
 			}
-			echo render('wddsocial.view.form.create.WDDSocial\TeamMembers',$teamTitle);
+			echo render('wddsocial.view.form.create.WDDSocial\TeamMembers', array('header' => $teamTitle, 'type' => $_POST['type']));
 		}
 		
 		# display form footer
