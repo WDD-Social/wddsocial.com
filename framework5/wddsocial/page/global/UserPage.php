@@ -28,8 +28,8 @@ class UserPage implements \Framework5\IExecutable {
 			# display begin content
 			echo render(':section', array('section' => 'begin_content'));
 			
-			echo "<h1>User Not Found</h1>";
-			#//echo render('wddsocial.view.profile.NotFoundView');
+			# display user not found view
+			echo render('wddsocial.view.profile.WDDSocial\NotFoundView');
 		}
 		
 		# if the user exists
