@@ -24,9 +24,8 @@ class SigninPage implements \Framework5\IExecutable {
 			if ($response->status) {
 				# redirect user to last page
 				if ($_SESSION['last_page']) {
-					$location = $_SESSION['last_page'];
+					redirect($_SESSION['last_page']);
 					$_SESSION['last_page'] = null;
-					redirect($location);
 				}
 				else {
 					redirect('/');
@@ -64,11 +63,11 @@ class SigninPage implements \Framework5\IExecutable {
 	
 	public static function process_form() {
 		
+		import('wddsocial.model.WDDSocial\FormResponse');
+		
 		# filter input variables
 		$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 		$password = filter_input(INPUT_POST, 'password');
-		
-		import('wddsocial.model.WDDSocial\FormResponse');
 		
 		# validate user input
 		if (!$email) {
