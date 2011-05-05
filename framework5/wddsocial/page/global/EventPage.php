@@ -45,8 +45,8 @@ class EventPage implements \Framework5\IExecutable {
 				array('section' => 'begin_content_section', 'id' => 'media', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => 'Media', 'extra' => 'media_filters'));
-			echo render('wddsocial.view.WDDSocial\ContentView', 
-				array('section' => 'media', 'content' => $event, 'active' => 'images'));
+			echo render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
+				array('content' => $event, 'active' => 'images'));
 			echo render(':section', array('section' => 'end_content_section', 'id' => 'media'));
 			
 			
