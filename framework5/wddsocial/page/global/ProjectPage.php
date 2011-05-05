@@ -12,34 +12,36 @@ class ProjectPage implements \Framework5\IExecutable {
 	
 	public static function execute() {	
 		
+		# get project details
 		$project = static::getProject(\Framework5\Request::segment(1));
-			
-		if($project == false){
-			echo render(':template', 
-				array('section' => 'top', 'title' => "Project Not Found"));
-			echo render(':section', array('section' => 'begin_content'));
-			echo "<h1>Project Not Found</h1>";
-			echo render(':section',
-					array('section' => 'end_content'));
-		}else{
+		
+		# if the project does not exist
+		if ($project == false) {
 			# display site header
-			echo render(':template', 
-				array('section' => 'top', 'title' => "{$project->title}"));
+			echo render(':template', array('section' => 'top', 'title' => "Project Not Found"));
 			echo render(':section', array('section' => 'begin_content'));
 			
-			# display project overview
+			# display project not found view
+			echo "<h1>Project Not Found</h1>";
+		}
+		
+		# the project exists
+		else {
+			# display site header
+			echo render(':template', array('section' => 'top', 'title' => "{$project->title}"));
+			echo render(':section', array('section' => 'begin_content'));
+			
+			# display project details
 			static::displayProjectOverview($project);
 			static::displayProjectTeam($project);
 			static::displayProjectMedia($project);
 			static::displayProjectComments($project->comments);
 			
-			echo render(':section',
-					array('section' => 'end_content'));
-			
 		}
 		
-		echo render(':template', 
-				array('section' => 'bottom'));
+		# display page footer
+		echo render(':section', array('section' => 'end_content'));
+		echo render(':template', array('section' => 'bottom'));
 	}
 	
 	

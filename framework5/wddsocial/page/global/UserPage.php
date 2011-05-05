@@ -22,10 +22,7 @@ class UserPage implements \Framework5\IExecutable {
 		if ($user == false){
 			
 			# display site header
-			echo render(':template', 
-				array('section' => 'top', 'title' => "User Not Found"));
-			
-			# display begin content
+			echo render(':template', array('section' => 'top', 'title' => "User Not Found"));
 			echo render(':section', array('section' => 'begin_content'));
 			
 			# display user not found view
@@ -52,7 +49,7 @@ class UserPage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.profile.WDDSocial\UserContactView', $user);
 		}
 		
-		# display page end
+		# display site footer
 		echo render(':section', array('section' => 'end_content'));
 		echo render(':template', array('section' => 'bottom'));
 	}
