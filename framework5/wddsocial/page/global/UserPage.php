@@ -19,7 +19,39 @@ class UserPage implements \Framework5\IExecutable {
 		$user = static::getUser(\Framework5\Request::segment(1));
 		
 		# if the user does not exist
-		if ($user == false){
+		if ($user) {
+			
+			# display site header
+			echo render(':template', 
+				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
+			echo render(':section', array('section' => 'begin_content'));
+			
+			# display user intro
+			echo render('wddsocial.view.profile.WDDSocial\UserIntroView', $user);
+			
+			# display section header
+			echo render(':section',
+				array('section' => 'begin_content_section', 'id' => 'latest',
+					'classes' => array('medium', 'with-secondary', 'filterable'),
+					'header' => 'Latest', 'extra' => 'user_latest_filters'));
+			
+			# display section items
+			$activity = static::getUserLatest($user->id);
+			foreach ($activity as $row) {
+				echo render('wddsocial.view.WDDSocial\MediumDisplayView', 
+					array('type' => $row->type,'content' => $row));
+			}
+			
+			# display section footer
+			echo render(':section',
+				array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
+					
+			# display users' contact info
+			echo render('wddsocial.view.profile.WDDSocial\UserContactView', $user);
+		}
+		
+		
+		else {
 			
 			# display site header
 			echo render(':template', array('section' => 'top', 'title' => "User Not Found"));
@@ -29,25 +61,6 @@ class UserPage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.profile.WDDSocial\NotFoundView');
 		}
 		
-		# if the user exists
-		else {
-			
-			# display site header
-			echo render(':template', 
-				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
-			
-			# display begin content
-			echo render(':section', array('section' => 'begin_content'));
-			
-			# display user intro
-			echo render('wddsocial.view.profile.WDDSocial\UserIntroView', $user);
-			
-			# display user's latest activity
-			static::getUserLatest($user->id);
-			
-			# display users' contact info
-			echo render('wddsocial.view.profile.WDDSocial\UserContactView', $user);
-		}
 		
 		# display site footer
 		echo render(':section', array('section' => 'end_content'));
@@ -92,20 +105,6 @@ class UserPage implements \Framework5\IExecutable {
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		$query->execute($data);
 		
-		# Create section header
-		echo render(':section',
-			array('section' => 'begin_content_section', 'id' => 'latest',
-				'classes' => array('medium', 'with-secondary', 'filterable'),
-				'header' => 'Latest', 'extra' => 'user_latest_filters'));
-		
-		# Create section items
-		while ($row = $query->fetch()) {
-			echo render('wddsocial.view.WDDSocial\MediumDisplayView', 
-				array('type' => $row->type,'content' => $row));
-		}
-		
-		# Create section footer
-		echo render(':section',
-			array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
+		return $query->fetchAll();
 	}
 }
