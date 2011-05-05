@@ -12,37 +12,42 @@ class UserPage implements \Framework5\IExecutable {
 	
 	public static function execute() {	
 		
+		# get the request user
 		$user = static::getUser(\Framework5\Request::segment(1));
 		
-		if($user == false){
+		# if the user does not exist
+		if ($user == false){
 			echo render(':template', 
 				array('section' => 'top', 'title' => "User Not Found"));
 			echo render(':section', array('section' => 'begin_content'));
 			echo "<h1>User Not Found</h1>";
-			echo render(':section',
-					array('section' => 'end_content'));
-		}else{
+			#//echo render('wddsocial.view.profile.NotFoundView');
+		}
+		
+		# if the user exists
+		else {
 			# display site header
 			echo render(':template', 
 				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
+			
+			# display begin content
 			echo render(':section', array('section' => 'begin_content'));
 			
 			# display user intro
-			echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
+			//echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
+			echo render('wddsocial.view.profile.WDDSocial\UserIntroView', $user);
 			
 			# display user's latest activity
 			static::getUserLatest($user->id);
 			
 			# display users' contact info
-			echo render('wddsocial.view.WDDSocial\UserView',array('section' => 'contact', 'user' => $user));
-			
-			echo render(':section',
-					array('section' => 'end_content'));
-			
+			//echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'contact', 'user' => $user));
+			echo render('wddsocial.view.profile.WDDSocial\UserContactView', $user);
 		}
 		
-		echo render(':template', 
-				array('section' => 'bottom'));
+		# display page end
+		echo render(':section', array('section' => 'end_content'));
+		echo render(':template', array('section' => 'bottom'));
 	}
 	
 	
@@ -88,7 +93,7 @@ class UserPage implements \Framework5\IExecutable {
 				'header' => 'Latest', 'extra' => 'user_latest_filters'));
 		
 		# Create section items
-		while($row = $query->fetch()){
+		while ($row = $query->fetch()) {
 			echo render('wddsocial.view.WDDSocial\MediumDisplayView', 
 				array('type' => $row->type,'content' => $row));
 		}
