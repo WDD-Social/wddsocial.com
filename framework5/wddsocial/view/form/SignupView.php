@@ -41,7 +41,7 @@ class SignupView implements \Framework5\IView {
 						
 						<h1>Background</h1>
 						<fieldset class="radio">
-							<label>I am a...*</label>
+							<label>I am a *</label>
 							<div>
 								<input type="radio" id="student" name="user-type" value="student" checked />
 								<label for="student">Student</label>
