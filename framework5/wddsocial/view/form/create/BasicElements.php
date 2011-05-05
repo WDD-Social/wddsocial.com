@@ -44,7 +44,7 @@ class BasicElements implements \Framework5\IView {
 
 					<h1 class="mega">Create a New {$capitalizedTitle}</h1>
 					<form action="{$root}create" method="post">
-						<h1>Basics</h1>
+						<h1>Details</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<input type="hidden" name="type" value="{$options['data']['type']}" />
 						<fieldset>
