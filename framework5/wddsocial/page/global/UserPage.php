@@ -3,51 +3,68 @@
 namespace WDDSocial;
 
 /*
-* Sample script 
+* User Profile Page
 * 
+* @author Anthony Colangelo (me@acolangelo.com)
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
 class UserPage implements \Framework5\IExecutable {
 	
+	
+	
 	public static function execute() {	
 		
+		# get the request user
 		$user = static::getUser(\Framework5\Request::segment(1));
 		
-		if($user == false){
-			echo render(':template', 
-				array('section' => 'top', 'title' => "User Not Found"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
-			echo "<h1>User Not Found</h1>";
-			echo render('wddsocial.view.WDDSocial\SectionView',
-					array('section' => 'end_content'));
-		}else{
+		# if the user does not exist
+		if ($user) {
+			
 			# display site header
 			echo render(':template', 
 				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
-			echo render('wddsocial.view.WDDSocial\SectionView', array('section' => 'begin_content'));
+			echo render(':section', array('section' => 'begin_content'));
 			
 			# display user intro
-			echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
+			echo render('wddsocial.view.profile.WDDSocial\UserIntroView', $user);
 			
-			# display user's latest activity
-			static::getUserLatest($user->id);
+			# display section header
+			echo render(':section',
+				array('section' => 'begin_content_section', 'id' => 'latest',
+					'classes' => array('medium', 'with-secondary', 'filterable'),
+					'header' => 'Latest', 'extra' => 'user_latest_filters'));
 			
+			# display section items
+			$activity = static::getUserLatest($user->id);
+			foreach ($activity as $row) {
+				echo render('wddsocial.view.WDDSocial\MediumDisplayView', 
+					array('type' => $row->type,'content' => $row));
+			}
+			
+			# display section footer
+			echo render(':section',
+				array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
+					
 			# display users' contact info
-			echo render('wddsocial.view.WDDSocial\UserView',array('section' => 'contact', 'user' => $user));
-			
-			echo render('wddsocial.view.WDDSocial\SectionView',
-					array('section' => 'end_content'));
-			/*
-echo "<pre>";
-			print_r($user);
-			echo "</pre>";
-*/
-			
+			echo render('wddsocial.view.profile.WDDSocial\UserContactView', $user);
 		}
 		
-		echo render(':template', 
-				array('section' => 'bottom'));
+		
+		else {
+			
+			# display site header
+			echo render(':template', array('section' => 'top', 'title' => "User Not Found"));
+			echo render(':section', array('section' => 'begin_content'));
+			
+			# display user not found view
+			echo render('wddsocial.view.profile.WDDSocial\NotFoundView');
+		}
+		
+		
+		# display site footer
+		echo render(':section', array('section' => 'end_content'));
+		echo render(':template', array('section' => 'bottom'));
 	}
 	
 	
@@ -57,6 +74,7 @@ echo "<pre>";
 	*/
 	
 	private static function getUser($vanityURL){
+		
 		import('wddsocial.model.WDDSocial\UserVO');
 		
 		# Get db instance and query
@@ -76,6 +94,7 @@ echo "<pre>";
 	*/
 	
 	private static function getUserLatest($id){
+		
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
 		# Get db instance and query
@@ -86,20 +105,6 @@ echo "<pre>";
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		$query->execute($data);
 		
-		# Create section header
-		echo render('wddsocial.view.WDDSocial\SectionView',
-			array('section' => 'begin_content_section', 'id' => 'latest',
-				'classes' => array('medium', 'with-secondary', 'filterable'),
-				'header' => 'Latest', 'extra' => 'user_latest_filters'));
-		
-		# Create section items
-		while($row = $query->fetch()){
-			echo render('wddsocial.view.WDDSocial\MediumDisplayView', 
-				array('type' => $row->type,'content' => $row));
-		}
-		
-		# Create section footer
-		echo render('wddsocial.view.WDDSocial\SectionView',
-			array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
+		return $query->fetchAll();
 	}
 }

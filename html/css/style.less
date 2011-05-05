@@ -619,7 +619,7 @@ input, textarea, button{
 	> form{
 		overflow: hidden;
 		clear: both;
-		width: 32%;
+		width: 50%;
 		min-width: 300px;
 		margin: 0 auto 50px;
 		
@@ -631,18 +631,34 @@ input, textarea, button{
 			margin-top: 50px;
 			}
 		
+		h1 + p{
+			margin-bottom: 4.25%;
+			}
+		
 		small{
 			display: block;
 			width: 100%;
 			margin-top: 1%;
 			font-size: .85em;
 			text-align: right;
+			
+			.count{
+				font-weight: bold;
+				}
 			}
 		
 		textarea{
 			margin-bottom: 0;
 			}
 		
+		input[type="submit"], button, a.button{
+			margin-top: 4.25%;
+			}
+		
+		}
+	
+	> form.small{
+		width: 32%;
 		}
 	
 	> section{
@@ -1649,7 +1665,7 @@ input, textarea, button{
 
 fieldset{
 	max-width: 100%;
-	margin-bottom: 20px;
+	margin-bottom: 5%;
 	
 	label, input, textarea{
 		display: block;
@@ -1692,7 +1708,7 @@ p.error{
 		}
 	}
 
-input[type="text"], input[type="email"], input[type="password"], textarea{
+input[type="text"], input[type="email"], input[type="password"], input[type="date"], input[type="time"], input[type="number"], input[type="url"], textarea{
 	width: 89%;
 	padding: 1% 8.333333333% 1% 2%;
 	border: 1px solid @text-color;
@@ -1700,7 +1716,11 @@ input[type="text"], input[type="email"], input[type="password"], textarea{
 	.box-shadow-inset;
 	}
 
-input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, textarea:focus{
+input[type="date"], input[type="time"], input[type="number"]{
+	width: 98%;
+	}
+
+input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focus, input[type="date"]:focus, input[type="time"]:focus, input[type="number"]:focus, input[type="url"]:focus, textarea:focus{
 	border-color: darken(@green,10%);
 	outline: none;
 	.box-shadow-inset(0, 1px, 1px, rgba(0,0,0,.15), 0 0 3px @green);
@@ -1726,6 +1746,10 @@ textarea{
 textarea.short{
 	min-height: 40px;
 	}
+
+textarea.long{
+	min-height: 200px;
+	}
 	
 textarea.placeholder{
 	color: @text-light-color;
@@ -1734,6 +1758,14 @@ textarea.placeholder{
 input[type="text"].error, input[type="email"].error, input[type="password"].error, textarea.error{
 	border-color: fadeout(@red,30%);
 	.box-shadow-inset(0, 1px, 1px, rgba(0,0,0,.15), 0 0 3px fadeout(@red,40%));
+	}
+	
+input + input{
+	margin-top: 4.25%;
+	}
+
+input + label{
+	margin-top: 2%;
 	}
 	
 input[type="radio"]{
@@ -1775,16 +1807,8 @@ input[type="radio"]:checked + label{
 		}
 	}
 
-.terms{
-	margin-top: 40px;
-	
-	input[type="checkbox"]{
-		display: inline;
-		margin-right: 2%;
-		}
-	}
-
 input[type="submit"], button, a.button{
+	clear: right;
 	float: right;
 	width: 46.666666666666667%;
 	min-width: 140px;
@@ -1821,6 +1845,22 @@ input[type="submit"]:active, button:active, a.button:active{
 	max-width: 140px;
 	text-align: center;
 	line-height: 39px;
+	}
+
+.terms{
+	margin-top: 40px;
+	
+	input[type="checkbox"]{
+		display: inline;
+		margin-right: 2%;
+		}
+	}
+
+a.add-more{
+	display: block;
+	width: 100%;
+	margin-top: 4.25%;
+	text-align: right;
 	}
 	
 	

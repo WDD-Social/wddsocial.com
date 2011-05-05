@@ -29,7 +29,7 @@ class NaturalLanguage{
 	
 	public static function ownership($id, $name){
 		$possessive = static::possessive($name);
-		return (\WDDSocial\UserValidator::is_current($id))?"Your":$possessive;
+		return (UserSession::is_current($id))?"Your":$possessive;
 	}
 	
 	
@@ -40,7 +40,7 @@ class NaturalLanguage{
 	
 	public static function view_profile($id, $name){
 		$withPossessive = "View " . static::possessive($name) . " Profile";
-		return (\WDDSocial\UserValidator::is_current($id))?"View Your Profile":$withPossessive;
+		return (UserSession::is_current($id))?"View Your Profile":$withPossessive;
 	}
 	
 	
@@ -50,7 +50,7 @@ class NaturalLanguage{
 	*/
 	
 	public static function display_name($id, $name){
-		return (\WDDSocial\UserValidator::is_current($id))?"You":$name;
+		return (UserSession::is_current($id))?"You":$name;
 	}
 	
 	

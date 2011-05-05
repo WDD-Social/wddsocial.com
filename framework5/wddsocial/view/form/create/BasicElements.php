@@ -25,14 +25,28 @@ class BasicElements implements \Framework5\IView {
 	*/
 	
 	private static function header($options){
+		import('wddsocial.helper.WDDSocial\StringCleaner');
 		$root = \Framework5\Request::root_path();
 		$capitalizedTitle = ucfirst($options['data']['type']);
-		$vanity = strtolower(trim($options['data']['title']));
+		$options['data']['title'] = StringCleaner::clean_characters(stripslashes($options['data']['title']),array('\\','/'));
+		$vanity = strtolower(StringCleaner::clean_characters($options['data']['title'],array(' ','"',"'")));
+		$vanity = ($vanity == '')?'example':$vanity;
+		$vanityPlaceholder = ($vanity == 'example')?'Optional':$vanity;
+			
+		if ($options['data']['type'] == 'article') {
+			$contentTitle = 'Article Content';
+			$textareaClass = ' class="long"';
+		}
+		else {
+			$contentTitle = 'Long Description';
+			$textareaClass = '';
+		}
+		
 		return <<<HTML
 
 					<h1 class="mega">Create a New {$capitalizedTitle}</h1>
 					<form action="{$root}create" method="post">
-						<h1>Basics</h1>
+						<h1>Details</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<input type="hidden" name="type" value="{$options['data']['type']}" />
 						<fieldset>
@@ -43,16 +57,15 @@ class BasicElements implements \Framework5\IView {
 							<label for="description">Short Description</label>
 							<textarea id="description" class="short"></textarea>
 							<small>Keep it short, <span class="count">128</span> characters left</small>
-						</fieldset>
 						<fieldset>
-							<label for="content">Long Description</label>
-							<textarea id="content"></textarea>
-							<small>You&rsquo;ve got <span class="count">65,536</span> characters to use, so make it count.</small>
+							<label for="content">$contentTitle</label>
+							<textarea id="content"$textareaClass></textarea>
+							<small>You&rsquo;ve got <span class="count">65,536</span> characters left to use, so make it count.</small>
 						</fieldset>
 						<fieldset>
 							<label for="vanityURL">Custom Vanity URL</label>
-							<input type="text" name="vanityURL" id="vanityURL" placeholder="Optional" />
-							<small>Example: wddsocial.com/{$options['data']['type']}/{$vanity}</small>
+							<input type="text" name="vanityURL" id="vanityURL" placeholder="$vanityPlaceholder" />
+							<small>wddsocial.com/{$options['data']['type']}/<strong>{$vanity}</strong></small>
 						</fieldset>
 HTML;
 	}

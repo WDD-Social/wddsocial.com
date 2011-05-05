@@ -610,6 +610,11 @@ class SelectorSQL{
 			FROM events
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
+		
+		'getEventICSValues' => "
+			SELECT id, icsUID AS uid, title, description, location, vanityURL, DATE_FORMAT(startDatetime, '%Y%m%dT%H%i%S') AS start, DATE_FORMAT(endDatetime, '%Y%m%dT%H%i%S') AS end, DATE_FORMAT(`datetime`, '%Y%m%dT%H%i%SZ') AS created
+			FROM events
+			WHERE id = :id",
 			
 			
 		/**
@@ -932,14 +937,22 @@ class SelectorSQL{
 			
 			
 		/**
-		* Misc queries
+		* Form queries
 		*/
 			
 		'getUserTypeIDByTitle' => "
 			SELECT id
 			FROM userTypes
 			WHERE title = :title
-			LIMIT 1"
+			LIMIT 1",
+		
+		'getPrivacyLevels' => "
+			SELECT id, title
+			FROM privacyLevels",
+		
+		'getUserTypes' => "
+			SELECT id, title
+			FROM userTypes"
 			
 	);
 	

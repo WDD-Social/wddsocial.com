@@ -26,7 +26,7 @@ class SectionView implements \Framework5\IView {
 			case 'end_content_section':
 				return static::end_content_section($options);
 			default:
-				throw new \Framework5\Exception("SectionView requires parameter section (content or content_section), '{$options['section']}' provided");
+				throw new \Exception("SectionView requires parameter section (content or content_section), '{$options['section']}' provided");
 		}
 	}
 	
@@ -90,10 +90,13 @@ HTML;
 	
 	# Ends subcontent section, with optional id, and load_more options
 	private static function end_content_section($options){
+		
+		$lang = new \Framework5\Lang('wddsocial.lang.view.SectionLang');
+		
 		if(isset($options['load_more'])){
 			$html .= <<<HTML
 
-					<p class="load-more"><a href="{$root}" title="Load more {$options['load_more']}...">Load More</a></p>
+					<p class="load-more"><a href="{$root}" title="{$lang->text('load_more')} {$options['load_more']}...">{$lang->text('load_more')}</a></p>
 HTML;
 		}
 		$html .= <<<HTML
@@ -106,21 +109,24 @@ HTML;
 	
 	
 	# Extra content pieces (filters, slider controls, etc)
-	private static function get_extra($id){
+	private static function get_extra($id) {
+		
+		$lang = new \Framework5\Lang('wddsocial.lang.view.SectionLang');
+		
 		$extras = array(
 			'latest_filters' => <<<HTML
 <div class="secondary filters">
-						<a href="{$_SERVER['REQUEST_URI']}#all" title="All Latest Activity" class="current">All</a> 
-						<a href="{$_SERVER['REQUEST_URI']}#people" title="Latest People">People</a> 
-						<a href="{$_SERVER['REQUEST_URI']}#projects" title="Latest Projects">Projects</a> 
-						<a href="{$_SERVER['REQUEST_URI']}#articles" title="Latest Articles">Articles</a>
+						<a href="{$_SERVER['REQUEST_URI']}#all" title="{$lang->text('filter_all_title')}" class="current">{$lang->text('all')}</a>
+						<a href="{$_SERVER['REQUEST_URI']}#people" title="{$lang->text('filter_people_title')}">{$lang->text('people')}</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#projects" title="{$lang->text('filter_projects_title')}">{$lang->text('projects')}</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#articles" title="{$lang->text('filter_articles_title')}">{$lang->text('articles')}</a>
 					</div><!-- END SECONDARY -->
 HTML
 			,'user_latest_filters' => <<<HTML
 <div class="secondary filters">
-						<a href="{$_SERVER['REQUEST_URI']}#all" title="All Latest Activity" class="current">All</a> 
-						<a href="{$_SERVER['REQUEST_URI']}#projects" title="Latest Projects">Projects</a> 
-						<a href="{$_SERVER['REQUEST_URI']}#articles" title="Latest Articles">Articles</a>
+						<a href="{$_SERVER['REQUEST_URI']}#all" title="{$lang->text('all_latest_activity')}" class="current">{$lang->text('all')}</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#projects" title="{$lang->text('latest_projects')}">{$lang->text('projects')}</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#articles" title="{$lang->text('latest_articles')}">{$lang->text('articles')}</a>
 					</div><!-- END SECONDARY -->
 HTML
 			,'slider_controls' => <<<HTML
@@ -128,8 +134,8 @@ HTML
 HTML
 			,'media_filters' => <<<HTML
 <div class="secondary filters">
-						<a href="{$_SERVER['REQUEST_URI']}#images" title="Related Images" class="current">Images</a> 
-						<a href="{$_SERVER['REQUEST_URI']}#videos" title="Related Videos">Videos</a>
+						<a href="{$_SERVER['REQUEST_URI']}#images" title="{$lang->text('related_images')}" class="current">{$lang->text('images')}</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#videos" title="{$lang->text('related_videos')}">{$lang->text('videos')}</a>
 					</div><!-- END SECONDARY -->
 HTML
 		);
