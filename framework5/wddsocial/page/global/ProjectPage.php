@@ -3,9 +3,10 @@
 namespace WDDSocial;
 
 /*
-* 
+* Project Info Page
 * 
 * @author: Anthony Colangelo (me@acolangelo.com)
+* @author Tyler Matthews (tmatthewsdev@gmail.com)
 */
 
 class ProjectPage implements \Framework5\IExecutable {
@@ -25,10 +26,8 @@ class ProjectPage implements \Framework5\IExecutable {
 			echo render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'project', 
 					'classes' => array('large', 'with-secondary'), 'header' => $project->title));
-			echo render('wddsocial.view.WDDSocial\ContentView', 
-				array('section' => 'overview', 'content' => $project));
-			echo render(':section', 
-				array('section' => 'end_content_section', 'id' => 'project'));
+			echo render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $project);
+			echo render(':section', array('section' => 'end_content_section', 'id' => 'project'));
 			
 			
 			# display prject team
@@ -36,10 +35,8 @@ class ProjectPage implements \Framework5\IExecutable {
 				array('section' => 'begin_content_section', 'id' => 'team', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => 'Team'));
-			echo render('wddsocial.view.WDDSocial\ContentView', 
-				array('section' => 'members', 'content' => $project));
-			echo render(':section', 
-				array('section' => 'end_content_section', 'id' => 'team'));
+			echo render('wddsocial.view.content.WDDSocial\MembersDisplayView', $project);
+			echo render(':section', array('section' => 'end_content_section', 'id' => 'team'));
 			
 			
 			# display project media
@@ -47,10 +44,9 @@ class ProjectPage implements \Framework5\IExecutable {
 				array('section' => 'begin_content_section', 'id' => 'media', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => 'Media', 'extra' => 'media_filters'));
-			echo render('wddsocial.view.WDDSocial\ContentView', 
-				array('section' => 'media', 'content' => $project, 'active' => 'images'));
-			echo render(':section', 
-				array('section' => 'end_content_section', 'id' => 'media'));
+			echo render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
+				array('content' => $project, 'active' => 'images'));
+			echo render(':section', array('section' => 'end_content_section', 'id' => 'media'));
 			
 			
 			# display project comments
@@ -58,8 +54,7 @@ class ProjectPage implements \Framework5\IExecutable {
 				array('section' => 'begin_content_section', 'id' => 'comments', 
 					'classes' => array('medium', 'with-secondary'), 'header' => 'Comments'));
 			echo render('wddsocial.view.content.WDDSocial\CommentDisplayView', $project->comments);
-			echo render(':section', 
-				array('section' => 'end_content_section', 'id' => 'comments'));
+			echo render(':section', array('section' => 'end_content_section', 'id' => 'comments'));
 			
 		}
 		

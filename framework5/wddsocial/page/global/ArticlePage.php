@@ -3,9 +3,10 @@
 namespace WDDSocial;
 
 /*
-* 
+* Article Page
 * 
 * @author: Anthony Colangelo (me@acolangelo.com)
+* @author Tyler Matthews (tmatthewsdev@gmail.com)
 */
 
 class ArticlePage implements \Framework5\IExecutable {
@@ -30,10 +31,8 @@ class ArticlePage implements \Framework5\IExecutable {
 			echo render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'Article', 
 					'classes' => array('large', 'with-secondary'), 'header' => $article->title));
-			echo render('wddsocial.view.WDDSocial\ContentView', 
-				array('section' => 'overview', 'content' => $article));
-			echo render(':section', 
-				array('section' => 'end_content_section', 'id' => 'Article'));
+			echo render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $article);
+			echo render(':section', array('section' => 'end_content_section', 'id' => 'Article'));
 			
 			
 			# translate and natural language
@@ -45,10 +44,8 @@ class ArticlePage implements \Framework5\IExecutable {
 				array('section' => 'begin_content_section', 'id' => 'authors', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => $author_header));
-			echo render('wddsocial.view.WDDSocial\ContentView', 
-				array('section' => 'members', 'content' => $article));
-			echo render(':section', 
-				array('section' => 'end_content_section', 'id' => 'authors'));
+			echo render('wddsocial.view.content.WDDSocial\MembersDisplayView', $article);
+			echo render(':section', array('section' => 'end_content_section', 'id' => 'authors'));
 			
 			
 			# display article media
@@ -56,13 +53,12 @@ class ArticlePage implements \Framework5\IExecutable {
 				array('section' => 'begin_content_section', 'id' => 'media', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => $lang->text('media'), 'extra' => 'media_filters'));
-			echo render('wddsocial.view.WDDSocial\ContentView', 
-				array('section' => 'media', 'content' => $article, 'active' => 'images'));
-			echo render(':section', 
-				array('section' => 'end_content_section', 'id' => 'media'));
+			echo render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
+				array('content' => $article, 'active' => 'images'));
+			echo render(':section', array('section' => 'end_content_section', 'id' => 'media'));
 			
 			
-			#display article comments
+			# display article comments
 			echo render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'comments', 
 					'classes' => array('medium', 'with-secondary'), 'header' => $lang->text('comments')));
