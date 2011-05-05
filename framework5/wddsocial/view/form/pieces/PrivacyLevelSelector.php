@@ -7,7 +7,7 @@ namespace WDDSocial;
 * @author Anthony Colangelo (me@acolangelo.com)
 */
 
-class PrivacyLevels implements \Framework5\IView {		
+class PrivacyLevelSelector implements \Framework5\IView {		
 	
 	public static function render($options = null) {
 		$db = instance(':db');
@@ -23,14 +23,18 @@ HTML;
 		
 		while ($privacyLevel = $query->fetch()) {
 			$lowercaseTitle = strtolower($privacyLevel->title);
+			if ($privacyLevel->id == $options) {
+				$selected = 'checked';
+			}
+			else {
+				$selected = '';
+			}
 			switch ($lowercaseTitle) {
 				case 'public':
 					$displayText = 'Everyone';
-					$selected = 'checked';
 					break;
 				case 'private':
 					$displayText = 'Community Only';
-					$selected = '';
 					break;
 			}
 			$html .= <<<HTML
@@ -41,6 +45,7 @@ HTML;
 		}
 		
 		$html .= <<<HTML
+
 							</div>
 						</fieldset>
 HTML;

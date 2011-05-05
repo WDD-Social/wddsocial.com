@@ -937,7 +937,7 @@ class SelectorSQL{
 			
 			
 		/**
-		* Misc queries
+		* Form queries
 		*/
 			
 		'getUserTypeIDByTitle' => "
@@ -948,7 +948,11 @@ class SelectorSQL{
 		
 		'getPrivacyLevels' => "
 			SELECT id, title
-			FROM privacyLevels"
+			FROM privacyLevels",
+		
+		'getUserTypes' => "
+			SELECT id, title
+			FROM userTypes"
 			
 	);
 	
