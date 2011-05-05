@@ -944,7 +944,11 @@ class SelectorSQL{
 			SELECT id
 			FROM userTypes
 			WHERE title = :title
-			LIMIT 1"
+			LIMIT 1",
+		
+		'getPrivacyLevels' => "
+			SELECT id, title
+			FROM privacyLevels"
 			
 	);
 	

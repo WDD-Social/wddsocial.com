@@ -32,6 +32,21 @@ class CreatePage implements \Framework5\IExecutable {
 			case 'project':
 				echo render('wddsocial.view.form.create.WDDSocial\ProjectDetails');
 				break;
+			case 'article':
+				echo render('wddsocial.view.form.create.WDDSocial\ArticleDetails');
+				break;
+		}
+		
+		if ($_POST['type'] == 'project' || $_POST['type'] == 'article') {
+			switch ($_POST['type']) {
+				case 'project':
+					$teamTitle = 'Team Members';
+					break;
+				case 'article':
+					$teamTitle = 'Authors';
+					break;
+			}
+			echo render('wddsocial.view.form.create.WDDSocial\TeamMembers',$teamTitle);
 		}
 		
 		# display form footer
