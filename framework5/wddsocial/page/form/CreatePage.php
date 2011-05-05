@@ -10,6 +10,7 @@ namespace WDDSocial;
 class CreatePage implements \Framework5\IExecutable {
 	
 	public static function execute() {
+		UserSession::protect();
 		if(!isset($_POST['type'])){
 			$request = \Framework5\Request::segment(1);
 			if($request != '' AND ($request == 'project' or $request == 'article' or $request == 'event' or $request == 'job')){
@@ -29,13 +30,9 @@ class CreatePage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $_POST));
 		
 		# display content type-specific options
-		switch ($_POST['type']) {
-			case 'project':
-				echo render('wddsocial.view.form.create.WDDSocial\ProjectExtraInputs');
-				break;
-			case 'article':
-				echo render('wddsocial.view.form.create.WDDSocial\ArticleExtraInputs');
-				break;
+		if ($_POST['type'] == 'project' || $_POST['type'] == 'article' || $_POST['type'] == 'event') {
+			$typeCapitalized = ucfirst($_POST['type']);
+			echo render("wddsocial.view.form.create.WDDSocial\\{$typeCapitalized}ExtraInputs");
 		}
 		
 		# display team member section for appropriate content types
@@ -59,6 +56,11 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		# display link section
 		echo render('wddsocial.view.form.pieces.WDDSocial\LinkInputs');
+		
+		#display course section
+		if ($_POST['type'] != 'event') {
+			echo render('wddsocial.view.form.pieces.WDDSocial\CourseInputs');
+		}
 		
 		# display form footer
 		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'footer'));
