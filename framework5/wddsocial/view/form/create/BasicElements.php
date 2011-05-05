@@ -35,9 +35,11 @@ class BasicElements implements \Framework5\IView {
 			
 		if ($options['data']['type'] == 'article') {
 			$contentTitle = 'Article Content';
+			$textareaClass = ' class="long"';
 		}
 		else {
 			$contentTitle = 'Long Description';
+			$textareaClass = '';
 		}
 		
 		return <<<HTML
@@ -57,7 +59,7 @@ class BasicElements implements \Framework5\IView {
 							<small>Keep it short, <span class="count">128</span> characters left</small>
 						<fieldset>
 							<label for="content">$contentTitle</label>
-							<textarea id="content"></textarea>
+							<textarea id="content"$textareaClass></textarea>
 							<small>You&rsquo;ve got <span class="count">65,536</span> characters left to use, so make it count.</small>
 						</fieldset>
 						<fieldset>
