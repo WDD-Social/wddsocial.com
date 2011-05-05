@@ -11,7 +11,7 @@ class SignupView implements \Framework5\IView {
 	
 	public static function render($options = null) {
 		$root = \Framework5\Request::root_path();
-		return <<<HTML
+		$html = <<<HTML
 
 					<form action="{$root}signup" method="post" enctype="multipart/form-data">
 						<h1>Basic</h1>
@@ -40,19 +40,10 @@ class SignupView implements \Framework5\IView {
 						</fieldset>
 						
 						<h1>Background</h1>
-						<fieldset class="radio">
-							<label>I am a *</label>
-							<div>
-								<input type="radio" id="student" name="user-type" value="student" checked />
-								<label for="student">Student</label>
-								
-								<input type="radio" id="teacher" name="user-type" value="teacher" />
-								<label for="teacher">Teacher</label>
-								
-								<input type="radio" id="alum" name="user-type" value="alum" />
-								<label for="alum">Alum</label>
-							</div>
-						</fieldset>
+HTML;
+		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypes',1);
+		$html .= <<<HTML
+
 						<fieldset>
 							<label for="avatar">Avatar</label>
 							<input type="file" name="avatar" id="avatar" />
@@ -79,5 +70,6 @@ class SignupView implements \Framework5\IView {
 						<input type="submit" name="submit" value="Sign Up" />
 					</form>
 HTML;
+		return $html;
 	}
 }
