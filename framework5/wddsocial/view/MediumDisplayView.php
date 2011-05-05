@@ -40,6 +40,8 @@ class MediumDisplayView implements \Framework5\IView {
 	*/
 	
 	private static function project_display($project){
+	
+		//$lang = new \Framework5\Lang('wddsocial.lang.view.MediumDisplayView');
 		$root = \Framework5\Request::root_path();
 		
 		$userVerbage = NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
