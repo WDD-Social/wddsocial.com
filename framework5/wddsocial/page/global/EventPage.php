@@ -3,9 +3,10 @@
 namespace WDDSocial;
 
 /*
-* 
+* Event Info Page
 * 
 * @author: Anthony Colangelo (me@acolangelo.com)
+* @author Tyler Matthews (tmatthewsdev@gmail.com)
 */
 
 class EventPage implements \Framework5\IExecutable {
@@ -26,10 +27,8 @@ class EventPage implements \Framework5\IExecutable {
 			echo render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'event', 
 					'classes' => array('large', 'with-secondary'), 'header' => $event->title));
-			echo render('wddsocial.view.WDDSocial\ContentView', 
-				array('section' => 'overview', 'content' => $event));
-			echo render(':section', 
-				array('section' => 'end_content_section', 'id' => 'event'));
+			echo render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $event);
+			echo render(':section', array('section' => 'end_content_section', 'id' => 'event'));
 			
 			
 			# display event details
@@ -37,10 +36,8 @@ class EventPage implements \Framework5\IExecutable {
 				array('section' => 'begin_content_section', 'id' => 'location', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => 'Location and Time'));
-			echo render('wddsocial.view.WDDSocial\ContentView', 
-				array('section' => 'event_location', 'content' => $event));
-			echo render(':section', 
-				array('section' => 'end_content_section', 'id' => 'location'));
+			echo render('wddsocial.view.content.WDDSocial\EventLocationDisplayView', $event);
+			echo render(':section', array('section' => 'end_content_section', 'id' => 'location'));
 			
 			
 			# display event media
