@@ -87,7 +87,7 @@ HTML;
 	
 	private static function _templateFooter() {
 		$root = \Framework5\Request::root_path();
-		$lang = new \Framework5\Lang('wddsocial.lang.TemplateLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		
 		# output
 		return <<<HTML
@@ -128,7 +128,7 @@ HTML;
 	private static function _userArea() {
 		
 		$root = \Framework5\Request::root_path();
-		$lang = new \Framework5\Lang('wddsocial.lang.TemplateLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		
 		# if the user is logged in
 		if ($_SESSION['authorized']) {
@@ -165,7 +165,7 @@ HTML;
 		
 		$root = \Framework5\Request::root_path();
 		$current = \Framework5\Request::segment(0);
-		$lang = new \Framework5\Lang('wddsocial.lang.TemplateLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		
 		$html = <<<HTML
 
