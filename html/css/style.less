@@ -1734,6 +1734,10 @@ textarea{
 textarea.short{
 	min-height: 40px;
 	}
+
+textarea.long{
+	min-height: 200px;
+	}
 	
 textarea.placeholder{
 	color: @text-light-color;
@@ -1746,6 +1750,10 @@ input[type="text"].error, input[type="email"].error, input[type="password"].erro
 	
 input + input{
 	margin-top: 4.25%;
+	}
+
+input + label{
+	margin-top: 2%;
 	}
 	
 input[type="radio"]{
@@ -1798,7 +1806,6 @@ input[type="radio"]:checked + label{
 
 .add-more{
 	float: right;
-	margin-top: 4.25%;
 	}
 
 input[type="submit"], button, a.button{
