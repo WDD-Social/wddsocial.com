@@ -3,12 +3,15 @@
 namespace WDDSocial;
 
 /*
-* Sample script 
+* User Profile Page
 * 
+* @author Anthony Colangelo (me@acolangelo.com)
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
 class UserPage implements \Framework5\IExecutable {
+	
+	
 	
 	public static function execute() {	
 		
@@ -17,15 +20,21 @@ class UserPage implements \Framework5\IExecutable {
 		
 		# if the user does not exist
 		if ($user == false){
+			
+			# display site header
 			echo render(':template', 
 				array('section' => 'top', 'title' => "User Not Found"));
+			
+			# display begin content
 			echo render(':section', array('section' => 'begin_content'));
+			
 			echo "<h1>User Not Found</h1>";
 			#//echo render('wddsocial.view.profile.NotFoundView');
 		}
 		
 		# if the user exists
 		else {
+			
 			# display site header
 			echo render(':template', 
 				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
@@ -34,14 +43,12 @@ class UserPage implements \Framework5\IExecutable {
 			echo render(':section', array('section' => 'begin_content'));
 			
 			# display user intro
-			//echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'intro', 'user' => $user));
 			echo render('wddsocial.view.profile.WDDSocial\UserIntroView', $user);
 			
 			# display user's latest activity
 			static::getUserLatest($user->id);
 			
 			# display users' contact info
-			//echo render('wddsocial.view.WDDSocial\UserView', array('section' => 'contact', 'user' => $user));
 			echo render('wddsocial.view.profile.WDDSocial\UserContactView', $user);
 		}
 		
@@ -57,6 +64,7 @@ class UserPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function getUser($vanityURL){
+		
 		import('wddsocial.model.WDDSocial\UserVO');
 		
 		# Get db instance and query
@@ -76,6 +84,7 @@ class UserPage implements \Framework5\IExecutable {
 	*/
 	
 	private static function getUserLatest($id){
+		
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
 		# Get db instance and query
