@@ -30,7 +30,7 @@ class CreatePage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $_POST));
 		
 		# display content type-specific options
-		if ($_POST['type'] == 'project' || $_POST['type'] == 'article' || $_POST['type'] == 'event') {
+		if ($_POST['type'] == 'project' || $_POST['type'] == 'article' || $_POST['type'] == 'event' || $_POST['type'] == 'job') {
 			$typeCapitalized = ucfirst($_POST['type']);
 			echo render("wddsocial.view.form.create.WDDSocial\\{$typeCapitalized}ExtraInputs");
 		}
@@ -48,8 +48,11 @@ class CreatePage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $_POST['type']));
 		}
 		
-		# display media section
-		echo render('wddsocial.view.form.pieces.WDDSocial\MediaInputs');
+		# display image section
+		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs');
+		
+		# display video section
+		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs');
 		
 		# display category section
 		echo render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs');
@@ -61,6 +64,9 @@ class CreatePage implements \Framework5\IExecutable {
 		if ($_POST['type'] != 'event') {
 			echo render('wddsocial.view.form.pieces.WDDSocial\CourseInputs');
 		}
+		
+		# display other options
+		echo render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', $_POST);
 		
 		# display form footer
 		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'footer'));

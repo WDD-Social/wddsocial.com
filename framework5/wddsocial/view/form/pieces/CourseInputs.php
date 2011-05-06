@@ -10,6 +10,13 @@ namespace WDDSocial;
 class CourseInputs implements \Framework5\IView {		
 	
 	public static function render($options = null) {
+		$db = instance(':db');
+		$sql = instance(':sel-sql');
+		
+		$query = $db->query($sql->getThreeRandomCourses);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$courses = $query->fetchAll();
+		
 		$html = <<<HTML
 
 						<h1 id="courses">Courses</h1>
@@ -19,13 +26,13 @@ HTML;
 		for ($i = 1; $i < 3; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="courses[]" id="course$i" />
+							<input type="text" name="courses[]" id="course$i" placeholder="{$courses[$i-1]->id} or {$courses[$i-1]->title}" />
 HTML;
 		}
 		$html .= <<<HTML
 
-							<a href="#" title="Add Another Course" class="add-more">Add Another Course</a>
 						</fieldset>
+						<a href="#" title="Add Another Course" class="add-more">Add Another Course</a>
 HTML;
 		return $html;
 	}

@@ -22,7 +22,7 @@ HTML;
 							<input type="text" name="link-titles[]" id="link-title$i" />
 							
 							<label for="link-url$i">Link $i URL</label>
-							<input type="text" name="link-urls[]" id="link-url$i" />
+							<input type="text" name="link-urls[]" id="link-url$i" placeholder="example.com" />
 						</fieldset>
 HTML;
 		}

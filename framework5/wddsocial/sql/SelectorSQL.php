@@ -952,8 +952,36 @@ class SelectorSQL{
 		
 		'getUserTypes' => "
 			SELECT id, title
-			FROM userTypes"
-			
+			FROM userTypes",
+		
+		'getJobTypes' => "
+			SELECT id, title
+			FROM jobTypes",
+		
+		'getThreeRandomCategories' => "
+			SELECT title
+			FROM categories
+			ORDER BY RAND()
+			LIMIT 3",
+		
+		'getThreeRandomUsers' => "
+			SELECT CONCAT_WS(' ',firstName,lastName) AS `name`
+			FROM users
+			ORDER BY RAND()
+			LIMIT 3",
+		
+		'getThreeRandomRoles' => "
+			SELECT title
+			FROM userProjects
+			ORDER BY RAND()
+			LIMIT 3",
+		
+		'getThreeRandomCourses' => "
+			SELECT id, title
+			FROM courses
+			ORDER BY RAND()
+			LIMIT 3"
+						
 	);
 	
 	public function __get($id){
