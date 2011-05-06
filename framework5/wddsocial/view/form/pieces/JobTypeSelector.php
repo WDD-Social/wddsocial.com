@@ -31,7 +31,7 @@ HTML;
 			}
 			$html .= <<<HTML
 
-								<input type="radio" id="$lowercaseTitle" name="user-type" value="{$jobType->id}" $selected />
+								<input type="radio" id="$lowercaseTitle" name="job-type" value="{$jobType->id}" $selected />
 								<label for="$lowercaseTitle">{$jobType->title}</label>
 HTML;
 		}
