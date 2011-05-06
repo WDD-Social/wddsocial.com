@@ -39,7 +39,7 @@ HTML;
 			}
 			$html .= <<<HTML
 
-								<input type="radio" id="$lowercaseTitle" name="privacy-level" value="$lowercaseTitle" $selected />
+								<input type="radio" id="$lowercaseTitle" name="privacy-level" value="{$privacyLevel->id}" $selected />
 								<label for="$lowercaseTitle">$displayText</label>
 HTML;
 		}
