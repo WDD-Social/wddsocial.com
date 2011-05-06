@@ -5,6 +5,7 @@ namespace WDDSocial;
 /*
 * 
 * @author Anthony Colangelo (me@acolangelo.com)
+* @author Tyler Matthews (tmatthewsdev@gmail.com)
 */
 
 class CommentDisplayView implements \Framework5\IView {
@@ -15,10 +16,9 @@ class CommentDisplayView implements \Framework5\IView {
 		$html = "";
 		$commentCount = count($comments);
 		$commentVerbage = 'comment';
-		if ($commentCount > 1 || $commentCount < 1) {
-			$commentVerbage .= 's';
-		}
+		if ($commentCount > 1 || $commentCount < 1) $commentVerbage .= 's';
 		
+		# content
 		$html .= <<<HTML
 
 					<div class="secondary">
@@ -26,16 +26,21 @@ class CommentDisplayView implements \Framework5\IView {
 					</div><!-- END SECONDARY -->
 HTML;
 		
+		# if comments exist, display comments
 		if ($commentCount > 0) {
-			foreach($comments as $comment){
-				$userVerbage = NaturalLanguage::view_profile($comment->userID,"{$comment->firstName} {$comment->lastName}");
-				$userDisplayName = NaturalLanguage::display_name($comment->userID,"{$comment->firstName} {$comment->lastName}");
+			foreach ($comments as $comment) {
+				$userVerbage = NaturalLanguage::view_profile(
+					$comment->userID,"{$comment->firstName} {$comment->lastName}");
+				
+				$userDisplayName = NaturalLanguage::display_name(
+					$comment->userID,"{$comment->firstName} {$comment->lastName}");
 				
 				$html .= <<<HTML
 
 					<article class="with-secondary">
 HTML;
-				if(UserSession::is_current($comment->userID)){
+				
+				if (UserSession::is_current($comment->userID)) {
 					$html .= <<<HTML
 
 						<div class="secondary">
@@ -43,7 +48,9 @@ HTML;
 							<a href="{$root}" title="Delete Your Comment" class="delete">Delete</a>
 						</div><!-- END SECONDARY -->
 HTML;
-				}else if(UserSession::is_authorized()){
+				}
+				
+				else if (UserSession::is_authorized()) {
 					$possessive = NaturalLanguage::possessive("{$comment->firstName} {$comment->lastName}");
 					$html .= <<<HTML
 
@@ -61,8 +68,12 @@ HTML;
 					</article>
 HTML;
 			}
-		}else{
-			if(UserSession::is_authorized()){
+		}
+		
+		# no comments exist
+		else {
+			# if the user is authorized
+			if (UserSession::is_authorized()){
 				$html .= <<<HTML
 
 					<p class="empty">No one has commented yet, why don&rsquo;t you start the conversation?</p>
@@ -70,7 +81,8 @@ HTML;
 			}
 		}
 		
-		if(UserSession::is_authorized()){
+		# add a comment, if authorized
+		if (UserSession::is_authorized()) {
 			$user = $_SESSION['user'];
 			$userVerbage = NaturalLanguage::view_profile($user->id,"{$user->firstName} {$user->lastName}");
 			$userDisplayName = NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
@@ -88,6 +100,7 @@ HTML;
 HTML;
 		}
 		
+		# not authorized, signin?
 		else {
 			$html .= <<<HTML
 

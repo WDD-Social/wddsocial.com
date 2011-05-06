@@ -14,9 +14,10 @@ class EventLocationDisplayView implements \Framework5\IView {
 	public static function render($content = null) {
 		
 		$root = \Framework5\Request::root_path();
-		$html = "";
 		$possessiveTitle = NaturalLanguage::possessive($content->title);
+		$html = "";
 		
+		# if current user is author, show edit controls
 		if (UserSession::is_current($content->userID)) {
 			$html .= <<<HTML
 
@@ -25,13 +26,11 @@ class EventLocationDisplayView implements \Framework5\IView {
 					</div><!-- END SECONDARY -->
 HTML;
 		}
+		
+		# content
 		$html .= <<<HTML
 
 					<article class="location-and-time">
-HTML;
-			
-		$html .= <<<HTML
-
 						<p class="item-image"><a href="{$root}/files/ics/{$content->icsUID}.ics" title="Download {$content->title} iCal File" class="calendar-icon">
 							<span class="month">{$content->month}</span> 
 							<span class="day">{$content->day}</span> 
