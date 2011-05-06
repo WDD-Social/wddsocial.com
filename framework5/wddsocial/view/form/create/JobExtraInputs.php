@@ -26,8 +26,8 @@ class JobExtraInputs implements \Framework5\IView {
 							<input type="text" name="compensation" id="compensation" />
 						</fieldset>
 						<fieldset>
-							<label for="company-website">Company&rsquo;s Website</label>
-							<input type="text" name="company-website" id="company-website" placeholder="example.com" />
+							<label for="website">Company&rsquo;s Website</label>
+							<input type="text" name="website" id="website" placeholder="example.com" />
 						</fieldset>
 						<fieldset>
 							<label for="email">Contact Email *</label>
