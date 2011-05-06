@@ -18,9 +18,9 @@ class AdminSQL{
 			INSERT INTO users (typeID, firstName, lastName, email, fullsailEmail, `password`, vanityURL, bio, hometown, birthday, `datetime`)
 			VALUES (:typeID, :firstName, :lastName, :email, :fullsailEmail, MD5(:password), :vanityURL, :bio, :hometown, :birthday, NOW())",
 		
-		'addUserAvatar' => "
+		'generateUserAvatar' => "
 			UPDATE users
-			SET avatar = MD5(:avatar)
+			SET avatar = MD5(CONCAT('user',id))
 			WHERE id = :id",
 		
 		/**
