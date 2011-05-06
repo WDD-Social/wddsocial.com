@@ -18,7 +18,7 @@ class IndexPageLang implements \Framework5\ILanguagePack {
 			case 'projects_header':
 				return 'Projects';
 			case 'signin_header':
-				return 'Signin';
+				return 'Sign In';
 			case 'people_header':
 				return 'People';
 			case 'articles_header':

@@ -17,7 +17,7 @@ class SignInView implements \Framework5\IView {
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="email">Email</label>
-							<input type="email" name="email" id="email" value="{$_POST['email']}" />
+							<input type="email" name="email" id="email" value="{$_POST['email']}" autofocus />
 						</fieldset>
 						<fieldset>
 							<label for="password" class="helper-link">Password</label>
