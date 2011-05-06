@@ -55,7 +55,7 @@ class AdminSQL{
 		
 		'addEvent' => "
 			INSERT INTO events (userID, privacyLevelID, title, description, content, vanityURL, location, startDatetime, endDatetime, `datetime`)
-			VALUES (:userID, :privacyLevelID, :title, :description, :content, :vanityURL, :location, :startDatetime, :endDatetime, NOW())",
+			VALUES (:userID, :privacyLevelID, :title, :description, :content, :vanityURL, :location, :startDatetime, DATE_ADD(:startDatetime, INTERVAL :duration HOUR), NOW())",
 		
 		'generateEventVanityURL' => "
 			UPDATE events
@@ -72,8 +72,8 @@ class AdminSQL{
 		*/
 		
 		'addJob' => "
-			INSERT INTO jobs (userID, typeID, title, description, content, vanityURL, company, email, location, avatar, website, compensation, `datetime`)
-			VALUES (:userID, :typeID, :title, :description, :content, :vanityURL, :company, :email, :location, :avatar, :website, :compensation, NOW())",
+			INSERT INTO jobs (userID, typeID, title, description, content, vanityURL, company, email, location, website, compensation, `datetime`)
+			VALUES (:userID, :typeID, :title, :description, :content, :vanityURL, :company, :email, :location, :website, :compensation, NOW())",
 		
 		'generateJobVanityURL' => "
 			UPDATE jobs
