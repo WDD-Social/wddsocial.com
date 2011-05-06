@@ -43,10 +43,11 @@ class BasicElements implements \Framework5\IView {
 		return <<<HTML
 
 					<h1 class="mega">Create a New {$capitalizedTitle}</h1>
-					<form action="{$root}create" method="post">
+					<form action="{$root}create" method="post" enctype="multipart/form-data">
 						<h1>Details</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<input type="hidden" name="type" value="{$options['data']['type']}" />
+						<input type="hidden" name="process" value="creation" />
 						<fieldset>
 							<label for="title">$capitalizedTitle Title *</label>
 							<input type="text" name="title" id="title" value="{$options['data']['title']}" />
@@ -72,7 +73,7 @@ HTML;
 	private static function footer(){
 		return <<<HTML
 
-						<input type="submit" value="Create" />
+						<input type="submit" name="submit" value="Create" />
 					</form>
 HTML;
 	}
