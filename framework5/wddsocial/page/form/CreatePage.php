@@ -61,7 +61,7 @@ class CreatePage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.form.pieces.WDDSocial\LinkInputs');
 		
 		#display course section
-		if ($_POST['type'] != 'event') {
+		if ($_POST['type'] != 'job') {
 			echo render('wddsocial.view.form.pieces.WDDSocial\CourseInputs');
 		}
 		
