@@ -41,7 +41,7 @@ class SignupView implements \Framework5\IView {
 						
 						<h1>Background</h1>
 HTML;
-		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypes',1);
+		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector',1);
 		$html .= <<<HTML
 
 						<fieldset>
