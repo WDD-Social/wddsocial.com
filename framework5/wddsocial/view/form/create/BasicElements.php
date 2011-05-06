@@ -54,7 +54,7 @@ class BasicElements implements \Framework5\IView {
 						</fieldset>
 						<fieldset>
 							<label for="description">Short Description *</label>
-							<textarea id="description" class="short"></textarea>
+							<textarea id="description" name="description" class="short"></textarea>
 							<small>Keep it short, <span class="count">128</span> characters left</small>
 						<fieldset>
 							<label for="content">$contentTitle$required</label>
