@@ -977,7 +977,7 @@ class SelectorSQL{
 			LIMIT 3",
 		
 		'getThreeRandomCourses' => "
-			SELECT id, title
+			SELECT id
 			FROM courses
 			ORDER BY RAND()
 			LIMIT 3"
