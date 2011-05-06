@@ -87,7 +87,7 @@ class SignupPage implements \Framework5\IExecutable {
 		$errors = array();
 		
 		# Check if email is unique
-		$query = $db->prepare($val_sql->checkIfEmailExists);
+		$query = $db->prepare($val_sql->checkIfUserEmailExists);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$data = array('email' => $_POST['email']);
 		$query->execute($data);
@@ -97,7 +97,7 @@ class SignupPage implements \Framework5\IExecutable {
 		}
 		
 		# Check if Full Sail email is unique
-		$query = $db->prepare($val_sql->checkIfFullSailEmailExists);
+		$query = $db->prepare($val_sql->checkIfUserFullSailEmailExists);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$data = array('fullsailEmail' => $_POST['full-sail-email']);
 		$query->execute($data);
@@ -129,7 +129,7 @@ class SignupPage implements \Framework5\IExecutable {
 			$vanityURL = '';
 		
 			# Check if vanity URL is unique, create a new one until a unique is found
-			$query = $db->prepare($val_sql->checkIfVanityURLExists);
+			$query = $db->prepare($val_sql->checkIfUserVanityURLExists);
 			$query->setFetchMode(\PDO::FETCH_OBJ);
 			
 			$vanityURL = strtolower($_POST['first-name'] . $_POST['last-name']);

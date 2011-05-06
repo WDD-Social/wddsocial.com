@@ -19,17 +19,17 @@ class ValidatorSQL{
 			FROM userArticles
 			WHERE articleID = :id",
 		
-		'checkIfVanityURLExists' => "
+		'checkIfUserVanityURLExists' => "
 			SELECT COUNT(*) AS `count`
 			FROM users
 			WHERE vanityURL = :vanityURL",
 		
-		'checkIfEmailExists' => "
+		'checkIfUserEmailExists' => "
 			SELECT COUNT(*) AS `count`
 			FROM users
 			WHERE email = :email",
 		
-		'checkIfFullSailEmailExists' => "
+		'checkIfUserFullSailEmailExists' => "
 			SELECT COUNT(*) AS `count`
 			FROM users
 			WHERE fullsailEmail = :fullsailEmail"
