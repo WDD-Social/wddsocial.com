@@ -148,19 +148,11 @@ class SignupPage implements \Framework5\IExecutable {
 					break;
 				}
 			}
-				
-			# Get user type ID by title
-			$query = $db->prepare($sel_sql->getUserTypeIDByTitle);
-			$query->setFetchMode(\PDO::FETCH_OBJ);
-			$data = array('title' => $_POST['user-type']);
-			$query->execute($data);
-			$row = $query->fetch();
-			$typeID = $row->id;
 			
 			# Insert new user
 			$query = $db->prepare($admin_sql->addUser);
 			$data = array(
-				'typeID' => $typeID,
+				'typeID' => $_POST['user-type'],
 				'firstName' => $_POST['first-name'],
 				'lastName' => $_POST['last-name'],
 				'email' => $_POST['email'],
