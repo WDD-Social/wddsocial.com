@@ -170,8 +170,8 @@ class SignupPage implements \Framework5\IExecutable {
 			$userID = $db->lastInsertID();
 			
 			# Create user's avatar code
-			$query = $db->prepare($admin_sql->addUserAvatar);
-			$data = array('id' => $userID, 'avatar' => "user{$userID}");
+			$query = $db->prepare($admin_sql->generateUserAvatar);
+			$data = array('id' => $userID);
 			$query->execute($data);
 			
 			# Fetch user's avatar code
