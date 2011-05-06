@@ -48,8 +48,11 @@ class CreatePage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $_POST['type']));
 		}
 		
-		# display media section
-		echo render('wddsocial.view.form.pieces.WDDSocial\MediaInputs');
+		# display image section
+		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs');
+		
+		# display video section
+		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs');
 		
 		# display category section
 		echo render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs');
