@@ -142,7 +142,8 @@ class Factory extends StaticController {
 			throw new Exception("Package '$package_name' could not be executed, class '$controller' does not implement interface '\Framework5\IExecutable'");
 		
 		# execute and return the result
-		return $controller::execute($options);
+		$instance = new $controller($options);
+		return $instance->execute();
 	}
 	
 	
