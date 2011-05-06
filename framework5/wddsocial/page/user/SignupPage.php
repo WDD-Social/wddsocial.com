@@ -9,11 +9,11 @@ namespace WDDSocial;
 
 class SignupPage implements \Framework5\IExecutable {
 	
-	public static function execute() {
+	public function execute() {
 		
 		# handle form submission
 		if (isset($_POST['submit'])){
-			$response = static::process_form();
+			$response = $this->process_form();
 			
 			# auto signin user on success
 			if ($response->status) {
@@ -50,7 +50,7 @@ class SignupPage implements \Framework5\IExecutable {
 	* Process signup form
 	*/
 	
-	public static function process_form() {
+	public function process_form() {
 		
 		import('wddsocial.model.WDDSocial\FormResponse');
 		$root = \Framework5\Request::root_path();

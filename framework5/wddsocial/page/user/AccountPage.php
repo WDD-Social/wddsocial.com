@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class AccountPage implements \Framework5\IExecutable {
 	
-	public static function execute() {
+	public function execute() {
 		
 		# display site header
 		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'top', 'title' => 'My Account'));
@@ -33,7 +33,7 @@ class AccountPage implements \Framework5\IExecutable {
 	
 	
 	
-	public static function process_form(){
+	private function _process_form(){
 		
 	}
 }

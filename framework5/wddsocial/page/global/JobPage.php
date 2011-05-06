@@ -11,9 +11,9 @@ namespace WDDSocial;
 
 class JobPage implements \Framework5\IExecutable {
 	
-	public static function execute() {	
+	public function execute() {	
 		
-		$job = static::getJob(\Framework5\Request::segment(1));
+		$job = $this->getJob(\Framework5\Request::segment(1));
 			
 		if ($job) {
 			# display site header
@@ -67,7 +67,7 @@ class JobPage implements \Framework5\IExecutable {
 	* Gets the requested Job and data
 	*/
 	
-	private static function getJob($vanityURL){
+	private function getJob($vanityURL){
 		import('wddsocial.model.WDDSocial\ContentVO');
 		
 		# Get db instance and query

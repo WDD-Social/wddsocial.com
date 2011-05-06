@@ -11,10 +11,10 @@ namespace WDDSocial;
 
 class ArticlePage implements \Framework5\IExecutable {
 	
-	public static function execute() {	
+	public function execute() {	
 		
 		# get article information
-		$article = static::getArticle(\Framework5\Request::segment(1));
+		$article = $this->getArticle(\Framework5\Request::segment(1));
 		
 		# get page language pack
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.ArticlePageLang');
@@ -89,7 +89,7 @@ class ArticlePage implements \Framework5\IExecutable {
 	* get the requested article data
 	*/
 	
-	private static function getArticle($vanityURL){
+	private function getArticle($vanityURL){
 		import('wddsocial.model.WDDSocial\ContentVO');
 		
 		# Get db instance and query

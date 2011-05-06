@@ -11,7 +11,7 @@ namespace WDDSocial;
 
 class IndexPage implements \Framework5\IExecutable {
 	
-	public static function execute() {
+	public function execute() {
 		
 		# 
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
@@ -25,10 +25,10 @@ class IndexPage implements \Framework5\IExecutable {
 			# Create user dashboard page
 			echo render(':section',
 				array('section' => 'begin_content', 'classes' => array('dashboard')));
-			static::dashboard_share();
-			static::dashboard_latest();
-			static::public_events();
-			static::dashboard_jobs();
+			$this->dashboard_share();
+			$this->dashboard_latest();
+			$this->public_events();
+			$this->dashboard_jobs();
 		}
 		
 		# display public home page
@@ -56,7 +56,7 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets the share form
 	*/
 	
-	private static function dashboard_share(){
+	private function dashboard_share(){
 		
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
@@ -79,7 +79,7 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays latest content section
 	*/
 	
-	private static function dashboard_latest(){
+	private function dashboard_latest(){
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
@@ -112,7 +112,7 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays articles
 	*/
 	
-	private static function public_sign_in(){
+	private function public_sign_in(){
 		
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
@@ -135,7 +135,7 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays articles
 	*/
 	
-	private static function public_projects(){
+	private function public_projects(){
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
@@ -171,7 +171,7 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays articles
 	*/
 	
-	private static function public_people(){
+	private function public_people(){
 		import('wddsocial.model.WDDSocial\RecentPersonVO');
 		
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
@@ -204,7 +204,7 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays articles
 	*/
 	
-	private static function public_articles(){
+	private function public_articles(){
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
@@ -241,7 +241,7 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays events
 	*/
 	
-	private static function public_events(){
+	private function public_events(){
 		import('wddsocial.model.WDDSocial\EventVO');
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
@@ -287,7 +287,7 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays jobs
 	*/
 	
-	private static function dashboard_jobs(){
+	private function dashboard_jobs(){
 		import('wddsocial.model.WDDSocial\JobVO');
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		

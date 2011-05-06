@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class MessagesPage implements \Framework5\IExecutable {
 	
-	public static function execute() {
+	public function execute() {
 		
 		UserSession::protect();
 		
