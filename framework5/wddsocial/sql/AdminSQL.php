@@ -79,7 +79,37 @@ class AdminSQL{
 		'generateJobVanityURL' => "
 			UPDATE jobs
 			SET vanityURL = SUBSTRING(MD5(CONCAT('job',id)),1,6)
-			WHERE id = :id"
+			WHERE id = :id",
+		
+		/**
+		* Image Queries
+		*/
+		
+		'addImage' => "
+			INSERT INTO images (userID, title, `datetime`)
+			VALUES (:userID, :title, NOW());
+			
+			SET @last_id = LAST_INSERT_ID();
+			
+			UPDATE images
+			SET `file` = MD5(CONCAT('image',id))
+			WHERE id = @last_id;",
+		
+		'addProjectImage' => "
+			INSERT INTO projectImages (projectID, imageID)
+			VALUES (:projectID,:imageID)",
+		
+		'addArticleImage' => "
+			INSERT INTO articleImages (articleID, imageID)
+			VALUES (:articleID,:imageID)",
+		
+		'addEventImage' => "
+			INSERT INTO eventImages (eventID, imageID)
+			VALUES (:eventID,:imageID)",
+		
+		'addJobImage' => "
+			INSERT INTO jobImages (jobID, imageID)
+			VALUES (:jobID,:imageID)"
 		
 	);
 	

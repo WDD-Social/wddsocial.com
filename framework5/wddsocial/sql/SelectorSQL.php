@@ -743,32 +743,37 @@ class SelectorSQL{
 		*/
 			
 		'getProjectImages' => "
-			SELECT id, title, description, `file`
+			SELECT id, title, `file`
 			FROM images AS i
 			LEFT JOIN projectImages AS pi ON(i.id = pi.imageID)
 			WHERE pi.projectID = :id
 			ORDER BY i.id ASC",
 			
 		'getArticleImages' => "
-			SELECT id, title, description, `file`
+			SELECT id, title, `file`
 			FROM images AS i
 			LEFT JOIN articleImages AS ai ON(i.id = ai.imageID)
 			WHERE ai.articleID = :id
 			ORDER BY i.id ASC",
 			
 		'getEventImages' => "
-			SELECT id, title, description, `file`
+			SELECT id, title, `file`
 			FROM images AS i
 			LEFT JOIN eventImages AS ei ON(i.id = ei.imageID)
 			WHERE ei.eventID = :id
 			ORDER BY i.id ASC",
 			
 		'getJobImages' => "
-			SELECT id, title, description, `file`
+			SELECT id, title, `file`
 			FROM images AS i
 			LEFT JOIN jobImages AS ji ON(i.id = ji.imageID)
 			WHERE ji.jobID = :id
 			ORDER BY i.id ASC",
+		
+		'getImageFilename' => "
+			SELECT `file`
+			FROM images
+			WHERE id = :id",
 			
 			
 		/**
