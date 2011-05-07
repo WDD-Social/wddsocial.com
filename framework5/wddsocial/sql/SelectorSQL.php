@@ -535,6 +535,12 @@ class SelectorSQL{
 			FROM projects
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
+		
+		'getProjectVanityURL' => "
+			SELECT vanityURL
+			FROM projects
+			WHERE id = :id
+			LIMIT 1",
 			
 			
 		/**
@@ -585,6 +591,12 @@ class SelectorSQL{
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
 		
+		'getArticleVanityURL' => "
+			SELECT vanityURL
+			FROM articles
+			WHERE id = :id
+			LIMIT 1",
+		
 			
 		/**
 		* Event queries
@@ -615,6 +627,12 @@ class SelectorSQL{
 			SELECT id, icsUID AS uid, title, description, location, vanityURL, DATE_FORMAT(startDatetime, '%Y%m%dT%H%i%S') AS start, DATE_FORMAT(endDatetime, '%Y%m%dT%H%i%S') AS end, DATE_FORMAT(`datetime`, '%Y%m%dT%H%i%SZ') AS created
 			FROM events
 			WHERE id = :id",
+		
+		'getEventVanityURL' => "
+			SELECT vanityURL
+			FROM events
+			WHERE id = :id
+			LIMIT 1",
 			
 			
 		/**
@@ -633,6 +651,12 @@ class SelectorSQL{
 			FROM jobs AS j
 			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
 			WHERE vanityURL = :vanityURL
+			LIMIT 1",
+		
+		'getJobVanityURL' => "
+			SELECT vanityURL
+			FROM jobs
+			WHERE id = :id
 			LIMIT 1",
 			
 			
