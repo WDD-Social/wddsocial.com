@@ -8,8 +8,7 @@ namespace Framework5;
 
 class Factory extends StaticController {
 	
-	private static $_controllers; # object container
-	private static $_loaded_controllers = array(); # package names of _controllers
+	private static $_controllers = array(); # object container
 	private static $_imported_paths = array(); # package names of all imported packages
 	
 	/**
@@ -93,12 +92,8 @@ class Factory extends StaticController {
 			$package = new Package($package_name);
 			$controller = $package->fully_qualified;
 			
-			static::$_controllers[$package_name] = new $controller();
-			
-			array_push(static::$_loaded_controllers, $package_name);
-			
 			debug("Factory created instance of '$package_name'");
-			return static::$_controllers[$package_name];
+			return static::$_controllers[$package_name] = new $controller();
 		}
 	}
 	
@@ -112,11 +107,7 @@ class Factory extends StaticController {
 	*/
 	
 	final public static function instance_loaded($package_name) {
-		if (!in_array($package_name, static::$_loaded_controllers)) {
-			return false;
-		}
-		
-		return true;
+		return array_key_exists($package_name, static::$_controllers);
 	}
 	
 	
@@ -141,8 +132,11 @@ class Factory extends StaticController {
 		if (!Factory::implement($controller, 'Framework5\IExecutable'))
 			throw new Exception("Package '$package_name' could not be executed, class '$controller' does not implement interface '\Framework5\IExecutable'");
 		
-		# execute and return the result
-		$instance = new $controller($options);
+		# create an instance of the controller
+		if ($options) $instance = new $controller($options);
+		else $instance = new $controller();
+		
+		# call execute method and return result
 		return $instance->execute();
 	}
 	
