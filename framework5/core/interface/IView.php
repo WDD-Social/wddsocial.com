@@ -7,5 +7,5 @@ namespace Framework5;
 */
 
 interface IView {
-	public static function render($options = null);
+	public function render($options = null);
 }

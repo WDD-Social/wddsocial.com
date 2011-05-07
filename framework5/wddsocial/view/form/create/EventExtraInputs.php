@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class EventExtraInputs implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		return <<<HTML
 
 						<fieldset>

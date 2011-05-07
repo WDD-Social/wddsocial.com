@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class OtherInputs implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$vanity = strtolower(StringCleaner::clean_characters($options['title'],array(' ','"',"'",'\\','/')));
 		$vanity = ($vanity == '')?'example':$vanity;
 		$vanityPlaceholder = ($vanity == 'example')?'Optional':$vanity;

@@ -10,7 +10,7 @@ namespace WDDSocial;
 
 class CommentDisplayView implements \Framework5\IView {
 	
-	public static function render($comments = null) {
+	public function render($comments = null) {
 		
 		$root = \Framework5\Request::root_path();
 		$html = "";

@@ -14,7 +14,7 @@ class UserIntroView implements \Framework5\IView {
 	* Creates user intro, with name and background information
 	*/
 	
-	public static function render($user = null){
+	public function render($user = null){
 		
 		if (!isset($user)) {
 			throw new \Exception("UserIntroView required option 'user' was not set");

@@ -13,7 +13,7 @@ class MediumDisplayView implements \Framework5\IView {
 	* Determines what type of content to render
 	*/
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		import('wddsocial.controller.WDDSocial\UserValidator');

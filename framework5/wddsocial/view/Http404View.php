@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class Http404View implements \Framework5\IView {
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$root = \Framework5\Request::root_path();
 		/* You done goofed
 echo <<<HTML

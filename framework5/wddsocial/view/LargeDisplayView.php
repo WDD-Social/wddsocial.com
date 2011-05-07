@@ -13,12 +13,12 @@ class LargeDisplayView implements \Framework5\IView {
 	* Determines what type of content to render
 	*/
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		
 		switch ($options['type']) {
 			case 'project':
-				return static::project_display($options['content']);
+				return $this->project_display($options['content']);
 			default:
 				throw new \Framework5\Exception("LargeDisplayView requires parameter type (project), '{$options['type']}' provided");
 		}
@@ -30,7 +30,7 @@ class LargeDisplayView implements \Framework5\IView {
 	* Creates a project article
 	*/
 	
-	private static function project_display($project){
+	private function project_display($project){
 		$root = \Framework5\Request::root_path();
 		
 		$teamLinks = static::format_team($project->team);

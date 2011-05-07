@@ -11,7 +11,7 @@ namespace WDDSocial;
 
 class MediaDisplayView implements \Framework5\IView {
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 	
 		$root = \Framework5\Request::root_path();
 		$html = <<<HTML

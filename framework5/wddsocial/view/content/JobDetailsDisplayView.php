@@ -11,7 +11,7 @@ namespace WDDSocial;
 
 class JobDetailsDisplayView implements \Framework5\IView {
 	
-	public static function render($content = null) {
+	public function render($content = null) {
 		
 		$root = \Framework5\Request::root_path();
 		$html = "";

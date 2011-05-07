@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class PrivacyLevelSelector implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getPrivacyLevels);

@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class TeamMemberInputs implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		

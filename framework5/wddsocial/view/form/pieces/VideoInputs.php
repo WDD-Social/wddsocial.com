@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class VideoInputs implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$html = <<<HTML
 
 						<h1 id="videos">Videos</h1>

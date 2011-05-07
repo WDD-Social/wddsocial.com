@@ -11,7 +11,7 @@ namespace WDDSocial;
 
 class EventLocationDisplayView implements \Framework5\IView {
 	
-	public static function render($content = null) {
+	public function render($content = null) {
 		
 		$root = \Framework5\Request::root_path();
 		$possessiveTitle = NaturalLanguage::possessive($content->title);

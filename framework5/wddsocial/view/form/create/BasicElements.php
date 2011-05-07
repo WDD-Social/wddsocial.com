@@ -9,13 +9,13 @@ namespace WDDSocial;
 
 class BasicElements implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		switch ($options['section']) {
 			case 'header':
-				return static::header($options);
+				return $this->header($options);
 				break;
 			case 'footer':
-				return static::footer($options);
+				return $this->footer($options);
 				break;
 		}
 	}
@@ -24,7 +24,7 @@ class BasicElements implements \Framework5\IView {
 	* Displays form header and basic inputs
 	*/
 	
-	private static function header($options){
+	private function header($options){
 		import('wddsocial.helper.WDDSocial\StringCleaner');
 		$root = \Framework5\Request::root_path();
 		$capitalizedTitle = ucfirst($options['data']['type']);
@@ -70,7 +70,7 @@ HTML;
 	* Displays form footer
 	*/
 	
-	private static function footer(){
+	private function footer(){
 		return <<<HTML
 
 						<input type="submit" name="submit" value="Create" />

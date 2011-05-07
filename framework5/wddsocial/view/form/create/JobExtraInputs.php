@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class JobExtraInputs implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$html .= render('wddsocial.view.form.pieces.WDDSocial\JobTypeSelector',1);
 		$html .= <<<HTML
 
