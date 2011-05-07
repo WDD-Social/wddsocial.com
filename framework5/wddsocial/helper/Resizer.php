@@ -36,7 +36,7 @@ class Resizer {
 				$thumb_width = $new_width;
 				$thumb_height = $new_height;
 				$final_image = imagecreatetruecolor($new_width,$new_height);
-				if($resize_height > $resize_width){
+				if($resize_height >= $resize_width){
 					$thumb_height = ($resize_height/$resize_width)*$thumb_width;
 					$thumb = imagecreatetruecolor($thumb_width,$thumb_height);
 				}else if($resize_width > $resize_height){

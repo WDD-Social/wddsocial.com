@@ -658,6 +658,11 @@ class SelectorSQL{
 			FROM jobs
 			WHERE id = :id
 			LIMIT 1",
+		
+		'getJobAvatar' => "
+			SELECT avatar
+			FROM jobs
+			WHERE id = :id",
 			
 			
 		/**

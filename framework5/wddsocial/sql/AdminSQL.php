@@ -74,7 +74,13 @@ class AdminSQL{
 		
 		'addJob' => "
 			INSERT INTO jobs (userID, typeID, title, description, content, vanityURL, company, email, location, website, compensation, `datetime`)
-			VALUES (:userID, :typeID, :title, :description, :content, :vanityURL, :company, :email, :location, :website, :compensation, NOW())",
+			VALUES (:userID, :typeID, :title, :description, :content, :vanityURL, :company, :email, :location, :website, :compensation, NOW());
+			
+			SET @last_id = LAST_INSERT_ID();
+			
+			UPDATE jobs
+			SET avatar = MD5(CONCAT('job',id))
+			WHERE id = @last_id;",
 		
 		'generateJobVanityURL' => "
 			UPDATE jobs

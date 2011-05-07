@@ -19,6 +19,15 @@ class Uploader {
 		unlink("$dest/$name");
 	}
 	
+	public static function upload_employer_avatar($image, $name){
+		import('wddsocial.helper.WDDSocial\Resizer');
+		$root = \Framework5\Request::root_path();
+		$dest = "{$root}images/jobs";
+		Resizer::image($image,$name,"_full",$dest,300,300);
+		Resizer::image($image,$name,"_medium",$dest,60,60,true);
+		unlink("$dest/$name");
+	}
+	
 	public static function upload_image($image, $name){
 		import('wddsocial.helper.WDDSocial\Resizer');
 		$root = \Framework5\Request::root_path();

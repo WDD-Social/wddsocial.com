@@ -128,7 +128,7 @@ class CreatePage implements \Framework5\IExecutable {
 			if ($_POST[$value] == null) $incomplete = true;
 		}
 		
-		if ($incomplete){
+		if ($incomplete) {
 			return new FormResponse(false, "Please complete all required fields.");
 		}
 		
@@ -206,6 +206,15 @@ class CreatePage implements \Framework5\IExecutable {
 					break;
 			}
 			$query->execute($data);
+		}
+		
+		if($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4){
+			$data = array('id' => $contentID);
+			$query = $db->prepare($sel_sql->getJobAvatar);
+			$query->execute($data);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$result = $query->fetch();
+			Uploader::upload_employer_avatar($_FILES['company-avatar'],"{$result->avatar}");
 		}
 		
 		for ($i = 0; $i < count($_FILES['image-files']['name']); $i++) {
