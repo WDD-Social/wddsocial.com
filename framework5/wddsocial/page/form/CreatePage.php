@@ -22,7 +22,7 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		# handle form submission
 		if (isset($_POST['process']) and $_POST['process'] == 'creation'){
-			$response = :$this->process_form();
+			$response = $this->_process_form();
 			
 			# redirect user on success
 			if ($response->status) {
@@ -105,7 +105,7 @@ if ($_SESSION['last_page']) {
 	* Handle content creation
 	*/
 	
-	public function process_form() {
+	private function _process_form() {
 		import('wddsocial.model.WDDSocial\FormResponse');
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
