@@ -143,9 +143,9 @@ if ($_SESSION['last_page']) {
 				$data = array(	'userID' => $_SESSION['user']->id,
 								'title' => $_POST['title'],
 								'description' => $_POST['description'],
-								'content' => $_POST['content'],
-								'vanityURL' => $_POST['vanityURL'],
-								'completeDate' => $_POST['completed-date']
+								'content' => ($_POST['content'] == '')?null:$_POST['content'],
+								'vanityURL' => ($_POST['vanityURL'] == '')?null:$_POST['vanityURL'],
+								'completeDate' => ($_POST['completed-date'] == '')?null:$_POST['completed-date']
 				);
 				$query = $db->prepare($admin_sql->addProject);
 				break;
@@ -155,7 +155,7 @@ if ($_SESSION['last_page']) {
 								'title' => $_POST['title'],
 								'description' => $_POST['description'],
 								'content' => $_POST['content'],
-								'vanityURL' => $_POST['vanityURL']
+								'vanityURL' => ($_POST['vanityURL'] == '')?null:$_POST['vanityURL']
 				);
 				$query = $db->prepare($admin_sql->addArticle);
 				break;
@@ -165,11 +165,11 @@ if ($_SESSION['last_page']) {
 								'privacyLevelID' => $_POST['privacy-level'],
 								'title' => $_POST['title'],
 								'description' => $_POST['description'],
-								'content' => $_POST['content'],
+								'content' => ($_POST['content'] == '')?null:$_POST['content'],
 								'vanityURL' => $_POST['vanityURL'],
 								'location' => $_POST['location'],
 								'startDatetime' => $startDatetime,
-								'duration' => $_POST['duration']
+								'duration' => ($_POST['duration'] == '')?1:$_POST['duration'],
 				);
 				$query = $db->prepare($admin_sql->addEvent);
 				break;
@@ -178,13 +178,13 @@ if ($_SESSION['last_page']) {
 								'typeID' => $_POST['job-type'],
 								'title' => $_POST['title'],
 								'description' => $_POST['description'],
-								'content' => $_POST['content'],
-								'vanityURL' => $_POST['vanityURL'],
+								'content' => ($_POST['content'] == '')?null:$_POST['content'],
+								'vanityURL' => ($_POST['vanityURL'] == '')?null:$_POST['vanityURL'],
 								'company' => $_POST['company'],
 								'email' => $_POST['email'],
 								'location' => $_POST['location'],
-								'website' => $_POST['website'],
-								'compensation' => $_POST['compensation']
+								'website' => ($_POST['website'] == '')?null:$_POST['website'],
+								'compensation' => ($_POST['compensation'] == '')?null:$_POST['compensation']
 				);
 				$query = $db->prepare($admin_sql->addJob);
 				break;
@@ -193,22 +193,24 @@ if ($_SESSION['last_page']) {
 		
 		$contentID = $db->lastInsertID();
 		
-		if ($_POST['vanityURL'] != '') {
+		$data = array('id' => $contentID);
+		if ($_POST['vanityURL'] == '') {
 			switch ($_POST['type']) {
 				case 'project':
-					
+					$query = $db->prepare($admin_sql->generateProjectVanityURL);
 					break;
 				case 'article':
-					
+					$query = $db->prepare($admin_sql->generateArticleVanityURL);
 					break;
 				case 'event':
-					
+					$query = $db->prepare($admin_sql->generateEventVanityURL);
 					break;
 				case 'job':
-					
+					$query = $db->prepare($admin_sql->generateJobVanityURL);
 					break;
 			}
 		}
+		$query->execute($data);
 		
 		echo "<pre>";
 		echo "<h1>POST:</h1>";
