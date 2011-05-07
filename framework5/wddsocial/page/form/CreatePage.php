@@ -191,6 +191,25 @@ if ($_SESSION['last_page']) {
 		}
 		$query->execute($data);
 		
+		$contentID = $db->lastInsertID();
+		
+		if ($_POST['vanityURL'] != '') {
+			switch ($_POST['type']) {
+				case 'project':
+					
+					break;
+				case 'article':
+					
+					break;
+				case 'event':
+					
+					break;
+				case 'job':
+					
+					break;
+			}
+		}
+		
 		echo "<pre>";
 		echo "<h1>POST:</h1>";
 		print_r($_POST);
