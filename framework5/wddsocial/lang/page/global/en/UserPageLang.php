@@ -4,7 +4,7 @@
 * WDD Social: Language Pack for view.UserView
 */
 
-class UserLang implements \Framework5\ILanguagePack {
+class UserPageLang implements \Framework5\ILanguagePack {
 	
 	public static function content($id, $var) {
 		switch ($id) {
@@ -26,8 +26,8 @@ class UserLang implements \Framework5\ILanguagePack {
 				return 'Dislikes';
 			
 			
-			case '':
-				return '';
+			case 'latest':
+				return 'Latest';
 			case '':
 				return '';
 			case '':

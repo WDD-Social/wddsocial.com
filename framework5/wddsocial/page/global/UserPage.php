@@ -12,6 +12,13 @@ namespace WDDSocial;
 class UserPage implements \Framework5\IExecutable {
 	
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.UserPageLang');
+		$this->db = instance(':db');
+		$this->sql = instance(':sel-sql');
+	}
+	
+	
 	
 	public function execute() {	
 		
@@ -33,7 +40,7 @@ class UserPage implements \Framework5\IExecutable {
 			echo render(':section',
 				array('section' => 'begin_content_section', 'id' => 'latest',
 					'classes' => array('medium', 'with-secondary', 'filterable'),
-					'header' => 'Latest', 'extra' => 'user_latest_filters'));
+					'header' => $this->lang->text('latest'), 'extra' => 'user_latest_filters'));
 			
 			# display section items
 			$activity = $this->getUserLatest($user->id);
@@ -51,6 +58,7 @@ class UserPage implements \Framework5\IExecutable {
 		}
 		
 		
+		# user does not exist
 		else {
 			
 			# display site header
@@ -77,11 +85,9 @@ class UserPage implements \Framework5\IExecutable {
 		
 		import('wddsocial.model.WDDSocial\UserVO');
 		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
+		# query
 		$data = array('vanityURL' => $vanityURL);
-		$query = $db->prepare($sql->getUserByVanityURL);
+		$query = $this->db->prepare($this->sql->getUserByVanityURL);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
 		$query->execute($data);
 		return $query->fetch();
@@ -97,14 +103,11 @@ class UserPage implements \Framework5\IExecutable {
 		
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
+		# query
 		$data = array('id' => $id);
-		$query = $db->prepare($sql->getUserLatest);
+		$query = $this->db->prepare($this->sql->getUserLatest);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		$query->execute($data);
-		
 		return $query->fetchAll();
 	}
 }
