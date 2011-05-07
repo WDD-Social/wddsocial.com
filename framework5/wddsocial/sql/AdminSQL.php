@@ -55,16 +55,17 @@ class AdminSQL{
 		
 		'addEvent' => "
 			INSERT INTO events (userID, privacyLevelID, title, description, content, vanityURL, location, startDatetime, endDatetime, `datetime`)
-			VALUES (:userID, :privacyLevelID, :title, :description, :content, :vanityURL, :location, :startDatetime, DATE_ADD(:startDatetime, INTERVAL :duration HOUR), NOW())",
+			VALUES (:userID, :privacyLevelID, :title, :description, :content, :vanityURL, :location, :startDatetime, DATE_ADD(:startDatetime, INTERVAL :duration HOUR), NOW());
+			
+			SET @last_id = LAST_INSERT_ID();
+			
+			UPDATE events
+			SET icsUID = MD5(CONCAT(id,title,DATE_FORMAT(`datetime`, '%Y%m%dT%H%i%SZ'),'@wddsocial.com'))
+			WHERE id = @last_id;",
 		
 		'generateEventVanityURL' => "
 			UPDATE events
 			SET vanityURL = SUBSTRING(MD5(CONCAT('event',id)),1,6)
-			WHERE id = :id",
-		
-		'generateEventUID' => "
-			UPDATE events
-			SET icsUID = MD5(CONCAT(id,title,DATE_FORMAT(`datetime`, '%Y%m%dT%H%i%SZ'),'@wddsocial.com'))
 			WHERE id = :id",
 		
 		/**
