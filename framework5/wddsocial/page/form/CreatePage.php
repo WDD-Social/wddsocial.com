@@ -26,16 +26,8 @@ class CreatePage implements \Framework5\IExecutable {
 			
 			# redirect user on success
 			if ($response->status) {
-				# redirect user to last page
-				/*
-if ($_SESSION['last_page']) {
-					redirect($_SESSION['last_page']);
-					$_SESSION['last_page'] = null;
-				}
-				else {
-					redirect('/');
-				}
-*/
+				# redirect user to new content page
+				redirect("{$response->message}");
 			}
 		}
 			
@@ -209,14 +201,27 @@ if ($_SESSION['last_page']) {
 					$query = $db->prepare($admin_sql->generateJobVanityURL);
 					break;
 			}
+			$query->execute($data);
+		}
+		
+		switch ($_POST['type']) {
+			case 'project':
+				$query = $db->prepare($sel_sql->getProjectVanityURL);
+				break;
+			case 'article':
+				$query = $db->prepare($sel_sql->getArticleVanityURL);
+				break;
+			case 'event':
+				$query = $db->prepare($sel_sql->getEventVanityURL);
+				break;
+			case 'job':
+				$query = $db->prepare($sel_sql->getJobVanityURL);
+				break;
 		}
 		$query->execute($data);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$result = $query->fetch();
 		
-		echo "<pre>";
-		echo "<h1>POST:</h1>";
-		print_r($_POST);
-		echo "<h1>FILES:</h1>";
-		print_r($_FILES);
-		echo "</pre>";
+		return new FormResponse(true, "/{$_POST['type']}/{$result->vanityURL}");
 	}
 }
