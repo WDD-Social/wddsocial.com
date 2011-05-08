@@ -126,7 +126,6 @@ HTML;
 	*/
 	
 	private function _userArea() {
-		
 		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		$userAvatar = (file_exists("{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg"))?"{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg":"{$root}images/site/user-default_small.jpg";
