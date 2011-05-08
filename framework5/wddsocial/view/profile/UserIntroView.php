@@ -91,25 +91,23 @@ HTML;
 	
 	private static function getUserIntro($user){
 		$root = \Framework5\Request::root_path();
-		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are ":"<strong>{$user->firstName}</strong> is ";
+		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are ":"<strong>{$user->firstName}</strong> is a";
 		
 		if(isset($user->age)){
-			$sentence .= "a <strong>{$user->age}-year-old</strong>";
+			$sentence .= " <strong>{$user->age}-year-old</strong>";
 		}
 		if($user->type == 'Student'){
-			if(isset($user->age)){
+			if(isset($user->extra['location'])){
 				$sentence .= ",";
-			}else{
-				$sentence .= " an";
 			}
 			if(isset($user->extra['location'])){
-				$sentence .= ", <strong>{$user->extra['location']}</strong>";
+				$sentence .= " <strong>{$user->extra['location']}</strong>";
 			}
 		}
 		$userType = strtolower($user->type);
 		$sentence .= " <strong>{$userType}</strong>";
 		if(isset($user->hometown)){
-			$sentence .= " from <strong>{$user->hometown}</strong>";
+			$sentence .= " from <strong><a href=\"http://maps.google.com/?q={$user->hometown}\" title=\"Search Google Maps for {$user->hometown}\">{$user->hometown}</a></strong>";
 		}
 		switch ($user->type) {
 			case 'Student':
