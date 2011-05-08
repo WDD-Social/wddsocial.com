@@ -977,6 +977,17 @@ class SelectorSQL{
 			
 			
 		/**
+		* Category queries
+		*/
+			
+		'getCategoryByTitle' => "
+			SELECT id
+			FROM categories
+			WHERE title = :title
+			LIMIT 1",
+			
+			
+		/**
 		* Form queries
 		*/
 			

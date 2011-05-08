@@ -40,6 +40,10 @@ class AdminSQL{
 			INSERT INTO userProjects (userID, projectID, title)
 			VALUES (:userID, :projectID, :title)",
 		
+		'addProjectCategory' => "
+			INSERT INTO projectCategories (projectID, categoryID)
+			VALUES (:projectID, :categoryID)",
+		
 		/**
 		* Article Queries
 		*/
@@ -56,6 +60,10 @@ class AdminSQL{
 		'addArticleAuthor' => "
 			INSERT INTO userArticles (userID, articleID)
 			VALUES (:userID, :articleID)",
+		
+		'addArticleCategory' => "
+			INSERT INTO articleCategories (articleID, categoryID)
+			VALUES (:articleID, :categoryID)",
 		
 		/**
 		* Event Queries
@@ -76,6 +84,10 @@ class AdminSQL{
 			SET vanityURL = SUBSTRING(MD5(CONCAT('event',id)),1,6)
 			WHERE id = :id",
 		
+		'addEventCategory' => "
+			INSERT INTO eventCategories (eventID, categoryID)
+			VALUES (:eventID, :categoryID)",
+		
 		/**
 		* Job Queries
 		*/
@@ -94,6 +106,10 @@ class AdminSQL{
 			UPDATE jobs
 			SET vanityURL = SUBSTRING(MD5(CONCAT('job',id)),1,6)
 			WHERE id = :id",
+		
+		'addJobCategory' => "
+			INSERT INTO jobCategories (jobID, categoryID)
+			VALUES (:jobID, :categoryID)",
 		
 		/**
 		* Image Queries
@@ -123,7 +139,15 @@ class AdminSQL{
 		
 		'addJobImage' => "
 			INSERT INTO jobImages (jobID, imageID)
-			VALUES (:jobID,:imageID)"
+			VALUES (:jobID,:imageID)",
+		
+		/**
+		* Category Queries
+		*/
+		
+		'addCategory' => "
+			INSERT INTO categories (title)
+			VALUES (:title)"
 		
 	);
 	
