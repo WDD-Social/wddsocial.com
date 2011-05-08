@@ -38,7 +38,7 @@ class Resizer {
 				$final_image = imagecreatetruecolor($new_width,$new_height);
 				$bg = imagecolorallocate($final_image, 255, 255, 255);
 				imagefill($final_image, 0, 0, $bg);
-				if($resize_height >= $resize_width){
+				if($resize_height > $resize_width){
 					$thumb_height = ($resize_height/$resize_width)*$thumb_width;
 					$thumb = imagecreatetruecolor($thumb_width,$thumb_height);
 					$bg = imagecolorallocate($thumb, 255, 255, 255);
@@ -46,6 +46,11 @@ class Resizer {
 				}else if($resize_width > $resize_height){
 					$thumb_width = ($resize_width/$resize_height)*$thumb_height;
 					$thumb = imagecreatetruecolor($thumb_height,$thumb_width);
+					$bg = imagecolorallocate($thumb, 255, 255, 255);
+					imagefill($thumb, 0, 0, $bg);
+				}
+				if(!isset($thumb)){
+					$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
 					$bg = imagecolorallocate($thumb, 255, 255, 255);
 					imagefill($thumb, 0, 0, $bg);
 				}

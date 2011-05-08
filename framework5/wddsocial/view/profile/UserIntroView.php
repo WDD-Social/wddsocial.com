@@ -24,6 +24,7 @@ class UserIntroView implements \Framework5\IView {
 		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.UserLang');
 		$userDisplayName = NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
+		$userAvatar = (file_exists("{$root}images/avatars/{$user->avatar}_full.jpg"))?"{$root}images/avatars/{$user->avatar}_full.jpg":"{$root}images/site/user-default_full.jpg";
 		
 		# content
 		$html = <<<HTML
@@ -43,7 +44,7 @@ HTML;
 		$userIntro = static::getUserIntro($user);
 		$html .= <<<HTML
 					
-					<img src="{$root}/images/avatars/{$user->avatar}_full.jpg" alt="{$user->firstName} {$user->lastName}" />
+					<img src="$userAvatar" alt="{$user->firstName} {$user->lastName}" />
 					<p>$userIntro</p>
 					<div class="large">
 						<h2>{$lang->text('bio')}</h2>
@@ -90,10 +91,10 @@ HTML;
 	
 	private static function getUserIntro($user){
 		$root = \Framework5\Request::root_path();
-		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are a":"<strong>{$user->firstName}</strong> is a";
+		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are ":"<strong>{$user->firstName}</strong> is ";
 		
 		if(isset($user->age)){
-			$sentence .= " <strong>{$user->age}-year-old</strong>";
+			$sentence .= "a <strong>{$user->age}-year-old</strong>";
 		}
 		if($user->type == 'Student'){
 			if(isset($user->age)){
@@ -102,7 +103,7 @@ HTML;
 				$sentence .= " an";
 			}
 			if(isset($user->extra['location'])){
-				$sentence .= " <strong>{$user->extra['location']}</strong>";
+				$sentence .= ", <strong>{$user->extra['location']}</strong>";
 			}
 		}
 		$userType = strtolower($user->type);

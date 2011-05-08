@@ -37,11 +37,12 @@ class SmallDisplayView implements \Framework5\IView {
 	
 	private function article_display($article){
 		$root = \Framework5\Request::root_path();
+		$userAvatar = (file_exists("{$root}/images/avatars/{$article->userAvatar}_medium.jpg"))?"{$root}/images/avatars/{$article->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
 		
 		$html = <<<HTML
 
 					<article class="slider-item">
-						<p class="item-image"><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}"><img src="{$root}/images/avatars/{$article->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<p class="item-image"><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
 						<h2><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
 						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a></p>
@@ -196,9 +197,11 @@ HTML;
 	private function person_imagegrid_display($person){
 		$root = \Framework5\Request::root_path();
 		$userVerbage = NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
+		$userAvatar = (file_exists("{$root}images/avatars/{$person->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$person->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		
 		return <<<HTML
 
-					<p><a href="{$root}/user/{$person->userVanityURL}" title="$userVerbage"><img src="{$root}/images/avatars/{$person->userAvatar}_medium.jpg" alt="{$person->userFirstName} {$person->userLastName}"/></a></p>
+					<p><a href="{$root}/user/{$person->userVanityURL}" title="$userVerbage"><img src="$userAvatar" alt="{$person->userFirstName} {$person->userLastName}"/></a></p>
 HTML;
 	}
 }
