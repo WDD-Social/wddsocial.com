@@ -68,7 +68,7 @@ HTML;
 	
 	# Opens subcontent section, with optional classes, extras
 	private function begin_content_section($options){
-		if(!isset($options['id']) || !isset($options['header'])){
+		if(!isset($options['id']) or !isset($options['header'])){
 			throw new Exception("SectionView begin_content_setion requires parameter id (section ID) and header (h1 text)");
 		}
 		

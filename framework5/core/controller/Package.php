@@ -25,9 +25,8 @@ class Package extends Controller {
 	public function __construct($package_name) {
 		
 		# resolve package alias
-		if(static::_is_package_alias($package_name))
-			$package_name = static::_resolve_package_alias($package_name);
-		
+		if (PackageManager::is_alias_format($package_name))
+			$package_name = PackageManager::resolve_package_alias($package_name);
 		
 		# check for cached value
 		if (array_key_exists($package_name, Package::$_cache)) {

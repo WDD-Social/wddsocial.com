@@ -19,7 +19,7 @@ class DisplayVO{
 		}
 		
 		$this->get_categories();
-		if($this->type == 'project' || $this->type == 'article'){
+		if($this->type == 'project' or $this->type == 'article'){
 			$this->get_team();
 			$this->get_images();
 		}

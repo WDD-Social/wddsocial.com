@@ -16,7 +16,7 @@ class CommentDisplayView implements \Framework5\IView {
 		$html = "";
 		$commentCount = count($comments);
 		$commentVerbage = 'comment';
-		if ($commentCount > 1 || $commentCount < 1) $commentVerbage .= 's';
+		if ($commentCount > 1 or $commentCount < 1) $commentVerbage .= 's';
 		
 		# content
 		$html .= <<<HTML

@@ -106,7 +106,7 @@ HTML;
 			<small>&copy; 2011 WDD Social</small>
 		</footer>
 		<script src="https:#ajax.googleapis.com/ajax/libs/jquery/1.5.0/jquery.min.js"></script>
-		<script>!window.jQuery && document.write(unescape('%3Cscript src="{$root}js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
+		<script>!window.jQuery and document.write(unescape('%3Cscript src="{$root}js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
 		<script src="{$root}js/plugins.js"></script>
 		<script src="{$root}js/libs/jquery.easing.1.3.js"></script>
 		<script src="{$root}js/script.js"></script>
@@ -126,7 +126,6 @@ HTML;
 	*/
 	
 	private function _userArea() {
-		
 		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		$userAvatar = (file_exists("{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg"))?"{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg":"{$root}images/site/user-default_small.jpg";

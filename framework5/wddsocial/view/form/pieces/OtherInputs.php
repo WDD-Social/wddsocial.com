@@ -22,7 +22,7 @@ class OtherInputs implements \Framework5\IView {
 							<small>wddsocial.com/{$options['type']}/<strong>{$vanity}</strong></small>
 						</fieldset>
 HTML;
-		if ($options['type'] == 'article' || $options['type'] == 'event') {
+		if ($options['type'] == 'article' or $options['type'] == 'event') {
 			$html .= render('wddsocial.view.form.pieces.WDDSocial\PrivacyLevelSelector',1);
 		}
 		

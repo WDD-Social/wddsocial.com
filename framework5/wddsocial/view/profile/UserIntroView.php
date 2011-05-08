@@ -24,7 +24,7 @@ class UserIntroView implements \Framework5\IView {
 		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.UserLang');
 		$userDisplayName = NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
-		$userAvatar = (file_exists("{$root}/images/avatars/{$user->avatar}_full.jpg"))?"{$root}/images/avatars/{$user->avatar}_full.jpg":"{$root}images/site/user-default_full.jpg";
+		$userAvatar = (file_exists("{$root}images/avatars/{$user->avatar}_full.jpg"))?"{$root}images/avatars/{$user->avatar}_full.jpg":"{$root}images/site/user-default_full.jpg";
 		
 		# content
 		$html = <<<HTML
@@ -91,16 +91,14 @@ HTML;
 	
 	private static function getUserIntro($user){
 		$root = \Framework5\Request::root_path();
-		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are a":"<strong>{$user->firstName}</strong> is a";
+		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are ":"<strong>{$user->firstName}</strong> is a";
 		
 		if(isset($user->age)){
 			$sentence .= " <strong>{$user->age}-year-old</strong>";
 		}
 		if($user->type == 'Student'){
-			if(isset($user->age)){
+			if(isset($user->extra['location'])){
 				$sentence .= ",";
-			}else{
-				$sentence .= " an";
 			}
 			if(isset($user->extra['location'])){
 				$sentence .= " <strong>{$user->extra['location']}</strong>";
@@ -109,7 +107,7 @@ HTML;
 		$userType = strtolower($user->type);
 		$sentence .= " <strong>{$userType}</strong>";
 		if(isset($user->hometown)){
-			$sentence .= " from <strong>{$user->hometown}</strong>";
+			$sentence .= " from <strong><a href=\"http://maps.google.com/?q={$user->hometown}\" title=\"Search Google Maps for {$user->hometown}\">{$user->hometown}</a></strong>";
 		}
 		switch ($user->type) {
 			case 'Student':
@@ -118,7 +116,7 @@ HTML;
 				}
 				break;
 			case 'Teacher':
-				if(isset($user->extra['courses']) && count($user->extra['courses']) > 0){
+				if(isset($user->extra['courses']) and count($user->extra['courses']) > 0){
 					$sentence .= " who teaches";
 					for($i =0; $i < count($user->extra['courses']); $i++){
 						if($i == count($user->extra['courses'])-1){

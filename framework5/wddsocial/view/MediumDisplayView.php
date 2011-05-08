@@ -20,13 +20,13 @@ class MediumDisplayView implements \Framework5\IView {
 		
 		switch ($options['type']) {
 			case 'project':
-				return static::project_display($options['content']);
+				return $this->project_display($options['content']);
 			
 			case 'article':
-				return static::article_display($options['content']);
+				return $this->article_display($options['content']);
 			
 			case 'person':
-				return static::person_display($options['content']);
+				return $this->person_display($options['content']);
 			
 			default:
 				throw new \Exception("MediumDisplayView requires parameter type (project, article, or person), '{$options['type']}' provided");
@@ -39,7 +39,7 @@ class MediumDisplayView implements \Framework5\IView {
 	* Creates a project article
 	*/
 	
-	private static function project_display($project){
+	private function project_display($project){
 	
 		//$lang = new \Framework5\Lang('wddsocial.lang.view.MediumDisplayView');
 		$root = \Framework5\Request::root_path();
@@ -126,13 +126,13 @@ HTML;
 	* Creates an article article
 	*/
 	
-	private static function article_display($article){
+	private function article_display($article){
 		$root = \Framework5\Request::root_path();
 		
 		$userVerbage = NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userAvatar = (file_exists("{$root}images/avatars/{$article->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$article->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
-		
+		$teamIntro = static::format_team_string($article->userID,$article->team);
 		$html = <<<HTML
 
 					<article class="articles with-secondary">
@@ -162,7 +162,7 @@ HTML;
 						</div><!-- END SECONDARY -->
 						
 						<p class="item-image"><a href="{$root}user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">article</a></strong>.</p>
+						<p class="intro"><strong><a href="{$root}user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">article</a></strong>$teamIntro.</p>
 						<h2><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
 HTML;
@@ -210,7 +210,7 @@ HTML;
 	* Creates a person article
 	*/
 	
-	private static function person_display($person){
+	private function person_display($person){
 		$root = \Framework5\Request::root_path();
 		
 		$userVerbage = NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
@@ -234,7 +234,7 @@ HTML;
 	* Creates and formats the team string for display
 	*/
 	
-	private static function format_team_string($ownerID, $team){
+	private function format_team_string($ownerID, $team){
 		# Remove user who posted content from team (for intro sentence), and put current user at front of array
 		$cleanTeam = $team;
 		foreach($cleanTeam as $member){

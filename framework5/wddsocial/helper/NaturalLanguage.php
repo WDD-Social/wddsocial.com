@@ -64,7 +64,8 @@ class NaturalLanguage{
 			if($i == count($strings)-1){
 				$list .= "and {$strings[$i]}";
 			}else{
-				$list .= "{$strings[$i]}, ";
+				$list .= "{$strings[$i]}";
+				$list .= (count($strings) > 2)?', ':' ';
 			}
 		}
 		return $list;

@@ -256,6 +256,12 @@ class SelectorSQL{
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
 		
+		'getUserByName' => "
+			SELECT id
+			FROM users
+			WHERE CONCAT_WS(' ',firstName, lastName) = :name
+			LIMIT 1",
+		
 		'getStudentDetailByID' => "
 			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, location
 			FROM studentDetail
