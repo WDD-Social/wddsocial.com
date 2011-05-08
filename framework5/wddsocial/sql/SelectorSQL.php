@@ -256,6 +256,12 @@ class SelectorSQL{
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
 		
+		'getUserByName' => "
+			SELECT id
+			FROM users
+			WHERE CONCAT_WS(' ',firstName, lastName) = :name
+			LIMIT 1",
+		
 		'getStudentDetailByID' => "
 			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, location
 			FROM studentDetail
@@ -968,6 +974,17 @@ class SelectorSQL{
 			LEFT JOIN jobLinks AS jl ON (l.id = jl.linkID)
 			WHERE jl.jobID = :id
 			ORDER BY title ASC",
+			
+			
+		/**
+		* Category queries
+		*/
+			
+		'getCategoryByTitle' => "
+			SELECT id
+			FROM categories
+			WHERE title = :title
+			LIMIT 1",
 			
 			
 		/**

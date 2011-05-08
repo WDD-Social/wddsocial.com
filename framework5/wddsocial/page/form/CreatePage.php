@@ -101,6 +101,8 @@ class CreatePage implements \Framework5\IExecutable {
 		import('wddsocial.model.WDDSocial\FormResponse');
 		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
+		import('wddsocial.controller.processes.WDDSocial\TeamMemberProcessor');
+		import('wddsocial.controller.processes.WDDSocial\CategoryProcessor');
 		
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
@@ -193,6 +195,12 @@ class CreatePage implements \Framework5\IExecutable {
 		if ($_POST['vanityURL'] == '') {
 			VanityURLProcessor::generate($contentID, $_POST['type']);
 		}
+		
+		if ($_POST['type'] == 'project' or $_POST['type'] == 'article') {
+			TeamMemberProcessor::addTeamMembers($_POST['team'], $contentID, $_POST['type'], $_POST['roles']);
+		}
+		
+		CategoryProcessor::addCategories($_POST['categories'], $contentID, $_POST['type']);
 		
 		if($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4){
 			$data = array('id' => $contentID);
