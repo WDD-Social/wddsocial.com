@@ -99,7 +99,7 @@ class CreatePage implements \Framework5\IExecutable {
 	
 	private function _process_form() {
 		import('wddsocial.model.WDDSocial\FormResponse');
-		import('wddsocial.controller.WDDSocial\Uploader');
+		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
