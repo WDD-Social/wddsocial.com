@@ -36,6 +36,10 @@ class AdminSQL{
 			SET vanityURL = SUBSTRING(MD5(CONCAT('project',id)),1,6)
 			WHERE id = :id",
 		
+		'addProjectTeanMember' => "
+			INSERT INTO userProjects (userID, projectID, title)
+			VALUES (:userID, :projectID, :title)",
+		
 		/**
 		* Article Queries
 		*/
@@ -48,6 +52,10 @@ class AdminSQL{
 			UPDATE articles
 			SET vanityURL = SUBSTRING(MD5(CONCAT('article',id)),1,6)
 			WHERE id = :id",
+		
+		'addArticleAuthor' => "
+			INSERT INTO userArticles (userID, articleID)
+			VALUES (:userID, :articleID)",
 		
 		/**
 		* Event Queries

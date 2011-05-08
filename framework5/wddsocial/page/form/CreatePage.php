@@ -42,13 +42,13 @@ class CreatePage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $_POST, 'error' => $response->message));
 		
 		# display content type-specific options
-		if ($_POST['type'] == 'project' || $_POST['type'] == 'article' || $_POST['type'] == 'event' || $_POST['type'] == 'job') {
+		if ($_POST['type'] == 'project' or $_POST['type'] == 'article' or $_POST['type'] == 'event' or $_POST['type'] == 'job') {
 			$typeCapitalized = ucfirst($_POST['type']);
 			echo render("wddsocial.view.form.create.WDDSocial\\{$typeCapitalized}ExtraInputs");
 		}
 		
 		# display team member section for appropriate content types
-		if ($_POST['type'] == 'project' || $_POST['type'] == 'article') {
+		if ($_POST['type'] == 'project' or $_POST['type'] == 'article') {
 			switch ($_POST['type']) {
 				case 'project':
 					$teamTitle = 'Team Members';
@@ -99,7 +99,8 @@ class CreatePage implements \Framework5\IExecutable {
 	
 	private function _process_form() {
 		import('wddsocial.model.WDDSocial\FormResponse');
-		import('wddsocial.controller.WDDSocial\Uploader');
+		import('wddsocial.controller.processes.WDDSocial\Uploader');
+		import('wddsocial.controller.processes.WDDSocial\VanityURL');
 		
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
@@ -190,22 +191,7 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		# Generate Vanity URL if necessary
 		if ($_POST['vanityURL'] == '') {
-			$data = array('id' => $contentID);
-			switch ($_POST['type']) {
-				case 'project':
-					$query = $db->prepare($admin_sql->generateProjectVanityURL);
-					break;
-				case 'article':
-					$query = $db->prepare($admin_sql->generateArticleVanityURL);
-					break;
-				case 'event':
-					$query = $db->prepare($admin_sql->generateEventVanityURL);
-					break;
-				case 'job':
-					$query = $db->prepare($admin_sql->generateJobVanityURL);
-					break;
-			}
-			$query->execute($data);
+			VanityURL::generate($contentID, $_POST['type']);
 		}
 		
 		if($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4){
@@ -217,70 +203,11 @@ class CreatePage implements \Framework5\IExecutable {
 			Uploader::upload_employer_avatar($_FILES['company-avatar'],"{$result->avatar}");
 		}
 		
-		for ($i = 0; $i < count($_FILES['image-files']['name']); $i++) {
-			if ($_FILES['image-files']['error'][$i] != 4) {
-				$image_num = $i + 1;
-				$image_title = ($_POST['image-titles'][$i] == '')?"{$_POST['title']} | Image $image_num":$_POST['image-titles'][$i];
-				
-				$query = $db->prepare($admin_sql->addImage);
-				$data = array(	'userID' => $_SESSION['user']->id,
-								'title' => $image_title);
-				$query->execute($data);
-				
-				$imageID = $db->lastInsertID();
-				
-				$query = $db->prepare($sel_sql->getImageFilename);
-				$data = array('id' => $imageID);
-				$query->execute($data);
-				$query->setFetchMode(\PDO::FETCH_OBJ);
-				$result = $query->fetch();
-				
-				switch ($_POST['type']) {
-					case 'project':
-						$data = array('projectID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addProjectImage);
-						break;
-					case 'article':
-						$data = array('articleID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addArticleImage);
-						break;
-					case 'event':
-						$data = array('eventID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addEventImage);
-						break;
-					case 'job':
-						$data = array('jobID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addJobImage);
-						break;
-				}
-				$query->execute($data);
-				
-				$newImage = array(	'tmp_name' => $_FILES['image-files']['tmp_name'][$i],
-									'type' => $_FILES['image-files']['type'][$i]);
-				Uploader::upload_image($newImage,"{$result->file}");
-			}
-		}
+		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
 		
 		# Get Vanity URL of new content to redirect there
-		$data = array('id' => $contentID);
-		switch ($_POST['type']) {
-			case 'project':
-				$query = $db->prepare($sel_sql->getProjectVanityURL);
-				break;
-			case 'article':
-				$query = $db->prepare($sel_sql->getArticleVanityURL);
-				break;
-			case 'event':
-				$query = $db->prepare($sel_sql->getEventVanityURL);
-				break;
-			case 'job':
-				$query = $db->prepare($sel_sql->getJobVanityURL);
-				break;
-		}
-		$query->execute($data);
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$result = $query->fetch();
+		$contentVanityURL = VanityURL::get($contentID, $_POST['type']);
 		
-		return new FormResponse(true, "/{$_POST['type']}/{$result->vanityURL}");
+		return new FormResponse(true, "/{$_POST['type']}/{$contentVanityURL}");
 	}
 }

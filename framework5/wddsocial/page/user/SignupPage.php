@@ -183,7 +183,7 @@ class SignupPage implements \Framework5\IExecutable {
 			$avatar = $row->avatar;
 			
 			if($_FILES['avatar']['error'] != 4){
-				import('wddsocial.controller.WDDSocial\Uploader');
+				import('wddsocial.controller.processes.WDDSocial\Uploader');
 				Uploader::upload_user_avatar($_FILES['avatar'],"$avatar");
 			}
 			

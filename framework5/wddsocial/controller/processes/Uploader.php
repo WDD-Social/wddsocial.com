@@ -28,6 +28,56 @@ class Uploader {
 		unlink("$dest/$name");
 	}
 	
+	public static function upload_content_images($images, $titles, $contentID, $contentTitle, $contentType){
+		$db = instance(':db');
+		$admin_sql = instance(':admin-sql');
+		$sel_sql = instance(':sel-sql');
+		
+		for ($i = 0; $i < count($images['name']); $i++) {
+			if ($images['error'][$i] != 4) {
+				$imageNumber = $i + 1;
+				$imageTitle = ($titles[$i] == '')?"{$contentTitle} | Image $imageNumber":$titles[$i];
+				
+				$query = $db->prepare($admin_sql->addImage);
+				$data = array(	'userID' => $_SESSION['user']->id,
+								'title' => $imageTitle);
+				$query->execute($data);
+				
+				$imageID = $db->lastInsertID();
+				
+				$query = $db->prepare($sel_sql->getImageFilename);
+				$data = array('id' => $imageID);
+				$query->execute($data);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				$result = $query->fetch();
+				
+				switch ($contentType) {
+					case 'project':
+						$data = array('projectID' => $contentID, 'imageID' => $imageID);
+						$query = $db->prepare($admin_sql->addProjectImage);
+						break;
+					case 'article':
+						$data = array('articleID' => $contentID, 'imageID' => $imageID);
+						$query = $db->prepare($admin_sql->addArticleImage);
+						break;
+					case 'event':
+						$data = array('eventID' => $contentID, 'imageID' => $imageID);
+						$query = $db->prepare($admin_sql->addEventImage);
+						break;
+					case 'job':
+						$data = array('jobID' => $contentID, 'imageID' => $imageID);
+						$query = $db->prepare($admin_sql->addJobImage);
+						break;
+				}
+				$query->execute($data);
+				
+				$newImage = array(	'tmp_name' => $images['tmp_name'][$i],
+									'type' => $images['type'][$i]);
+				Uploader::upload_image($newImage,"{$result->file}");
+			}
+		}
+	}
+	
 	public static function upload_image($image, $name){
 		import('wddsocial.helper.WDDSocial\Resizer');
 		$root = \Framework5\Request::root_path();
