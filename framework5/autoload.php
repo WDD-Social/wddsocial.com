@@ -45,9 +45,6 @@ call_user_func(function() {
 	# application dependencies
 	require PATH_CORE.'controller/ApplicationBase.php';
 	
-	# register global aliases
-	PackageManager::define_alias_array(Settings::$package_aliases);
-	
 	# debug utility
 	if (Settings::$debug_mode) { 
 		require PATH_CORE.'controller/Debugger.php';

@@ -16,7 +16,11 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	*/
 	
 	public function execute() {
-
+		
+		# import settings and load 
+		import('wddsocial.config.WDDSocial\AppSettings');
+		PackageManager::define_alias_array(\WDDSocial\AppSettings::$package_aliases);
+		
 		# import application global dependencies
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
