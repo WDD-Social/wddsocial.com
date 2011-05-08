@@ -39,18 +39,39 @@ HTML;
 
 						<fieldset>
 							<label for="team$i">$singular $i</label>
+HTML;
+				if ($i == 1) {
+					$html .= <<<HTML
+
+							<input type="text" name="team[]" id="team$i" value="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}" placeholder="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}" />
+HTML;
+				}
+				else {
+					$html .= <<<HTML
+
 							<input type="text" name="team[]" id="team$i" placeholder="{$users[$i-1]->name}" />
-							
+HTML;
+				}
+				$html .= <<<HTML
+
 							<label for="role$i">Project Role</label>
 							<input type="text" name="roles[]" id="role$i" placeholder="{$roles[$i-1]->title}" />
 						</fieldset>
 HTML;
 			}
 			else {
-				$html .= <<<HTML
+				if ($i == 1) {
+					$html .= <<<HTML
+
+							<input type="text" name="team[]" id="team$i" value="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}" placeholder="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}" />
+HTML;
+				}
+				else {
+					$html .= <<<HTML
 
 							<input type="text" name="team[]" id="team$i" placeholder="{$users[$i-1]->name}" />
 HTML;
+				}
 			}
 		}
 		if ($options['type'] != 'project') {

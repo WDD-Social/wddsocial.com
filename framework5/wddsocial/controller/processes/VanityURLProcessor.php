@@ -8,7 +8,7 @@ namespace WDDSocial;
 * @author Anthony Colangelo (me@acolangelo.com)
 */
 
-class VanityURL {
+class VanityURLProcessor {
 	public static function generate($id, $type){
 		$db = instance(':db');
 		$sql = instance(':admin-sql');
