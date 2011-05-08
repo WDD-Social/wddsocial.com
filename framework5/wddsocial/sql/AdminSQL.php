@@ -36,7 +36,7 @@ class AdminSQL{
 			SET vanityURL = SUBSTRING(MD5(CONCAT('project',id)),1,6)
 			WHERE id = :id",
 		
-		'addProjectTeanMember' => "
+		'addProjectTeamMember' => "
 			INSERT INTO userProjects (userID, projectID, title)
 			VALUES (:userID, :projectID, :title)",
 		
