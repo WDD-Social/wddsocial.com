@@ -89,10 +89,12 @@ HTML;
 						<p class="images">			
 HTML;
 			foreach($project->images as $image){
-				$html .= <<<HTML
+				if (file_exists("{$root}images/uploads/{$image->file}_full.jpg") and file_exists("{$root}images/uploads/{$image->file}_large.jpg")) {
+					$html .= <<<HTML
 
 							<a href="{$root}images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
+				}
 			}
 			$html .= <<<HTML
 
@@ -170,10 +172,12 @@ HTML;
 						<p class="images">			
 HTML;
 			foreach($article->images as $image){
-				$html .= <<<HTML
+				if (file_exists("{$root}images/uploads/{$image->file}_full.jpg") and file_exists("{$root}images/uploads/{$image->file}_large.jpg")) {
+					$html .= <<<HTML
 
 							<a href="{$root}images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
+				}
 			}
 			$html .= <<<HTML
 
