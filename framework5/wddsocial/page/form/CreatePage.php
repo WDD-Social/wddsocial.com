@@ -217,49 +217,7 @@ class CreatePage implements \Framework5\IExecutable {
 			Uploader::upload_employer_avatar($_FILES['company-avatar'],"{$result->avatar}");
 		}
 		
-		for ($i = 0; $i < count($_FILES['image-files']['name']); $i++) {
-			if ($_FILES['image-files']['error'][$i] != 4) {
-				$image_num = $i + 1;
-				$image_title = ($_POST['image-titles'][$i] == '')?"{$_POST['title']} | Image $image_num":$_POST['image-titles'][$i];
-				
-				$query = $db->prepare($admin_sql->addImage);
-				$data = array(	'userID' => $_SESSION['user']->id,
-								'title' => $image_title);
-				$query->execute($data);
-				
-				$imageID = $db->lastInsertID();
-				
-				$query = $db->prepare($sel_sql->getImageFilename);
-				$data = array('id' => $imageID);
-				$query->execute($data);
-				$query->setFetchMode(\PDO::FETCH_OBJ);
-				$result = $query->fetch();
-				
-				switch ($_POST['type']) {
-					case 'project':
-						$data = array('projectID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addProjectImage);
-						break;
-					case 'article':
-						$data = array('articleID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addArticleImage);
-						break;
-					case 'event':
-						$data = array('eventID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addEventImage);
-						break;
-					case 'job':
-						$data = array('jobID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addJobImage);
-						break;
-				}
-				$query->execute($data);
-				
-				$newImage = array(	'tmp_name' => $_FILES['image-files']['tmp_name'][$i],
-									'type' => $_FILES['image-files']['type'][$i]);
-				Uploader::upload_image($newImage,"{$result->file}");
-			}
-		}
+		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
 		
 		# Get Vanity URL of new content to redirect there
 		$data = array('id' => $contentID);
