@@ -100,6 +100,7 @@ class CreatePage implements \Framework5\IExecutable {
 	private function _process_form() {
 		import('wddsocial.model.WDDSocial\FormResponse');
 		import('wddsocial.controller.processes.WDDSocial\Uploader');
+		import('wddsocial.controller.processes.WDDSocial\VanityURL');
 		
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
@@ -190,22 +191,7 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		# Generate Vanity URL if necessary
 		if ($_POST['vanityURL'] == '') {
-			$data = array('id' => $contentID);
-			switch ($_POST['type']) {
-				case 'project':
-					$query = $db->prepare($admin_sql->generateProjectVanityURL);
-					break;
-				case 'article':
-					$query = $db->prepare($admin_sql->generateArticleVanityURL);
-					break;
-				case 'event':
-					$query = $db->prepare($admin_sql->generateEventVanityURL);
-					break;
-				case 'job':
-					$query = $db->prepare($admin_sql->generateJobVanityURL);
-					break;
-			}
-			$query->execute($data);
+			VanityURL::generate($contentID, $_POST['type']);
 		}
 		
 		if($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4){
@@ -220,25 +206,8 @@ class CreatePage implements \Framework5\IExecutable {
 		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
 		
 		# Get Vanity URL of new content to redirect there
-		$data = array('id' => $contentID);
-		switch ($_POST['type']) {
-			case 'project':
-				$query = $db->prepare($sel_sql->getProjectVanityURL);
-				break;
-			case 'article':
-				$query = $db->prepare($sel_sql->getArticleVanityURL);
-				break;
-			case 'event':
-				$query = $db->prepare($sel_sql->getEventVanityURL);
-				break;
-			case 'job':
-				$query = $db->prepare($sel_sql->getJobVanityURL);
-				break;
-		}
-		$query->execute($data);
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$result = $query->fetch();
+		$contentVanityURL = VanityURL::get($contentID, $_POST['type']);
 		
-		return new FormResponse(true, "/{$_POST['type']}/{$result->vanityURL}");
+		return new FormResponse(true, "/{$_POST['type']}/{$contentVanityURL}");
 	}
 }
