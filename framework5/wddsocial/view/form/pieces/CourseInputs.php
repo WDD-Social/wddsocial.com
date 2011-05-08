@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class CourseInputs implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		
@@ -26,7 +26,7 @@ HTML;
 		for ($i = 1; $i < 3; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="courses[]" id="course$i" placeholder="{$courses[$i-1]->id} or {$courses[$i-1]->title}" />
+							<input type="text" name="courses[]" id="course$i" placeholder="{$courses[$i-1]->id}" />
 HTML;
 		}
 		$html .= <<<HTML

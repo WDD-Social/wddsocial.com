@@ -7,5 +7,5 @@ namespace Framework5;
 */
 
 interface IExecutable {
-	public static function execute();
+	public function execute();
 }

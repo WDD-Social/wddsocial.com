@@ -535,6 +535,12 @@ class SelectorSQL{
 			FROM projects
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
+		
+		'getProjectVanityURL' => "
+			SELECT vanityURL
+			FROM projects
+			WHERE id = :id
+			LIMIT 1",
 			
 			
 		/**
@@ -585,6 +591,12 @@ class SelectorSQL{
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
 		
+		'getArticleVanityURL' => "
+			SELECT vanityURL
+			FROM articles
+			WHERE id = :id
+			LIMIT 1",
+		
 			
 		/**
 		* Event queries
@@ -615,6 +627,12 @@ class SelectorSQL{
 			SELECT id, icsUID AS uid, title, description, location, vanityURL, DATE_FORMAT(startDatetime, '%Y%m%dT%H%i%S') AS start, DATE_FORMAT(endDatetime, '%Y%m%dT%H%i%S') AS end, DATE_FORMAT(`datetime`, '%Y%m%dT%H%i%SZ') AS created
 			FROM events
 			WHERE id = :id",
+		
+		'getEventVanityURL' => "
+			SELECT vanityURL
+			FROM events
+			WHERE id = :id
+			LIMIT 1",
 			
 			
 		/**
@@ -634,6 +652,17 @@ class SelectorSQL{
 			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
+		
+		'getJobVanityURL' => "
+			SELECT vanityURL
+			FROM jobs
+			WHERE id = :id
+			LIMIT 1",
+		
+		'getJobAvatar' => "
+			SELECT avatar
+			FROM jobs
+			WHERE id = :id",
 			
 			
 		/**
@@ -719,32 +748,37 @@ class SelectorSQL{
 		*/
 			
 		'getProjectImages' => "
-			SELECT id, title, description, `file`
+			SELECT id, title, `file`
 			FROM images AS i
 			LEFT JOIN projectImages AS pi ON(i.id = pi.imageID)
 			WHERE pi.projectID = :id
 			ORDER BY i.id ASC",
 			
 		'getArticleImages' => "
-			SELECT id, title, description, `file`
+			SELECT id, title, `file`
 			FROM images AS i
 			LEFT JOIN articleImages AS ai ON(i.id = ai.imageID)
 			WHERE ai.articleID = :id
 			ORDER BY i.id ASC",
 			
 		'getEventImages' => "
-			SELECT id, title, description, `file`
+			SELECT id, title, `file`
 			FROM images AS i
 			LEFT JOIN eventImages AS ei ON(i.id = ei.imageID)
 			WHERE ei.eventID = :id
 			ORDER BY i.id ASC",
 			
 		'getJobImages' => "
-			SELECT id, title, description, `file`
+			SELECT id, title, `file`
 			FROM images AS i
 			LEFT JOIN jobImages AS ji ON(i.id = ji.imageID)
 			WHERE ji.jobID = :id
 			ORDER BY i.id ASC",
+		
+		'getImageFilename' => "
+			SELECT `file`
+			FROM images
+			WHERE id = :id",
 			
 			
 		/**
@@ -977,7 +1011,7 @@ class SelectorSQL{
 			LIMIT 3",
 		
 		'getThreeRandomCourses' => "
-			SELECT id, title
+			SELECT id
 			FROM courses
 			ORDER BY RAND()
 			LIMIT 3"

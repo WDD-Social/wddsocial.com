@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class PrivacyLevelSelector implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getPrivacyLevels);
@@ -39,7 +39,7 @@ HTML;
 			}
 			$html .= <<<HTML
 
-								<input type="radio" id="$lowercaseTitle" name="privacy-level" value="$lowercaseTitle" $selected />
+								<input type="radio" id="$lowercaseTitle" name="privacy-level" value="{$privacyLevel->id}" $selected />
 								<label for="$lowercaseTitle">$displayText</label>
 HTML;
 		}

@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class SignupView implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$root = \Framework5\Request::root_path();
 		$html = <<<HTML
 
@@ -41,7 +41,7 @@ class SignupView implements \Framework5\IView {
 						
 						<h1>Background</h1>
 HTML;
-		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypes',1);
+		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector',1);
 		$html .= <<<HTML
 
 						<fieldset>

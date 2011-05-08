@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class JobTypeSelector implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getJobTypes);
@@ -31,7 +31,7 @@ HTML;
 			}
 			$html .= <<<HTML
 
-								<input type="radio" id="$lowercaseTitle" name="user-type" value="{$jobType->id}" $selected />
+								<input type="radio" id="$lowercaseTitle" name="job-type" value="{$jobType->id}" $selected />
 								<label for="$lowercaseTitle">{$jobType->title}</label>
 HTML;
 		}

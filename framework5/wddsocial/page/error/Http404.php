@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class Http404 implements \Framework5\IExecutable {
 
-	public static function execute() {
+	public function execute() {
 		
 		# page header
 		echo render('wddsocial.view.WDDSocial\TemplateView', 

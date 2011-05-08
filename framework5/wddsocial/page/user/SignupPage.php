@@ -9,11 +9,11 @@ namespace WDDSocial;
 
 class SignupPage implements \Framework5\IExecutable {
 	
-	public static function execute() {
+	public function execute() {
 		
 		# handle form submission
 		if (isset($_POST['submit'])){
-			$response = static::process_form();
+			$response = $this->process_form();
 			
 			# auto signin user on success
 			if ($response->status) {
@@ -50,7 +50,7 @@ class SignupPage implements \Framework5\IExecutable {
 	* Process signup form
 	*/
 	
-	public static function process_form() {
+	public function process_form() {
 		
 		import('wddsocial.model.WDDSocial\FormResponse');
 		$root = \Framework5\Request::root_path();
@@ -87,7 +87,7 @@ class SignupPage implements \Framework5\IExecutable {
 		$errors = array();
 		
 		# Check if email is unique
-		$query = $db->prepare($val_sql->checkIfEmailExists);
+		$query = $db->prepare($val_sql->checkIfUserEmailExists);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$data = array('email' => $_POST['email']);
 		$query->execute($data);
@@ -97,7 +97,7 @@ class SignupPage implements \Framework5\IExecutable {
 		}
 		
 		# Check if Full Sail email is unique
-		$query = $db->prepare($val_sql->checkIfFullSailEmailExists);
+		$query = $db->prepare($val_sql->checkIfUserFullSailEmailExists);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$data = array('fullsailEmail' => $_POST['full-sail-email']);
 		$query->execute($data);
@@ -129,7 +129,7 @@ class SignupPage implements \Framework5\IExecutable {
 			$vanityURL = '';
 		
 			# Check if vanity URL is unique, create a new one until a unique is found
-			$query = $db->prepare($val_sql->checkIfVanityURLExists);
+			$query = $db->prepare($val_sql->checkIfUserVanityURLExists);
 			$query->setFetchMode(\PDO::FETCH_OBJ);
 			
 			$vanityURL = strtolower($_POST['first-name'] . $_POST['last-name']);
@@ -148,19 +148,11 @@ class SignupPage implements \Framework5\IExecutable {
 					break;
 				}
 			}
-				
-			# Get user type ID by title
-			$query = $db->prepare($sel_sql->getUserTypeIDByTitle);
-			$query->setFetchMode(\PDO::FETCH_OBJ);
-			$data = array('title' => $_POST['user-type']);
-			$query->execute($data);
-			$row = $query->fetch();
-			$typeID = $row->id;
 			
 			# Insert new user
 			$query = $db->prepare($admin_sql->addUser);
 			$data = array(
-				'typeID' => $typeID,
+				'typeID' => $_POST['user-type'],
 				'firstName' => $_POST['first-name'],
 				'lastName' => $_POST['last-name'],
 				'email' => $_POST['email'],
@@ -178,8 +170,8 @@ class SignupPage implements \Framework5\IExecutable {
 			$userID = $db->lastInsertID();
 			
 			# Create user's avatar code
-			$query = $db->prepare($admin_sql->addUserAvatar);
-			$data = array('id' => $userID, 'avatar' => "user{$userID}");
+			$query = $db->prepare($admin_sql->generateUserAvatar);
+			$data = array('id' => $userID);
 			$query->execute($data);
 			
 			# Fetch user's avatar code

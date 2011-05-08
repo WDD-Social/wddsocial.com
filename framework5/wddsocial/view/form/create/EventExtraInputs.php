@@ -9,19 +9,19 @@ namespace WDDSocial;
 
 class EventExtraInputs implements \Framework5\IView {		
 	
-	public static function render($options = null) {
-		$html = <<<HTML
+	public function render($options = null) {
+		return <<<HTML
 
 						<fieldset>
-							<label for="location">Where is it at?</label>
+							<label for="location">Where is it at? *</label>
 							<input type="text" name="location" id="location" />
 						</fieldset>
 						<fieldset>
-							<label for="date">What day?</label>
+							<label for="date">What day? *</label>
 							<input type="date" name="date" id="date" />
 						</fieldset>
 						<fieldset>
-							<label for="start-time">When does it start?</label>
+							<label for="start-time">When does it start? *</label>
 							<input type="time" name="start-time" id="start-time" />
 							<small>Full Sail style, <strong>24-hour</strong> time</small>
 						</fieldset>
@@ -31,9 +31,5 @@ class EventExtraInputs implements \Framework5\IView {
 							<small>In <strong>hours</strong>, please</small>
 						</fieldset>
 HTML;
-		
-		$html .= render('wddsocial.view.form.pieces.WDDSocial\PrivacyLevelSelector',1);
-		
-		return $html;
 	}
 }

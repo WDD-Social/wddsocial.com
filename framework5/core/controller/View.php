@@ -24,7 +24,7 @@ class View extends StaticController {
 			throw new Exception("Package '$package_name' could not be rendered, class '$controller' does not implement interface '\Framework5\IView'");
 		
 		# return the result
-		return $controller::render($options);
+		$instance = new $controller();
+		return $instance->render($options);
 	}
-	
 }

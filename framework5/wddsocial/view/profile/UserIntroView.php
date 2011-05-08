@@ -14,7 +14,7 @@ class UserIntroView implements \Framework5\IView {
 	* Creates user intro, with name and background information
 	*/
 	
-	public static function render($user = null){
+	public function render($user = null){
 		
 		if (!isset($user)) {
 			throw new \Exception("UserIntroView required option 'user' was not set");
@@ -24,6 +24,7 @@ class UserIntroView implements \Framework5\IView {
 		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.UserLang');
 		$userDisplayName = NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
+		$userAvatar = (file_exists("{$root}/images/avatars/{$user->avatar}_full.jpg"))?"{$root}/images/avatars/{$user->avatar}_full.jpg":"{$root}images/site/user-default_full.jpg";
 		
 		# content
 		$html = <<<HTML
@@ -43,7 +44,7 @@ HTML;
 		$userIntro = static::getUserIntro($user);
 		$html .= <<<HTML
 					
-					<img src="{$root}/images/avatars/{$user->avatar}_full.jpg" alt="{$user->firstName} {$user->lastName}" />
+					<img src="$userAvatar" alt="{$user->firstName} {$user->lastName}" />
 					<p>$userIntro</p>
 					<div class="large">
 						<h2>{$lang->text('bio')}</h2>

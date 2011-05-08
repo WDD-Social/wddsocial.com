@@ -11,12 +11,13 @@ namespace WDDSocial;
 
 class MembersDisplayView implements \Framework5\IView {
 	
-	public static function render($content = null) {
+	public function render($content = null) {
 	
 		$root = \Framework5\Request::root_path();
 		$html = "";
 		$possessiveTitle = NaturalLanguage::possessive($content->title);
 		
+		# display edit controls, if user is author
 		switch ($content->type) {
 			case 'project':
 				if(UserValidator::is_project_owner($content->id)){
@@ -29,7 +30,7 @@ HTML;
 				}
 				break;
 			case 'article':
-				if(UserValidator::is_article_owner($content->id)){
+				if (UserValidator::is_article_owner($content->id)) {
 					$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -39,7 +40,7 @@ HTML;
 				}
 				break;
 			default :
-				if(UserSession::is_current($content->userID)){
+				if (UserSession::is_current($content->userID)) {
 					$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -50,7 +51,10 @@ HTML;
 				break;
 		}
 		
-		if(count($content->team) > 0){
+		
+		
+		# if team members were provided, display them
+		if (count($content->team) > 0) {
 			if($content->type != 'article'){
 				$html .= <<<HTML
 
@@ -58,8 +62,8 @@ HTML;
 HTML;
 			}
 			
-			foreach($content->team as $member){
-				if(UserSession::is_current($member->id)){
+			foreach ($content->team as $member) {
+				if (UserSession::is_current($member->id)) {
 					$key = array_search($member, $content->team);
 					$currentUser = $content->team[$key];
 					unset($content->team[$key]);
@@ -67,9 +71,12 @@ HTML;
 				}
 			}
 			
-			foreach($content->team as $member){
-				$userVerbage = NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
-				$userDisplayName = NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
+			foreach ($content->team as $member) {
+				$userVerbage = NaturalLanguage::view_profile(
+					$member->id,"{$member->firstName} {$member->lastName}");
+				$userDisplayName = NaturalLanguage::display_name(
+					$member->id,"{$member->firstName} {$member->lastName}");
+				
 				$userDetail = '';
 				switch ($content->type) {
 					case 'project':
@@ -79,7 +86,7 @@ HTML;
 						$userDetail = $member->bio;
 						break;
 				}
-				if($content->type != 'article'){
+				if ($content->type != 'article') {
 					$html .= <<<HTML
 
 						<li>
@@ -89,7 +96,9 @@ HTML;
 							</a>
 						</li>
 HTML;
-				}else{
+				} 
+				
+				else {
 					$html .= <<<HTML
 
 					<article>
@@ -101,13 +110,16 @@ HTML;
 				}
 				
 			}
-			if($content->type != 'article'){
+			if ($content->type != 'article') {
 				$html .= <<<HTML
 
 					</ul>
 HTML;
 			}
-		}else{
+		}
+		
+		# no team members were provided
+		else{
 			$html .= <<<HTML
 
 					<p class="empty">No one has been added. Well, that&rsquo;s pretty lonely.</p>

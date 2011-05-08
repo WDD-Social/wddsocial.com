@@ -8,15 +8,15 @@ class iCalView implements \Framework5\IView {
 	* Determines what type of content to render
 	*/
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		
 		switch ($options['section']) {
 			case 'header':
-				return static::header();
+				return $this->header();
 			case 'footer':
-				return static::footer();
+				return $this->footer();
 			case 'event':
-				return static::event($options['event']);
+				return $this->event($options['event']);
 			default:
 				throw new \Framework5\Exception("iCalView requires parameter type (header, footer, or event), '{$options['section']}' provided");
 		}
@@ -28,7 +28,7 @@ class iCalView implements \Framework5\IView {
 	* Creates iCal file header
 	*/
 	
-	private static function header(){
+	private function header(){
 		return <<<ICS
 BEGIN:VCALENDAR
 METHOD:PUBLISH
@@ -64,7 +64,7 @@ ICS;
 	* Creates iCal file footer
 	*/
 	
-	private static function footer(){
+	private function footer(){
 		return <<<ICS
 
 END:VCALENDAR
@@ -77,7 +77,7 @@ ICS;
 	* Creates iCal event in .ics file
 	*/
 	
-	private static function event($event){
+	private function event($event){
 		return <<<ICS
 
 BEGIN:VEVENT

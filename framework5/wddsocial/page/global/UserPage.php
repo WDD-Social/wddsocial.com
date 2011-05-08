@@ -12,11 +12,18 @@ namespace WDDSocial;
 class UserPage implements \Framework5\IExecutable {
 	
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.UserPageLang');
+		$this->db = instance(':db');
+		$this->sql = instance(':sel-sql');
+	}
 	
-	public static function execute() {	
+	
+	
+	public function execute() {	
 		
 		# get the request user
-		$user = static::getUser(\Framework5\Request::segment(1));
+		$user = $this->getUser(\Framework5\Request::segment(1));
 		
 		# if the user does not exist
 		if ($user) {
@@ -33,10 +40,10 @@ class UserPage implements \Framework5\IExecutable {
 			echo render(':section',
 				array('section' => 'begin_content_section', 'id' => 'latest',
 					'classes' => array('medium', 'with-secondary', 'filterable'),
-					'header' => 'Latest', 'extra' => 'user_latest_filters'));
+					'header' => $this->lang->text('latest'), 'extra' => 'user_latest_filters'));
 			
 			# display section items
-			$activity = static::getUserLatest($user->id);
+			$activity = $this->getUserLatest($user->id);
 			foreach ($activity as $row) {
 				echo render('wddsocial.view.WDDSocial\MediumDisplayView', 
 					array('type' => $row->type,'content' => $row));
@@ -51,6 +58,7 @@ class UserPage implements \Framework5\IExecutable {
 		}
 		
 		
+		# user does not exist
 		else {
 			
 			# display site header
@@ -73,15 +81,13 @@ class UserPage implements \Framework5\IExecutable {
 	* Gets the user and data
 	*/
 	
-	private static function getUser($vanityURL){
+	private function getUser($vanityURL){
 		
 		import('wddsocial.model.WDDSocial\UserVO');
 		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
+		# query
 		$data = array('vanityURL' => $vanityURL);
-		$query = $db->prepare($sql->getUserByVanityURL);
+		$query = $this->db->prepare($this->sql->getUserByVanityURL);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
 		$query->execute($data);
 		return $query->fetch();
@@ -93,18 +99,15 @@ class UserPage implements \Framework5\IExecutable {
 	* Gets latest activity relating to user
 	*/
 	
-	private static function getUserLatest($id){
+	private function getUserLatest($id){
 		
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
+		# query
 		$data = array('id' => $id);
-		$query = $db->prepare($sql->getUserLatest);
+		$query = $this->db->prepare($this->sql->getUserLatest);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		$query->execute($data);
-		
 		return $query->fetchAll();
 	}
 }

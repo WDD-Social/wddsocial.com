@@ -13,17 +13,17 @@ class SmallDisplayView implements \Framework5\IView {
 	* Determines what type of content to render
 	*/
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		
 		switch ($options['type']) {
 			case 'article':
-				return static::article_display($options['content']);
+				return $this->article_display($options['content']);
 			case 'event':
-				return static::event_display($options['content']);
+				return $this->event_display($options['content']);
 			case 'job':
-				return static::job_display($options['content']);
+				return $this->job_display($options['content']);
 			case 'person_imagegrid':
-				return static::person_imagegrid_display($options['content']);
+				return $this->person_imagegrid_display($options['content']);
 			default:
 				throw new \Exception("SmallDisplayView requires parameter type (event or job), '{$options['type']}' provided");
 		}
@@ -35,13 +35,14 @@ class SmallDisplayView implements \Framework5\IView {
 	* Creates an article article
 	*/
 	
-	private static function article_display($article){
+	private function article_display($article){
 		$root = \Framework5\Request::root_path();
+		$userAvatar = (file_exists("{$root}/images/avatars/{$article->userAvatar}_medium.jpg"))?"{$root}/images/avatars/{$article->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
 		
 		$html = <<<HTML
 
 					<article class="slider-item">
-						<p class="item-image"><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}"><img src="{$root}/images/avatars/{$article->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<p class="item-image"><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
 						<h2><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
 						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a></p>
@@ -65,7 +66,7 @@ HTML;
 	* Creates an event article
 	*/
 	
-	private static function event_display($event){
+	private function event_display($event){
 		$root = \Framework5\Request::root_path();
 		
 		$class = (UserSession::is_authorized())?'with-secondary':'slider-item';
@@ -132,7 +133,7 @@ HTML;
 	* Creates a job article
 	*/
 	
-	private static function job_display($job){
+	private function job_display($job){
 		$root = \Framework5\Request::root_path();
 		$html = <<<HTML
 
@@ -193,12 +194,14 @@ HTML;
 	* Creates an image-grid element
 	*/
 	
-	private static function person_imagegrid_display($person){
+	private function person_imagegrid_display($person){
 		$root = \Framework5\Request::root_path();
 		$userVerbage = NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
+		$userAvatar = (file_exists("{$root}images/avatars/{$person->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$person->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		
 		return <<<HTML
 
-					<p><a href="{$root}/user/{$person->userVanityURL}" title="$userVerbage"><img src="{$root}/images/avatars/{$person->userAvatar}_medium.jpg" alt="{$person->userFirstName} {$person->userLastName}"/></a></p>
+					<p><a href="{$root}/user/{$person->userVanityURL}" title="$userVerbage"><img src="$userAvatar" alt="{$person->userFirstName} {$person->userLastName}"/></a></p>
 HTML;
 	}
 }

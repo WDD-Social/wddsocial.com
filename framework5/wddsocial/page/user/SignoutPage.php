@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class SignoutPage implements \Framework5\IExecutable {
 	
-	public static function execute() {
+	public function execute() {
 		UserSession::signout();
 		redirect('/');
 	}

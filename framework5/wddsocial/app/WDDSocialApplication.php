@@ -15,7 +15,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	* Execute a request. Called by the front controller.
 	*/
 	
-	public static function execute() {
+	public function execute() {
 
 		# import application global dependencies
 		import('wddsocial.controller.WDDSocial\UserValidator');

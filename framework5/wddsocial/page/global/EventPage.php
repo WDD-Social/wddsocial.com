@@ -11,10 +11,10 @@ namespace WDDSocial;
 
 class EventPage implements \Framework5\IExecutable {
 	
-	public static function execute() {	
+	public function execute() {	
 		
 		# get event details
-		$event = static::getEvent(\Framework5\Request::segment(1));
+		$event = $this->getEvent(\Framework5\Request::segment(1));
 		
 		# if the event exists
 		if ($event) {
@@ -81,7 +81,7 @@ class EventPage implements \Framework5\IExecutable {
 	* Gets the requested Event and data
 	*/
 	
-	private static function getEvent($vanityURL){
+	private function getEvent($vanityURL){
 		
 		import('wddsocial.model.WDDSocial\ContentVO');
 		

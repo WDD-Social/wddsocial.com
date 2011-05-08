@@ -13,7 +13,7 @@ class SectionView implements \Framework5\IView {
 	* Determines what type of content to render
 	*/
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		
 		# retrieve content based on the provided section
 		switch ($options['section']) {
@@ -36,7 +36,7 @@ class SectionView implements \Framework5\IView {
 	* Opens main content section, with optional classes
 	*/
 	
-	private static function begin_content($options){
+	private function begin_content($options){
 		if(count($options['classes']) > 0){
 			$classString = implode(' ', $options['classes']);
 			return <<<HTML
@@ -57,7 +57,7 @@ HTML;
 	* Ends main content section
 	*/
 	
-	private static function end_content(){	
+	private function end_content(){	
 		return <<<HTML
 
 			</section><!-- END CONTENT -->
@@ -67,7 +67,7 @@ HTML;
 	
 	
 	# Opens subcontent section, with optional classes, extras
-	private static function begin_content_section($options){
+	private function begin_content_section($options){
 		if(!isset($options['id']) || !isset($options['header'])){
 			throw new Exception("SectionView begin_content_setion requires parameter id (section ID) and header (h1 text)");
 		}
@@ -89,7 +89,7 @@ HTML;
 	
 	
 	# Ends subcontent section, with optional id, and load_more options
-	private static function end_content_section($options){
+	private function end_content_section($options){
 		
 		$lang = new \Framework5\Lang('wddsocial.lang.view.SectionLang');
 		
@@ -109,7 +109,7 @@ HTML;
 	
 	
 	# Extra content pieces (filters, slider controls, etc)
-	private static function get_extra($id) {
+	private function get_extra($id) {
 		
 		$lang = new \Framework5\Lang('wddsocial.lang.view.SectionLang');
 		

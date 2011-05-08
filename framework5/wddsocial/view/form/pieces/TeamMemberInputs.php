@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class TeamMemberInputs implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		
@@ -49,7 +49,7 @@ HTML;
 			else {
 				$html .= <<<HTML
 
-							<input type="text" name="team[]" id="team$i" />
+							<input type="text" name="team[]" id="team$i" placeholder="{$users[$i-1]->name}" />
 HTML;
 			}
 		}

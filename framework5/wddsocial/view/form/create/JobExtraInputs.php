@@ -9,16 +9,16 @@ namespace WDDSocial;
 
 class JobExtraInputs implements \Framework5\IView {		
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		$html .= render('wddsocial.view.form.pieces.WDDSocial\JobTypeSelector',1);
 		$html .= <<<HTML
 
 						<fieldset>
-							<label for="company">Company</label>
+							<label for="company">Company *</label>
 							<input type="text" name="company" id="company" />
 						</fieldset>
 						<fieldset>
-							<label for="location">Location</label>
+							<label for="location">Location *</label>
 							<input type="text" name="location" id="location" />
 						</fieldset>
 						<fieldset>
@@ -26,11 +26,11 @@ class JobExtraInputs implements \Framework5\IView {
 							<input type="text" name="compensation" id="compensation" />
 						</fieldset>
 						<fieldset>
-							<label for="company-website">Company&rsquo;s Website</label>
-							<input type="text" name="company-website" id="company-website" placeholder="example.com" />
+							<label for="website">Company&rsquo;s Website</label>
+							<input type="text" name="website" id="website" placeholder="example.com" />
 						</fieldset>
 						<fieldset>
-							<label for="email">Contact Email</label>
+							<label for="email">Contact Email *</label>
 							<input type="email" name="email" id="email" placeholder="example@example.com" />
 							<small>Applicants will contact this email.</small>
 						</fieldset>

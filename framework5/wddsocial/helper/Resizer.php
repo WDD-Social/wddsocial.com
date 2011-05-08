@@ -36,12 +36,23 @@ class Resizer {
 				$thumb_width = $new_width;
 				$thumb_height = $new_height;
 				$final_image = imagecreatetruecolor($new_width,$new_height);
+				$bg = imagecolorallocate($final_image, 255, 255, 255);
+				imagefill($final_image, 0, 0, $bg);
 				if($resize_height > $resize_width){
 					$thumb_height = ($resize_height/$resize_width)*$thumb_width;
 					$thumb = imagecreatetruecolor($thumb_width,$thumb_height);
+					$bg = imagecolorallocate($thumb, 255, 255, 255);
+					imagefill($thumb, 0, 0, $bg);
 				}else if($resize_width > $resize_height){
 					$thumb_width = ($resize_width/$resize_height)*$thumb_height;
 					$thumb = imagecreatetruecolor($thumb_height,$thumb_width);
+					$bg = imagecolorallocate($thumb, 255, 255, 255);
+					imagefill($thumb, 0, 0, $bg);
+				}
+				if(!isset($thumb)){
+					$thumb = imagecreatetruecolor($thumb_width, $thumb_height);
+					$bg = imagecolorallocate($thumb, 255, 255, 255);
+					imagefill($thumb, 0, 0, $bg);
 				}
 				imagecopyresampled($thumb,$original_image,0,0,0,0,$thumb_width,$thumb_height,$width,$height);
 				imagecopy($final_image,$thumb,0,0,0,0,$new_width,$new_height);
@@ -50,14 +61,20 @@ class Resizer {
 					$resize_width = $new_width;
 					$resize_height = ($height/$width)*$resize_width;
 					$final_image = imagecreatetruecolor($resize_width, $resize_height);
+					$bg = imagecolorallocate($final_image, 255, 255, 255);
+					imagefill($final_image, 0, 0, $bg);
 				}
 				if($resize_height > $new_height){
 					$resize_height = $new_height;
 					$resize_width = ($width/$height)*$resize_height;
 					$final_image = imagecreatetruecolor($resize_width, $resize_height);
+					$bg = imagecolorallocate($final_image, 255, 255, 255);
+					imagefill($final_image, 0, 0, $bg);
 				}
 				if(!isset($final_image)){
 					$final_image = imagecreatetruecolor($resize_width, $resize_height);
+					$bg = imagecolorallocate($final_image, 255, 255, 255);
+					imagefill($final_image, 0, 0, $bg);
 				}
 				imagecopyresampled($final_image,$original_image,0,0,0,0,$resize_width,$resize_height,$width,$height);
 			}

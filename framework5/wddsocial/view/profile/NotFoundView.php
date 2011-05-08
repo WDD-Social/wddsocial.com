@@ -15,7 +15,7 @@ class NotFoundView implements \Framework5\IView {
 	* Render View
 	*/
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		return "<h1>User Not Found</h1>";
 	}
 }

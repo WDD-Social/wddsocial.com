@@ -14,7 +14,7 @@ class TemplateView implements \Framework5\IView {
 	* Determines what type of content to render
 	*/
 	
-	public static function render($options = null) {
+	public function render($options = null) {
 		
 		# retrieve content based on the provided section
 		switch ($options['section']) {
@@ -36,7 +36,7 @@ class TemplateView implements \Framework5\IView {
 	* The site Template Header
 	*/
 	
-	private static function _templateHeader($title) {
+	private function _templateHeader($title) {
 		if (!isset($title) or empty($title))
 			throw new Exception("TemplateView top section requires parameter title");
 		
@@ -85,7 +85,7 @@ HTML;
 	* The site Template Footer
 	*/
 	
-	private static function _templateFooter() {
+	private function _templateFooter() {
 		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		
@@ -125,17 +125,18 @@ HTML;
 	* The site Template User Area
 	*/
 	
-	private static function _userArea() {
+	private function _userArea() {
 		
 		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
+		$userAvatar = (file_exists("{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg"))?"{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg":"{$root}images/site/user-default_small.jpg";
 		
 		# if the user is logged in
 		if ($_SESSION['authorized']) {
 			return <<<HTML
 				
 				<section id="user-area" class="signed-in">
-					<p><strong><a href="{$root}user/{$_SESSION['user']->vanityURL}" title="{$lang->text('user_profile_title')}"><img src="{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
+					<p><strong><a href="{$root}user/{$_SESSION['user']->vanityURL}" title="{$lang->text('user_profile_title')}"><img src="$userAvatar" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
 				 	<p><a href="{$root}messages" title="{$lang->text('messages_title')}">{$lang->text('messages')} <span class="badge">3</span></a></p>
 				 	<p><a href="{$root}account" title="{$lang->text('account_title')}">{$lang->text('account')}</a></p>
 				 	<p><a href="{$root}signout" title="{$lang->text('signout_title')}">{$lang->text('signout')}</a></p>
@@ -161,7 +162,7 @@ HTML;
 	* The site Navigation and Search area
 	*/
 	
-	private static function _navigation() {
+	private function _navigation() {
 		
 		$root = \Framework5\Request::root_path();
 		$current = \Framework5\Request::segment(0);

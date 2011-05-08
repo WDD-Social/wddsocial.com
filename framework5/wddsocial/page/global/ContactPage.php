@@ -9,7 +9,7 @@ namespace WDDSocial;
 
 class ContactPage implements \Framework5\IExecutable {
 	
-	public static function execute() {
+	public function execute() {
 		
 		# display site header
 		echo render('wddsocial.view.WDDSocial\TemplateView', 

@@ -11,10 +11,10 @@ namespace WDDSocial;
 
 class ProjectPage implements \Framework5\IExecutable {
 	
-	public static function execute() {	
+	public function execute() {	
 		
 		# get project details
-		$project = static::getProject(\Framework5\Request::segment(1));
+		$project = $this->getProject(\Framework5\Request::segment(1));
 		
 		# if the project does not exist
 		if ($project) {
@@ -79,7 +79,7 @@ class ProjectPage implements \Framework5\IExecutable {
 	* Gets the requested project and data
 	*/
 	
-	private static function getProject($vanityURL){
+	private function getProject($vanityURL){
 		import('wddsocial.model.WDDSocial\ContentVO');
 		
 		# Get db instance and query

@@ -3,7 +3,7 @@
 namespace WDDSocial;
 
 /*
-* 
+* Displays the details of a job listing
 * 
 * @author Anthony Colangelo (me@acolangelo.com)
 * @author Tyler Matthews (tmatthewsdev@gmail.com)
@@ -11,17 +11,18 @@ namespace WDDSocial;
 
 class JobDetailsDisplayView implements \Framework5\IView {
 	
-	public static function render($content = null) {
+	public function render($content = null) {
 		
 		$root = \Framework5\Request::root_path();
 		$html = "";
-		if($content->jobType == 'Internship'){
+		if ($content->jobType == 'Internship') {
 			$jobType = "an <strong><a href=\"{$root}jobs\" title=\"{$content->jobType} Jobs\">{$content->jobType}</a></strong>";
-		}else{
+		}
+		else {
 			$jobType = "a <strong><a href=\"{$root}jobs\" title=\"{$content->jobType} Jobs\">{$content->jobType}</a></strong> gig";
 		}
 		
-		if(UserSession::is_current($content->userID)){
+		if (UserSession::is_current($content->userID)) {
 			$html .= <<<HTML
 
 					<div class="secondary icons">
@@ -41,7 +42,7 @@ HTML;
 						<p><a href="http://maps.google.com/?q={$content->location}" title="Search Google Maps for {$content->location}">{$content->location}</a></p>
 						<p>This job is {$jobType}.</p>
 HTML;
-		if($content->compensation != ''){
+		if ($content->compensation != '') {
 			$html .= <<<HTML
 
 						<p>Compensation is <strong>{$content->compensation}</strong></p>

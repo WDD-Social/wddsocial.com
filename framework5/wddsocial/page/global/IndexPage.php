@@ -11,42 +11,44 @@ namespace WDDSocial;
 
 class IndexPage implements \Framework5\IExecutable {
 	
-	public static function execute() {
-		
-		# 
-		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
+		$this->db = instance(':db');
+		$this->sql = instance(':sel-sql');
+	}
+	
+	
+	
+	public function execute() {
 		
 		# site header
 		echo render(':template',
-			array('section' => 'top', 'title' => $lang->text('page_title')));
+			array('section' => 'top', 'title' => $this->lang->text('page_title')));
 		
-		# Check which home page to create, based on authorization
+		# check which home page to create, based on authorization
 		if (UserSession::is_authorized()) {
-			# Create user dashboard page
+			# display user dashboard page
 			echo render(':section',
 				array('section' => 'begin_content', 'classes' => array('dashboard')));
-			static::dashboard_share();
-			static::dashboard_latest();
-			static::public_events();
-			static::dashboard_jobs();
+			$this->_dashboard_share();
+			$this->_dashboard_latest();
+			$this->_public_events();
+			$this->_dashboard_jobs();
 		}
 		
 		# display public home page
 		else {
 			echo render(':section',
 				array('section' => 'begin_content', 'classes' => array('start-page')));
-			static::public_projects();
-			static::public_sign_in();
-			static::public_people();
-			static::public_articles();
-			static::public_events();
+			$this->_public_projects();
+			$this->_public_sign_in();
+			$this->_public_people();
+			$this->_public_articles();
+			$this->_public_events();
 		}
 		
-		# end content area
-		echo render(':section', 
-			array('section' => 'end_content'));
-		
-		# site footer
+		# display site footer
+		echo render(':section', array('section' => 'end_content'));
 		echo render(':template', array('section' => 'bottom'));
 	}
 	
@@ -56,19 +58,17 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets the share form
 	*/
 	
-	private static function dashboard_share(){
-		
-		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
-		
-		# Create section header
+	private function _dashboard_share(){
+				
+		# display section header
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'share', 'classes' => 
-				array('small', 'no-margin', 'side-sticky'), 'header' => $lang->text('share_header')));
+				array('small', 'no-margin', 'side-sticky'), 'header' => $this->lang->text('share_header')));
 		
-		# Create form
+		# display form
 		echo render('wddsocial.view.form.WDDSocial\ShareView');
 		
-		# Create section footer
+		# display section footer
 		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'share'));
 	}
@@ -79,29 +79,26 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays latest content section
 	*/
 	
-	private static function dashboard_latest(){
+	private function _dashboard_latest(){
 		import('wddsocial.model.WDDSocial\DisplayVO');
-		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
-		$query = $db->query($sql->getLatest);
+		# query
+		$query = $this->db->query($this->sql->getLatest);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
-		# Create section header
+		# display section header
 		echo render(':section',
 			array('section' => 'begin_content_section', 'id' => 'latest',
 				'classes' => array('medium', 'with-secondary', 'filterable'),
-				'header' => $lang->text('latest_header'), 'extra' => 'latest_filters'));
+				'header' => $this->lang->text('latest_header'), 'extra' => 'latest_filters'));
 		
-		# Create section items
+		# display section items
 		while($row = $query->fetch()){
 			echo render('wddsocial.view.WDDSocial\MediumDisplayView', 
 				array('type' => $row->type,'content' => $row));
 		}
 		
-		# Create section footer
+		# display section footer
 		echo render(':section',
 			array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
 	}
@@ -112,19 +109,17 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays articles
 	*/
 	
-	private static function public_sign_in(){
-		
-		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
-		
-		# Create section header
+	private function _public_sign_in(){
+				
+		# display section header
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'sign-in', 
-				'classes' => array('small', 'no-margin'), 'header' => $lang->text('signin_header')));
+				'classes' => array('small', 'no-margin'), 'header' => $this->lang->text('signin_header')));
 		
-		# Create form
+		# display form
 		echo render('wddsocial.view.form.WDDSocial\SigninView');
 				
-		# Create section footer
+		# display section footer
 		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'sign-in'));
 	}
@@ -135,20 +130,17 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays articles
 	*/
 	
-	private static function public_projects(){
+	private function _public_projects(){
 		import('wddsocial.model.WDDSocial\DisplayVO');
-		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
-		$query = $db->query($sql->getRecentProjects);
+		# query
+		$query = $this->db->query($this->sql->getRecentProjects);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'projects', 
 				'classes' => array('large', 'slider'), 
-				'header' => $lang->text('projects_header'), 'extra' => 'slider_controls'));
+				'header' => $this->lang->text('projects_header'), 'extra' => 'slider_controls'));
 		
 		# Create section items ***GETS 10 PROJECTS***
 		/*while($row = $query->fetch()){
@@ -171,21 +163,17 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays articles
 	*/
 	
-	private static function public_people(){
+	private function _public_people(){
 		import('wddsocial.model.WDDSocial\RecentPersonVO');
-		
-		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
-		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
-		$query = $db->query($sql->getRecentlyActivePeople);
+				
+		# query
+		$query = $this->db->query($this->sql->getRecentlyActivePeople);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\RecentPersonVO');
 		
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'people', 
 				'classes' => array('small', 'image-grid'), 
-				'header' => $lang->text('people_header')));
+				'header' => $this->lang->text('people_header')));
 		
 		# Create section items
 		while($row = $query->fetch()){
@@ -204,19 +192,16 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays articles
 	*/
 	
-	private static function public_articles(){
+	private function _public_articles(){
 		import('wddsocial.model.WDDSocial\DisplayVO');
-		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
-		$query = $db->query($sql->getRecentArticles);
+		# query
+		$query = $this->db->query($this->sql->getRecentArticles);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'articles', 
-				'classes' => array('small', 'slider'), 'header' => $lang->text('articles_header')));
+				'classes' => array('small', 'slider'), 'header' => $this->lang->text('articles_header')));
 		
 		# Create section items ***GETS 10 ARTICLES***
 		/* while($row = $query->fetch()){
@@ -241,33 +226,35 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays events
 	*/
 	
-	private static function public_events(){
+	private function _public_events(){
 		import('wddsocial.model.WDDSocial\EventVO');
-		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
-		$query = (UserSession::is_authorized())?$db->query($sql->getUpcomingEvents):$db->query($sql->getUpcomingPublicEvents);
+		# query
+		if (UserSession::is_authorized()) $query = $this->db->query($this->sql->getUpcomingEvents);
+		else $query = $this->db->query($this->sql->getUpcomingPublicEvents);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\EventVO');
 		
+		# 
 		if(UserSession::is_authorized()){
 			echo render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'events', 
 					'classes' => array('small', 'no-margin', 'side-sticky'), 
-					'header' => $lang->text('events_header')));
-			# Set limit of posts
+					'header' => $this->lang->text('events_header')));
+			# set limit of posts
 			$limit = 3;
-		}else{
+		}
+		
+		# 
+		else{
 			echo render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'events', 
 					'classes' => array('small', 'no-margin', 'slider'), 
-					'header' => $lang->text('events_header'), 'extra' => 'slider_controls'));
-			# Set limit of posts
+					'header' => $this->lang->text('events_header'), 'extra' => 'slider_controls'));
+			# set limit of posts
 			$limit = 2;
 		}		
 		
-		# CREATE SECTION ITEMS
+		# create section items
 		$row = $query->fetchAll();
 		for($i = 0; $i<$limit; $i++){
 			if(isset($row[$i])){
@@ -276,7 +263,7 @@ class IndexPage implements \Framework5\IExecutable {
 			}
 		}
 		
-		# Create section footer
+		# create section footer
 		echo render(':section', 
 			array('section' => 'end_content_section', 'id' => 'events'));
 	}
@@ -287,20 +274,17 @@ class IndexPage implements \Framework5\IExecutable {
 	* Gets and displays jobs
 	*/
 	
-	private static function dashboard_jobs(){
+	private function _dashboard_jobs(){
 		import('wddsocial.model.WDDSocial\JobVO');
-		$lang = new \Framework5\Lang('wddsocial.lang.page.global.IndexPageLang');
 		
-		# Get db instance and query
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
-		$query = $db->query($sql->getRecentJobs);
+		# query
+		$query = $this->db->query($this->sql->getRecentJobs);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 		
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'jobs', 
 				'classes' => array('small', 'no-margin', 'side-sticky'), 
-				'header' => $lang->text('jobs_header')));
+				'header' => $this->lang->text('jobs_header')));
 		
 		# Create section items
 		while($row = $query->fetch()){

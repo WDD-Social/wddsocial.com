@@ -14,11 +14,11 @@ class SigninPage implements \Framework5\IExecutable {
 	* display signin page
 	*/
 	
-	public static function execute() {
+	public function execute() {
 		
 		# handle form submission
 		if (isset($_POST['submit'])){
-			$response = static::process_form();
+			$response = $this->_process_form();
 			
 			# redirect user on success
 			if ($response->status) {
@@ -61,7 +61,7 @@ class SigninPage implements \Framework5\IExecutable {
 	* Handle user signup form
 	*/
 	
-	public static function process_form() {
+	private function _process_form() {
 		
 		import('wddsocial.model.WDDSocial\FormResponse');
 		
