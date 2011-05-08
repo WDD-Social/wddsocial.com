@@ -42,13 +42,13 @@ class CreatePage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $_POST, 'error' => $response->message));
 		
 		# display content type-specific options
-		if ($_POST['type'] == 'project' || $_POST['type'] == 'article' || $_POST['type'] == 'event' || $_POST['type'] == 'job') {
+		if ($_POST['type'] == 'project' or $_POST['type'] == 'article' or $_POST['type'] == 'event' or $_POST['type'] == 'job') {
 			$typeCapitalized = ucfirst($_POST['type']);
 			echo render("wddsocial.view.form.create.WDDSocial\\{$typeCapitalized}ExtraInputs");
 		}
 		
 		# display team member section for appropriate content types
-		if ($_POST['type'] == 'project' || $_POST['type'] == 'article') {
+		if ($_POST['type'] == 'project' or $_POST['type'] == 'article') {
 			switch ($_POST['type']) {
 				case 'project':
 					$teamTitle = 'Team Members';

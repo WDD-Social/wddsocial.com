@@ -17,16 +17,16 @@ class ContentVO {
 		$this->sql = instance(':sel-sql');
 		$this->getCategories();
 		$this->getLinks();
-		if($this->type == 'project' || $this->type == 'article'){
+		if($this->type == 'project' or $this->type == 'article'){
 			$this->getTeam();
 		}
-		if($this->type == 'project' || $this->type == 'article' || $this->type == 'event' || $this->type == 'job'){
+		if($this->type == 'project' or $this->type == 'article' or $this->type == 'event' or $this->type == 'job'){
 			$this->getImages();
 		}
-		if($this->type == 'project' || $this->type == 'article' || $this->type == 'event' || $this->type == 'job'){
+		if($this->type == 'project' or $this->type == 'article' or $this->type == 'event' or $this->type == 'job'){
 			$this->getVideos();
 		}
-		if($this->type == 'project' || $this->type == 'article' || $this->type == 'event'){
+		if($this->type == 'project' or $this->type == 'article' or $this->type == 'event'){
 			$this->getComments();
 		}
 	}

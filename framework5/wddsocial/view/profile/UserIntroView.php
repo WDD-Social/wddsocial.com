@@ -116,7 +116,7 @@ HTML;
 				}
 				break;
 			case 'Teacher':
-				if(isset($user->extra['courses']) && count($user->extra['courses']) > 0){
+				if(isset($user->extra['courses']) and count($user->extra['courses']) > 0){
 					$sentence .= " who teaches";
 					for($i =0; $i < count($user->extra['courses']); $i++){
 						if($i == count($user->extra['courses'])-1){

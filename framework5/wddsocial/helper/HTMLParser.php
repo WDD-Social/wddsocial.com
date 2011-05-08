@@ -55,7 +55,7 @@ function str_get_html($str, $lowercase=true) {
 function dump_html_tree($node, $show_attr=true, $deep=0) {
     $lead = str_repeat('    ', $deep);
     echo $lead.$node->tag;
-    if ($show_attr && count($node->attr)>0) {
+    if ($show_attr and count($node->attr)>0) {
         echo '(';
         foreach($node->attr as $k=>$v)
             echo "[$k]=>\"".$node->$k.'", ';
@@ -149,7 +149,7 @@ class HTMLParserNode {
         if ($this->parent===null) return null;
         $idx = 0;
         $count = count($this->parent->children);
-        while ($idx<$count && $this!==$this->parent->children[$idx])
+        while ($idx<$count and $this!==$this->parent->children[$idx])
             ++$idx;
         if (++$idx>=$count) return null;
         return $this->parent->children[$idx];
@@ -160,7 +160,7 @@ class HTMLParserNode {
         if ($this->parent===null) return null;
         $idx = 0;
         $count = count($this->parent->children);
-        while ($idx<$count && $this!==$this->parent->children[$idx])
+        while ($idx<$count and $this!==$this->parent->children[$idx])
             ++$idx;
         if (--$idx<0) return null;
         return $this->parent->children[$idx];
@@ -200,7 +200,7 @@ class HTMLParserNode {
         }
 
         // render end tag
-        if(isset($this->_[HDOM_INFO_END]) && $this->_[HDOM_INFO_END]!=0)
+        if(isset($this->_[HDOM_INFO_END]) and $this->_[HDOM_INFO_END]!=0)
             $ret .= '</'.$this->tag.'>';
         return $ret;
     }
@@ -241,7 +241,7 @@ class HTMLParserNode {
             ++$i;
 
             // skip removed attribute
-            if ($val===null || $val===false)
+            if ($val===null or $val===false)
                 continue;
 
             $ret .= $this->_[HDOM_INFO_SPACE][$i][0];
@@ -308,10 +308,10 @@ class HTMLParserNode {
         list($tag, $key, $val, $exp, $no_key) = $selector;
 
         // xpath index
-        if ($tag && $key && is_numeric($key)) {
+        if ($tag and $key and is_numeric($key)) {
             $count = 0;
             foreach ($this->children as $c) {
-                if ($tag==='*' || $tag===$c->tag) {
+                if ($tag==='*' or $tag===$c->tag) {
                     if (++$count==$key) {
                         $ret[$c->_[HDOM_INFO_BEGIN]] = 1;
                         return;
@@ -324,7 +324,7 @@ class HTMLParserNode {
         $end = (!empty($this->_[HDOM_INFO_END])) ? $this->_[HDOM_INFO_END] : 0;
         if ($end==0) {
             $parent = $this->parent;
-            while (!isset($parent->_[HDOM_INFO_END]) && $parent!==null) {
+            while (!isset($parent->_[HDOM_INFO_END]) and $parent!==null) {
                 $end -= 1;
                 $parent = $parent->parent;
             }
@@ -335,26 +335,26 @@ class HTMLParserNode {
             $node = $this->dom->nodes[$i];
             $pass = true;
 
-            if ($tag==='*' && !$key) {
+            if ($tag==='*' and !$key) {
                 if (in_array($node, $this->children, true))
                     $ret[$i] = 1;
                 continue;
             }
 
             // compare tag
-            if ($tag && $tag!=$node->tag && $tag!=='*') {$pass=false;}
+            if ($tag and $tag!=$node->tag and $tag!=='*') {$pass=false;}
             // compare key
-            if ($pass && $key) {
+            if ($pass and $key) {
                 if ($no_key) {
                     if (isset($node->attr[$key])) $pass=false;
                 }
                 else if (!isset($node->attr[$key])) $pass=false;
             }
             // compare value
-            if ($pass && $key && $val  && $val!=='*') {
+            if ($pass and $key and $val  and $val!=='*') {
                 $check = $this->match($exp, $val, $node->attr[$key]);
                 // handle multiple class
-                if (!$check && strcasecmp($key, 'class')===0) {
+                if (!$check and strcasecmp($key, 'class')===0) {
                     foreach(explode(' ',$node->attr[$key]) as $k) {
                         $check = $this->match($exp, $val, $k);
                         if ($check) break;
@@ -395,7 +395,7 @@ class HTMLParserNode {
 
         foreach ($matches as $m) {
             $m[0] = trim($m[0]);
-            if ($m[0]==='' || $m[0]==='/' || $m[0]==='//') continue;
+            if ($m[0]==='' or $m[0]==='/' or $m[0]==='//') continue;
             // for borwser grnreated xpath
             if ($m[1]==='tbody') continue;
 
@@ -409,7 +409,7 @@ class HTMLParserNode {
             // convert to lowercase
             if ($this->dom->lowercase) {$tag=strtolower($tag); $key=strtolower($key);}
             //elements that do NOT have the specified attribute
-            if (isset($key[0]) && $key[0]==='!') {$key=substr($key, 1); $no_key=true;}
+            if (isset($key[0]) and $key[0]==='!') {$key=substr($key, 1); $no_key=true;}
 
             $result[] = array($tag, $key, $val, $exp, $no_key);
             if (trim($m[7])===',') {
@@ -515,7 +515,7 @@ class HTMLParser {
 
     function __construct($str=null) {
         if ($str) {
-            if (preg_match("/^http:\/\//i",$str) || is_file($str)) 
+            if (preg_match("/^http:\/\//i",$str) or is_file($str)) 
                 $this->load_file($str); 
             else
                 $this->load($str);
@@ -649,11 +649,11 @@ class HTMLParser {
             $tag_lower = strtolower($tag);
 
             if ($parent_lower!==$tag_lower) {
-                if (isset($this->optional_closing_tags[$parent_lower]) && isset($this->block_tags[$tag_lower])) {
+                if (isset($this->optional_closing_tags[$parent_lower]) and isset($this->block_tags[$tag_lower])) {
                     $this->parent->_[HDOM_INFO_END] = 0;
                     $org_parent = $this->parent;
 
-                    while (($this->parent->parent) && strtolower($this->parent->tag)!==$tag_lower)
+                    while (($this->parent->parent) and strtolower($this->parent->tag)!==$tag_lower)
                         $this->parent = $this->parent->parent;
 
                     if (strtolower($this->parent->tag)!==$tag_lower) {
@@ -663,11 +663,11 @@ class HTMLParser {
                         return $this->as_text_node($tag);
                     }
                 }
-                else if (($this->parent->parent) && isset($this->block_tags[$tag_lower])) {
+                else if (($this->parent->parent) and isset($this->block_tags[$tag_lower])) {
                     $this->parent->_[HDOM_INFO_END] = 0;
                     $org_parent = $this->parent;
 
-                    while (($this->parent->parent) && strtolower($this->parent->tag)!==$tag_lower)
+                    while (($this->parent->parent) and strtolower($this->parent->tag)!==$tag_lower)
                         $this->parent = $this->parent->parent;
 
                     if (strtolower($this->parent->tag)!==$tag_lower) {
@@ -676,7 +676,7 @@ class HTMLParser {
                         return $this->as_text_node($tag);
                     }
                 }
-                else if (($this->parent->parent) && strtolower($this->parent->parent->tag)===$tag_lower) {
+                else if (($this->parent->parent) and strtolower($this->parent->parent->tag)===$tag_lower) {
                     $this->parent->_[HDOM_INFO_END] = 0;
                     $this->parent = $this->parent->parent;
                 }
@@ -697,10 +697,10 @@ class HTMLParser {
         $tag = $this->copy_until($this->token_slash);
 
         // doctype, cdata & comments...
-        if (isset($tag[0]) && $tag[0]==='!') {
+        if (isset($tag[0]) and $tag[0]==='!') {
             $node->_[HDOM_INFO_TEXT] = '<' . $tag . $this->copy_until_char('>');
 
-            if (isset($tag[2]) && $tag[1]==='-' && $tag[2]==='-') {
+            if (isset($tag[2]) and $tag[1]==='-' and $tag[2]==='-') {
                 $node->nodetype = HDOM_TYPE_COMMENT;
                 $node->tag = 'comment';
             } else {
@@ -755,7 +755,7 @@ class HTMLParser {
 
         // attributes
         do {
-            if ($this->char!==null && $space[0]==='') break;
+            if ($this->char!==null and $space[0]==='') break;
             $name = $this->copy_until($this->token_equal);
             if($guard===$this->pos) {
                 $this->char = (++$this->pos<$this->size) ? $this->doc[$this->pos] : null; // next
@@ -764,7 +764,7 @@ class HTMLParser {
             $guard = $this->pos;
 
             // handle endless '<'
-            if($this->pos>=$this->size-1 && $this->char!=='>') {
+            if($this->pos>=$this->size-1 and $this->char!=='>') {
                 $node->nodetype = HDOM_TYPE_TEXT;
                 $node->_[HDOM_INFO_END] = 0;
                 $node->_[HDOM_INFO_TEXT] = '<'.$tag . $space[0] . $name;
@@ -786,7 +786,7 @@ class HTMLParser {
                 return true;
             }
 
-            if ($name!=='/' && $name!=='') {
+            if ($name!=='/' and $name!=='') {
                 $space[1] = $this->copy_skip($this->token_blank);
                 $name = $this->restore_noise($name);
                 if ($this->lowercase) $name = strtolower($name);
@@ -805,7 +805,7 @@ class HTMLParser {
             }
             else
                 break;
-        } while($this->char!=='>' && $this->char!=='/');
+        } while($this->char!=='>' and $this->char!=='/');
 
         $this->link_nodes($node, true);
         $node->_[HDOM_INFO_ENDSPACE] = $space[0];

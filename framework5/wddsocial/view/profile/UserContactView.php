@@ -146,7 +146,7 @@ HTML;
 					</ul>
 HTML;
 		
-		if(UserSession::is_current($user->id) && $percentage < .5){
+		if(UserSession::is_current($user->id) and $percentage < .5){
 			$html .= <<<HTML
 
 					<p class="incomplete extra-spacing">People want to talk to you, but they need to know how! Why don&rsquo;t you <strong><a href="{$root}account" title="">add some contact info?</a></strong></p>
