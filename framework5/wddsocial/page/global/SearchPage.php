@@ -12,13 +12,11 @@ class SearchPage implements \Framework5\IExecutable {
 	public function execute() {
 		
 		# display site header
-		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'top', 
-			'title' => 'Search'));
+		echo render(':template', array('section' => 'top', 'title' => 'Search'));
 		
 		
 		# display site footer
-		echo render('wddsocial.view.WDDSocial\TemplateView', 
-			array('section' => 'bottom'));
+		echo render(':template', array('section' => 'bottom'));
 		
 	}
 }

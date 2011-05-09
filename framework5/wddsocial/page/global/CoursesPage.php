@@ -12,12 +12,12 @@ class CoursesPage implements \Framework5\IExecutable {
 	public function execute() {
 		
 		# display site header
-		echo render('wddsocial.view.WDDSocial\TemplateView', 
+		echo render(':template', 
 			array('section' => 'top', 'title' => 'Courses'));
 		
 		
 		# display site footer
-		echo render('wddsocial.view.WDDSocial\TemplateView', 
+		echo render(':template', 
 			array('section' => 'bottom'));
 		
 	}
