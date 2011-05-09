@@ -89,7 +89,7 @@ HTML;
 	*/
 	
 	private static function getUserIntro($user){
-		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are ":"<strong>{$user->firstName}</strong> is a";
+		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are a":"<strong>{$user->firstName}</strong> is a";
 		
 		if(isset($user->age)){
 			$sentence .= " <strong>{$user->age}-year-old</strong>";
@@ -104,7 +104,7 @@ HTML;
 		}
 		$userType = strtolower($user->type);
 		$sentence .= " <strong>{$userType}</strong>";
-		if(isset($user->hometown)){
+		if($user->hometown != ''){
 			$sentence .= " from <strong><a href=\"http://maps.google.com/?q={$user->hometown}\" title=\"Search Google Maps for {$user->hometown}\">{$user->hometown}</a></strong>";
 		}
 		switch ($user->type) {
