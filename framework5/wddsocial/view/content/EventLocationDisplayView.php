@@ -33,14 +33,14 @@ HTML;
 		$html .= <<<HTML
 
 					<article class="location-and-time">
-						<p class="item-image"><a href="/files/ics/{$content->icsUID}.ics" title="{$this->lang->text('download_ical_title', $content->title)}" class="calendar-icon">
+						<p class="item-image"><a href="/files/ics/wddsocial.{$content->icsUID}.ics" title="{$this->lang->text('download_ical_title', $content->title)}" class="calendar-icon">
 							<span class="month">{$content->month}</span> 
 							<span class="day">{$content->day}</span> 
 							<span class="download"><img src="/images/site/icon-download.png" alt="{$this->lang->text('download_ical_file')}"/>iCal</span>
 						</a></p>
 						<h2>{$content->location}</h2>
 						<p>{$content->startTime} - {$content->endTime}</p>
-						<p><a href="/files/ics/{$content->icsUID}.ics" title="{$this->lang->text('download_ical_title', $content->title)}">{$this->lang->text('download_ical_file')}</a></p>
+						<p><a href="/files/ics/wddsocial.{$content->icsUID}.ics" title="{$this->lang->text('download_ical_title', $content->title)}">{$this->lang->text('download_ical_file')}</a></p>
 					</article><!-- END {$content->title} -->
 HTML;
 		return $html;
