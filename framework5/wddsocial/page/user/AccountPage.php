@@ -25,10 +25,6 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		# display site footer
 		echo render('wddsocial.view.WDDSocial\TemplateView', array('section' => 'bottom'));
-		
-		echo "<pre>";
-		print_r($_SESSION['user']);
-		echo "</pre>";
 	}
 	
 	

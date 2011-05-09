@@ -10,7 +10,7 @@ namespace WDDSocial;
 class AccountView implements \Framework5\IView {		
 	
 	public function render($options = null) {
-		return <<<HTML
+		/* return */ <<<HTML
 
 					<form action="/account" method="post" enctype="multipart/form-data">
 					<h1>Basic</h1>
