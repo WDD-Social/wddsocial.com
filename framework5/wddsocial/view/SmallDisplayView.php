@@ -103,7 +103,7 @@ HTML;
 			
 		$html .= <<<HTML
 
-						<p class="item-image"><a href="{$root}files/ics/{$event->icsUID}.ics" title="Download {$event->title} iCal File" class="calendar-icon">
+						<p class="item-image"><a href="{$root}files/ics/wddsocial.{$event->icsUID}.ics" title="Download {$event->title} iCal File" class="calendar-icon">
 							<span class="month">{$event->month}</span> 
 							<span class="day">{$event->day}</span> 
 							<span class="download"><img src="{$root}images/site/icon-download.png" alt="Download iCal File"/>iCal</span>
