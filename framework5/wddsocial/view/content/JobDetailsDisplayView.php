@@ -12,6 +12,8 @@ namespace WDDSocial;
 class JobDetailsDisplayView implements \Framework5\IView {
 	
 	public function render($content = null) {
+		$companyLink = ($content->website == '')?"http://google.com/?q={$content->company}":"http://{$content->website}";
+		$jobAvatar = (file_exists("images/jobs/{$content->avatar}_medium.jpg"))?"/images/jobs/{$content->avatar}_medium.jpg":"/images/site/job-default_medium.jpg";
 		
 		$html = "";
 		if ($content->jobType == 'Internship') {
@@ -31,13 +33,7 @@ HTML;
 		}
 		$html .= <<<HTML
 
-					<article class="with-secondary">
-HTML;
-			
-		$html .= <<<HTML
-
-						<p class="item-image"><a href="http://{$content->website}" title="{$content->company}"><img src="/images/jobs/{$content->avatar}_medium.jpg" alt="{$content->company}"/></a></p>
-						<h2><a href="http://{$content->website}" title="{$content->company}">{$content->company}</a></h2>
+						<h2><a href="$companyLink" title="{$content->company}">{$content->company}</a></h2>
 						<p><a href="http://maps.google.com/?q={$content->location}" title="Search Google Maps for {$content->location}">{$content->location}</a></p>
 						<p>This job is {$jobType}.</p>
 HTML;
@@ -47,9 +43,6 @@ HTML;
 						<p>Compensation is <strong>{$content->compensation}</strong></p>
 HTML;
 		}
-		$html .= <<<HTML
-					</article>
-HTML;
 		return $html;
 	}
 }

@@ -85,10 +85,13 @@ HTML;
 HTML;
 		}
 		
-		else if ($content->type == 'job' and file_exists("images/jobs/{$content->avatar}_full.jpg")) {
+		else if ($content->type == 'job') {
+			$companyLink = ($content->website == '')?"http://google.com/?q={$content->company}":"http://{$content->website}";
+			$jobAvatar = (file_exists("images/jobs/{$content->avatar}_full.jpg"))?"/images/jobs/{$content->avatar}_full.jpg":"/images/site/job-default_full.jpg";
+			
 			$html .= <<<HTML
 
-					<a href="http://{$content->website}" title="{$content->company}"><img src="/images/jobs/{$content->avatar}_full.jpg" alt="{$content->images[0]->title}" /></a>
+					<a href="$companyLink" title="{$content->company}"><img src="$jobAvatar" alt="{$content->images[0]->title}" /></a>
 					<div class="large no-margin">
 HTML;
 		}
