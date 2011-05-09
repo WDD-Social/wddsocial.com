@@ -89,22 +89,14 @@ class Uploader {
 	}
 	
 	public static function create_ics_file($event){
-		echo "<pre>";
-		echo render('wddsocial.view.WDDSocial\iCalView', array('section' => 'header'));
-		echo render('wddsocial.view.WDDSocial\iCalView', array('section' => 'event', 'event' => $event));
-		echo render('wddsocial.view.WDDSocial\iCalView', array('section' => 'footer'));
-		echo "</pre>";
+		$root = \Framework5\Request::root_path();
 		
-		/* TO DISPLAY:
-		import('wddsocial.controller.WDDSocial\Uploader');
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
-		$data = array('id' => 1);
-		$query = $db->prepare($sql->getEventICSValues);
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$query->execute($data);
-		$event = $query->fetch();
-		Uploader::create_ics_file($event);
-		*/
+		$ics = render('wddsocial.view.WDDSocial\iCalView', array('section' => 'header'));
+		$ics .= render('wddsocial.view.WDDSocial\iCalView', array('section' => 'event', 'event' => $event));
+		$ics .= render('wddsocial.view.WDDSocial\iCalView', array('section' => 'footer'));
+		
+		$handle = fopen("{$root}files/ics/wddsocial.{$event->uid}.ics",'x');
+		fwrite($handle,$ics);
+		fclose($handle);
 	}
 }
