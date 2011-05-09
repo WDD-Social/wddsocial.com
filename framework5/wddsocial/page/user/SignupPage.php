@@ -34,7 +34,7 @@ class SignupPage implements \Framework5\IExecutable {
 			array('type' => 'sign_up_intro'));
 		
 		# display sign up form
-		echo render('wddsocial.view.form.WDDSocial\SignUpView', 
+		echo render('wddsocial.view.form.WDDSocial\SignupView', 
 			array('error' => $response->message));
 		
 		# end content section
