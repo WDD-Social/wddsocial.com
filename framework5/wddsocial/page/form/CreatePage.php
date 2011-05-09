@@ -103,6 +103,8 @@ class CreatePage implements \Framework5\IExecutable {
 		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
 		import('wddsocial.controller.processes.WDDSocial\TeamMemberProcessor');
 		import('wddsocial.controller.processes.WDDSocial\CategoryProcessor');
+		import('wddsocial.controller.processes.WDDSocial\CourseProcessor');
+		import('wddsocial.controller.processes.WDDSocial\LinkProcessor');
 		
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
@@ -201,6 +203,10 @@ class CreatePage implements \Framework5\IExecutable {
 		}
 		
 		CategoryProcessor::addCategories($_POST['categories'], $contentID, $_POST['type']);
+		
+		CourseProcessor::addCourses($_POST['courses'], $contentID, $_POST['type']);
+		
+		LinkProcessor::addLinks($_POST['link-urls'], $_POST['link-titles'], $contentID, $_POST['type']);
 		
 		if($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4){
 			$data = array('id' => $contentID);
