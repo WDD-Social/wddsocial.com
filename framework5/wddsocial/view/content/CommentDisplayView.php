@@ -57,7 +57,6 @@ HTML;
 
 						<div class="secondary">
 							<a href="/" title="{$lang->text('flag_user_comment', $possessive)}" class="flag">{$lang->text('flag')}</a>
-							<a href="/" title="Flag {$possessive} Comment" class="flag">Flag</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}
