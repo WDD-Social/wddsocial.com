@@ -15,6 +15,9 @@ try {
 	# load Framework5
 	require_once '../framework5/autoload.php';
 	
+	# set site time zone
+	date_default_timezone_set('America/New_York');
+	
 	# get application controller from Framework5\Router, base on the uri segment
 	$package_name = Router::resolve(Request::segment(0));
 	
