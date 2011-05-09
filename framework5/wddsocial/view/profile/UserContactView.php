@@ -18,7 +18,7 @@ class UserContactView implements \Framework5\IView {
 	public function render($user = null) {
 		
 		if (!isset($user)) {
-			throw new \Exception("UserContactView required option 'user' was not set");
+			throw new Exception("UserContactView required option 'user' was not set");
 		}
 		
 		$root = \Framework5\Request::root_path();

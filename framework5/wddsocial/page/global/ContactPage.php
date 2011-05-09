@@ -15,7 +15,7 @@ class ContactPage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.WDDSocial\TemplateView', 
 			array('section' => 'top', 'title' => 'Contact'));
 		
-		
+		throw new \Framework5\Exception("TEST");
 		# display site footer
 		echo render('wddsocial.view.WDDSocial\TemplateView', 
 			array('section' => 'bottom'));

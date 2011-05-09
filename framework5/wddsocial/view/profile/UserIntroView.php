@@ -17,7 +17,7 @@ class UserIntroView implements \Framework5\IView {
 	public function render($user = null){
 		
 		if (!isset($user)) {
-			throw new \Exception("UserIntroView required option 'user' was not set");
+			throw new Exception("UserIntroView required option 'user' was not set");
 		}
 		
 		# get dependencies

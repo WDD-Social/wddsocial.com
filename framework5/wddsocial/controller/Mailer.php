@@ -31,13 +31,13 @@ class Mailer extends \Framework5\Controller {
 	
 	public function __get($key) {
 		if (!array_key_exists($key, $this->_data))
-			throw new \Exception("Could not set mailer property '$key'");
+			throw new Exception("Could not set mailer property '$key'");
 		return $this->_data[$key];
 	}
 	
 	public function __set($key, $value) {
 		if (!array_key_exists($key, $this->_data))
-			throw new \Exception("Could not get invalid mailer property '$key'");
+			throw new Exception("Could not get invalid mailer property '$key'");
 		$this->_data[$key] = $value;
 		return true;
 	}
@@ -51,9 +51,9 @@ class Mailer extends \Framework5\Controller {
 	public function add_recipient($name = null, $email = null) {
 		# validate input
 		if (!isset($name))
-			throw new \Exception("Recipient name not provided");
+			throw new Exception("Recipient name not provided");
 		if (!isset($email))
-			throw new \Exception("Email address not provided");
+			throw new Exception("Email address not provided");
 		
 		# add to array
 		$this->_recipients[$name] = $email;
@@ -71,11 +71,11 @@ class Mailer extends \Framework5\Controller {
 		
 		# validate properties
 		if ($total_recipients == 0)
-			throw new \Exception("Mailer requires at least one recipient");
+			throw new Exception("Mailer requires at least one recipient");
 		if ($this->subject == null)
-			throw new \Exception("Mailer requires a subject");
+			throw new Exception("Mailer requires a subject");
 		if ($this->message == null)
-			throw new \Exception("Mailer requires a message");
+			throw new Exception("Mailer requires a message");
 		
 		# message template
 		$message = render('wddsocial.view.email.WDDSocial\MailTemplate', $this->message);

@@ -18,7 +18,7 @@ class iCalView implements \Framework5\IView {
 			case 'event':
 				return $this->event($options['event']);
 			default:
-				throw new \Framework5\Exception("iCalView requires parameter type (header, footer, or event), '{$options['section']}' provided");
+				throw new Exception("iCalView requires parameter type (header, footer, or event), '{$options['section']}' provided");
 		}
 	}
 	
