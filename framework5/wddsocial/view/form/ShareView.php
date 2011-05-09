@@ -10,10 +10,9 @@ namespace WDDSocial;
 class ShareView implements \Framework5\IView {		
 	
 	public function render($options = null) {
-		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
-					<form action="{$root}create" method="post">
+					<form action="/create" method="post">
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="title">Title</label>

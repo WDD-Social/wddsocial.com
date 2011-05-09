@@ -10,10 +10,9 @@ namespace WDDSocial;
 class AccountView implements \Framework5\IView {		
 	
 	public function render($options = null) {
-		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
-					<form action="{$root}account" method="post" enctype="multipart/form-data">
+					<form action="/account" method="post" enctype="multipart/form-data">
 					<h1>Basic</h1>
 					<p class="error"><strong>{$options['error']}</strong></p>
 					<fieldset>
@@ -77,7 +76,7 @@ class AccountView implements \Framework5\IView {
 						<small><span class="count">255</span> characters left</small>
 					</fieldset>
 					
-					<p class="helper-link"><a href="{$root}remove/account" title="Delete your WDD Social Account">Delete Account</a></p>
+					<p class="helper-link"><a href="/remove/account" title="Delete your WDD Social Account">Delete Account</a></p>
 					<input type="hidden" name="process" value="account" />
 					<input type="submit" value="Save" />
 				</form>

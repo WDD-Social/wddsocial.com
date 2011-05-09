@@ -13,7 +13,6 @@ class OverviewDisplayView implements \Framework5\IView {
 	
 	public function render($content = null) {
 
-		$root = \Framework5\Request::root_path();
 		$html = "";
 		
 		# display edit controls, if user is author
@@ -21,8 +20,8 @@ class OverviewDisplayView implements \Framework5\IView {
 			$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
-						<a href="{$root}" title="Delete &ldquo;{$content->title}&rdquo;" class="delete">Delete</a>
+						<a href="/" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
+						<a href="/" title="Delete &ldquo;{$content->title}&rdquo;" class="delete">Delete</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}
@@ -35,14 +34,14 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
+						<a href="/" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
+						<a href="/" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -52,14 +51,14 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
+						<a href="/" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
+						<a href="/" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -68,7 +67,7 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
+						<a href="/" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -81,7 +80,7 @@ HTML;
 		if (count($content->images) > 0 and $content->type != 'job' and file_exists("images/uploads/{$content->images[0]->file}_full.jpg") and file_exists("images/uploads/{$content->images[0]->file}_large.jpg")) {
 			$html .= <<<HTML
 
-					<a href="{$root}images/uploads/{$content->images[0]->file}_full.jpg" title="{$content->images[0]->title}"><img src="{$root}images/uploads/{$content->images[0]->file}_large.jpg" alt="{$content->images[0]->title}" /></a>
+					<a href="/images/uploads/{$content->images[0]->file}_full.jpg" title="{$content->images[0]->title}"><img src="/images/uploads/{$content->images[0]->file}_large.jpg" alt="{$content->images[0]->title}" /></a>
 					<div class="large no-margin">
 HTML;
 		}
@@ -89,7 +88,7 @@ HTML;
 		else if ($content->type == 'job' and file_exists("images/jobs/{$content->avatar}_full.jpg")) {
 			$html .= <<<HTML
 
-					<a href="http://{$content->website}" title="{$content->company}"><img src="{$root}images/jobs/{$content->avatar}_full.jpg" alt="{$content->images[0]->title}" /></a>
+					<a href="http://{$content->website}" title="{$content->company}"><img src="/images/jobs/{$content->avatar}_full.jpg" alt="{$content->images[0]->title}" /></a>
 					<div class="large no-margin">
 HTML;
 		}
@@ -154,7 +153,7 @@ HTML;
 			foreach ($content->categories as $category) {
 				$html .= <<<HTML
 
-							<li><a href="{$root}/search/{$category->title}" title="Categories | {$category->title}">{$category->title}</a></li>
+							<li><a href="/search/{$category->title}" title="Categories | {$category->title}">{$category->title}</a></li>
 HTML;
 			}
 			$html .= <<<HTML

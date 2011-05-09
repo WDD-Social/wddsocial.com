@@ -21,7 +21,6 @@ class UserContactView implements \Framework5\IView {
 			throw new Exception("UserContactView required option 'user' was not set");
 		}
 		
-		$root = \Framework5\Request::root_path();
 		$complete = 0;
 		$total = 0;
 		
@@ -48,7 +47,7 @@ HTML;
 			$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="Edit Your Contact Information" class="edit">Edit</a>
+						<a href="/account#contact" title="Edit Your Contact Information" class="edit">Edit</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}
@@ -61,8 +60,8 @@ HTML;
 		if(UserSession::is_authorized()){
 			$html .= <<<HTML
 						<li>
-							<a href="{$root}messages/{$user->vanityURL}" title="Send {$user->firstName} a message">
-							<img src="{$root}images/site/icon-contact-mail.png" alt="Send {$user->firstName} a message" />
+							<a href="/messages/{$user->vanityURL}" title="Send {$user->firstName} a message">
+							<img src="/images/site/icon-contact-mail.png" alt="Send {$user->firstName} a message" />
 							<p><strong>WDD Social</strong> Send {$user->firstName} a message</p>
 							</a>
 						</li>
@@ -74,7 +73,7 @@ HTML;
 
 						<li>
 							<a href="http://{$user->contact['website']}" title="Visit $ownership Website">
-							<img src="{$root}images/site/icon-contact-world.png" alt="Visit $ownership Website" />
+							<img src="/images/site/icon-contact-world.png" alt="Visit $ownership Website" />
 							<p><strong>Website</strong> {$user->contact['website']}</p>
 							</a>
 						</li>
@@ -86,7 +85,7 @@ HTML;
 
 						<li>
 							<a href="http://twitter.com/{$user->contact['twitter']}" title="Visit $ownership Twitter Profile">
-							<img src="{$root}images/site/icon-contact-twitter.png" alt="Visit $ownership Twitter Profile" />
+							<img src="/images/site/icon-contact-twitter.png" alt="Visit $ownership Twitter Profile" />
 							<p><strong>Twitter</strong> @{$user->contact['twitter']}</p>
 							</a>
 						</li>
@@ -98,7 +97,7 @@ HTML;
 
 						<li>
 							<a href="http://facebook.com/{$user->contact['facebook']}" title="Visit $ownership Facebook Profile">
-							<img src="{$root}images/site/icon-contact-facebook.png" alt="Visit $ownership Facebook Profile" />
+							<img src="/images/site/icon-contact-facebook.png" alt="Visit $ownership Facebook Profile" />
 							<p><strong>Facebook</strong> facebook.com/{$user->contact['facebook']}</p>
 							</a>
 						</li>
@@ -110,7 +109,7 @@ HTML;
 
 						<li>
 							<a href="http://github.com/{$user->contact['github']}" title="Visit $ownership Github Profile">
-							<img src="{$root}images/site/icon-contact-github.png" alt="Visit $ownership Github Profile" />
+							<img src="/images/site/icon-contact-github.png" alt="Visit $ownership Github Profile" />
 							<p><strong>Github</strong> github.com/{$user->contact['github']}</p>
 							</a>
 						</li>
@@ -122,7 +121,7 @@ HTML;
 
 						<li>
 							<a href="http://dribbble.com/{$user->contact['dribbble']}" title="Visit $ownership Dribbble Profile">
-							<img src="{$root}images/site/icon-contact-dribbble.png" alt="Visit $ownership Dribbble Profile" />
+							<img src="/images/site/icon-contact-dribbble.png" alt="Visit $ownership Dribbble Profile" />
 							<p><strong>Dribbble</strong> dribbble.com/{$user->contact['dribbble']}</p>
 							</a>
 						</li>
@@ -134,7 +133,7 @@ HTML;
 
 						<li>
 							<a href="http://forrst.com/{$user->contact['forrst']}" title="Visit $ownership Forrst Profile">
-							<img src="{$root}images/site/icon-contact-forrst.png" alt="Visit $ownership Forrst Profile" />
+							<img src="/images/site/icon-contact-forrst.png" alt="Visit $ownership Forrst Profile" />
 							<p><strong>Forrst</strong> forrst.com/{$user->contact['forrst']}</p>
 							</a>
 						</li>
@@ -149,7 +148,7 @@ HTML;
 		if(UserSession::is_current($user->id) and $percentage < .5){
 			$html .= <<<HTML
 
-					<p class="incomplete extra-spacing">People want to talk to you, but they need to know how! Why don&rsquo;t you <strong><a href="{$root}account" title="">add some contact info?</a></strong></p>
+					<p class="incomplete extra-spacing">People want to talk to you, but they need to know how! Why don&rsquo;t you <strong><a href="/account" title="">add some contact info?</a></strong></p>
 HTML;
 		}
 				

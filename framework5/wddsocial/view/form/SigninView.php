@@ -10,10 +10,9 @@ namespace WDDSocial;
 class SignInView implements \Framework5\IView {		
 	
 	public function render($options = null) {
-		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
-					<form action="{$root}signin" method="post" class="small">
+					<form action="/signin" method="post" class="small">
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="email">Email</label>
@@ -24,7 +23,7 @@ class SignInView implements \Framework5\IView {
 							<p class="helper-link"><a href="#" title="Did you forget your password?" tabindex="1000">Forgot?</a></p>
 							<input type="password" name="password" id="password" />
 						</fieldset>
-						<p class="helper-link"><a href="{$root}signup" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
+						<p class="helper-link"><a href="/signup" title="Not yet a member of WDD Social? Sign up here." tabindex="1000">Not yet a member?</a></p>
 						<input type="submit" name="submit" value="Sign In" />
 					</form>
 HTML;

@@ -21,10 +21,9 @@ class UserIntroView implements \Framework5\IView {
 		}
 		
 		# get dependencies
-		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.UserLang');
 		$userDisplayName = NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
-		$userAvatar = (file_exists("images/avatars/{$user->avatar}_full.jpg"))?"{$root}images/avatars/{$user->avatar}_full.jpg":"{$root}images/site/user-default_full.jpg";
+		$userAvatar = (file_exists("images/avatars/{$user->avatar}_full.jpg"))?"/images/avatars/{$user->avatar}_full.jpg":"/images/site/user-default_full.jpg";
 		
 		# content
 		$html = <<<HTML
@@ -37,7 +36,7 @@ HTML;
 			$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('edit_your_profile')}" class="edit">{$lang->text('edit')}</a>
+						<a href="/account" title="{$lang->text('edit_your_profile')}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}
@@ -57,7 +56,7 @@ HTML;
 		foreach ($user->extra['likes'] as $like) {
 			$html .= <<<HTML
 
-							<li><a href="{$root}/search/$like" title="$like">$like</a></li>
+							<li><a href="/search/$like" title="$like">$like</a></li>
 HTML;
 		}
 		$html .= <<<HTML
@@ -71,7 +70,7 @@ HTML;
 		foreach ($user->extra['dislikes'] as $dislike) {
 			$html .= <<<HTML
 
-							<li><a href="{$root}/search/$dislike" title="$dislike">$dislike</a></li>
+							<li><a href="/search/$dislike" title="$dislike">$dislike</a></li>
 HTML;
 		}
 		$html .= <<<HTML
@@ -90,7 +89,6 @@ HTML;
 	*/
 	
 	private static function getUserIntro($user){
-		$root = \Framework5\Request::root_path();
 		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are ":"<strong>{$user->firstName}</strong> is a";
 		
 		if(isset($user->age)){
@@ -120,9 +118,9 @@ HTML;
 					$sentence .= " who teaches";
 					for($i =0; $i < count($user->extra['courses']); $i++){
 						if($i == count($user->extra['courses'])-1){
-							$sentence .= " and <strong><a href=\"{$root}course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>";
+							$sentence .= " and <strong><a href=\"/course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>";
 						}else{
-							$sentence .= " <strong><a href=\"{$root}course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>,";
+							$sentence .= " <strong><a href=\"/course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>,";
 						}
 					}
 				}

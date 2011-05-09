@@ -13,7 +13,6 @@ class MediaDisplayView implements \Framework5\IView {
 	
 	public function render($options = null) {
 	
-		$root = \Framework5\Request::root_path();
 		$html = <<<HTML
 
 					<div class="{$options['active']}">
@@ -26,7 +25,7 @@ HTML;
 					foreach ($options['content']->images as $image) {
 						$html .= <<<HTML
 
-						<a href="{$root}images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+						<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 					}
 				}
