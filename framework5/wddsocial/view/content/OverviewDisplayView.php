@@ -78,7 +78,7 @@ HTML;
 		
 		
 		 
-		if (count($content->images) > 0 and $content->type != 'job' and file_exists("{$root}images/uploads/{$content->images[0]->file}_full.jpg") and file_exists("{$root}images/uploads/{$content->images[0]->file}_large.jpg")) {
+		if (count($content->images) > 0 and $content->type != 'job') {
 			$html .= <<<HTML
 
 					<a href="{$root}images/uploads/{$content->images[0]->file}_full.jpg" title="{$content->images[0]->title}"><img src="{$root}images/uploads/{$content->images[0]->file}_large.jpg" alt="{$content->images[0]->title}" /></a>
@@ -86,7 +86,7 @@ HTML;
 HTML;
 		}
 		
-		else if ($content->type == 'job' and file_exists("{$root}images/jobs/{$content->avatar}_full.jpg")) {
+		else if ($content->type == 'job') {
 			$html .= <<<HTML
 
 					<a href="http://{$content->website}" title="{$content->company}"><img src="{$root}images/jobs/{$content->avatar}_full.jpg" alt="{$content->images[0]->title}" /></a>

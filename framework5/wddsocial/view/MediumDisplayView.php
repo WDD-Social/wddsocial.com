@@ -46,7 +46,6 @@ class MediumDisplayView implements \Framework5\IView {
 		
 		$userVerbage = NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($project->userID,"{$project->userFirstName} {$project->userLastName}");
-		$userAvatar = (file_exists("{$root}images/avatars/{$project->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$project->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
 		$teamIntro = static::format_team_string($project->userID,$project->team);
 		
 		$html = <<<HTML
@@ -77,8 +76,8 @@ HTML;
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}user/{$project->userURL}" title="$userVerbage"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}user/{$project->userURL}" title="$userVerbage">$userDisplayName</a></strong> posted a <strong><a href="{$root}project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
+						<p class="item-image"><a href="{$root}user/{$project->userURL}" title="$userVerbage"><img src="{$root}images/avatars/{$project->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
+						<p class="intro">$test <strong><a href="{$root}user/{$project->userURL}" title="$userVerbage">$userDisplayName</a></strong> posted a <strong><a href="{$root}project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
 						<h2><a href="{$root}project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
 HTML;
@@ -131,7 +130,6 @@ HTML;
 		
 		$userVerbage = NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
-		$userAvatar = (file_exists("{$root}images/avatars/{$article->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$article->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
 		$teamIntro = static::format_team_string($article->userID,$article->team);
 		$html = <<<HTML
 
@@ -161,7 +159,7 @@ HTML;
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="item-image"><a href="{$root}user/{$article->userURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$article->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
 						<p class="intro"><strong><a href="{$root}user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">article</a></strong>$teamIntro.</p>
 						<h2><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
@@ -215,12 +213,11 @@ HTML;
 		
 		$userVerbage = NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($person->userID,"{$person->userFirstName} {$person->userLastName}");
-		$userAvatar = (file_exists("{$root}images/avatars/{$person->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$person->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
 		
 		$html = <<<HTML
 
 					<article class="people">
-						<p class="item-image"><a href="{$root}user/{$person->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="item-image"><a href="{$root}user/{$person->userURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$person->userAvatar}_medium.jpg" alt="$userDisplayName"/></a></p>
 						<p class="intro"><strong><a href="{$root}user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> joined the community.</p>
 						<p>{$person->description}</p>
 						<p>{$person->date}</p>
