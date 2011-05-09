@@ -12,7 +12,8 @@ class CommentDisplayView implements \Framework5\IView {
 	
 	public function render($comments = null) {
 		
-		$root = \Framework5\Request::root_path();
+		$lang = new \Framework5\Lang('wddsocial.lang.view.CommentDisplayLang');
+		
 		$html = "";
 		$commentCount = count($comments);
 		$commentVerbage = 'comment';
@@ -44,8 +45,8 @@ HTML;
 					$html .= <<<HTML
 
 						<div class="secondary">
-							<a href="{$root}" title="Edit Your Comment" class="edit">Edit</a> 
-							<a href="{$root}" title="Delete Your Comment" class="delete">Delete</a>
+							<a href="/" title="{$lang->text('edit_title')}" class="edit">{$lang->text('edit')}</a> 
+							<a href="/" title="{$lang->text('delete_title')}" class="delete">{$lang->text('delete')}</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -55,14 +56,15 @@ HTML;
 					$html .= <<<HTML
 
 						<div class="secondary">
-							<a href="{$root}" title="Flag {$possessive} Comment" class="flag">Flag</a>
+							<a href="/" title="{$lang->text('flag_user_comment', $possessive)}" class="flag">{$lang->text('flag')}</a>
+							<a href="/" title="Flag {$possessive} Comment" class="flag">Flag</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}
 				$html .= <<<HTML
 						
-						<p class="item-image"><a href="{$root}user/{$comment->vanityURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$comment->avatar}_medium.jpg" alt="{$userDisplayName}"/></a></p>
-						<h2><a href="{$root}user/{$comment->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
+						<p class="item-image"><a href="/user/{$comment->vanityURL}" title="{$userVerbage}"><img src="/images/avatars/{$comment->avatar}_medium.jpg" alt="{$userDisplayName}"/></a></p>
+						<h2><a href="/user/{$comment->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
 						<p>{$comment->content}</p>
 						<p class="comments">{$comment->date}</p>
 					</article>
@@ -76,7 +78,7 @@ HTML;
 			if (UserSession::is_authorized()){
 				$html .= <<<HTML
 
-					<p class="empty">No one has commented yet, why don&rsquo;t you start the conversation?</p>
+					<p class="empty">{$lang->text('no_comments')}</p>
 HTML;
 			}
 		}
@@ -90,8 +92,8 @@ HTML;
 			$html .= <<<HTML
 
 					<article>
-						<p class="item-image"><a href="{$root}user/{$user->vanityURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$user->avatar}_medium.jpg" alt="{$userDisplayName}"/></a></p>
-						<h2><a href="{$root}user/{$user->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
+						<p class="item-image"><a href="/user/{$user->vanityURL}" title="{$userVerbage}"><img src="/images/avatars/{$user->avatar}_medium.jpg" alt="{$userDisplayName}"/></a></p>
+						<h2><a href="/user/{$user->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
 HTML;
 			$html .= render('wddsocial.view.form.WDDSocial\CommentView');
 			$html .= <<<HTML
@@ -104,7 +106,7 @@ HTML;
 		else {
 			$html .= <<<HTML
 
-					<p class="empty">You must be signed in to add a comment. <a href="{$root}signin" title="Sign In to WDD Social">Would you like to sign in?</a></p>
+					<p class="empty">{$lang->text('signin_required')}<a href="/signin" title="{$lang->text('signin_title')}">{$lang->text('signin_link')}</a></p>
 HTML;
 		}
 		

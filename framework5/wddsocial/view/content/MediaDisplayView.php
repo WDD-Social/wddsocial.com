@@ -13,7 +13,7 @@ class MediaDisplayView implements \Framework5\IView {
 	
 	public function render($options = null) {
 	
-		$root = \Framework5\Request::root_path();
+		$lang = new \Framework5\Lang('wddsocial.lang.view.MediaDisplayLang');
 		$html = <<<HTML
 
 					<div class="{$options['active']}">
@@ -26,7 +26,7 @@ HTML;
 					foreach ($options['content']->images as $image) {
 						$html .= <<<HTML
 
-						<a href="{$root}images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+						<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 					}
 				}
@@ -34,7 +34,7 @@ HTML;
 				else {
 					$html .= <<<HTML
 
-						<p class="empty">Welp! No images have been added, so this page will look a little plain...</p>
+						<p class="empty">{$lang->text('no_images')}</p>
 HTML;
 				}
 				break;
@@ -49,7 +49,7 @@ HTML;
 				}else{
 					$html .= <<<HTML
 
-						<p class="empty">Uh oh, no videos have been added.</p>
+						<p class="empty">{$lang->text('no_videos')}</p>
 HTML;
 				}
 				
