@@ -37,20 +37,20 @@ class SmallDisplayView implements \Framework5\IView {
 	
 	private function article_display($article){
 		$root = \Framework5\Request::root_path();
-		$userAvatar = (file_exists("{$root}/images/avatars/{$article->userAvatar}_medium.jpg"))?"{$root}/images/avatars/{$article->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$userAvatar = (file_exists("images/avatars/{$article->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$article->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
 		
 		$html = <<<HTML
 
 					<article class="slider-item">
-						<p class="item-image"><a href="{$root}/user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<h2><a href="{$root}/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
+						<p class="item-image"><a href="{$root}user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<h2><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
-						<p class="comments"><a href="{$root}/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a></p>
+						<p class="comments"><a href="{$root}article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a></p>
 HTML;
 		# Build categories
 		$categoryLinks = array();
 		foreach($article->categories as $category){
-			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -103,21 +103,21 @@ HTML;
 			
 		$html .= <<<HTML
 
-						<p class="item-image"><a href="{$root}/files/ics/{$event->icsUID}.ics" title="Download {$event->title} iCal File" class="calendar-icon">
+						<p class="item-image"><a href="{$root}files/ics/{$event->icsUID}.ics" title="Download {$event->title} iCal File" class="calendar-icon">
 							<span class="month">{$event->month}</span> 
 							<span class="day">{$event->day}</span> 
-							<span class="download"><img src="{$root}/images/site/icon-download.png" alt="Download iCal File"/>iCal</span>
+							<span class="download"><img src="{$root}images/site/icon-download.png" alt="Download iCal File"/>iCal</span>
 						</a></p>
-						<h2><a href="{$root}/event/{$event->vanityURL}" title="{$event->title}">{$event->title}</a></h2>
+						<h2><a href="{$root}event/{$event->vanityURL}" title="{$event->title}">{$event->title}</a></h2>
 						<p class="location">{$event->location}</p>
 						<p>{$event->startTime}</p>
 						<p>{$event->description}</p>
-						<p class="comments"><a href="{$root}/event/{$event->vanityURL}#comments" title="{$event->title} | Comments">{$event->comments} comments</a></p>
+						<p class="comments"><a href="{$root}event/{$event->vanityURL}#comments" title="{$event->title} | Comments">{$event->comments} comments</a></p>
 HTML;
 		# Build categories
 		$categoryLinks = array();
 		foreach($event->categories as $category){
-			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -167,18 +167,18 @@ HTML;
 			
 		$html .= <<<HTML
 
-						<p class="item-image"><a href="http://{$job->website}" title="{$job->company}"><img src="{$root}/images/jobs/{$job->avatar}_medium.jpg" alt="{$job->company}"/></a></p>
-						<h2><a href="{$root}/job/{$job->vanityURL}" title="{$job->title} | {$job->company}">{$job->title}</a></h2>
+						<p class="item-image"><a href="http://{$job->website}" title="{$job->company}"><img src="{$root}images/jobs/{$job->avatar}_medium.jpg" alt="{$job->company}"/></a></p>
+						<h2><a href="{$root}job/{$job->vanityURL}" title="{$job->title} | {$job->company}">{$job->title}</a></h2>
 						<p class="company"><a href="http://{$job->website}" title="{$job->company}">{$job->company}</a></p>
 						<p><a href="http://maps.google.com/?q={$job->location}" title="Search Google Maps for {$job->location}">{$job->location}</a></p>
 						<p>{$job->description}</p>
-						<p class="job-type"><a href="{$root}/jobs#{$job->jobType}" title="See {$job->jobType} Job Postings">{$job->jobType}</a></p>
+						<p class="job-type"><a href="{$root}jobs#{$job->jobType}" title="See {$job->jobType} Job Postings">{$job->jobType}</a></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
 		foreach($job->categories as $category){
-			array_push($categoryLinks,"<a href=\"{$root}/search/$category\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -197,11 +197,11 @@ HTML;
 	private function person_imagegrid_display($person){
 		$root = \Framework5\Request::root_path();
 		$userVerbage = NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
-		$userAvatar = (file_exists("{$root}images/avatars/{$person->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$person->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$userAvatar = (file_exists("images/avatars/{$person->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$person->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
 		
 		return <<<HTML
 
-					<p><a href="{$root}/user/{$person->userVanityURL}" title="$userVerbage"><img src="$userAvatar" alt="{$person->userFirstName} {$person->userLastName}"/></a></p>
+					<p><a href="{$root}user/{$person->userVanityURL}" title="$userVerbage"><img src="$userAvatar" alt="{$person->userFirstName} {$person->userLastName}"/></a></p>
 HTML;
 	}
 }

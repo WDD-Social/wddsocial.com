@@ -24,7 +24,7 @@ class UserIntroView implements \Framework5\IView {
 		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.UserLang');
 		$userDisplayName = NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
-		$userAvatar = (file_exists("{$root}images/avatars/{$user->avatar}_full.jpg"))?"{$root}images/avatars/{$user->avatar}_full.jpg":"{$root}images/site/user-default_full.jpg";
+		$userAvatar = (file_exists("images/avatars/{$user->avatar}_full.jpg"))?"{$root}images/avatars/{$user->avatar}_full.jpg":"{$root}images/site/user-default_full.jpg";
 		
 		# content
 		$html = <<<HTML

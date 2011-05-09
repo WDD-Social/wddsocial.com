@@ -11,10 +11,20 @@ namespace WDDSocial;
 
 class ProjectPage implements \Framework5\IExecutable {
 	
-	public function execute() {	
+	public function execute() {
 		
 		# get project details
 		$project = $this->getProject(\Framework5\Request::segment(1));
+		
+		# handle form submission
+		if (isset($_POST['submit'])){
+			$response = $this->_process_form($project->id,$project->type);
+			
+			if ($response->status) {
+				$project = null;
+				$project = $this->getProject(\Framework5\Request::segment(1));
+			}
+		}
 		
 		# if the project does not exist
 		if ($project) {
@@ -90,5 +100,18 @@ class ProjectPage implements \Framework5\IExecutable {
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 		$query->execute($data);
 		return $query->fetch();
+	}
+	
+	
+	
+	/**
+	* Handle comment addition
+	*/
+	
+	private function _process_form($projectID,$contentType) {
+		import('wddsocial.model.WDDSocial\FormResponse');
+		import('wddsocial.controller.processes.WDDSocial\CommentProcessor');
+		CommentProcessor::add_comment($_POST['content'],$projectID,$contentType);
+		return new FormResponse(true);
 	}
 }

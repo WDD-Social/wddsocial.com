@@ -14,14 +14,14 @@ class DisplayVO{
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
 		
-		if($type != 'person'){
-			$this->get_comments_count();
+		if($this->type == 'project' or $this->type == 'article' or $this->type == 'projectComment' or $this->type == 'articleComment'){
+			$this->get_team();
 		}
 		
-		$this->get_categories();
 		if($this->type == 'project' or $this->type == 'article'){
-			$this->get_team();
+			$this->get_categories();
 			$this->get_images();
+			$this->get_comments_count();
 		}
 	}
 	
@@ -144,6 +144,22 @@ class DisplayVO{
 				}
 				break;
 			case 'article':
+				$query = $this->db->prepare($this->sql->getArticleTeam);
+				$query->execute($data);
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+				while($user = $query->fetch()){
+					array_push($this->team,$user);
+				}
+				break;
+			case 'projectComment':
+				$query = $this->db->prepare($this->sql->getProjectTeam);
+				$query->execute($data);
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+				while($user = $query->fetch()){
+					array_push($this->team,$user);
+				}
+				break;
+			case 'articleComment':
 				$query = $this->db->prepare($this->sql->getArticleTeam);
 				$query->execute($data);
 				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');

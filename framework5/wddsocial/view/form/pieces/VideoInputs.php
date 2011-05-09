@@ -16,11 +16,17 @@ class VideoInputs implements \Framework5\IView {
 						<p>Please provide the <strong><a href="http://youtube.com/" title="YouTube - Broadcast Yourself.">YouTube</a></strong> or <strong><a href="http://vimeo.com/" title="Vimeo, Video Sharing For You">Vimeo</a></strong> embed codes.</p>
 HTML;
 		# display image uploaders
-		for ($i = 1; $i < 3; $i++) {
+		for ($i = 1; $i < 2; $i++) {
+			if ($i == 1) {
+				$videoNumber = '';
+			}
+			else {
+				$videoNumber = " $i";
+			}
 			$html .= <<<HTML
 
 						<fieldset>
-							<label for="video$i">Video $i</label>
+							<label for="video$i">Video$videoNumber</label>
 							<input type="text" name="videos[]" id="video$i" />
 						</fieldset>
 HTML;
