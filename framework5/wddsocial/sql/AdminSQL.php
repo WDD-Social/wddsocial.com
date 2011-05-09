@@ -56,6 +56,10 @@ class AdminSQL{
 			INSERT INTO projectImages (projectID, imageID)
 			VALUES (:projectID,:imageID)",
 		
+		'addProjectVideo' => "
+			INSERT INTO projectVideos (projectID, videoID)
+			VALUES (:projectID,:videoID)",
+		
 		/**
 		* Article Queries
 		*/
@@ -88,6 +92,10 @@ class AdminSQL{
 		'addArticleImage' => "
 			INSERT INTO articleImages (articleID, imageID)
 			VALUES (:articleID,:imageID)",
+		
+		'addArticleVideo' => "
+			INSERT INTO articleVideos (articleID, videoID)
+			VALUES (:articleID,:videoID)",
 		
 		/**
 		* Event Queries
@@ -124,6 +132,10 @@ class AdminSQL{
 			INSERT INTO eventImages (eventID, imageID)
 			VALUES (:eventID,:imageID)",
 		
+		'addEventVideo' => "
+			INSERT INTO eventVideos (eventID, videoID)
+			VALUES (:eventID,:videoID)",
+		
 		/**
 		* Job Queries
 		*/
@@ -159,6 +171,10 @@ class AdminSQL{
 			INSERT INTO jobImages (jobID, imageID)
 			VALUES (:jobID,:imageID)",
 		
+		'addJobVideo' => "
+			INSERT INTO jobVideos (jobID, videoID)
+			VALUES (:jobID,:videoID)",
+		
 		/**
 		* Category Queries
 		*/
@@ -187,7 +203,15 @@ class AdminSQL{
 			
 			UPDATE images
 			SET `file` = MD5(CONCAT('image',id))
-			WHERE id = @last_id;"
+			WHERE id = @last_id;",
+		
+		/**
+		* Video Queries
+		*/
+		
+		'addVideo' => "
+			INSERT INTO videos (userID, embedCode, `datetime`)
+			VALUES (:userID, :embedCode, NOW())"
 		
 	);
 	

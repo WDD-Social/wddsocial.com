@@ -105,6 +105,7 @@ class CreatePage implements \Framework5\IExecutable {
 		import('wddsocial.controller.processes.WDDSocial\CategoryProcessor');
 		import('wddsocial.controller.processes.WDDSocial\CourseProcessor');
 		import('wddsocial.controller.processes.WDDSocial\LinkProcessor');
+		import('wddsocial.controller.processes.WDDSocial\VideoProcessor');
 		
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
@@ -199,14 +200,14 @@ class CreatePage implements \Framework5\IExecutable {
 		}
 		
 		if ($_POST['type'] == 'project' or $_POST['type'] == 'article') {
-			TeamMemberProcessor::addTeamMembers($_POST['team'], $contentID, $_POST['type'], $_POST['roles']);
+			TeamMemberProcessor::add_team_members($_POST['team'], $contentID, $_POST['type'], $_POST['roles']);
 		}
 		
-		CategoryProcessor::addCategories($_POST['categories'], $contentID, $_POST['type']);
+		CategoryProcessor::add_categories($_POST['categories'], $contentID, $_POST['type']);
 		
-		CourseProcessor::addCourses($_POST['courses'], $contentID, $_POST['type']);
+		CourseProcessor::add_courses($_POST['courses'], $contentID, $_POST['type']);
 		
-		LinkProcessor::addLinks($_POST['link-urls'], $_POST['link-titles'], $contentID, $_POST['type']);
+		LinkProcessor::add_links($_POST['link-urls'], $_POST['link-titles'], $contentID, $_POST['type']);
 		
 		if($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4){
 			$data = array('id' => $contentID);
@@ -218,6 +219,8 @@ class CreatePage implements \Framework5\IExecutable {
 		}
 		
 		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
+		
+		VideoProcessor::add_videos($_POST['videos'], $contentID, $_POST['type']);
 		
 		# Get Vanity URL of new content to redirect there
 		$contentVanityURL = VanityURLProcessor::get($contentID, $_POST['type']);
