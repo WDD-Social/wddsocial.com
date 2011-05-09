@@ -96,7 +96,7 @@ HTML;
 		<footer>
 			<nav>
 				<ul>
-					<li><a href="developer" title="WDD Social | {$lang->text('developer_desc')}">{$lang->text('developer')}</a></li>
+					<!-- <li><a href="developer" title="WDD Social | {$lang->text('developer_desc')}">{$lang->text('developer')}</a></li> -->
 					<li><a href="about" title="WDD Social | {$lang->text('about_desc')}">{$lang->text('about')}</a></li>
 					<li><a href="contact" title="WDD Social | {$lang->text('contact_desc')}">{$lang->text('contact')}</a></li>
 					<li><a href="terms" title="WDD Social | {$lang->text('terms_desc')}">{$lang->text('terms')}</a></li>
