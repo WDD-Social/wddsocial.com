@@ -17,14 +17,11 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	
 	public function execute() {
 		
-		# import settings and load 
-		import('wddsocial.config.WDDSocial\AppSettings');
-		PackageManager::define_alias_array(\WDDSocial\AppSettings::$package_aliases);
+		# init the application
+		$this->init();
 		
-		# import application global dependencies
-		import('wddsocial.controller.WDDSocial\UserValidator');
-		import('wddsocial.helper.WDDSocial\NaturalLanguage');
-		import('wddsocial.sql.WDDSocial\SelectorSQL');
+		# import packages in every request
+		$this->global_import();
 		
 		# check user session
 		import('wddsocial.controller.WDDSocial\UserSession');
@@ -41,5 +38,34 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		# execute the controller
 		execute($package);
 		return true;
+	}
+	
+	
+	
+	/**
+	* Initialize the application
+	*/
+	
+	private function init() {
+		
+		# import application settings
+		import('wddsocial.config.WDDSocial\AppSettings');
+		
+		# load package aliases
+		PackageManager::define_alias_array(\WDDSocial\AppSettings::$package_aliases);
+		
+	}
+	
+	
+	
+	/**
+	*  import application global dependencies
+	*/
+	
+	private function global_import() {
+		
+		import('wddsocial.controller.WDDSocial\UserValidator');
+		import('wddsocial.helper.WDDSocial\NaturalLanguage');
+		import('wddsocial.sql.WDDSocial\SelectorSQL');
 	}
 }
