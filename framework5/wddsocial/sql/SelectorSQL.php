@@ -262,6 +262,11 @@ class SelectorSQL{
 			WHERE CONCAT_WS(' ',firstName, lastName) = :name
 			LIMIT 1",
 		
+		'getUserVerificationCode' => "
+			SELECT id
+			FROM users
+			WHERE verificationCode = :verificationCode",
+		
 		'getStudentDetailByID' => "
 			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, location
 			FROM studentDetail

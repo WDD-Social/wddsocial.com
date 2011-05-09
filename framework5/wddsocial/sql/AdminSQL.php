@@ -16,11 +16,22 @@ class AdminSQL{
 		
 		'addUser' => "
 			INSERT INTO users (typeID, firstName, lastName, email, fullsailEmail, `password`, vanityURL, bio, hometown, birthday, `datetime`)
-			VALUES (:typeID, :firstName, :lastName, :email, :fullsailEmail, MD5(:password), :vanityURL, :bio, :hometown, :birthday, NOW())",
-		
-		'generateUserAvatar' => "
+			VALUES (:typeID, :firstName, :lastName, :email, :fullsailEmail, MD5(:password), :vanityURL, :bio, :hometown, :birthday, NOW());
+			
+			SET @last_id = LAST_INSERT_ID();
+			
 			UPDATE users
-			SET avatar = MD5(CONCAT('user',id))
+			SET avatar = MD5(CONCAT('user',id)), verificationCode = MD5(CONCAT(id,fullsailEmail,`datetime`))
+			WHERE id = @last_id;",
+		
+		'verifyUserByID' => "
+			UPDATE users
+			SET verified = 1
+			WHERE id = :id",
+		
+		'unverifyUserByID' => "
+			UPDATE users
+			SET verified = 0
 			WHERE id = :id",
 		
 		/**
