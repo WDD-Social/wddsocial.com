@@ -35,7 +35,7 @@ call_user_func(function() {
 	require PATH_CORE.'config/Settings.php'; # configuration file
 	require PATH_CORE.'config/Router.php'; # primary routing file
 	require PATH_CORE.'controller/PackageManager.php'; # 
-	require PATH_CORE.'controller/Package.php'; # 
+	require PATH_CORE.'model/Package.php'; # 
 	require PATH_CORE.'controller/Factory.php'; # framework factory
 	require PATH_CORE.'controller/Request.php'; # request object
 	require PATH_CORE.'controller/Logger.php'; # log utility
