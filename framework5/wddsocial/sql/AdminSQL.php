@@ -114,13 +114,12 @@ class AdminSQL{
 		
 		'addEvent' => "
 			INSERT INTO events (userID, privacyLevelID, title, description, content, vanityURL, location, startDatetime, endDatetime, `datetime`)
-			VALUES (:userID, :privacyLevelID, :title, :description, :content, :vanityURL, :location, :startDatetime, DATE_ADD(:startDatetime, INTERVAL :duration HOUR), NOW());
-			
-			SET @last_id = LAST_INSERT_ID();
-			
+			VALUES (:userID, :privacyLevelID, :title, :description, :content, :vanityURL, :location, :startDatetime, DATE_ADD(:startDatetime, INTERVAL :duration HOUR), NOW())",
+		
+		'generateEventICSUID' => "
 			UPDATE events
 			SET icsUID = MD5(CONCAT(id,title,DATE_FORMAT(`datetime`, '%Y%m%dT%H%i%SZ'),'@wddsocial.com'))
-			WHERE id = @last_id;",
+			WHERE id = :id",
 		
 		'generateEventVanityURL' => "
 			UPDATE events
@@ -153,17 +152,16 @@ class AdminSQL{
 		
 		'addJob' => "
 			INSERT INTO jobs (userID, typeID, title, description, content, vanityURL, company, email, location, website, compensation, `datetime`)
-			VALUES (:userID, :typeID, :title, :description, :content, :vanityURL, :company, :email, :location, :website, :compensation, NOW());
-			
-			SET @last_id = LAST_INSERT_ID();
-			
-			UPDATE jobs
-			SET avatar = MD5(CONCAT('job',id))
-			WHERE id = @last_id;",
+			VALUES (:userID, :typeID, :title, :description, :content, :vanityURL, :company, :email, :location, :website, :compensation, NOW())",
 		
 		'generateJobVanityURL' => "
 			UPDATE jobs
 			SET vanityURL = SUBSTRING(MD5(CONCAT('job',id)),1,6)
+			WHERE id = :id",
+		
+		'generateJobAvatar' => "
+			UPDATE jobs
+			SET avatar = MD5(CONCAT('job',id))
 			WHERE id = :id",
 		
 		'addJobCategory' => "

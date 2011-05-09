@@ -17,18 +17,21 @@ class VanityURLProcessor {
 		switch ($type) {
 			case 'project':
 				$query = $db->prepare($sql->generateProjectVanityURL);
+				$query->execute($data);
 				break;
 			case 'article':
 				$query = $db->prepare($sql->generateArticleVanityURL);
+				$query->execute($data);
 				break;
 			case 'event':
 				$query = $db->prepare($sql->generateEventVanityURL);
+				$query->execute($data);
 				break;
 			case 'job':
 				$query = $db->prepare($sql->generateJobVanityURL);
+				$query->execute($data);
 				break;
 		}
-		$query->execute($data);
 	}
 	
 	public static function get($id, $type){
@@ -39,18 +42,21 @@ class VanityURLProcessor {
 		switch ($type) {
 			case 'project':
 				$query = $db->prepare($sql->getProjectVanityURL);
+				$query->execute($data);
 				break;
 			case 'article':
 				$query = $db->prepare($sql->getArticleVanityURL);
+				$query->execute($data);
 				break;
 			case 'event':
 				$query = $db->prepare($sql->getEventVanityURL);
+				$query->execute($data);
 				break;
 			case 'job':
 				$query = $db->prepare($sql->getJobVanityURL);
+				$query->execute($data);
 				break;
 		}
-		$query->execute($data);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$result = $query->fetch();
 		return $result->vanityURL;

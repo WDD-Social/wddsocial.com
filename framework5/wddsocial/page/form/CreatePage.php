@@ -199,17 +199,30 @@ class CreatePage implements \Framework5\IExecutable {
 			VanityURLProcessor::generate($contentID, $_POST['type']);
 		}
 		
+		if ($_POST['type'] == 'event') {
+			$data = array('id' => $contentID);
+			$query = $db->prepare($admin_sql->generateEventICSUID);
+			$query->execute($data);
+		}
+		else if ($_POST['type'] == 'job') {
+			$data = array('id' => $contentID);
+			$query = $db->prepare($admin_sql->generateJobAvatar);
+			$query->execute($data);
+		}
+		
 		if ($_POST['type'] == 'project' or $_POST['type'] == 'article') {
 			TeamMemberProcessor::add_team_members($_POST['team'], $contentID, $_POST['type'], $_POST['roles']);
 		}
 		
 		CategoryProcessor::add_categories($_POST['categories'], $contentID, $_POST['type']);
 		
-		CourseProcessor::add_courses($_POST['courses'], $contentID, $_POST['type']);
+		if ($_POST['type'] != 'job') {
+			CourseProcessor::add_courses($_POST['courses'], $contentID, $_POST['type']);
+		}
 		
 		LinkProcessor::add_links($_POST['link-urls'], $_POST['link-titles'], $contentID, $_POST['type']);
 		
-		if($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4){
+		if ($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4) {
 			$data = array('id' => $contentID);
 			$query = $db->prepare($sel_sql->getJobAvatar);
 			$query->execute($data);
@@ -221,6 +234,15 @@ class CreatePage implements \Framework5\IExecutable {
 		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
 		
 		VideoProcessor::add_videos($_POST['videos'], $contentID, $_POST['type']);
+		
+		if ($_POST['type'] == 'event') {
+			$data = array('id' => $contentID);
+			$query = $db->prepare($sel_sql->getEventICSValues);
+			$query->execute($data);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$event = $query->fetch();
+			Uploader::create_ics_file($event);
+		}
 		
 		# Get Vanity URL of new content to redirect there
 		$contentVanityURL = VanityURLProcessor::get($contentID, $_POST['type']);
