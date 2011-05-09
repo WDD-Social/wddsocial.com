@@ -988,6 +988,17 @@ class SelectorSQL{
 			
 			
 		/**
+		* Course queries
+		*/
+			
+		'getCourse' => "
+			SELECT id
+			FROM courses
+			WHERE id = :id OR title = :title
+			LIMIT 1",
+			
+			
+		/**
 		* Form queries
 		*/
 			
