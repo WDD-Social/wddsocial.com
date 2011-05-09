@@ -127,9 +127,15 @@ HTML;
 		# 
 		switch ($content->type) {
 			case 'project':
-				$html .= <<<HTML
+				if ($content->completeDate != null) {
+					$html .= <<<HTML
+
 						<p>{$lang->text('completion_date', $content->completeDate)}</p>
-						<p>{$lang->text('posted_date', $content->completeDate)}</p>
+HTML;
+				}
+				$html .= <<<HTML
+
+						<p>{$lang->text('posted_date', $content->date)}</p>
 HTML;
 				break;
 			case 'article':
