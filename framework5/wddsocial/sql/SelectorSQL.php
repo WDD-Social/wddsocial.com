@@ -630,7 +630,7 @@ class SelectorSQL{
 			LIMIT 0,5",
 		
 		'getProjectByVanityURL' => "
-			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`,
+			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`, DATE_FORMAT(completeDate,'%M, %Y') AS `completeDate`,
 			IF(
 				TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 59,
 				IF(
@@ -641,7 +641,7 @@ class SelectorSQL{
 						IF(
 							TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 1,
 							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, NOW()), 'days ago'),
-							'Yesterday'
+							'yesterday'
 						)
 					),
 					IF(
@@ -652,43 +652,14 @@ class SelectorSQL{
 				),
 				IF(
 					TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) = 0,
-					'Just now',
+					'less than a minute ago',
 					IF(
 						TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 1,
 						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minutes ago'),
 						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minute ago')
 					)
 				)
-			) AS `date`,
-			IF(
-				TIMESTAMPDIFF(MINUTE, completeDate, NOW()) > 59,
-				IF(
-					TIMESTAMPDIFF(HOUR, completeDate, NOW()) > 23,
-					IF(
-						TIMESTAMPDIFF(DAY, completeDate, NOW()) > 30,
-						DATE_FORMAT(completeDate,'%M, %Y'),
-						IF(
-							TIMESTAMPDIFF(DAY, completeDate, NOW()) > 1,
-							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, completeDate, NOW()), 'days ago'),
-							'Yesterday'
-						)
-					),
-					IF(
-						TIMESTAMPDIFF(HOUR, completeDate, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, completeDate, NOW()), 'hours ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, completeDate, NOW()), 'hour ago')
-					)
-				),
-				IF(
-					TIMESTAMPDIFF(MINUTE, completeDate, NOW()) = 0,
-					'Just now',
-					IF(
-						TIMESTAMPDIFF(MINUTE, completeDate, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, completeDate, NOW()), 'minutes ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, completeDate, NOW()), 'minute ago')
-					)
-				)
-			) AS `completeDate`
+			) AS `date`
 			FROM projects
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
