@@ -9,7 +9,7 @@ namespace WDDSocial;
 */
 
 class CourseProcessor {
-	public static function addCourses($courses, $contentID, $contentType){
+	public static function add_courses($courses, $contentID, $contentType){
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
 		$admin_sql = instance(':admin-sql');

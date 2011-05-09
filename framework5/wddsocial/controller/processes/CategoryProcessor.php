@@ -9,7 +9,7 @@ namespace WDDSocial;
 */
 
 class CategoryProcessor {
-	public static function addCategories($categories, $contentID, $contentType){
+	public static function add_categories($categories, $contentID, $contentType){
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
 		$admin_sql = instance(':admin-sql');
