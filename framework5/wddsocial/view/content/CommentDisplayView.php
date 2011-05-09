@@ -13,6 +13,8 @@ class CommentDisplayView implements \Framework5\IView {
 	public function render($comments = null) {
 		
 		$root = \Framework5\Request::root_path();
+		$lang = new \Framework5\Lang('wddsocial.lang.view.CommentDisplayLang');
+		
 		$html = "";
 		$commentCount = count($comments);
 		$commentVerbage = 'comment';
@@ -44,8 +46,8 @@ HTML;
 					$html .= <<<HTML
 
 						<div class="secondary">
-							<a href="{$root}" title="Edit Your Comment" class="edit">Edit</a> 
-							<a href="{$root}" title="Delete Your Comment" class="delete">Delete</a>
+							<a href="{$root}" title="{$lang->text('edit_title')}" class="edit">Edit</a> 
+							<a href="{$root}" title="{$lang->text('delete_title')}" class="delete">Delete</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -55,7 +57,7 @@ HTML;
 					$html .= <<<HTML
 
 						<div class="secondary">
-							<a href="{$root}" title="Flag {$possessive} Comment" class="flag">Flag</a>
+							<a href="{$root}" title="{$lang->text('flag_user_comment', $possessive)}" class="flag">{$lang->text('flag')}</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -76,7 +78,7 @@ HTML;
 			if (UserSession::is_authorized()){
 				$html .= <<<HTML
 
-					<p class="empty">No one has commented yet, why don&rsquo;t you start the conversation?</p>
+					<p class="empty">{$lang->text('no_comments')}</p>
 HTML;
 			}
 		}
@@ -104,7 +106,7 @@ HTML;
 		else {
 			$html .= <<<HTML
 
-					<p class="empty">You must be signed in to add a comment. <a href="{$root}signin" title="Sign In to WDD Social">Would you like to sign in?</a></p>
+					<p class="empty">{$lang->text('signin_required')}<a href="{$root}signin" title="{$lang->text('signin_title')}">{$lang->text('signin_link')}</a></p>
 HTML;
 		}
 		
