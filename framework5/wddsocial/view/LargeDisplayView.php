@@ -20,7 +20,7 @@ class LargeDisplayView implements \Framework5\IView {
 			case 'project':
 				return $this->project_display($options['content']);
 			default:
-				throw new \Framework5\Exception("LargeDisplayView requires parameter type (project), '{$options['type']}' provided");
+				throw new Exception("LargeDisplayView requires parameter type (project), '{$options['type']}' provided");
 		}
 	}
 	

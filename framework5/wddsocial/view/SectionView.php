@@ -26,7 +26,7 @@ class SectionView implements \Framework5\IView {
 			case 'end_content_section':
 				return static::end_content_section($options);
 			default:
-				throw new \Exception("SectionView requires parameter section (content or content_section), '{$options['section']}' provided");
+				throw new Exception("SectionView requires parameter section (content or content_section), '{$options['section']}' provided");
 		}
 	}
 	

@@ -7,22 +7,26 @@ namespace WDDSocial;
 *
 */
 class DisplayVO{
-	public $id, $title, $description, $vanityURL, $type, $date, $userID, $userFirstName, $userLastName, $userAvatar, $userURL, $team = array(), $images = array(), $categories = array(), $comments;
+	public $id, $title, $description, $vanityURL, $type, $date, $userID, $userFirstName, $userLastName, $userAvatar, $userURL, $team = array(), $images = array(), $categories = array(), $eventData, $comments;
 	private $db, $sql;
 	
 	public function __construct(){
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
 		
-		if($type != 'person'){
+		if($this->type == 'project' or $this->type == 'article' or $this->type == 'projectComment' or $this->type == 'articleComment' or $this->type == 'eventComment'){
+			if ($this->type != 'eventComment')
+				$this->get_team();
+
 			$this->get_comments_count();
+			$this->get_categories();
 		}
 		
-		$this->get_categories();
-		if($this->type == 'project' or $this->type == 'article'){
-			$this->get_team();
+		if($this->type == 'project' or $this->type == 'article')
 			$this->get_images();
-		}
+		
+		if ($this->type == 'eventComment')
+			$this->get_event_data();
 	}
 	
 	
@@ -48,8 +52,22 @@ class DisplayVO{
 					$this->comments = $row->comments;
 				}
 				break;
-			case 'job':
-				$query = $this->db->prepare($this->sql->getJobCommentsCount);
+			case 'projectComment':
+				$query = $this->db->prepare($this->sql->getProjectCommentsCount);
+				$query->execute($data);
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					$this->comments = $row->comments;
+				}
+				break;
+			case 'articleComment':
+				$query = $this->db->prepare($this->sql->getArticleCommentsCount);
+				$query->execute($data);
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					$this->comments = $row->comments;
+				}
+				break;
+			case 'eventComment':
+				$query = $this->db->prepare($this->sql->getEventCommentsCount);
 				$query->execute($data);
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					$this->comments = $row->comments;
@@ -122,6 +140,62 @@ class DisplayVO{
 					}
 				}
 				break;
+			case 'projectComment':
+				$query = $this->db->prepare($this->sql->getProjectCategories);
+				$query->execute($data);
+				$all = array();
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					array_push($all,$row->title);
+				}
+				if(count($all) > 1){
+					$rand = array_rand($all,2);
+					foreach($rand as $categoryKey){
+						array_push($this->categories,$all[$categoryKey]);
+					}
+				}else{
+					foreach($all as $category){
+						array_push($this->categories,$category);
+					}
+				}
+				break;
+			case 'articleComment':
+				$query = $this->db->prepare($this->sql->getArticleCategories);
+				$query->execute($data);
+				$all = array();
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					array_push($all,$row->title);
+				}
+				if(count($all) > 1){
+					$rand = array_rand($all,2);
+					foreach($rand as $categoryKey){
+						array_push($this->categories,$all[$categoryKey]);
+					}
+				}else{
+					foreach($all as $category){
+						array_push($this->categories,$category);
+					}
+				}
+				
+				break;
+			case 'eventComment':
+				$query = $this->db->prepare($this->sql->getEventCategories);
+				$query->execute($data);
+				$all = array();
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					array_push($all,$row->title);
+				}
+				if(count($all) > 1){
+					$rand = array_rand($all,2);
+					foreach($rand as $categoryKey){
+						array_push($this->categories,$all[$categoryKey]);
+					}
+				}else{
+					foreach($all as $category){
+						array_push($this->categories,$category);
+					}
+				}
+				
+				break;
 		}
 	}
 	
@@ -144,6 +218,22 @@ class DisplayVO{
 				}
 				break;
 			case 'article':
+				$query = $this->db->prepare($this->sql->getArticleTeam);
+				$query->execute($data);
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+				while($user = $query->fetch()){
+					array_push($this->team,$user);
+				}
+				break;
+			case 'projectComment':
+				$query = $this->db->prepare($this->sql->getProjectTeam);
+				$query->execute($data);
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+				while($user = $query->fetch()){
+					array_push($this->team,$user);
+				}
+				break;
+			case 'articleComment':
 				$query = $this->db->prepare($this->sql->getArticleTeam);
 				$query->execute($data);
 				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
@@ -185,5 +275,19 @@ class DisplayVO{
 			default :
 				break;
 		}
+	}
+	
+	
+	
+	/**
+	* Gets data for events
+	*/
+	
+	private function get_event_data(){
+		$data = array('id' => $this->id);
+		$query = $this->db->prepare($this->sql->getEventCommentData);
+		$query->execute($data);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$this->eventData = $query->fetch();
 	}
 }

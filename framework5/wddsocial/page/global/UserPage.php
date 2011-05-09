@@ -20,7 +20,7 @@ class UserPage implements \Framework5\IExecutable {
 	
 	
 	
-	public function execute() {	
+	public function execute() {
 		
 		# get the request user
 		$user = $this->getUser(\Framework5\Request::segment(1));

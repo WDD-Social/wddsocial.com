@@ -31,11 +31,11 @@ call_user_func(function() {
 	# framework core files
 	require PATH_CORE.'controller/Controller.php'; # controller base
 	require PATH_CORE.'controller/StaticController.php'; # static controller base
-	require PATH_CORE.'exception/Exception.php'; # custom exception
+	require PATH_CORE.'controller/Exception.php'; # custom exception
 	require PATH_CORE.'config/Settings.php'; # configuration file
 	require PATH_CORE.'config/Router.php'; # primary routing file
 	require PATH_CORE.'controller/PackageManager.php'; # 
-	require PATH_CORE.'controller/Package.php'; # 
+	require PATH_CORE.'model/Package.php'; # 
 	require PATH_CORE.'controller/Factory.php'; # framework factory
 	require PATH_CORE.'controller/Request.php'; # request object
 	require PATH_CORE.'controller/Logger.php'; # log utility
@@ -44,9 +44,6 @@ call_user_func(function() {
 	
 	# application dependencies
 	require PATH_CORE.'controller/ApplicationBase.php';
-	
-	# register global aliases
-	PackageManager::define_alias_array(Settings::$package_aliases);
 	
 	# debug utility
 	if (Settings::$debug_mode) { 

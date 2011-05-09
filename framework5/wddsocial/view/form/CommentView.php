@@ -13,9 +13,10 @@ class CommentView implements \Framework5\IView {
 		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
-						<form action="{$root}" method="post">
-							<textarea class="placeholder">Write your comment...</textarea>
-							<input type="submit" value="Post Comment" />
+						<form action="{$_SERVER['REQUEST_URI']}" method="post">
+							<p class="error"><strong>{$options['error']}</strong></p>
+							<textarea name="content" class="placeholder">Write your comment...</textarea>
+							<input type="submit" name="submit" value="Post Comment" />
 						</form>
 HTML;
 	}

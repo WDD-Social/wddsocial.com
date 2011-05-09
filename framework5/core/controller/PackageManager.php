@@ -10,8 +10,69 @@ namespace Framework5;
 
 class PackageManager extends StaticController {
 	
-	
+	private static $_package_cache = array();
 	private static $_alias_stack = array();
+	
+	
+	
+	public static function package_info($package_name) {
+		
+		# resolve package alias
+		if (static::is_alias_format($package_name))
+			$package_name = static::resolve_package_alias($package_name);
+		
+		# check for cached value
+		if (array_key_exists($package_name, static::$_package_cache)) {
+			return static::$_package_cache[$package_name];
+		}
+		
+		# set package properties]
+		$package = array();
+		$package['package_name'] = $package_name;
+		$package['path_array'] = explode('.', $package_name);
+		$package['fully_qualified'] = end($package['path_array']);
+		
+		# set package_base
+		$package_base_array = array();
+		for($i = 0; $i < count($package['path_array']) - 1; $i++)
+			array_push($package_base_array, $package['path_array'][$i]);
+			$package['package_base'] = implode('.', $package_base_array);
+		
+		# if namespace exists
+		$fully_qualified_array = explode('\\', $package['fully_qualified']);
+		if (count($fully_qualified_array) > 1) {
+			
+			# get the class name
+			$package['class'] = end($fully_qualified_array);
+			
+			# get the namespace
+			$namespace_array = array();
+			for($i = 0; $i < count($fully_qualified_array) - 1; $i++)
+				array_push($namespace_array, $fully_qualified_array[$i]);
+			
+			$package['namespace'] = implode('\\', $namespace_array);
+			
+			# get the path of the package
+			$actual_path = array();
+			for($i = 0; $i < count($package['path_array']) - 1; $i++)
+				array_push($actual_path, $package['path_array'][$i]);
+			
+			array_push($actual_path, $package['class']);
+			$package['path'] = PATH_FRAMEWORK . implode('/', $actual_path) . EXT;
+		}
+		
+		# no namespace
+		else {
+			$package['class'] = $fully_qualified_array[0];
+			$package['path'] = PATH_FRAMEWORK . implode('/', $package['path_array']) . EXT;
+		}
+		
+		# cache information
+		static::$_package_cache[$package_name] = $package;
+		
+		return $package;
+	}
+	
 	
 	
 	/**

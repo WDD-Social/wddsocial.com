@@ -40,6 +40,15 @@ class BasicElements implements \Framework5\IView {
 			$required = '';
 		}
 		
+		$titleAutofocus = '';
+		$descriptionAutofocus = '';
+		if ($options['data']['title'] == '') {
+			$titleAutofocus = ' autofocus';
+		}
+		else {
+			$descriptionAutofocus = ' autofocus';
+		}
+		
 		return <<<HTML
 
 					<h1 class="mega">Create a New {$capitalizedTitle}</h1>
@@ -50,11 +59,11 @@ class BasicElements implements \Framework5\IView {
 						<input type="hidden" name="process" value="creation" />
 						<fieldset>
 							<label for="title">$capitalizedTitle Title *</label>
-							<input type="text" name="title" id="title" value="{$options['data']['title']}" />
+							<input type="text" name="title" id="title" value="{$options['data']['title']}"$titleAutofocus />
 						</fieldset>
 						<fieldset>
 							<label for="description">Short Description *</label>
-							<textarea name="description" id="description" class="short"></textarea>
+							<textarea name="description" id="description" class="short"$descriptionAutofocus></textarea>
 							<small>Keep it short, <span class="count">128</span> characters left</small>
 						<fieldset>
 							<label for="content">$contentTitle$required</label>

@@ -11,14 +11,23 @@ namespace WDDSocial;
 
 class ArticlePage implements \Framework5\IExecutable {
 	
-	public function execute() {	
-		
-		# get article information
-		$article = $this->getArticle(\Framework5\Request::segment(1));
+	public function execute() {
 		
 		# get page language pack
 		$lang = new \Framework5\Lang('wddsocial.lang.page.global.ArticlePageLang');
 		
+		# get article information
+		$article = $this->getArticle(\Framework5\Request::segment(1));
+		
+		# handle form submission
+		if (isset($_POST['submit'])){
+			$response = $this->_process_form($article->id,$article->type);
+			
+			if ($response->status) {
+				$article = null;
+				$article = $this->getArticle(\Framework5\Request::segment(1));
+			}
+		}
 		
 		# if the article exists
 		if ($article) {
@@ -100,5 +109,18 @@ class ArticlePage implements \Framework5\IExecutable {
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 		$query->execute($data);
 		return $query->fetch();
+	}
+	
+	
+	
+	/**
+	* Handle comment addition
+	*/
+	
+	private function _process_form($articleID,$contentType) {
+		import('wddsocial.model.WDDSocial\FormResponse');
+		import('wddsocial.controller.processes.WDDSocial\CommentProcessor');
+		CommentProcessor::add_comment($_POST['content'],$articleID,$contentType);
+		return new FormResponse(true);
 	}
 }

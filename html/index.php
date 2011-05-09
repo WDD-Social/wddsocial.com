@@ -18,14 +18,17 @@ try {
 	# get application controller from Framework5\Router, base on the uri segment
 	$package_name = Router::resolve(Request::segment(0));
 	
+	# get application fully qualified name
+	$package = new Package($package_name);
+	
 	# check if the application is a valid package
-	if (package($package_name)) {
+	if ($package->path_valid()) {
 		
-		# get application fully qualified name
-		$package = new Package($package_name);
-		$app = $package->fully_qualified; 
-		
+		# import the application
 		import($package_name);
+		
+		# define the controller reference
+		$app = $package->fully_qualified; 
 		
 		# check if class implements IApplication
 		if (!implement($app, 'Framework5\IApplication'))
@@ -48,7 +51,7 @@ try {
 	
 	# the application is not a valid package
 	else {
-		echo "Framework5 Front Controller could not import package '$app_package', configured in Framework5\Router";
+		echo "Framework5 Front Controller could not import package '$app', configured in Framework5\Router";
 		die;
 	}
 }

@@ -16,6 +16,16 @@ class EventPage implements \Framework5\IExecutable {
 		# get event details
 		$event = $this->getEvent(\Framework5\Request::segment(1));
 		
+		# handle form submission
+		if (isset($_POST['submit'])){
+			$response = $this->_process_form($event->id,$event->type);
+			
+			if ($response->status) {
+				$event = null;
+				$event = $this->getEvent(\Framework5\Request::segment(1));
+			}
+		}
+		
 		# if the event exists
 		if ($event) {
 			# display site header
@@ -93,5 +103,18 @@ class EventPage implements \Framework5\IExecutable {
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 		$query->execute($data);
 		return $query->fetch();
+	}
+	
+	
+	
+	/**
+	* Handle comment addition
+	*/
+	
+	private function _process_form($eventID,$contentType) {
+		import('wddsocial.model.WDDSocial\FormResponse');
+		import('wddsocial.controller.processes.WDDSocial\CommentProcessor');
+		CommentProcessor::add_comment($_POST['content'],$eventID,$contentType);
+		return new FormResponse(true);
 	}
 }
