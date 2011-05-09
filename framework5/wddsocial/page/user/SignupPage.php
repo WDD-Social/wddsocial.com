@@ -169,11 +169,6 @@ class SignupPage implements \Framework5\IExecutable {
 			# Get new user's ID
 			$userID = $db->lastInsertID();
 			
-			# Create user's avatar code
-			$query = $db->prepare($admin_sql->generateUserAvatar);
-			$data = array('id' => $userID);
-			$query->execute($data);
-			
 			# Fetch user's avatar code
 			$query = $db->prepare($sel_sql->getUserAvatarByID);
 			$query->setFetchMode(\PDO::FETCH_OBJ);
