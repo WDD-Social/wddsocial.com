@@ -23,15 +23,9 @@ abstract class ApplicationBase extends Controller {
 		# log_error defined in Controller
 		if (\Framework5\Settings::$log_exception) \Framework5\Logger::log_exception($e);
 		
-		#TODO display the error page
-		//$options = array('exception' => $e)
-		//display('core.view.ErrorPage', $options);
-		echo "<pre>";
-		echo "ApplicationBase::exception_error() killed execution with message: {$e->getMessage()}<br/>"; //TMP
-		echo "thrown in {$e->getFile()} on line {$e->getLine()}<br/>";
-		echo "Exception->getTrace()</br>";
-		print_r($e->getTrace());
-		echo "</pre>";
+		# display the error page
+		echo render('core.view.Framework5\ExceptionView', $e);
+		
 		die; # kill script execution
 	}
 	
