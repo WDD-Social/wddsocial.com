@@ -31,7 +31,6 @@ class CreatePage implements \Framework5\IExecutable {
 			}
 		}
 			
-		else{
 		# display site header
 		echo render(':template', array('section' => 'top', 'title' => "Create new {$_POST['type']}"));
 		
@@ -88,7 +87,6 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		# display site footer
 		echo render(':template', array('section' => 'bottom'));
-		}
 	}
 	
 	
