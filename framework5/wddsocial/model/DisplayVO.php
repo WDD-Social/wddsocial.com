@@ -16,12 +16,12 @@ class DisplayVO{
 		
 		if($this->type == 'project' or $this->type == 'article' or $this->type == 'projectComment' or $this->type == 'articleComment'){
 			$this->get_team();
+			$this->get_comments_count();
+			$this->get_categories();
 		}
 		
 		if($this->type == 'project' or $this->type == 'article'){
-			$this->get_categories();
 			$this->get_images();
-			$this->get_comments_count();
 		}
 	}
 	
@@ -48,8 +48,15 @@ class DisplayVO{
 					$this->comments = $row->comments;
 				}
 				break;
-			case 'job':
-				$query = $this->db->prepare($this->sql->getJobCommentsCount);
+			case 'projectComment':
+				$query = $this->db->prepare($this->sql->getProjectCommentsCount);
+				$query->execute($data);
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					$this->comments = $row->comments;
+				}
+				break;
+			case 'articleComment':
+				$query = $this->db->prepare($this->sql->getArticleCommentsCount);
 				$query->execute($data);
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					$this->comments = $row->comments;
@@ -121,6 +128,43 @@ class DisplayVO{
 						array_push($this->categories,$category);
 					}
 				}
+				break;
+			case 'projectComment':
+				$query = $this->db->prepare($this->sql->getProjectCategories);
+				$query->execute($data);
+				$all = array();
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					array_push($all,$row->title);
+				}
+				if(count($all) > 1){
+					$rand = array_rand($all,2);
+					foreach($rand as $categoryKey){
+						array_push($this->categories,$all[$categoryKey]);
+					}
+				}else{
+					foreach($all as $category){
+						array_push($this->categories,$category);
+					}
+				}
+				break;
+			case 'articleComment':
+				$query = $this->db->prepare($this->sql->getArticleCategories);
+				$query->execute($data);
+				$all = array();
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					array_push($all,$row->title);
+				}
+				if(count($all) > 1){
+					$rand = array_rand($all,2);
+					foreach($rand as $categoryKey){
+						array_push($this->categories,$all[$categoryKey]);
+					}
+				}else{
+					foreach($all as $category){
+						array_push($this->categories,$category);
+					}
+				}
+				
 				break;
 		}
 	}
