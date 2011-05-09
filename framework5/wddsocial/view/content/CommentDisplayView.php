@@ -36,6 +36,8 @@ HTML;
 				$userDisplayName = NaturalLanguage::display_name(
 					$comment->userID,"{$comment->firstName} {$comment->lastName}");
 				
+				$userAvatar = (file_exists("images/avatars/{$comment->avatar}_medium.jpg"))?"/images/avatars/{$comment->avatar}_medium.jpg":"/images/site/user-default_medium.jpg";
+				
 				$html .= <<<HTML
 
 					<article class="with-secondary">
@@ -62,7 +64,7 @@ HTML;
 				}
 				$html .= <<<HTML
 						
-						<p class="item-image"><a href="/user/{$comment->vanityURL}" title="{$userVerbage}"><img src="/images/avatars/{$comment->avatar}_medium.jpg" alt="{$userDisplayName}"/></a></p>
+						<p class="item-image"><a href="/user/{$comment->vanityURL}" title="{$userVerbage}"><img src="$userAvatar" alt="{$userDisplayName}"/></a></p>
 						<h2><a href="/user/{$comment->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
 						<p>{$comment->content}</p>
 						<p class="comments">{$comment->date}</p>
