@@ -30,6 +30,9 @@ class MediumDisplayView implements \Framework5\IView {
 				
 			case 'articleComment':
 				return $this->article_comment_display($options['content']);
+				
+			case 'eventComment':
+				return $this->event_comment_display($options['content']);
 			
 			case 'person':
 				return $this->person_display($options['content']);
@@ -326,6 +329,65 @@ HTML;
 		$html .= <<<HTML
 						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$articleComment->title} -->
+HTML;
+		return $html;
+	}
+	
+	
+	
+	/**
+	* Creates an event comment article
+	*/
+	
+	private function event_comment_display($eventComment){
+		$root = \Framework5\Request::root_path();
+		
+		$userVerbage = NaturalLanguage::view_profile($eventComment->userID,"{$eventComment->userFirstName} {$eventComment->userLastName}");
+		$userDisplayName = NaturalLanguage::display_name($eventComment->userID,"{$eventComment->userFirstName} {$eventComment->userLastName}");
+		$userAvatar = (file_exists("images/avatars/{$eventComment->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$eventComment->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$html = <<<HTML
+
+					<article class="comments with-secondary">
+						<div class="secondary">
+HTML;
+		
+		# Determines what type of secondary controls to present (Flag or Edit/Delete)
+		if(UserSession::is_current($eventComment->userID)){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Edit Comment on &ldquo;{$eventComment->title}&rdquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Delete Comment on &ldquo;{$eventComment->title}&rdquo;" class="delete">Delete</a>
+HTML;
+		}else if(UserSession::is_authorized()){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Flag Comment on &ldquo;{$eventComment->title}&rdquo;" class="flag">Flag</a>
+HTML;
+		}	
+		$html .= <<<HTML
+
+						</div><!-- END SECONDARY -->
+						
+						<p class="item-image"><a href="{$root}user/{$eventComment->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="{$root}user/{$eventComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on an <strong><a href="{$root}event/{$eventComment->vanityURL}#comments" title="{$eventComment->title}">event</a></strong>.</p>
+						<h2><a href="{$root}event/{$eventComment->vanityURL}#comments" title="{$eventComment->title}">{$eventComment->title}</a></h2>
+						<p>{$eventComment->eventData->date}</p>
+						<p>"{$eventComment->description}"</p>
+HTML;
+		$html .= <<<HTML
+
+						<p class="comments"><a href="{$root}event/{$eventComment->vanityURL}#comments" title="{$eventComment->title} | Comments">{$eventComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$eventComment->date}</span></p>
+HTML;
+		
+		# Build categories
+		$categoryLinks = array();
+		foreach($eventComment->categories as $category){
+			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
+		}
+		$categoryLinks = implode(' ',$categoryLinks);
+		$html .= <<<HTML
+						<p class="tags">$categoryLinks</p>
+					</article><!-- END {$eventComment->title} -->
 HTML;
 		return $html;
 	}
