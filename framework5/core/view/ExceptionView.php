@@ -13,11 +13,14 @@ class ExceptionView implements IView {
 		*/
 		$html = <<<HTML
 		
+		<h2>You dun goofed</h2>
 		<p>
-			ApplicationBase::exception_error() killed execution with message: {$e->getMessage()}
-			thrown in {$e->getFile()} on line {$e->getLine()}
-			Exception->getTrace()
+			Exception caught with message: <span style="font-weight: bold">{$e->getMessage()}</span><br/>
+			thrown in <span style="font-weight: bold">{$e->getFile()}</span>
+			on line <span style="font-weight: bold">{$e->getLine()}</span>
 		</p>
+		
+		<h2>We backtraced it</h2>
 HTML;
 		
 		$get_trace = $e->getTrace();
@@ -36,7 +39,7 @@ HTML;
 				<td>method</td>
 				<td>{$trace['function']}</td>
 			</tr>
-			<tr>	
+			<tr>
 				<td>Namespace</td>
 				<td>{$trace['class']}</td>
 			</tr>
