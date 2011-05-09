@@ -295,6 +295,42 @@ class SelectorSQL{
 			LEFT JOIN articles AS a ON (a.id = ac.articleID)
 			LEFT JOIN users AS u ON (u.id = c.userID)
 			WHERE u.id = :id
+			UNION
+			SELECT e.id, e.title, c.content, e.vanityURL, c.datetime, 'eventComment' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL,
+			IF(
+				TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
+						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM comments AS c
+			INNER JOIN eventComments AS ec ON (c.id = ec.commentID)
+			LEFT JOIN events AS e ON (e.id = ec.eventID)
+			LEFT JOIN users AS u ON (u.id = c.userID)
+			WHERE u.id = :id
 			ORDER BY DATETIME DESC
 			LIMIT 0,20
 			",
@@ -541,6 +577,41 @@ class SelectorSQL{
 			INNER JOIN articleComments AS ac ON (c.id = ac.commentID)
 			LEFT JOIN articles AS a ON (a.id = ac.articleID)
 			LEFT JOIN users AS u ON (u.id = c.userID)
+			UNION
+			SELECT c.id AS contentID, e.title AS contentTitle, e.vanityURL AS contentVanityURL, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, avatar AS userAvatar, u.vanityURL AS userVanityURL, c.datetime AS `datetime`, 'eventComment' AS `type`,
+			IF(
+				TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
+						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM comments AS c
+			INNER JOIN eventComments AS ec ON (c.id = ec.commentID)
+			LEFT JOIN events AS e ON (e.id = ec.eventID)
+			LEFT JOIN users AS u ON (u.id = c.userID)
 			ORDER BY `datetime` DESC
 			LIMIT 0,100) AS f
 			GROUP BY f.userID
@@ -707,6 +778,12 @@ class SelectorSQL{
 			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`
 			FROM events
 			WHERE vanityURL = :vanityURL
+			LIMIT 1",
+		
+		'getEventCommentData' => "
+			SELECT location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
+			FROM events
+			WHERE id = :id
 			LIMIT 1",
 		
 		'getEventICSValues' => "

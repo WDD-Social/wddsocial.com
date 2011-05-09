@@ -26,7 +26,6 @@ class BasicElements implements \Framework5\IView {
 	
 	private function header($options){
 		import('wddsocial.helper.WDDSocial\StringCleaner');
-		$root = \Framework5\Request::root_path();
 		$capitalizedTitle = ucfirst($options['data']['type']);
 			
 		if ($options['data']['type'] == 'article') {
@@ -52,7 +51,7 @@ class BasicElements implements \Framework5\IView {
 		return <<<HTML
 
 					<h1 class="mega">Create a New {$capitalizedTitle}</h1>
-					<form action="{$root}create" method="post" enctype="multipart/form-data">
+					<form action="/create" method="post" enctype="multipart/form-data">
 						<h1>Details</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<input type="hidden" name="type" value="{$options['data']['type']}" />

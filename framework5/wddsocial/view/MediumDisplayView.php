@@ -30,6 +30,9 @@ class MediumDisplayView implements \Framework5\IView {
 				
 			case 'articleComment':
 				return $this->article_comment_display($options['content']);
+				
+			case 'eventComment':
+				return $this->event_comment_display($options['content']);
 			
 			case 'person':
 				return $this->person_display($options['content']);
@@ -45,14 +48,10 @@ class MediumDisplayView implements \Framework5\IView {
 	* Creates a project article
 	*/
 	
-	private function project_display($project){
-	
-		//$lang = new \Framework5\Lang('wddsocial.lang.view.MediumDisplayView');
-		$root = \Framework5\Request::root_path();
-		
+	private function project_display($project){		
 		$userVerbage = NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($project->userID,"{$project->userFirstName} {$project->userLastName}");
-		$userAvatar = (file_exists("images/avatars/{$project->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$project->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$userAvatar = (file_exists("images/avatars/{$project->userAvatar}_medium.jpg"))?"/images/avatars/{$project->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		$teamIntro = static::format_team_string($project->userID,$project->team, ' with');
 		
 		$html = <<<HTML
@@ -65,27 +64,27 @@ HTML;
 		if(UserSession::is_current($project->userID)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
-							<a href="{$root}" title="Delete &ldquo;{$project->title}&rdquo;" class="delete">Delete</a>
+							<a href="/" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="Delete &ldquo;{$project->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}else if(UserValidator::is_project_owner($project->id)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
 HTML;
 		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Flag &ldquo;{$project->title}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="Flag &ldquo;{$project->title}&rdquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}user/{$project->userURL}" title="$userVerbage"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro">$test <strong><a href="{$root}user/{$project->userURL}" title="$userVerbage">$userDisplayName</a></strong> posted a <strong><a href="{$root}project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
-						<h2><a href="{$root}project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
+						<p class="item-image"><a href="/user/{$project->userURL}" title="$userVerbage"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="intro">$test <strong><a href="/user/{$project->userURL}" title="$userVerbage">$userDisplayName</a></strong> posted a <strong><a href="/project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
+						<h2><a href="/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
 HTML;
 		
@@ -99,7 +98,7 @@ HTML;
 				if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
 					$html .= <<<HTML
 
-							<a href="{$root}images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+							<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 				}
 			}
@@ -110,13 +109,13 @@ HTML;
 		}
 		$html .= <<<HTML
 
-						<p class="comments"><a href="{$root}project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
+						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
 		foreach($project->categories as $category){
-			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -133,11 +132,9 @@ HTML;
 	*/
 	
 	private function project_comment_display($projectComment){
-		$root = \Framework5\Request::root_path();
-		
 		$userVerbage = NaturalLanguage::view_profile($projectComment->userID,"{$projectComment->userFirstName} {$projectComment->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($projectComment->userID,"{$projectComment->userFirstName} {$projectComment->userLastName}");
-		$userAvatar = (file_exists("images/avatars/{$projectComment->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$projectComment->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$userAvatar = (file_exists("images/avatars/{$projectComment->userAvatar}_medium.jpg"))?"/images/avatars/{$projectComment->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		$teamIntro = static::format_team_string($projectComment->userID,$projectComment->team, 'By');
 		$html = <<<HTML
 
@@ -149,34 +146,34 @@ HTML;
 		if(UserSession::is_current($projectComment->userID)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit Comment on &ldquo;{$projectComment->title}&rdquo;" class="edit">Edit</a>
-							<a href="{$root}" title="Delete Comment on &ldquo;{$projectComment->title}&rdquo;" class="delete">Delete</a>
+							<a href="/" title="Edit Comment on &ldquo;{$projectComment->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="Delete Comment on &ldquo;{$projectComment->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Flag Comment on &ldquo;{$projectComment->title}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="Flag Comment on &ldquo;{$projectComment->title}&rdquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}user/{$projectComment->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}user/{$projectComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on a <strong><a href="{$root}project/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">project</a></strong>.</p>
-						<h2><a href="{$root}project/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">{$projectComment->title}</a></h2>
+						<p class="item-image"><a href="/user/{$projectComment->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="/user/{$projectComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on a <strong><a href="/project/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">project</a></strong>.</p>
+						<h2><a href="/project/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">{$projectComment->title}</a></h2>
 						<p>$teamIntro</p>
 						<p>"{$projectComment->description}"</p>
 HTML;
 		$html .= <<<HTML
 
-						<p class="comments"><a href="{$root}project/{$projectComment->vanityURL}#comments" title="{$projectComment->title} | Comments">{$projectComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$projectComment->date}</span></p>
+						<p class="comments"><a href="/project/{$projectComment->vanityURL}#comments" title="{$projectComment->title} | Comments">{$projectComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$projectComment->date}</span></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
 		foreach($projectComment->categories as $category){
-			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -193,11 +190,9 @@ HTML;
 	*/
 	
 	private function article_display($article){
-		$root = \Framework5\Request::root_path();
-		
 		$userVerbage = NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
-		$userAvatar = (file_exists("images/avatars/{$article->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$article->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$userAvatar = (file_exists("images/avatars/{$article->userAvatar}_medium.jpg"))?"/images/avatars/{$article->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		$teamIntro = static::format_team_string($article->userID,$article->team, ' with');
 		$html = <<<HTML
 
@@ -209,27 +204,27 @@ HTML;
 		if(UserSession::is_current($article->userID)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
-							<a href="{$root}" title="Delete &ldquo;{$article->title}&rdquo;" class="delete">Delete</a>
+							<a href="/" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="Delete &ldquo;{$article->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}else if(UserValidator::is_article_owner($article->id)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
 HTML;
 		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Flag &ldquo;{$article->title}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="Flag &ldquo;{$article->title}&rdquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">article</a></strong>$teamIntro.</p>
-						<h2><a href="{$root}article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
+						<p class="item-image"><a href="/user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="/user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="/article/{$article->vanityURL}" title="{$article->title}">article</a></strong>$teamIntro.</p>
+						<h2><a href="/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
 HTML;
 		
@@ -243,7 +238,7 @@ HTML;
 				if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
 					$html .= <<<HTML
 
-							<a href="{$root}images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="{$root}images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+							<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 				}
 			}
@@ -254,13 +249,13 @@ HTML;
 		}
 		$html .= <<<HTML
 
-						<p class="comments"><a href="{$root}article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
+						<p class="comments"><a href="/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
 		foreach($article->categories as $category){
-			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -277,11 +272,9 @@ HTML;
 	*/
 	
 	private function article_comment_display($articleComment){
-		$root = \Framework5\Request::root_path();
-		
 		$userVerbage = NaturalLanguage::view_profile($articleComment->userID,"{$articleComment->userFirstName} {$articleComment->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($articleComment->userID,"{$articleComment->userFirstName} {$articleComment->userLastName}");
-		$userAvatar = (file_exists("images/avatars/{$articleComment->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$articleComment->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$userAvatar = (file_exists("images/avatars/{$articleComment->userAvatar}_medium.jpg"))?"/images/avatars/{$articleComment->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		$teamIntro = static::format_team_string($articleComment->userID,$articleComment->team, 'By');
 		$html = <<<HTML
 
@@ -293,34 +286,34 @@ HTML;
 		if(UserSession::is_current($articleComment->userID)){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
-							<a href="{$root}" title="Delete Comment on &ldquo;{$articleComment->title}&rdquo;" class="delete">Delete</a>
+							<a href="/" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="Delete Comment on &ldquo;{$articleComment->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="{$root}" title="Flag Comment on &ldquo;{$articleComment->title}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="Flag Comment on &ldquo;{$articleComment->title}&rdquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="{$root}user/{$articleComment->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}user/{$articleComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on an <strong><a href="{$root}article/{$articleComment->vanityURL}#comments" title="{$articleComment->title}">article</a></strong>.</p>
-						<h2><a href="{$root}article/{$articleComment->vanityURL}#comments" title="{$articleComment->title}">{$articleComment->title}</a></h2>
+						<p class="item-image"><a href="/user/{$articleComment->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="/user/{$articleComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on an <strong><a href="/article/{$articleComment->vanityURL}#comments" title="{$articleComment->title}">article</a></strong>.</p>
+						<h2><a href="/article/{$articleComment->vanityURL}#comments" title="{$articleComment->title}">{$articleComment->title}</a></h2>
 						<p>$teamIntro</p>
 						<p>"{$articleComment->description}"</p>
 HTML;
 		$html .= <<<HTML
 
-						<p class="comments"><a href="{$root}article/{$articleComment->vanityURL}#comments" title="{$articleComment->title} | Comments">{$articleComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$articleComment->date}</span></p>
+						<p class="comments"><a href="/article/{$articleComment->vanityURL}#comments" title="{$articleComment->title} | Comments">{$articleComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$articleComment->date}</span></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
 		foreach($articleComment->categories as $category){
-			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -333,21 +326,76 @@ HTML;
 	
 	
 	/**
+	* Creates an event comment article
+	*/
+	
+	private function event_comment_display($eventComment){
+		$userVerbage = NaturalLanguage::view_profile($eventComment->userID,"{$eventComment->userFirstName} {$eventComment->userLastName}");
+		$userDisplayName = NaturalLanguage::display_name($eventComment->userID,"{$eventComment->userFirstName} {$eventComment->userLastName}");
+		$userAvatar = (file_exists("images/avatars/{$eventComment->userAvatar}_medium.jpg"))?"/images/avatars/{$eventComment->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
+		$html = <<<HTML
+
+					<article class="comments with-secondary">
+						<div class="secondary">
+HTML;
+		
+		# Determines what type of secondary controls to present (Flag or Edit/Delete)
+		if(UserSession::is_current($eventComment->userID)){
+			$html .= <<<HTML
+
+							<a href="/" title="Edit Comment on &ldquo;{$eventComment->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="Delete Comment on &ldquo;{$eventComment->title}&rdquo;" class="delete">Delete</a>
+HTML;
+		}else if(UserSession::is_authorized()){
+			$html .= <<<HTML
+
+							<a href="/" title="Flag Comment on &ldquo;{$eventComment->title}&rdquo;" class="flag">Flag</a>
+HTML;
+		}	
+		$html .= <<<HTML
+
+						</div><!-- END SECONDARY -->
+						
+						<p class="item-image"><a href="/user/{$eventComment->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="/user/{$eventComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on an <strong><a href="/event/{$eventComment->vanityURL}#comments" title="{$eventComment->title}">event</a></strong>.</p>
+						<h2><a href="/event/{$eventComment->vanityURL}#comments" title="{$eventComment->title}">{$eventComment->title}</a></h2>
+						<p>{$eventComment->eventData->date}</p>
+						<p>"{$eventComment->description}"</p>
+HTML;
+		$html .= <<<HTML
+
+						<p class="comments"><a href="/event/{$eventComment->vanityURL}#comments" title="{$eventComment->title} | Comments">{$eventComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$eventComment->date}</span></p>
+HTML;
+		
+		# Build categories
+		$categoryLinks = array();
+		foreach($eventComment->categories as $category){
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+		}
+		$categoryLinks = implode(' ',$categoryLinks);
+		$html .= <<<HTML
+						<p class="tags">$categoryLinks</p>
+					</article><!-- END {$eventComment->title} -->
+HTML;
+		return $html;
+	}
+	
+	
+	
+	/**
 	* Creates a person article
 	*/
 	
 	private function person_display($person){
-		$root = \Framework5\Request::root_path();
-		
 		$userVerbage = NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($person->userID,"{$person->userFirstName} {$person->userLastName}");
-		$userAvatar = (file_exists("images/avatars/{$person->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$person->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$userAvatar = (file_exists("images/avatars/{$person->userAvatar}_medium.jpg"))?"/images/avatars/{$person->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		
 		$html = <<<HTML
 
 					<article class="people">
-						<p class="item-image"><a href="{$root}user/{$person->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> joined the community.</p>
+						<p class="item-image"><a href="/user/{$person->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="/user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> joined the community.</p>
 						<p>{$person->description}</p>
 						<p>{$person->date}</p>
 					</article><!-- END {$person->title} -->
@@ -385,12 +433,12 @@ HTML;
 			if(count($cleanTeam) == 1){
 				$userVerbage = NaturalLanguage::view_profile($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
 				$userDisplayName = NaturalLanguage::display_name($cleanTeam[0]->id,"{$cleanTeam[0]->firstName} {$cleanTeam[0]->lastName}");
-				$teamIntro .= "<strong><a href=\"{$root}user/{$cleanTeam[0]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
+				$teamIntro .= "<strong><a href=\"/user/{$cleanTeam[0]->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>";
 			}else if(count($cleanTeam) == 2){
 				foreach($cleanTeam as $member){
 					$userVerbage = NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
 					$userDisplayName = NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
-					array_push($teamString, "<strong><a href=\"{$root}user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
+					array_push($teamString, "<strong><a href=\"/user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
 				}
 				$teamString = implode(' and ',$teamString);
 				$teamIntro .= $teamString;
@@ -399,7 +447,7 @@ HTML;
 				foreach($cleanTeam as $member){
 					$userVerbage = NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
 					$userDisplayName = NaturalLanguage::display_name($member->id,"{$member->firstName} {$member->lastName}");
-					array_push($strings,"<strong><a href=\"{$root}user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
+					array_push($strings,"<strong><a href=\"/user/{$member->vanityURL}\" title=\"$userVerbage\">$userDisplayName</a></strong>");
 				}
 				$teamIntro .= NaturalLanguage::comma_list($strings);
 			}

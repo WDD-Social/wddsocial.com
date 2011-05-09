@@ -13,7 +13,6 @@ class OverviewDisplayView implements \Framework5\IView {
 	
 	public function render($content = null) {
 
-		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.OverviewDisplayLang');
 		$html = "";
 		
@@ -22,8 +21,8 @@ class OverviewDisplayView implements \Framework5\IView {
 			$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
-						<a href="{$root}" title="{$lang->text('delete_title', $content->title)}" class="delete">{$lang->text('delete')}</a>
+						<a href="/" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/" title="{$lang->text('delete_title', $content->title)}" class="delete">{$lang->text('delete')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}
@@ -36,14 +35,14 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
+						<a href="/" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -53,14 +52,14 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
+						<a href="/" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -69,7 +68,7 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
+						<a href="/" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -82,7 +81,7 @@ HTML;
 		if (count($content->images) > 0 and $content->type != 'job' and file_exists("images/uploads/{$content->images[0]->file}_full.jpg") and file_exists("images/uploads/{$content->images[0]->file}_large.jpg")) {
 			$html .= <<<HTML
 
-					<a href="{$root}images/uploads/{$content->images[0]->file}_full.jpg" title="{$content->images[0]->title}"><img src="{$root}images/uploads/{$content->images[0]->file}_large.jpg" alt="{$content->images[0]->title}" /></a>
+					<a href="/images/uploads/{$content->images[0]->file}_full.jpg" title="{$content->images[0]->title}"><img src="/images/uploads/{$content->images[0]->file}_large.jpg" alt="{$content->images[0]->title}" /></a>
 					<div class="large no-margin">
 HTML;
 		}
@@ -90,7 +89,7 @@ HTML;
 		else if ($content->type == 'job' and file_exists("images/jobs/{$content->avatar}_full.jpg")) {
 			$html .= <<<HTML
 
-					<a href="http://{$content->website}" title="{$content->company}"><img src="{$root}images/jobs/{$content->avatar}_full.jpg" alt="{$content->images[0]->title}" /></a>
+					<a href="http://{$content->website}" title="{$content->company}"><img src="/images/jobs/{$content->avatar}_full.jpg" alt="{$content->images[0]->title}" /></a>
 					<div class="large no-margin">
 HTML;
 		}
@@ -154,7 +153,7 @@ HTML;
 			foreach ($content->categories as $category) {
 				$html .= <<<HTML
 
-							<li><a href="{$root}/search/{$category->title}" title="{$lang->text('categories')} | {$category->title}">{$category->title}</a></li>
+							<li><a href="/search/{$category->title}" title="{$lang->text('categories')} | {$category->title}">{$category->title}</a></li>
 HTML;
 			}
 			$html .= <<<HTML

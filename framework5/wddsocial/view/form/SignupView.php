@@ -10,10 +10,9 @@ namespace WDDSocial;
 class SignupView implements \Framework5\IView {		
 	
 	public function render($options = null) {
-		$root = \Framework5\Request::root_path();
 		$html = <<<HTML
 
-					<form action="{$root}signup" method="post" enctype="multipart/form-data">
+					<form action="/signup" method="post" enctype="multipart/form-data">
 						<h1>Basic</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
@@ -64,9 +63,9 @@ HTML;
 						
 						<fieldset class="terms">
 							<label>Boring Legal Stuff *</label>
-							<p><input type="checkbox" name="terms" id="terms" />I have read and agree to the <a href="{$root}terms" title="WDD Social Terms of Service">Terms of Service</a>.</p>
+							<p><input type="checkbox" name="terms" id="terms" />I have read and agree to the <a href="/terms" title="WDD Social Terms of Service">Terms of Service</a>.</p>
 						</fieldset>
-						<p class="helper-link"><a href="{$root}signin" title="Already a WDD Social member?">Already a member?</a></p>
+						<p class="helper-link"><a href="/signin" title="Already a WDD Social member?">Already a member?</a></p>
 						<input type="submit" name="submit" value="Sign Up" />
 					</form>
 HTML;

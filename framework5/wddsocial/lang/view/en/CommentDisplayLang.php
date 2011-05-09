@@ -9,9 +9,12 @@ class CommentDisplayLang implements \Framework5\ILanguagePack {
 	
 	public static function content($id, $var) {
 		switch ($id) {
-						
+			case 'edit':
+				return 'Edit';
 			case 'edit_title':
 				return 'Edit Your Comment';
+			case 'delete':
+				return 'Delete';
 			case 'delete_title':
 				return 'Delete Your Comment';
 			

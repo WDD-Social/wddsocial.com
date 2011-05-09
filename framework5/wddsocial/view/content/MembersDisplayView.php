@@ -13,8 +13,8 @@ class MembersDisplayView implements \Framework5\IView {
 	
 	public function render($content = null) {
 	
-		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.MembersDisplayLang');
+		$html = "";
 		$possessiveTitle = NaturalLanguage::possessive($content->title);
 		
 		$html = "";
@@ -25,7 +25,7 @@ class MembersDisplayView implements \Framework5\IView {
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('edit_team', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/" title="{$lang->text('edit_team', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -35,7 +35,7 @@ HTML;
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('edit_authors', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/" title="{$lang->text('edit_authors', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -45,7 +45,7 @@ HTML;
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="{$root}" title="{$lang->text('edit_members', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/" title="{$lang->text('edit_members', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -91,8 +91,8 @@ HTML;
 					$html .= <<<HTML
 
 						<li>
-							<a href="{$root}user/{$member->vanityURL}" title="{$userVerbage}">
-							<img src="{$root}images/avatars/{$member->avatar}_medium.jpg" alt="{$userDisplayName}" />
+							<a href="/user/{$member->vanityURL}" title="{$userVerbage}">
+							<img src="/images/avatars/{$member->avatar}_medium.jpg" alt="{$userDisplayName}" />
 							<p><strong>{$userDisplayName}</strong> {$userDetail}</p>
 							</a>
 						</li>
@@ -103,8 +103,8 @@ HTML;
 					$html .= <<<HTML
 
 					<article>
-						<p class="item-image"><a href="{$root}user/{$member->vanityURL}" title="{$userVerbage}"><img src="{$root}images/avatars/{$member->avatar}_medium.jpg" alt="{$userDisplayName}" /></a></p>
-						<h2><a href="{$root}user/{$member->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
+						<p class="item-image"><a href="/user/{$member->vanityURL}" title="{$userVerbage}"><img src="/images/avatars/{$member->avatar}_medium.jpg" alt="{$userDisplayName}" /></a></p>
+						<h2><a href="/user/{$member->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
 						<p>$userDetail</p>
 					</article>
 HTML;

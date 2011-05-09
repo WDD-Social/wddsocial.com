@@ -126,19 +126,18 @@ HTML;
 	*/
 	
 	private function _userArea() {
-		$root = \Framework5\Request::root_path();
 		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
-		$userAvatar = (file_exists("images/avatars/{$_SESSION['user']->avatar}_small.jpg"))?"{$root}images/avatars/{$_SESSION['user']->avatar}_small.jpg":"{$root}images/site/user-default_small.jpg";
+		$userAvatar = (file_exists("images/avatars/{$_SESSION['user']->avatar}_small.jpg"))?"/images/avatars/{$_SESSION['user']->avatar}_small.jpg":"/images/site/user-default_small.jpg";
 		
 		# if the user is logged in
 		if ($_SESSION['authorized']) {
 			return <<<HTML
 				
 				<section id="user-area" class="signed-in">
-					<p><strong><a href="{$root}user/{$_SESSION['user']->vanityURL}" title="{$lang->text('user_profile_title')}"><img src="$userAvatar" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
-				 	<p><a href="{$root}messages" title="{$lang->text('messages_title')}">{$lang->text('messages')} <span class="badge">3</span></a></p>
-				 	<p><a href="{$root}account" title="{$lang->text('account_title')}">{$lang->text('account')}</a></p>
-				 	<p><a href="{$root}signout" title="{$lang->text('signout_title')}">{$lang->text('signout')}</a></p>
+					<p><strong><a href="/user/{$_SESSION['user']->vanityURL}" title="{$lang->text('user_profile_title')}"><img src="$userAvatar" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
+				 	<p><a href="/messages" title="{$lang->text('messages_title')}">{$lang->text('messages')} <span class="badge">3</span></a></p>
+				 	<p><a href="/account" title="{$lang->text('account_title')}">{$lang->text('account')}</a></p>
+				 	<p><a href="/signout" title="{$lang->text('signout_title')}">{$lang->text('signout')}</a></p>
 				 </section><!-- END USER AREA -->
 HTML;
 		}
@@ -148,8 +147,8 @@ HTML;
 			return <<<HTML
 
 				<section id="user-area" class="signed-out">
-					<p><a href="signup" title="{$lang->text('signup_title')}">{$lang->text('signup')}</a></p>
-					<p><a href="signin" title="{$lang->text('signin_title')}">{$lang->text('signin')}</a></p>
+					<p><a href="/signup" title="{$lang->text('signup_title')}">{$lang->text('signup')}</a></p>
+					<p><a href="/signin" title="{$lang->text('signin_title')}">{$lang->text('signin')}</a></p>
 				</section><!-- END USER AREA -->
 HTML;
 		}
@@ -162,8 +161,6 @@ HTML;
 	*/
 	
 	private function _navigation() {
-		
-		$root = \Framework5\Request::root_path();
 		$current = \Framework5\Request::segment(0);
 		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		
@@ -189,14 +186,14 @@ HTML;
 			
 			$html .= <<<HTML
 
-						<li><a href="{$root}{$lower}" title="{$navItem}"{$class}>$value</a></li>
+						<li><a href="/{$lower}" title="{$navItem}"{$class}>$value</a></li>
 HTML;
 		}
 		
 		$html .= <<<HTML
 
 					</ul>
-					<form action="{$root}search" method="get">
+					<form action="/search" method="get">
 						<input type="text" name="term" placeholder="{$lang->text('search_placeholder')}" />
 						<input type="submit" value="{$lang->text('search')}" />
 					</form>

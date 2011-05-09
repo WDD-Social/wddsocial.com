@@ -10,7 +10,6 @@ namespace WDDSocial;
 class CommentView implements \Framework5\IView {		
 	
 	public function render($options = null) {
-		$root = \Framework5\Request::root_path();
 		return <<<HTML
 
 						<form action="{$_SERVER['REQUEST_URI']}" method="post">
