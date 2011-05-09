@@ -223,6 +223,78 @@ class SelectorSQL{
 			LEFT JOIN users AS u ON (a.userID = u.id)
 			LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
 			WHERE u.id = :id OR ua.userID = :id
+			UNION
+			SELECT p.id, p.title, c.content, p.vanityURL, c.datetime, 'projectComment' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL,
+			IF(
+				TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
+						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM comments AS c
+			INNER JOIN projectComments AS pc ON (c.id = pc.commentID)
+			LEFT JOIN projects AS p ON (p.id = pc.projectID)
+			LEFT JOIN users AS u ON (u.id = c.userID)
+			WHERE u.id = :id
+			UNION
+			SELECT a.id, a.title, c.content, a.vanityURL, c.datetime, 'articleComment' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL,
+			IF(
+				TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
+						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM comments AS c
+			INNER JOIN articleComments AS ac ON (c.id = ac.commentID)
+			LEFT JOIN articles AS a ON (a.id = ac.articleID)
+			LEFT JOIN users AS u ON (u.id = c.userID)
+			WHERE u.id = :id
 			ORDER BY DATETIME DESC
 			LIMIT 0,20
 			",

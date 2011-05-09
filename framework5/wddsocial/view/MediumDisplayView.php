@@ -21,15 +21,21 @@ class MediumDisplayView implements \Framework5\IView {
 		switch ($options['type']) {
 			case 'project':
 				return $this->project_display($options['content']);
+				
+			case 'projectComment':
+				return $this->project_comment_display($options['content']);
 			
 			case 'article':
 				return $this->article_display($options['content']);
+				
+			case 'articleComment':
+				return $this->article_comment_display($options['content']);
 			
 			case 'person':
 				return $this->person_display($options['content']);
 			
 			default:
-				throw new \Exception("MediumDisplayView requires parameter type (project, article, or person), '{$options['type']}' provided");
+				throw new \Exception("MediumDisplayView requires parameter type (project, projectComment, article, articleComment, or person), '{$options['type']}' provided");
 		}
 	}
 	
@@ -47,7 +53,7 @@ class MediumDisplayView implements \Framework5\IView {
 		$userVerbage = NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$project->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$project->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
-		$teamIntro = static::format_team_string($project->userID,$project->team);
+		$teamIntro = static::format_team_string($project->userID,$project->team, ' with');
 		
 		$html = <<<HTML
 
@@ -123,6 +129,59 @@ HTML;
 	
 	
 	/**
+	* Creates a project comment article
+	*/
+	
+	private function project_comment_display($projectComment){
+		$root = \Framework5\Request::root_path();
+		
+		$userVerbage = NaturalLanguage::view_profile($projectComment->userID,"{$projectComment->userFirstName} {$projectComment->userLastName}");
+		$userDisplayName = NaturalLanguage::display_name($projectComment->userID,"{$projectComment->userFirstName} {$projectComment->userLastName}");
+		$userAvatar = (file_exists("images/avatars/{$projectComment->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$projectComment->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$teamIntro = static::format_team_string($projectComment->userID,$projectComment->team, 'By');
+		$html = <<<HTML
+
+					<article class="comments with-secondary">
+						<div class="secondary">
+HTML;
+		
+		# Determines what type of secondary controls to present (Flag or Edit/Delete)
+		if(UserSession::is_current($projectComment->userID)){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Edit Comment on &ldquo;{$projectComment->title}&rdquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Delete Comment on &ldquo;{$projectComment->title}&rdquo;" class="delete">Delete</a>
+HTML;
+		}else if(UserValidator::is_article_owner($article->id)){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Edit Comment on &ldquo;{$projectComment->title}&rdquo;" class="edit">Edit</a>
+HTML;
+		}else if(UserSession::is_authorized()){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Flag Comment on &ldquo;{$projectComment->title}&rdquo;" class="flag">Flag</a>
+HTML;
+		}	
+		$html .= <<<HTML
+
+						</div><!-- END SECONDARY -->
+						
+						<p class="item-image"><a href="{$root}user/{$projectComment->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="{$root}user/{$projectComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on a <strong><a href="{$root}article/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">project</a></strong>.</p>
+						<h2><a href="{$root}article/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">{$projectComment->title}</a></h2>
+						<p>$teamIntro</p>
+						<p>"{$projectComment->description}"</p>
+HTML;
+		$html .= <<<HTML
+					</article><!-- END {$projectComment->title} -->
+HTML;
+		return $html;
+	}
+	
+	
+	
+	/**
 	* Creates an article article
 	*/
 	
@@ -132,7 +191,7 @@ HTML;
 		$userVerbage = NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$article->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$article->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
-		$teamIntro = static::format_team_string($article->userID,$article->team);
+		$teamIntro = static::format_team_string($article->userID,$article->team, ' with');
 		$html = <<<HTML
 
 					<article class="articles with-secondary">
@@ -207,6 +266,59 @@ HTML;
 	
 	
 	/**
+	* Creates an article comment article
+	*/
+	
+	private function article_comment_display($articleComment){
+		$root = \Framework5\Request::root_path();
+		
+		$userVerbage = NaturalLanguage::view_profile($articleComment->userID,"{$articleComment->userFirstName} {$articleComment->userLastName}");
+		$userDisplayName = NaturalLanguage::display_name($articleComment->userID,"{$articleComment->userFirstName} {$articleComment->userLastName}");
+		$userAvatar = (file_exists("images/avatars/{$articleComment->userAvatar}_medium.jpg"))?"{$root}images/avatars/{$articleComment->userAvatar}_medium.jpg":"{$root}images/site/user-default_medium.jpg";
+		$teamIntro = static::format_team_string($articleComment->userID,$articleComment->team, 'By');
+		$html = <<<HTML
+
+					<article class="comments with-secondary">
+						<div class="secondary">
+HTML;
+		
+		# Determines what type of secondary controls to present (Flag or Edit/Delete)
+		if(UserSession::is_current($articleComment->userID)){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
+							<a href="{$root}" title="Delete Comment on &ldquo;{$articleComment->title}&rdquo;" class="delete">Delete</a>
+HTML;
+		}else if(UserValidator::is_article_owner($article->id)){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
+HTML;
+		}else if(UserSession::is_authorized()){
+			$html .= <<<HTML
+
+							<a href="{$root}" title="Flag Comment on &ldquo;{$articleComment->title}&rdquo;" class="flag">Flag</a>
+HTML;
+		}	
+		$html .= <<<HTML
+
+						</div><!-- END SECONDARY -->
+						
+						<p class="item-image"><a href="{$root}user/{$articleComment->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
+						<p class="intro"><strong><a href="{$root}user/{$articleComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on an <strong><a href="{$root}article/{$articleComment->vanityURL}#comments" title="{$articleComment->title}">article</a></strong>.</p>
+						<h2><a href="{$root}article/{$articleComment->vanityURL}#comments" title="{$articleComment->title}">{$articleComment->title}</a></h2>
+						<p>$teamIntro</p>
+						<p>"{$articleComment->description}"</p>
+HTML;
+		$html .= <<<HTML
+					</article><!-- END {$articleComment->title} -->
+HTML;
+		return $html;
+	}
+	
+	
+	
+	/**
 	* Creates a person article
 	*/
 	
@@ -234,7 +346,7 @@ HTML;
 	* Creates and formats the team string for display
 	*/
 	
-	private function format_team_string($ownerID, $team){
+	private function format_team_string($ownerID, $team, $introWord){
 		# Remove user who posted content from team (for intro sentence), and put current user at front of array
 		$cleanTeam = $team;
 		foreach($cleanTeam as $member){
@@ -252,7 +364,7 @@ HTML;
 		
 		# Create team string
 		if(count($cleanTeam) > 0){
-			$teamIntro = " with ";
+			$teamIntro = "$introWord ";
 			$teamString = array();
 			
 			# Creates string according to how many team members there are for this piece of content
