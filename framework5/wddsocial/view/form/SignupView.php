@@ -18,7 +18,7 @@ class SignupView implements \Framework5\IView {
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="first-name">First Name *</label>
-							<input type="text" name="first-name" id="first-name" value="{$_POST['first-name']}" />
+							<input type="text" name="first-name" id="first-name" value="{$_POST['first-name']}" autofocus />
 						</fieldset>
 						<fieldset>
 							<label for="last-name">Last Name *</label>
