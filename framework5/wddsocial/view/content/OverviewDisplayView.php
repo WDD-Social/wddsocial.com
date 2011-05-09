@@ -13,6 +13,7 @@ class OverviewDisplayView implements \Framework5\IView {
 	
 	public function render($content = null) {
 
+		$lang = new \Framework5\Lang('wddsocial.lang.view.OverviewDisplayLang');
 		$html = "";
 		
 		# display edit controls, if user is author
@@ -20,8 +21,8 @@ class OverviewDisplayView implements \Framework5\IView {
 			$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
-						<a href="/" title="Delete &ldquo;{$content->title}&rdquo;" class="delete">Delete</a>
+						<a href="/" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/" title="{$lang->text('delete_title', $content->title)}" class="delete">{$lang->text('delete')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}
@@ -34,14 +35,14 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
+						<a href="/" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
+						<a href="/" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -51,14 +52,14 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
+						<a href="/" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
+						<a href="/" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -67,7 +68,7 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
+						<a href="/" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -104,7 +105,7 @@ HTML;
 		}
 		$html .= <<<HTML
 
-						<h2>Description</h2>
+						<h2>{$lang->text('description')}</h2>
 HTML;
 		
 		
@@ -119,7 +120,7 @@ HTML;
 		else {
 			$html .= <<<HTML
 
-						<p class="empty">No description has been added. Lame.</p>
+						<p class="empty">{$lang->text('no_description')}</p>
 HTML;
 		}
 		
@@ -127,15 +128,14 @@ HTML;
 		switch ($content->type) {
 			case 'project':
 				$html .= <<<HTML
-
-						<p>Completed in {$content->completeDate}.</p>
-						<p>Posted {$content->date}</p>
+						<p>{$lang->text('completion_date', $content->completeDate)}</p>
+						<p>{$lang->text('posted_date', $content->completeDate)}</p>
 HTML;
 				break;
 			case 'article':
 				$html .= <<<HTML
 
-						<p>Written {$content->date}</p>
+						<p>{$lang->text('written_date', $content->date)}</p>
 HTML;
 				break;
 		}
@@ -144,7 +144,7 @@ HTML;
 					</div><!-- END DESCRIPTION -->
 					
 					<div class="small">
-						<h2>Categories</h2>
+						<h2>{$lang->text('categories')}</h2>
 HTML;
 		
 		
@@ -156,7 +156,7 @@ HTML;
 			foreach ($content->categories as $category) {
 				$html .= <<<HTML
 
-							<li><a href="/search/{$category->title}" title="Categories | {$category->title}">{$category->title}</a></li>
+							<li><a href="/search/{$category->title}" title="{$lang->text('categories')} | {$category->title}">{$category->title}</a></li>
 HTML;
 			}
 			$html .= <<<HTML
@@ -168,7 +168,7 @@ HTML;
 		else {
 			$html .= <<<HTML
 
-						<p>No categories have been added. Such a shame...</p>
+						<p>{$lang->text('no_categories')}</p>
 HTML;
 		}
 		$html .= <<<HTML
@@ -176,7 +176,7 @@ HTML;
 					</div><!-- END CATGORIES -->
 					
 					<div class="small no-margin">
-						<h2>Links</h2>
+						<h2>{$lang->text('links')}</h2>
 HTML;
 		$linkCount = 0;
 		$html .= <<<HTML
@@ -217,7 +217,7 @@ HTML;
 		if ($linkCount < 1) {
 			$html .= <<<HTML
 
-						<p>No links have been added. That&rsquo;s no fun.</p>
+						<p>{$lang->text('no_links')}</p>
 HTML;
 		}
 		$html .= <<<HTML
@@ -234,7 +234,7 @@ HTML;
 			if ($content->type == 'job') {
 				$html .= <<<HTML
 
-						<p><a href="mailto:{$content->email}" title="Apply for this job" class="button">Apply Now</a></p>
+						<p><a href="mailto:{$content->email}" title="{$lang->text('apply_title')}" class="button">{$lang->text('apply_now')}"</a></p>
 HTML;
 			}
 			$html .= <<<HTML

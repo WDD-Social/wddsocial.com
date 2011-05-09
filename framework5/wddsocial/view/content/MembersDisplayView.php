@@ -13,9 +13,11 @@ class MembersDisplayView implements \Framework5\IView {
 	
 	public function render($content = null) {
 	
+		$lang = new \Framework5\Lang('wddsocial.lang.view.MembersDisplayLang');
 		$html = "";
 		$possessiveTitle = NaturalLanguage::possessive($content->title);
 		
+		$html = "";
 		# display edit controls, if user is author
 		switch ($content->type) {
 			case 'project':
@@ -23,7 +25,7 @@ class MembersDisplayView implements \Framework5\IView {
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="Edit &ldquo;$possessiveTitle Team&rdquo;" class="edit">Edit</a>
+						<a href="/" title="{$lang->text('edit_team', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -33,7 +35,7 @@ HTML;
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="Edit &ldquo;{$possessiveTitle} Authors&rdquo;" class="edit">Edit</a>
+						<a href="/" title="{$lang->text('edit_authors', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -43,7 +45,7 @@ HTML;
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="Edit &ldquo;{$possessiveTitle} Members&rdquo;" class="edit">Edit</a>
+						<a href="/" title="{$lang->text('edit_members', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -121,7 +123,7 @@ HTML;
 		else{
 			$html .= <<<HTML
 
-					<p class="empty">No one has been added. Well, that&rsquo;s pretty lonely.</p>
+					<p class="empty">{$lang->text('no_members')}</p>
 HTML;
 		}
 		
