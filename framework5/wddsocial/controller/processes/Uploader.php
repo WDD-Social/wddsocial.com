@@ -88,10 +88,6 @@ class Uploader {
 		unlink("$dest/$name");
 	}
 	
-	public static function clean_video_tag($embedCode){
-		echo "<h1>$embedCode</h1>";
-	}
-	
 	public static function create_ics_file($event){
 		echo "<pre>";
 		echo render('wddsocial.view.WDDSocial\iCalView', array('section' => 'header'));
