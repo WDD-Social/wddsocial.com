@@ -45,7 +45,7 @@ class UserPage implements \Framework5\IExecutable {
 			# display section items
 			$activity = $this->getUserLatest($user->id);
 			foreach ($activity as $row) {
-				echo render('wddsocial.view.WDDSocial\MediumDisplayView', 
+				echo render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
 					array('type' => $row->type,'content' => $row));
 			}
 			

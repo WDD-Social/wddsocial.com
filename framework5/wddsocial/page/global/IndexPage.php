@@ -94,7 +94,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# display section items
 		while($row = $query->fetch()){
-			echo render('wddsocial.view.WDDSocial\MediumDisplayView', 
+			echo render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
 				array('type' => $row->type,'content' => $row));
 		}
 		
@@ -148,7 +148,7 @@ class IndexPage implements \Framework5\IExecutable {
 		}*/
 		$row = $query->fetchAll();
 		if(isset($row[0])){
-			echo render('wddsocial.view.WDDSocial\LargeDisplayView', 
+			echo render('wddsocial.view.content.WDDSocial\LargeDisplayView', 
 				array('type' => $row[0]->type,'content' => $row[0]));
 		}
 		
@@ -177,7 +177,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# Create section items
 		while($row = $query->fetch()){
-			echo render('wddsocial.view.WDDSocial\SmallDisplayView', 
+			echo render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
 				array('type' => 'person_imagegrid','content' => $row));
 		}
 		
@@ -210,7 +210,7 @@ class IndexPage implements \Framework5\IExecutable {
 		$row = $query->fetchAll();
 		for($i = 0; $i<2; $i++){
 			if(isset($row[$i])){
-				echo render('wddsocial.view.WDDSocial\SmallDisplayView', 
+				echo render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
 					array('type' => $row[$i]->type,'content' => $row[$i]));
 			}
 		}
@@ -258,7 +258,7 @@ class IndexPage implements \Framework5\IExecutable {
 		$row = $query->fetchAll();
 		for($i = 0; $i<$limit; $i++){
 			if(isset($row[$i])){
-				echo render('wddsocial.view.WDDSocial\SmallDisplayView', 
+				echo render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
 					array('type' => $row[$i]->type,'content' => $row[$i]));
 			}
 		}
@@ -288,7 +288,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# Create section items
 		while($row = $query->fetch()){
-			echo render('wddsocial.view.WDDSocial\SmallDisplayView', 
+			echo render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
 				array('type' => $row->type,'content' => $row));
 		}
 		

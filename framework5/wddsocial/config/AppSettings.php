@@ -14,8 +14,7 @@ class AppSettings {
 		':sel-sql' => 'wddsocial.sql.WDDSocial\SelectorSQL',
 		':val-sql' => 'wddsocial.sql.WDDSocial\ValidatorSQL',
 		':admin-sql' => 'wddsocial.sql.WDDSocial\AdminSQL',
-		':template' => 'wddsocial.view.WDDSocial\TemplateView',
-		
-		':section' => 'wddsocial.view.WDDSocial\SectionView'
+		':template' => 'wddsocial.view.global.WDDSocial\TemplateView',
+		':section' => 'wddsocial.view.global.WDDSocial\SectionView'
 	);
 }
