@@ -71,6 +71,10 @@ class AdminSQL{
 			INSERT INTO projectVideos (projectID, videoID)
 			VALUES (:projectID,:videoID)",
 		
+		'addProjectComment' => "
+			INSERT INTO projectComments (projectID, commentID)
+			VALUES (:projectID,:commentID)",
+		
 		/**
 		* Article Queries
 		*/
@@ -107,6 +111,10 @@ class AdminSQL{
 		'addArticleVideo' => "
 			INSERT INTO articleVideos (articleID, videoID)
 			VALUES (:articleID,:videoID)",
+		
+		'addArticleComment' => "
+			INSERT INTO articleComments (articleID, commentID)
+			VALUES (:articleID,:commentID)",
 		
 		/**
 		* Event Queries
@@ -145,6 +153,10 @@ class AdminSQL{
 		'addEventVideo' => "
 			INSERT INTO eventVideos (eventID, videoID)
 			VALUES (:eventID,:videoID)",
+		
+		'addEventComment' => "
+			INSERT INTO eventComments (eventID, commentID)
+			VALUES (:eventID,:commentID)",
 		
 		/**
 		* Job Queries
@@ -220,7 +232,15 @@ class AdminSQL{
 		
 		'addVideo' => "
 			INSERT INTO videos (userID, embedCode, `datetime`)
-			VALUES (:userID, :embedCode, NOW())"
+			VALUES (:userID, :embedCode, NOW())",
+		
+		/**
+		* Comment Queries
+		*/
+		
+		'addComment' => "
+			INSERT INTO comments (userID, content, `datetime`)
+			VALUES (:userID, :content, NOW())"
 		
 	);
 	
