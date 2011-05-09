@@ -152,11 +152,6 @@ HTML;
 							<a href="{$root}" title="Edit Comment on &ldquo;{$projectComment->title}&rdquo;" class="edit">Edit</a>
 							<a href="{$root}" title="Delete Comment on &ldquo;{$projectComment->title}&rdquo;" class="delete">Delete</a>
 HTML;
-		}else if(UserValidator::is_article_owner($article->id)){
-			$html .= <<<HTML
-
-							<a href="{$root}" title="Edit Comment on &ldquo;{$projectComment->title}&rdquo;" class="edit">Edit</a>
-HTML;
 		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
@@ -168,12 +163,24 @@ HTML;
 						</div><!-- END SECONDARY -->
 						
 						<p class="item-image"><a href="{$root}user/{$projectComment->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="{$root}user/{$projectComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on a <strong><a href="{$root}article/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">project</a></strong>.</p>
-						<h2><a href="{$root}article/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">{$projectComment->title}</a></h2>
+						<p class="intro"><strong><a href="{$root}user/{$projectComment->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> commented on a <strong><a href="{$root}project/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">project</a></strong>.</p>
+						<h2><a href="{$root}project/{$projectComment->vanityURL}#comments" title="{$projectComment->title}">{$projectComment->title}</a></h2>
 						<p>$teamIntro</p>
 						<p>"{$projectComment->description}"</p>
 HTML;
 		$html .= <<<HTML
+
+						<p class="comments"><a href="{$root}project/{$projectComment->vanityURL}#comments" title="{$projectComment->title} | Comments">{$projectComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$projectComment->date}</span></p>
+HTML;
+		
+		# Build categories
+		$categoryLinks = array();
+		foreach($projectComment->categories as $category){
+			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
+		}
+		$categoryLinks = implode(' ',$categoryLinks);
+		$html .= <<<HTML
+						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$projectComment->title} -->
 HTML;
 		return $html;
@@ -289,11 +296,6 @@ HTML;
 							<a href="{$root}" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
 							<a href="{$root}" title="Delete Comment on &ldquo;{$articleComment->title}&rdquo;" class="delete">Delete</a>
 HTML;
-		}else if(UserValidator::is_article_owner($article->id)){
-			$html .= <<<HTML
-
-							<a href="{$root}" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
-HTML;
 		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
@@ -311,6 +313,18 @@ HTML;
 						<p>"{$articleComment->description}"</p>
 HTML;
 		$html .= <<<HTML
+
+						<p class="comments"><a href="{$root}article/{$articleComment->vanityURL}#comments" title="{$articleComment->title} | Comments">{$articleComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$articleComment->date}</span></p>
+HTML;
+		
+		# Build categories
+		$categoryLinks = array();
+		foreach($articleComment->categories as $category){
+			array_push($categoryLinks,"<a href=\"{$root}search/$category\" title=\"Categories | $category\">$category</a>");
+		}
+		$categoryLinks = implode(' ',$categoryLinks);
+		$html .= <<<HTML
+						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$articleComment->title} -->
 HTML;
 		return $html;
