@@ -44,6 +44,18 @@ class AdminSQL{
 			INSERT INTO projectCategories (projectID, categoryID)
 			VALUES (:projectID, :categoryID)",
 		
+		'addProjectCourse' => "
+			INSERT INTO projectCourses (projectID, courseID)
+			VALUES (:projectID, :courseID)",
+		
+		'addProjectLink' => "
+			INSERT INTO projectLinks (projectID, linkID)
+			VALUES (:projectID, :linkID)",
+		
+		'addProjectImage' => "
+			INSERT INTO projectImages (projectID, imageID)
+			VALUES (:projectID,:imageID)",
+		
 		/**
 		* Article Queries
 		*/
@@ -64,6 +76,18 @@ class AdminSQL{
 		'addArticleCategory' => "
 			INSERT INTO articleCategories (articleID, categoryID)
 			VALUES (:articleID, :categoryID)",
+		
+		'addArticleCourse' => "
+			INSERT INTO articleCourses (articleID, courseID)
+			VALUES (:articleID, :courseID)",
+		
+		'addArticleLink' => "
+			INSERT INTO articleLinks (articleID, linkID)
+			VALUES (:articleID, :linkID)",
+		
+		'addArticleImage' => "
+			INSERT INTO articleImages (articleID, imageID)
+			VALUES (:articleID,:imageID)",
 		
 		/**
 		* Event Queries
@@ -88,6 +112,18 @@ class AdminSQL{
 			INSERT INTO eventCategories (eventID, categoryID)
 			VALUES (:eventID, :categoryID)",
 		
+		'addEventCourse' => "
+			INSERT INTO eventCourses (eventID, courseID)
+			VALUES (:eventID, :courseID)",
+		
+		'addEventLink' => "
+			INSERT INTO eventLinks (eventID, linkID)
+			VALUES (:eventID, :linkID)",
+		
+		'addEventImage' => "
+			INSERT INTO eventImages (eventID, imageID)
+			VALUES (:eventID,:imageID)",
+		
 		/**
 		* Job Queries
 		*/
@@ -111,6 +147,34 @@ class AdminSQL{
 			INSERT INTO jobCategories (jobID, categoryID)
 			VALUES (:jobID, :categoryID)",
 		
+		'addJobCourse' => "
+			INSERT INTO jobCourses (jobID, courseID)
+			VALUES (:jobID, :courseID)",
+		
+		'addJobLink' => "
+			INSERT INTO jobLinks (jobID, linkID)
+			VALUES (:jobID, :linkID)",
+		
+		'addJobImage' => "
+			INSERT INTO jobImages (jobID, imageID)
+			VALUES (:jobID,:imageID)",
+		
+		/**
+		* Category Queries
+		*/
+		
+		'addCategory' => "
+			INSERT INTO categories (title)
+			VALUES (:title)",
+		
+		/**
+		* Link Queries
+		*/
+		
+		'addLink' => "
+			INSERT INTO links (title, link)
+			VALUES (:title, :link)",
+		
 		/**
 		* Image Queries
 		*/
@@ -123,31 +187,7 @@ class AdminSQL{
 			
 			UPDATE images
 			SET `file` = MD5(CONCAT('image',id))
-			WHERE id = @last_id;",
-		
-		'addProjectImage' => "
-			INSERT INTO projectImages (projectID, imageID)
-			VALUES (:projectID,:imageID)",
-		
-		'addArticleImage' => "
-			INSERT INTO articleImages (articleID, imageID)
-			VALUES (:articleID,:imageID)",
-		
-		'addEventImage' => "
-			INSERT INTO eventImages (eventID, imageID)
-			VALUES (:eventID,:imageID)",
-		
-		'addJobImage' => "
-			INSERT INTO jobImages (jobID, imageID)
-			VALUES (:jobID,:imageID)",
-		
-		/**
-		* Category Queries
-		*/
-		
-		'addCategory' => "
-			INSERT INTO categories (title)
-			VALUES (:title)"
+			WHERE id = @last_id;"
 		
 	);
 	
