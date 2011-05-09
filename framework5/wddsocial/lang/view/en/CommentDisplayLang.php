@@ -32,7 +32,7 @@ class CommentDisplayLang implements \Framework5\ILanguagePack {
 			case 'signin_title':
 				return 'Sign In to WDD Social';
 			case 'signin_link':
-				'Would you like to sign in?';
+				return 'Would you like to sign in?';
 		}		
 	}
 }
