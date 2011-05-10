@@ -53,7 +53,27 @@ class ValidatorSQL{
 		'checkIfJobCategoryExists' => "
 			SELECT categoryID
 			FROM jobCategories
-			WHERE jobID = :jobID AND categoryID = :categoryID"
+			WHERE jobID = :jobID AND categoryID = :categoryID",
+		
+		'checkIfProjectVanityURLExists' => "
+			SELECT COUNT(*) AS `count`
+			FROM projects
+			WHERE vanityURL = :vanityURL",
+		
+		'checkIfArticleVanityURLExists' => "
+			SELECT COUNT(*) AS `count`
+			FROM articles
+			WHERE vanityURL = :vanityURL",
+		
+		'checkIfEventVanityURLExists' => "
+			SELECT COUNT(*) AS `count`
+			FROM events
+			WHERE vanityURL = :vanityURL",
+		
+		'checkIfJobVanityURLExists' => "
+			SELECT COUNT(*) AS `count`
+			FROM jobs
+			WHERE vanityURL = :vanityURL"
 	);
 	
 	public function __get($id){
