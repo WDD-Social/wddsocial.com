@@ -45,6 +45,26 @@ class ValidatorSQL{
 			FROM userArticles
 			WHERE articleID = :articleID AND userID = :userID",
 		
+		'checkIfProjectVanityURLExists' => "
+			SELECT COUNT(*) AS `count`
+			FROM projects
+			WHERE vanityURL = :vanityURL",
+		
+		'checkIfArticleVanityURLExists' => "
+			SELECT COUNT(*) AS `count`
+			FROM articles
+			WHERE vanityURL = :vanityURL",
+		
+		'checkIfEventVanityURLExists' => "
+			SELECT COUNT(*) AS `count`
+			FROM events
+			WHERE vanityURL = :vanityURL",
+		
+		'checkIfJobVanityURLExists' => "
+			SELECT COUNT(*) AS `count`
+			FROM jobs
+			WHERE vanityURL = :vanityURL"
+		
 		'checkIfProjectCategoryExists' => "
 			SELECT categoryID
 			FROM projectCategories
@@ -65,25 +85,25 @@ class ValidatorSQL{
 			FROM jobCategories
 			WHERE jobID = :jobID AND categoryID = :categoryID",
 		
-		'checkIfProjectVanityURLExists' => "
-			SELECT COUNT(*) AS `count`
-			FROM projects
-			WHERE vanityURL = :vanityURL",
+		'checkIfProjectLinkExists' => "
+			SELECT linkID
+			FROM projectLinks
+			WHERE projectID = :projectID AND linkID = :linkID",
 		
-		'checkIfArticleVanityURLExists' => "
-			SELECT COUNT(*) AS `count`
-			FROM articles
-			WHERE vanityURL = :vanityURL",
+		'checkIfArticleLinkExists' => "
+			SELECT linkID
+			FROM articleLinks
+			WHERE articleID = :articleID AND linkID = :linkID",
 		
-		'checkIfEventVanityURLExists' => "
-			SELECT COUNT(*) AS `count`
-			FROM events
-			WHERE vanityURL = :vanityURL",
+		'checkIfEventLinkExists' => "
+			SELECT linkID
+			FROM eventLinks
+			WHERE eventID = :eventID AND linkID = :linkID",
 		
-		'checkIfJobVanityURLExists' => "
-			SELECT COUNT(*) AS `count`
-			FROM jobs
-			WHERE vanityURL = :vanityURL"
+		'checkIfJobLinkExists' => "
+			SELECT linkID
+			FROM jobLinks
+			WHERE jobID = :jobID AND linkID = :linkID",
 	);
 	
 	public function __get($id){
