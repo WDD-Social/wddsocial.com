@@ -21,7 +21,7 @@ class AdminSQL{
 			SET @last_id = LAST_INSERT_ID();
 			
 			UPDATE users
-			SET avatar = MD5(CONCAT('user',id)), verificationCode = MD5(CONCAT(id,fullsailEmail,`datetime`))
+			SET avatar = MD5(CONCAT('user',id)), verificationCode = MD5(RAND())
 			WHERE id = @last_id;",
 		
 		'verifyUserByID' => "
