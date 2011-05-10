@@ -31,6 +31,12 @@ class ValidatorSQL{
 			WHERE title = :title AND link = :link
 			LIMIT 1",
 		
+		'checkIfVideoExists' => "
+			SELECT id
+			FROM videos
+			WHERE embedCode = :embedCode
+			LIMIT 1",
+		
 		'getProjectOwners' => "
 			SELECT userID
 			FROM userProjects

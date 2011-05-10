@@ -13,6 +13,7 @@ class VideoProcessor {
 		import('wddsocial.helper.WDDSocial\HTMLParser');
 
 		$db = instance(':db');
+		$val_sql = instance(':val-sql');
 		$admin_sql = instance(':admin-sql');
 		$parser = new HTMLParser();
 		
@@ -25,15 +26,29 @@ class VideoProcessor {
 			else
 				$videoSRC = $iframe[0]->attr['src'];
 			
-			if (stristr($videoSRC,'player.vimeo.com'))
+			if (stristr($videoSRC,'player.vimeo.com')) {
 				$videoSRC .= "?color=74b336";
+				$fullscreen = '';
+			}
+			else if (stristr($videoSRC,'youtube.com')) {
+				$fullscreen = ' allowfullscreen';
+			}
 			
 			if (stristr($videoSRC,'player.vimeo.com') or stristr($videoSRC,'youtube.com')) {
-				$data = array('userID' => $_SESSION['user']->id, 'embedCode' => stripslashes("<iframe src=\"$videoSRC\" frameborder=\"0\"></iframe>"));
-				$query = $db->prepare($admin_sql->addVideo);
-				$query->execute($data);
-				
-				$videoID = $db->lastInsertID();
+				$embedCode = "<iframe src=\"$videoSRC\" frameborder=\"0\"$fullscreen></iframe>";
+				$query = $db->prepare($val_sql->checkIfVideoExists);
+				$query->execute(array('embedCode' => $embedCode));
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				$result = $query->fetch();
+				if ($query->rowCount() > 0) {
+					$videoID = $result->id;
+				}
+				else {
+					$data = array('userID' => $_SESSION['user']->id, 'embedCode' => $embedCode);
+					$query = $db->prepare($admin_sql->addVideo);
+					$query->execute($data);
+					$videoID = $db->lastInsertID();
+				}
 				
 				switch ($contentType) {
 					case 'project':
