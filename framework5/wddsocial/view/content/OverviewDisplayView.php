@@ -240,7 +240,7 @@ HTML;
 			if ($content->type == 'job') {
 				$html .= <<<HTML
 
-						<p><a href="mailto:{$content->email}" title="{$lang->text('apply_title')}" class="button">{$lang->text('apply_now')}"</a></p>
+						<p><a href="mailto:{$content->email}" title="{$lang->text('apply_title')}" class="button">{$lang->text('apply_now')}</a></p>
 HTML;
 			}
 			$html .= <<<HTML

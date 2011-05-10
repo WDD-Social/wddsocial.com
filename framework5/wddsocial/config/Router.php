@@ -58,6 +58,9 @@ class Router implements \Framework5\IRouter {
 			case 'messages':
 				return 'wddsocial.page.user.WDDSocial\MessagesPage';
 			
+			case 'verify':
+				return 'wddsocial.page.user.WDDSocial\VerifyPage';
+			
 			
 			# footer navigation
 			case 'developer':

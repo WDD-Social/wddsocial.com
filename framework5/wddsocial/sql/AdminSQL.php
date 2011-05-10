@@ -21,18 +21,17 @@ class AdminSQL{
 			SET @last_id = LAST_INSERT_ID();
 			
 			UPDATE users
-			SET avatar = MD5(CONCAT('user',id)), verificationCode = MD5(CONCAT(id,fullsailEmail,`datetime`))
+			SET avatar = MD5(CONCAT('user',id)), verificationCode = MD5(RAND())
 			WHERE id = @last_id;",
 		
 		'verifyUserByID' => "
 			UPDATE users
 			SET verified = 1
-			WHERE id = :id",
-		
-		'unverifyUserByID' => "
+			WHERE id = :id;
+			
 			UPDATE users
-			SET verified = 0
-			WHERE id = :id",
+			SET verificationCode = NULL
+			WHERE id = :id;",
 		
 		/**
 		* Project Queries
@@ -44,7 +43,7 @@ class AdminSQL{
 		
 		'generateProjectVanityURL' => "
 			UPDATE projects
-			SET vanityURL = SUBSTRING(MD5(CONCAT('project',id)),1,6)
+			SET vanityURL = SUBSTRING(MD5(CONCAT(:extra,'project',id)),1,6)
 			WHERE id = :id",
 		
 		'addProjectTeamMember' => "
@@ -85,7 +84,7 @@ class AdminSQL{
 		
 		'generateArticleVanityURL' => "
 			UPDATE articles
-			SET vanityURL = SUBSTRING(MD5(CONCAT('article',id)),1,6)
+			SET vanityURL = SUBSTRING(MD5(CONCAT(:extra,'article',id)),1,6)
 			WHERE id = :id",
 		
 		'addArticleAuthor' => "
@@ -131,7 +130,7 @@ class AdminSQL{
 		
 		'generateEventVanityURL' => "
 			UPDATE events
-			SET vanityURL = SUBSTRING(MD5(CONCAT('event',id)),1,6)
+			SET vanityURL = SUBSTRING(MD5(CONCAT(:extra,'event',id)),1,6)
 			WHERE id = :id",
 		
 		'addEventCategory' => "
@@ -168,7 +167,7 @@ class AdminSQL{
 		
 		'generateJobVanityURL' => "
 			UPDATE jobs
-			SET vanityURL = SUBSTRING(MD5(CONCAT('job',id)),1,6)
+			SET vanityURL = SUBSTRING(MD5(CONCAT(:extra,'job',id)),1,6)
 			WHERE id = :id",
 		
 		'generateJobAvatar' => "

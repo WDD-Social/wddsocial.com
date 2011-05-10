@@ -376,7 +376,8 @@ class SelectorSQL{
 		'getUserVerificationCode' => "
 			SELECT id
 			FROM users
-			WHERE verificationCode = :verificationCode",
+			WHERE verificationCode = :verificationCode
+			LIMIT 1",
 		
 		'getStudentDetailByID' => "
 			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, location
