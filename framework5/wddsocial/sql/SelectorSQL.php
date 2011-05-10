@@ -353,6 +353,12 @@ class SelectorSQL{
 			WHERE id = :id
 			LIMIT 1",
 		
+		'getUserFullSailEmailByID' => "
+			SELECT fullsailEmail AS email
+			FROM users
+			WHERE id = :id
+			LIMIT 1",
+		
 		'getUserByLogin' => "
 			SELECT u.id, firstName, lastName, avatar, vanityURL, ut.title AS `type`
 			FROM users AS u
