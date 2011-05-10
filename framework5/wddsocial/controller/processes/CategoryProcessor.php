@@ -13,6 +13,7 @@ class CategoryProcessor {
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
 		$admin_sql = instance(':admin-sql');
+		$val_sql = instance(':val-sql');
 		
 		foreach ($categories as $category) {
 			if ($category != '') {
@@ -35,26 +36,50 @@ class CategoryProcessor {
 				
 				switch ($contentType) {
 					case 'project':
-						$data = array("projectID" => $contentID, 'categoryID' => $categoryID);
-						$query = $db->prepare($admin_sql->addProjectCategory);
+						$data = array('projectID' => $contentID, 'categoryID' => $categoryID);
+						$query = $db->prepare($val_sql->checkIfProjectCategoryExists);
 						$query->execute($data);
+						$query->setFetchMode(\PDO::FETCH_OBJ);
+						$result = $query->fetch();
+						if ($query->rowCount() == 0) {
+							$query = $db->prepare($admin_sql->addProjectCategory);
+							$query->execute($data);	
+						}
 						break;
 					case 'article':
-						$data = array("articleID" => $contentID, 'categoryID' => $categoryID);
-						$query = $db->prepare($admin_sql->addArticleCategory);
+						$data = array('articleID' => $contentID, 'categoryID' => $categoryID);
+						$query = $db->prepare($val_sql->checkIfArticleCategoryExists);
 						$query->execute($data);
+						$query->setFetchMode(\PDO::FETCH_OBJ);
+						$result = $query->fetch();
+						if ($query->rowCount() == 0) {
+							$query = $db->prepare($admin_sql->addArticleCategory);
+							$query->execute($data);	
+						}
 						break;
 					case 'event':
-						$data = array("eventID" => $contentID, 'categoryID' => $categoryID);
-						$query = $db->prepare($admin_sql->addEventCategory);
+						$data = array('eventID' => $contentID, 'categoryID' => $categoryID);
+						$query = $db->prepare($val_sql->checkIfEventCategoryExists);
 						$query->execute($data);
+						$query->setFetchMode(\PDO::FETCH_OBJ);
+						$result = $query->fetch();
+						if ($query->rowCount() == 0) {
+							$query = $db->prepare($admin_sql->addEventCategory);
+							$query->execute($data);	
+						}
 						break;
 					case 'job':
-						$data = array("jobID" => $contentID, 'categoryID' => $categoryID);
-						$query = $db->prepare($admin_sql->addJobCategory);
+						$data = array('jobID' => $contentID, 'categoryID' => $categoryID);
+						$query = $db->prepare($val_sql->checkIfJobCategoryExists);
 						$query->execute($data);
+						$query->setFetchMode(\PDO::FETCH_OBJ);
+						$result = $query->fetch();
+						if ($query->rowCount() == 0) {
+							$query = $db->prepare($admin_sql->addJobCategory);
+							$query->execute($data);	
+						}
 						break;
-				}	
+				}
 			}
 		}
 	}

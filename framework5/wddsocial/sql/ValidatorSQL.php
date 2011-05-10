@@ -9,15 +9,6 @@ namespace WDDSocial;
 */
 class ValidatorSQL{
 	private $_info = array(
-		'getProjectOwners' => "
-			SELECT userID
-			FROM userProjects
-			WHERE projectID = :id",
-		
-		'getArticleOwners' => "
-			SELECT userID
-			FROM userArticles
-			WHERE articleID = :id",
 		
 		'checkIfUserVanityURLExists' => "
 			SELECT COUNT(*) AS `count`
@@ -32,7 +23,37 @@ class ValidatorSQL{
 		'checkIfUserFullSailEmailExists' => "
 			SELECT COUNT(*) AS `count`
 			FROM users
-			WHERE fullsailEmail = :fullsailEmail"
+			WHERE fullsailEmail = :fullsailEmail",
+		
+		'getProjectOwners' => "
+			SELECT userID
+			FROM userProjects
+			WHERE projectID = :id",
+		
+		'getArticleOwners' => "
+			SELECT userID
+			FROM userArticles
+			WHERE articleID = :id",
+		
+		'checkIfProjectCategoryExists' => "
+			SELECT categoryID
+			FROM projectCategories
+			WHERE projectID = :projectID AND categoryID = :categoryID",
+		
+		'checkIfArticleCategoryExists' => "
+			SELECT categoryID
+			FROM articleCategories
+			WHERE articleID = :articleID AND categoryID = :categoryID",
+		
+		'checkIfEventCategoryExists' => "
+			SELECT categoryID
+			FROM eventCategories
+			WHERE eventID = :eventID AND categoryID = :categoryID",
+		
+		'checkIfJobCategoryExists' => "
+			SELECT categoryID
+			FROM jobCategories
+			WHERE jobID = :jobID AND categoryID = :categoryID"
 	);
 	
 	public function __get($id){
