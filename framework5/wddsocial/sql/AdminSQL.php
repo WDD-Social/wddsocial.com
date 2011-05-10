@@ -27,12 +27,11 @@ class AdminSQL{
 		'verifyUserByID' => "
 			UPDATE users
 			SET verified = 1
-			WHERE id = :id",
-		
-		'unverifyUserByID' => "
+			WHERE id = :id;
+			
 			UPDATE users
-			SET verified = 0
-			WHERE id = :id",
+			SET verificationCode = NULL
+			WHERE id = :id;",
 		
 		/**
 		* Project Queries
