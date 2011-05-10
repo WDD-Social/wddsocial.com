@@ -379,8 +379,8 @@ class SelectorSQL{
 			WHERE verificationCode = :verificationCode
 			LIMIT 1",
 		
-		'getUserEmailAndVerification' => "
-			SELECT fullsailEmail AS email, verificationCode
+		'getUserVerificationCode' => "
+			SELECT verificationCode
 			FROM users
 			WHERE id = :id
 			LIMIT 1",
