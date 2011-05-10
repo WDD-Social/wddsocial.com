@@ -7,7 +7,7 @@ namespace WDDSocial;
 * @author Anthony Colangelo (me@acolangelo.com)
 */
 
-class VerificationView implements \Framework5\IView {
+class VerificationEmail implements \Framework5\IView {
 
 	public function render($options = null) {
 		return <<<HTML
