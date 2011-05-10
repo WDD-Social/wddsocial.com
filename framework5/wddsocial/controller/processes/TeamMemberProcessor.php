@@ -14,6 +14,7 @@ class TeamMemberProcessor {
 		
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
+		$val_sql = instance(':val-sql');
 		$admin_sql = instance(':admin-sql');
 		
 		$errors = array();
@@ -24,19 +25,34 @@ class TeamMemberProcessor {
 			$query->execute($data);
 			$query->setFetchMode(\PDO::FETCH_OBJ);
 			$result = $query->fetch();
+			$userID = $result->id;
 			
 			if ($query->rowCount() > 0) {
 				switch ($contentType) {
 					case 'project':
-						$data = array('userID' => $result->id, 'projectID' => $contentID, 'title' => $titles[$i]);
-						$query = $db->prepare($admin_sql->addProjectTeamMember);
+						$data = array('userID' => $userID, 'projectID' => $contentID);
+						$query = $db->prepare($val_sql->checkIfProjectTeamMemberExists);
+						$query->execute($data);
+						$query->setFetchMode(\PDO::FETCH_OBJ);
+						$result = $query->fetch();
+						if ($query->rowCount() == 0) {
+							$data = array('userID' => $userID, 'projectID' => $contentID, 'title' => $titles[$i]);
+							$query = $db->prepare($admin_sql->addProjectTeamMember);
+							$query->execute($data);	
+						}
 						break;
 					case 'article':
-						$data = array('userID' => $result->id, 'articleID' => $contentID);
-						$query = $db->prepare($admin_sql->addArticleAuthor);
+						$data = array('userID' => $userID, 'articleID' => $contentID);
+						$query = $db->prepare($val_sql->checkIfArticleAuthorExists);
+						$query->execute($data);
+						$query->setFetchMode(\PDO::FETCH_OBJ);
+						$result = $query->fetch();
+						if ($query->rowCount() == 0) {
+							$query = $db->prepare($admin_sql->addArticleAuthor);
+							$query->execute($data);	
+						}
 						break;
 				}
-				$query->execute($data);
 			}
 			else if ($member != '') {
 				array_push($errors,$member);
