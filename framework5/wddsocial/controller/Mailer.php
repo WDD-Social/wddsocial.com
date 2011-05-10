@@ -90,14 +90,14 @@ class Mailer extends \Framework5\Controller {
 		$headers .= "To: ";
 		foreach ($this->_recipients as $name => $email) {
 			if ($i == $total_recipients) $delimiter = '';
-			$headers .= "$name &lt;$email&gt;$delimiter";
-			$to .= $email . $delimiter;
+			//$headers .= "$name <$email>$delimiter";
+			$to .= $email. $delimiter;
 			$i++;
 		}
 		$headers .= "\r\n";
 		
 		# From header
-		$headers .= 'From: WDD Social &lt;notify@wddsocial.com&gt;' . "\r\n";
+		$headers .= "From: WDD Social <notify@wddsocial.com>" . "\r\n";
 		
 		# send
 		return mail($to, $subject, $message, $headers);
