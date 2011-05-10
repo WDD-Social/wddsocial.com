@@ -201,7 +201,7 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'articles', 
-				'classes' => array('small', 'slider'), 'header' => $this->lang->text('articles_header')));
+				'classes' => array('small', 'slider'), 'extra' => 'slider_controls', 'header' => $this->lang->text('articles_header')));
 		
 		# Create section items ***GETS 10 ARTICLES***
 		/* while($row = $query->fetch()){
