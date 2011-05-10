@@ -194,7 +194,7 @@ class SignupPage implements \Framework5\IExecutable {
 			$mailer = new Mailer();
 			$mailer->add_recipient($name, $_POST['full-sail-email']);
 			$mailer->subject = "Welcome to WDD Social";
-			$mailer->message = render("wddsocial.view.email.WDDSocial\VerificationView", 
+			$mailer->message = render("wddsocial.view.email.WDDSocial\VerificationEmail", 
 				array('firstName' => $_POST['first-name'], 'verificationCode' => $row->verificationCode));
 			$mailer->send();
 			
