@@ -21,7 +21,9 @@ class ContactPage implements \Framework5\IExecutable {
 		$mailer->add_recipient('Anthony Colangelp', 'anthony@wddsocial.com');
 		$mailer->subject = "Subject Line";
 		$mailer->message = "Message Content";
-		$mailer->send();
+		
+		if ($mailer->send()) echo "email sent";
+		else echo "mail fail";
 		
 		# display site footer
 		echo render(':template', array('section' => 'bottom'));

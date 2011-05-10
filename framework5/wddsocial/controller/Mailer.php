@@ -100,7 +100,7 @@ class Mailer extends \Framework5\Controller {
 		$headers .= 'From: WDD Social &lt;notify@wddsocial.com&gt;' . "\r\n";
 		
 		# send
-		mail($to, $subject, $message, $headers);
+		return mail($to, $subject, $message, $headers);
 	}
 	
 	
