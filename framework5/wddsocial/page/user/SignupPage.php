@@ -181,6 +181,23 @@ class SignupPage implements \Framework5\IExecutable {
 				Uploader::upload_user_avatar($_FILES['avatar'],"$avatar");
 			}
 			
+			# get user verification code
+			$query = $db->prepare($sel_sql->getUserVerificationCode);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$data = array('id' => $userID);
+			$query->execute($data);
+			$row = $query->fetch();
+			
+			# send verification email
+			import('wddsocial.controller.WDDSocial\Mailer');
+			$name = $_POST['first-name'] . $_POST['last-name'];
+			$mailer = new Mailer();
+			$mailer->add_recipient($name, $_POST['full-sail-email']);
+			$mailer->subject = "Welcome to WDD Social";
+			$mailer->message = render("wddsocial.view.email.WDDSocial\VerificationView", 
+				array('firstName' => $_POST['first-name'], 'verificationCode' => $row->verificationCode));
+			$mailer->send();
+			
 			return new FormResponse(true);
 		}
 	}
