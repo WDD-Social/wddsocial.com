@@ -109,7 +109,27 @@ class ValidatorSQL{
 		'checkIfJobLinkExists' => "
 			SELECT linkID
 			FROM jobLinks
-			WHERE jobID = :jobID AND linkID = :linkID"
+			WHERE jobID = :jobID AND linkID = :linkID",
+		
+		'checkIfProjectCourseExists' => "
+			SELECT courseID
+			FROM projectCourses
+			WHERE projectID = :projectID AND courseID = :courseID",
+		
+		'checkIfArticleCourseExists' => "
+			SELECT courseID
+			FROM articleCourses
+			WHERE articleID = :articleID AND courseID = :courseID",
+		
+		'checkIfEventCourseExists' => "
+			SELECT courseID
+			FROM eventCourses
+			WHERE eventID = :eventID AND courseID = :courseID",
+		
+		'checkIfJobCourseExists' => "
+			SELECT courseID
+			FROM jobCourses
+			WHERE jobID = :jobID AND courseID = :courseID"
 	);
 	
 	public function __get($id){
