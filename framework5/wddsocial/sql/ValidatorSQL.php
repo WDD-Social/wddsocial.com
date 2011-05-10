@@ -35,6 +35,16 @@ class ValidatorSQL{
 			FROM userArticles
 			WHERE articleID = :id",
 		
+		'checkIfProjectTeamMemberExists' => "
+			SELECT userID
+			FROM userProjects
+			WHERE projectID = :projectID AND userID = :userID",
+		
+		'checkIfArticleAuthorExists' => "
+			SELECT userID
+			FROM userArticles
+			WHERE articleID = :articleID AND userID = :userID",
+		
 		'checkIfProjectCategoryExists' => "
 			SELECT categoryID
 			FROM projectCategories
