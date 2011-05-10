@@ -95,6 +95,10 @@ class Uploader {
 		$ics .= render('wddsocial.view.file.WDDSocial\iCalView', array('section' => 'event', 'event' => $event));
 		$ics .= render('wddsocial.view.file.WDDSocial\iCalView', array('section' => 'footer'));
 		
+		if (file_exists("files/ics/wddsocial.{$event->uid}.ics")) {
+			unlink("{$root}files/ics/wddsocial.{$event->uid}.ics");
+		}
+		
 		$handle = fopen("{$root}files/ics/wddsocial.{$event->uid}.ics",'x');
 		fwrite($handle,$ics);
 		fclose($handle);
