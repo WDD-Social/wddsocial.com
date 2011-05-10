@@ -53,7 +53,6 @@ class SignupPage implements \Framework5\IExecutable {
 	public function process_form() {
 		
 		import('wddsocial.model.WDDSocial\FormResponse');
-		$root = \Framework5\Request::root_path();
 		
 		# filter input variables
 		//$v = filter_input(INPUT_POST, 'v', FILTER_VALIDATE_EMAIL);
@@ -67,7 +66,7 @@ class SignupPage implements \Framework5\IExecutable {
 		
 		if ($incomplete){
 			if($_POST['terms'] == null){
-				return new FormResponse(false, "You must complete all required fields and agree to our <a href=\"{$root}terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>.");
+				return new FormResponse(false, "You must complete all required fields and agree to our <a href=\"/terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>.");
 			}else{
 				return new FormResponse(false, "Please complete all required fields.");
 			}
@@ -75,7 +74,7 @@ class SignupPage implements \Framework5\IExecutable {
 		
 		# check if user accepted terms
 		if ($_POST['terms'] != 'on') {
-			return new FormResponse(false, "You must agree to our <a href=\"{$root}terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>");
+			return new FormResponse(false, "You must agree to our <a href=\"/terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>");
 		}
 		
 		
