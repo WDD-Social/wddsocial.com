@@ -51,7 +51,7 @@ class VerifyPage implements \Framework5\IExecutable {
 		$admin_sql = instance(':admin-sql');
 		
 		# check the code
-		$query = $db->prepare($sel_sql->getUserVerificationCode);
+		$query = $db->prepare($sel_sql->getUserByVerificationCode);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->execute(array('verificationCode' => $code));
 		$row = $query->fetch();
