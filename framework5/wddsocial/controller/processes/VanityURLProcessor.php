@@ -11,25 +11,119 @@ namespace WDDSocial;
 class VanityURLProcessor {
 	public static function generate($id, $type){
 		$db = instance(':db');
-		$sql = instance(':admin-sql');
+		$sel_sql = instance(':sel-sql');
+		$val_sql = instance(':val-sql');
+		$admin_sql = instance(':admin-sql');
 		
-		$data = array('id' => $id);
+		$data = array('id' => $id, 'extra' => '');
 		switch ($type) {
 			case 'project':
-				$query = $db->prepare($sql->generateProjectVanityURL);
-				$query->execute($data);
+				$generateURLquery = $db->prepare($admin_sql->generateProjectVanityURL);
+				$getURLquery = $db->prepare($sel_sql->getProjectVanityURL);
+				$getURLquery->setFetchMode(\PDO::FETCH_OBJ);
+				$checkURLquery = $db->prepare($val_sql->checkIfProjectVanityURLExists);
+				$checkURLquery->setFetchMode(\PDO::FETCH_OBJ);
+				for ($i = 0; $i < 100; $i++) {
+					if ($i > 0) {
+						$data = array('id' => $id, 'extra' => "$i");
+					}
+					$generateURLquery->execute($data);
+					
+					$getURLquery->execute(array('id' => $id));
+					$vanityResult = $getURLquery->fetch();
+					$vanityURL = $vanityResult->vanityURL;
+					
+					$checkURLquery->execute(array('vanityURL' => $vanityURL));
+					$checkResult = $checkURLquery->fetch();
+					
+					if ($checkResult->count > 1) {
+						continue;
+					}
+					else {
+						break;
+					}
+				}
 				break;
 			case 'article':
-				$query = $db->prepare($sql->generateArticleVanityURL);
-				$query->execute($data);
+				$generateURLquery = $db->prepare($admin_sql->generateArticleVanityURL);
+				$getURLquery = $db->prepare($sel_sql->getArticleVanityURL);
+				$getURLquery->setFetchMode(\PDO::FETCH_OBJ);
+				$checkURLquery = $db->prepare($val_sql->checkIfArticleVanityURLExists);
+				$checkURLquery->setFetchMode(\PDO::FETCH_OBJ);
+				for ($i = 0; $i < 100; $i++) {
+					if ($i > 0) {
+						$data = array('id' => $id, 'extra' => "$i");
+					}
+					$generateURLquery->execute($data);
+					
+					$getURLquery->execute(array('id' => $id));
+					$vanityResult = $getURLquery->fetch();
+					$vanityURL = $vanityResult->vanityURL;
+					
+					$checkURLquery->execute(array('vanityURL' => $vanityURL));
+					$checkResult = $checkURLquery->fetch();
+					
+					if ($checkResult->count > 1) {
+						continue;
+					}
+					else {
+						break;
+					}
+				}
 				break;
 			case 'event':
-				$query = $db->prepare($sql->generateEventVanityURL);
-				$query->execute($data);
+				$generateURLquery = $db->prepare($admin_sql->generateEventVanityURL);
+				$getURLquery = $db->prepare($sel_sql->getEventVanityURL);
+				$getURLquery->setFetchMode(\PDO::FETCH_OBJ);
+				$checkURLquery = $db->prepare($val_sql->checkIfEventVanityURLExists);
+				$checkURLquery->setFetchMode(\PDO::FETCH_OBJ);
+				for ($i = 0; $i < 100; $i++) {
+					if ($i > 0) {
+						$data = array('id' => $id, 'extra' => "$i");
+					}
+					$generateURLquery->execute($data);
+					
+					$getURLquery->execute(array('id' => $id));
+					$vanityResult = $getURLquery->fetch();
+					$vanityURL = $vanityResult->vanityURL;
+					
+					$checkURLquery->execute(array('vanityURL' => $vanityURL));
+					$checkResult = $checkURLquery->fetch();
+					
+					if ($checkResult->count > 1) {
+						continue;
+					}
+					else {
+						break;
+					}
+				}
 				break;
 			case 'job':
-				$query = $db->prepare($sql->generateJobVanityURL);
-				$query->execute($data);
+				$generateURLquery = $db->prepare($admin_sql->generateJobVanityURL);
+				$getURLquery = $db->prepare($sel_sql->getJobVanityURL);
+				$getURLquery->setFetchMode(\PDO::FETCH_OBJ);
+				$checkURLquery = $db->prepare($val_sql->checkIfJobVanityURLExists);
+				$checkURLquery->setFetchMode(\PDO::FETCH_OBJ);
+				for ($i = 0; $i < 100; $i++) {
+					if ($i > 0) {
+						$data = array('id' => $id, 'extra' => "$i");
+					}
+					$generateURLquery->execute($data);
+					
+					$getURLquery->execute(array('id' => $id));
+					$vanityResult = $getURLquery->fetch();
+					$vanityURL = $vanityResult->vanityURL;
+					
+					$checkURLquery->execute(array('vanityURL' => $vanityURL));
+					$checkResult = $checkURLquery->fetch();
+					
+					if ($checkResult->count > 1) {
+						continue;
+					}
+					else {
+						break;
+					}
+				}
 				break;
 		}
 	}

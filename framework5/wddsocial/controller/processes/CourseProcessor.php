@@ -12,6 +12,7 @@ class CourseProcessor {
 	public static function add_courses($courses, $contentID, $contentType){
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
+		$val_sql = instance(':val-sql');
 		$admin_sql = instance(':admin-sql');
 		
 		$errors = array();
@@ -28,23 +29,47 @@ class CourseProcessor {
 					switch ($contentType) {
 						case 'project':
 							$data = array("projectID" => $contentID, 'courseID' => $courseID);
-							$query = $db->prepare($admin_sql->addProjectCourse);
+							$query = $db->prepare($val_sql->checkIfProjectCourseExists);
 							$query->execute($data);
+							$query->setFetchMode(\PDO::FETCH_OBJ);
+							$result = $query->fetch();
+							if ($query->rowCount() == 0) {
+								$query = $db->prepare($admin_sql->addProjectCourse);
+								$query->execute($data);
+							}
 							break;
 						case 'article':
 							$data = array("articleID" => $contentID, 'courseID' => $courseID);
-							$query = $db->prepare($admin_sql->addArticleCourse);
+							$query = $db->prepare($val_sql->checkIfArticleCourseExists);
 							$query->execute($data);
+							$query->setFetchMode(\PDO::FETCH_OBJ);
+							$result = $query->fetch();
+							if ($query->rowCount() == 0) {
+								$query = $db->prepare($admin_sql->addArticleCourse);
+								$query->execute($data);
+							}
 							break;
 						case 'event':
 							$data = array("eventID" => $contentID, 'courseID' => $courseID);
-							$query = $db->prepare($admin_sql->addEventCourse);
+							$query = $db->prepare($val_sql->checkIfEventCourseExists);
 							$query->execute($data);
+							$query->setFetchMode(\PDO::FETCH_OBJ);
+							$result = $query->fetch();
+							if ($query->rowCount() == 0) {
+								$query = $db->prepare($admin_sql->addEventCourse);
+								$query->execute($data);
+							}
 							break;
 						case 'job':
 							$data = array("jobID" => $contentID, 'courseID' => $courseID);
-							$query = $db->prepare($admin_sql->addJobCourse);
+							$query = $db->prepare($val_sql->checkIfJobCourseExists);
 							$query->execute($data);
+							$query->setFetchMode(\PDO::FETCH_OBJ);
+							$result = $query->fetch();
+							if ($query->rowCount() == 0) {
+								$query = $db->prepare($admin_sql->addJobCourse);
+								$query->execute($data);
+							}
 							break;
 					}
 				}
