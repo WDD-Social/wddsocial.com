@@ -25,6 +25,12 @@ class ValidatorSQL{
 			FROM users
 			WHERE fullsailEmail = :fullsailEmail",
 		
+		'checkIfLinkExists' => "
+			SELECT id
+			FROM links
+			WHERE title = :title AND link = :link
+			LIMIT 1",
+		
 		'getProjectOwners' => "
 			SELECT userID
 			FROM userProjects
@@ -63,7 +69,7 @@ class ValidatorSQL{
 		'checkIfJobVanityURLExists' => "
 			SELECT COUNT(*) AS `count`
 			FROM jobs
-			WHERE vanityURL = :vanityURL"
+			WHERE vanityURL = :vanityURL",
 		
 		'checkIfProjectCategoryExists' => "
 			SELECT categoryID
@@ -103,7 +109,7 @@ class ValidatorSQL{
 		'checkIfJobLinkExists' => "
 			SELECT linkID
 			FROM jobLinks
-			WHERE jobID = :jobID AND linkID = :linkID",
+			WHERE jobID = :jobID AND linkID = :linkID"
 	);
 	
 	public function __get($id){
