@@ -17,7 +17,7 @@ class ContactPage implements \Framework5\IExecutable {
 		# send email
 		import('wddsocial.controller.WDDSocial\Mailer');
 		$mailer = new Mailer();
-		$mailer->add_recipient('Tyler Matthews', 'tyler@wddsocail.com');
+		$mailer->add_recipient('Tyler Matthews', 'tyler@wddsocial.com');
 		$mailer->add_recipient('Anthony Colangelp', 'anthony@wddsocial.com');
 		$mailer->subject = "Subject Line";
 		$mailer->message = "Message Content";
