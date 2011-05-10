@@ -13,6 +13,7 @@ class LinkProcessor {
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		
 		$db = instance(':db');
+		$val_sql = instance(':val-sql');
 		$admin_sql = instance(':admin-sql');
 		
 		$errors = array();
@@ -21,10 +22,19 @@ class LinkProcessor {
 				$i = array_search($link, $links);
 				$linkTitle = ($titles[$i] != '')?$titles[$i]:$link;
 				$data = array('link' => $link, 'title' => $linkTitle);
-				$query = $db->prepare($admin_sql->addLink);
+				$query = $db->prepare($val_sql->checkIfLinkExists);
 				$query->execute($data);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				$result = $query->fetch();
 				
-				$linkID = $db->lastInsertID();
+				if ($query->rowCount() > 0) {
+					$linkID = $result->id;
+				}
+				else {
+					$query = $db->prepare($admin_sql->addLink);
+					$query->execute($data);
+					$linkID = $db->lastInsertID();	
+				}
 				
 				switch ($contentType) {
 					case 'project':
