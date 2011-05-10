@@ -373,10 +373,16 @@ class SelectorSQL{
 			WHERE CONCAT_WS(' ',firstName, lastName) = :name
 			LIMIT 1",
 		
-		'getUserVerificationCode' => "
+		'getUserByVerificationCode' => "
 			SELECT id
 			FROM users
 			WHERE verificationCode = :verificationCode
+			LIMIT 1",
+		
+		'getUserEmailAndVerification' => "
+			SELECT fullsailEmail AS email, verificationCode
+			FROM users
+			WHERE id = :id
 			LIMIT 1",
 		
 		'getStudentDetailByID' => "
