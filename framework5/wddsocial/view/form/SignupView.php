@@ -58,7 +58,7 @@ HTML;
 						<fieldset>
 							<label for="bio">Bio</label>
 							<textarea id="bio" name="bio">{$_POST['bio']}</textarea>
-							<small><span class="count">255</span> characters left</small>
+							<small>Describe yourself in <span class="count">255</span> characters or less</small>
 						</fieldset>
 						
 						<fieldset class="terms">
