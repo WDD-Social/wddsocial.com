@@ -803,6 +803,40 @@ class SelectorSQL{
 			WHERE id = :id
 			LIMIT 1",
 		
+		'getArticles' => "
+			SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL,
+			IF(
+				TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 30,
+						DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, NOW()), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM articles AS a
+			LEFT JOIN users AS u ON (a.userID = u.id)",
+		
 			
 		/**
 		* Event queries
