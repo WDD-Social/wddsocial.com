@@ -14,10 +14,6 @@ class MediumDisplayView implements \Framework5\IView {
 	*/
 	
 	public function render($options = null) {
-		
-		import('wddsocial.helper.WDDSocial\NaturalLanguage');
-		import('wddsocial.controller.WDDSocial\UserValidator');
-		
 		switch ($options['type']) {
 			case 'project':
 				return $this->project_display($options['content']);
@@ -83,7 +79,7 @@ HTML;
 						</div><!-- END SECONDARY -->
 						
 						<p class="item-image"><a href="/user/{$project->userURL}" title="$userVerbage"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro">$test <strong><a href="/user/{$project->userURL}" title="$userVerbage">$userDisplayName</a></strong> posted a <strong><a href="/project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
+						<p class="intro"><strong><a href="/user/{$project->userURL}" title="$userVerbage">$userDisplayName</a></strong> posted a <strong><a href="/project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
 						<h2><a href="/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
 HTML;
