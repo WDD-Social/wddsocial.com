@@ -91,11 +91,13 @@ class IndexPage implements \Framework5\IExecutable {
 		if (!isset($page) or !is_numeric($page))
 			$page = 1;
 		
+		$limit = $page * 20;
+		
 		if ($page > 10)
 			$page = 10;
 		
 		# query
-		$query = $this->db->prepare($this->sql->getLatest . " LIMIT 0, " . $limit);
+		$query = $this->db->prepare($this->sql->getLatest . " LIMIT 0, $limit");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
@@ -105,7 +107,7 @@ class IndexPage implements \Framework5\IExecutable {
 				array('type' => $item->type,'content' => $item));
 		}
 		
-		$query = $this->db->prepare($this->sql->getLatest . " LIMIT " . $limit . ", " . 20);
+		$query = $this->db->prepare($this->sql->getLatest . " LIMIT $limit, 20");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->fetch();
