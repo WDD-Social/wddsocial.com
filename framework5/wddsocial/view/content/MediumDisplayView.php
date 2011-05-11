@@ -14,10 +14,6 @@ class MediumDisplayView implements \Framework5\IView {
 	*/
 	
 	public function render($options = null) {
-		
-		import('wddsocial.helper.WDDSocial\NaturalLanguage');
-		import('wddsocial.controller.WDDSocial\UserValidator');
-		
 		switch ($options['type']) {
 			case 'project':
 				return $this->project_display($options['content']);
