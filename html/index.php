@@ -61,5 +61,5 @@ try {
 
 catch (Exception $e) {
 	# handle exceptions through the application
-	$app::exception_handler($e);
+	if ($app) $app::exception_handler($e);
 }
