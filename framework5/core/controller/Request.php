@@ -87,8 +87,8 @@ class Request extends StaticController {
 		
 		# insert trace into database
 		$db = instance('core.controller.Framework5\Database');
-		$data = array(EXEC_START_TIME, static::uri());
-		$query = $db->prepare("INSERT INTO fw5_request_log (time, uri) VALUES (?, ?);");
+		$data = array(EXEC_START_TIME, static::uri(), $_SERVER['REMOTE_ADDR'], serialize($_GET), serialize($_POST));
+		$query = $db->prepare("INSERT INTO fw5_request_log (time, uri, remote_addr, get, post) VALUES (?, ?, ?, ?, ?);");
 		$query->execute($data);
 		
 		# store and return the id of the exception log
