@@ -42,16 +42,33 @@ class UserPage implements \Framework5\IExecutable {
 					'classes' => array('medium', 'with-secondary', 'filterable'),
 					'header' => $this->lang->text('latest'), 'extra' => 'user_latest_filters'));
 			
+			$page = \Framework5\Request::segment(2);
+			if (!isset($page) or !is_numeric($page))
+				$page = 1;
+			
+			$limit = $page * 20;
+			
 			# display section items
-			$activity = $this->getUserLatest($user->id);
-			foreach ($activity as $row) {
+			$activity = $this->getUserLatest($user->id, 0, $limit);
+			foreach ($activity as $item) {
 				echo render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
-					array('type' => $row->type,'content' => $row));
+					array('type' => $item->type,'content' => $item));
 			}
 			
-			# display section footer
-			echo render(':section',
-				array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
+			$next = $this->getUserLatest($user->id, $limit, 20);
+			
+			if (count($next) > 0) {
+				$nextPage = $page + 1;
+				
+				# display section footer
+				echo render(':section',
+					array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/user/{$user->vanityURL}/$nextPage"));	
+			}		
+			else {
+				# display section footer
+				echo render(':section',
+					array('section' => 'end_content_section', 'id' => 'latest'));	
+			}
 					
 			# display users' contact info
 			echo render('wddsocial.view.profile.WDDSocial\UserContactView', $user);
@@ -99,13 +116,13 @@ class UserPage implements \Framework5\IExecutable {
 	* Gets latest activity relating to user
 	*/
 	
-	private function getUserLatest($id){
+	private function getUserLatest($id, $start = 0, $limit = 20){
 		
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
 		# query
 		$data = array('id' => $id);
-		$query = $this->db->prepare($this->sql->getUserLatest);
+		$query = $this->db->prepare($this->sql->getUserLatest . " LIMIT $start, $limit");
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		$query->execute($data);
 		return $query->fetchAll();
