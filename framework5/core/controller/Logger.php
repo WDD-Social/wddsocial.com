@@ -16,6 +16,10 @@ class Logger extends StaticController {
 	*/
 	
 	final public static function trace($message) {
+		
+		if (!DEGUB_MODE)
+			throw new Exception("Method trace('$message') cannot be used when not in debug mode");
+		
 		# prepare data to log
 		$request_id = Request::request_id();
 		$data = array($request_id, $message, time());

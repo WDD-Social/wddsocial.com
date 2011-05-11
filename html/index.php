@@ -43,11 +43,11 @@ try {
 		debug('Application execution complete');
 		
 		# log execution stats
-		if (Settings::$log_execution)
+		if (DEBUG_MODE and Settings::$log_execution)
 			Logger::log_execution();
 		
 		# log debug information
-		if (Settings::$debug_mode and Settings::$log_debug) 
+		if (DEBUG_MODE and Settings::$log_debug) 
 			Logger::log_debug(Debugger::dump());
 		
 	}
@@ -61,5 +61,5 @@ try {
 
 catch (Exception $e) {
 	# handle exceptions through the application
-	$app::exception_handler($e);
+	if ($app) $app::exception_handler($e);
 }

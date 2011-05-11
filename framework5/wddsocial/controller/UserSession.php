@@ -97,4 +97,40 @@ class UserSession {
 			redirect('/signin');
 		}
 	}
+	
+	
+	
+	public static function check_verification() {
+		# check if the user is verified
+		$db = instance(':db');
+		$val_sql = instance(':val-sql');
+		
+		# Check if email is unique
+		$query = $db->prepare($val_sql->checkUserVerification);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$query->execute(array('id' => $_SESSION['user']->id));
+		$row = $query->fetch();
+		if ($row->verified) return true;
+		
+		# check if time limit has expired
+		$query = $db->prepare($val_sql->checkUserExpiration);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$query->execute(array('id' => $_SESSION['user']->id));
+		$row = $query->fetch();
+		if ($row->difference >= 2) return false;
+		
+		return true;
+	}
+	
+	
+	
+	public static function fullsail_email() {
+		$db = instance(':db');
+		$sel_sql = instance(':sel-sql');
+		$query = $db->prepare($sel_sql->getUserFullSailEmailByID);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$query->execute(array('id' => $_SESSION['user']->id));
+		$row = $query->fetch();
+		return $row->email;
+	}
 }

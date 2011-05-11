@@ -31,6 +31,11 @@ class RequestInfoPage implements \Framework5\IExecutable {
 		if ($execution)
 			render('dev.view.Framework5\Dev\ExecutionInfoView', $execution);
 		
+		# check for trace data
+		$trace = $info->get_trace();
+		if ($trace)
+			echo render('dev.view.Framework5\Dev\TraceInfoView', $trace);
+		
 		# check for an exception
 		$exception = $info->get_exception();
 		if ($exception)

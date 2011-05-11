@@ -11,7 +11,7 @@ class RequestsPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
-		echo "{requests page}<br/>";
+		echo render('dev.view.Framework5\Dev\PageHeader');
 		
 		$requests = $this->get_requests();
 		
@@ -19,7 +19,7 @@ class RequestsPage implements \Framework5\IExecutable {
 		while($row = $requests->fetch()) {
 			$time = date("F j, Y, g:i a", $row->time);
 			
-		    echo "request id <a href=\"../request/{$row->id}\">{$row->id}</a> at $time uri [{$row->uri}] <br/>";
+		    echo "<a href=\"../request/{$row->id}\">{$row->id}</a> at $time [{$row->uri}] <br/>";
 		}
 	}
 	
