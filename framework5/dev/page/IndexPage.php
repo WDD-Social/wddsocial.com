@@ -10,8 +10,6 @@ namespace Framework5\Dev;
 class IndexPage implements \Framework5\IExecutable {
 	
 	public function execute() {
-		echo "{developer page}<br/>";
-		echo "<a href=\"requests/\">requests</a> | <a href=\"phpinfo/\">phpinfo</a>";
-		
+		echo render('dev.view.Framework5\Dev\PageHeader');
 	}
 }

@@ -11,7 +11,7 @@ class RequestsPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
-		echo "{requests page}<br/>";
+		echo render('dev.view.Framework5\Dev\PageHeader');
 		
 		$requests = $this->get_requests();
 		
