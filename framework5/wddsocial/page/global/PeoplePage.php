@@ -21,8 +21,7 @@ class PeoplePage implements \Framework5\IExecutable {
 		import('wddsocial.model.WDDSocial\UserVO');
 		
 		# display site header
-		echo render(':template', 
-			array('section' => 'top', 'title' => 'People', 'extra' => 'directory_sorters', 'extra_options' => '/people/'));
+		echo render(':template', array('section' => 'top', 'title' => 'People'));
 		
 		echo render(':section', array('section' => 'begin_content'));
 		
@@ -71,7 +70,7 @@ class PeoplePage implements \Framework5\IExecutable {
 		# display section items
 		while($item = $query->fetch()){
 			echo render('wddsocial.view.content.WDDSocial\DirectoryUserItemView', 
-				array('type' => $item->contentType,'content' => $item));
+				array('content' => $item));
 		}
 		
 		$query = $this->db->prepare($this->sql->getPeople . " ORDER BY $orderBy" . " LIMIT $limit, $perPage");
@@ -95,8 +94,7 @@ class PeoplePage implements \Framework5\IExecutable {
 		echo render(':section', array('section' => 'end_content'));
 		
 		# display site footer
-		echo render(':template', 
-			array('section' => 'bottom'));
+		echo render(':template', array('section' => 'bottom'));
 		
 	}
 }

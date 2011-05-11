@@ -10,23 +10,7 @@ namespace WDDSocial;
 class DirectoryUserItemView implements \Framework5\IView {
 	
 	public function render($options = null) {
-		switch ($options['type']) {
-		
-			case 'person':
-				return $this->person_display($options['content']);
-			
-			default:
-				throw new Exception("DirectoryItemView requires parameter type (person), '{$options['type']}' provided");
-		}
-	}
-	
-	
-	
-	/**
-	* Creates a person listing
-	*/
-	
-	private function person_display($person){
+		$person = $options['content'];
 		$userVerbage = NaturalLanguage::view_profile($person->id,"{$person->firstName} {$person->lastName}");
 		$userDisplayName = NaturalLanguage::display_name($person->id,"{$person->firstName} {$person->lastName}");
 		$userAvatar = (file_exists("images/avatars/{$person->avatar}_medium.jpg"))?"/images/avatars/{$person->avatar}_medium.jpg":"/images/site/user-default_medium.jpg";
@@ -42,6 +26,7 @@ class DirectoryUserItemView implements \Framework5\IView {
 HTML;
 		return $html;
 	}
+	
 	
 	
 	
