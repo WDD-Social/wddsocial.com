@@ -131,7 +131,7 @@ HTML;
 		$userVerbage = NaturalLanguage::view_profile($projectComment->userID,"{$projectComment->userFirstName} {$projectComment->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($projectComment->userID,"{$projectComment->userFirstName} {$projectComment->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$projectComment->userAvatar}_medium.jpg"))?"/images/avatars/{$projectComment->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
-		$teamIntro = static::format_team_string($projectComment->userID,$projectComment->team, 'By');
+		$teamIntro = static::format_team_string($projectComment->userID,$projectComment->team, 'By', false);
 		$html = <<<HTML
 
 					<article class="comments with-secondary">
@@ -271,7 +271,7 @@ HTML;
 		$userVerbage = NaturalLanguage::view_profile($articleComment->userID,"{$articleComment->userFirstName} {$articleComment->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($articleComment->userID,"{$articleComment->userFirstName} {$articleComment->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$articleComment->userAvatar}_medium.jpg"))?"/images/avatars/{$articleComment->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
-		$teamIntro = static::format_team_string($articleComment->userID,$articleComment->team, 'By');
+		$teamIntro = static::format_team_string($articleComment->userID,$articleComment->team, 'By', false);
 		$html = <<<HTML
 
 					<article class="comments with-secondary">
@@ -404,11 +404,11 @@ HTML;
 	* Creates and formats the team string for display
 	*/
 	
-	private function format_team_string($ownerID, $team, $introWord){
+	private function format_team_string($ownerID, $team, $introWord, $removeOwner = true){
 		# Remove user who posted content from team (for intro sentence), and put current user at front of array
 		$cleanTeam = $team;
 		foreach($cleanTeam as $member){
-			if($member->id == $ownerID){
+			if($member->id == $ownerID and $removeOwner){
 				$key = array_search($member, $cleanTeam);
 				unset($cleanTeam[$key]);
 			}else if(UserSession::is_current($member->id)){

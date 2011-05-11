@@ -83,12 +83,12 @@ class PeoplePage implements \Framework5\IExecutable {
 			
 			# display section footer
 			echo render(':section',
-				array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/people/$nextPage/$active"));	
+				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/people/$nextPage/$active"));	
 		}		
 		else {
 			# display section footer
 			echo render(':section',
-				array('section' => 'end_content_section', 'id' => 'latest'));	
+				array('section' => 'end_content_section', 'id' => 'directory'));	
 		}
 		
 		echo render(':section', array('section' => 'end_content'));

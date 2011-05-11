@@ -35,7 +35,7 @@ class ProjectsPage implements \Framework5\IExecutable {
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'People', 'extra' => 'directory_sorters', 'extra_options' => array('base_link' => '/projects/1/', 'active' => $active)));
+				'header' => 'Projects', 'extra' => 'directory_sorters', 'extra_options' => array('base_link' => '/projects/1/', 'active' => $active)));
 		
 		$page = \Framework5\Request::segment(1);
 		if (!isset($page) or !is_numeric($page))
@@ -83,12 +83,12 @@ class ProjectsPage implements \Framework5\IExecutable {
 			
 			# display section footer
 			echo render(':section',
-				array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/projects/$nextPage/$active"));	
+				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/projects/$nextPage/$active"));	
 		}		
 		else {
 			# display section footer
 			echo render(':section',
-				array('section' => 'end_content_section', 'id' => 'latest'));	
+				array('section' => 'end_content_section', 'id' => 'directory'));	
 		}
 		
 		echo render(':section', array('section' => 'end_content'));
