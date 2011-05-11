@@ -70,7 +70,7 @@ class PeoplePage implements \Framework5\IExecutable {
 		
 		# display section items
 		while($item = $query->fetch()){
-			echo render('wddsocial.view.content.WDDSocial\DirectoryItemView', 
+			echo render('wddsocial.view.content.WDDSocial\DirectoryUserItemView', 
 				array('type' => $item->contentType,'content' => $item));
 		}
 		
