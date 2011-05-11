@@ -14,6 +14,7 @@ call_user_func(function() {
 	define('EXT', '.php'); # default php extension
 	define('DEVELOPMENT', 0);
 	define('PRODUCTION', 1);
+	define('DEBUG_MODE', true);
 	
 	# configure absolute paths
 	define('PATH_FRAMEWORK', __DIR__.DIRECTORY_SEPARATOR);
@@ -46,7 +47,7 @@ call_user_func(function() {
 	require PATH_CORE.'controller/ApplicationBase.php';
 	
 	# debug utility
-	if (Settings::$debug_mode) { 
+	if (DEBUG_MODE) { 
 		require PATH_CORE.'controller/Debugger.php';
 		require PATH_CORE.'model/DebugMessage.php';
 	}
