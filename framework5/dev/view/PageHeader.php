@@ -14,8 +14,8 @@ class PageHeader implements \Framework5\IView {
 	return <<<HTML
 	<h1>Framework5 Developer</h1>
 	<ul>
-		<li><a href="requests/">requests</a></li>
-		<li><a href="phpinfo/">phpinfo</a></li>
+		<li><a href="/dev/requests/">requests</a></li>
+		<li><a href="/dev/phpinfo/">phpinfo</a></li>
 	</ul>
 
 HTML;
