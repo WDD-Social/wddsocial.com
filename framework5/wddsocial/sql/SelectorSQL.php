@@ -629,7 +629,7 @@ class SelectorSQL{
 			LIMIT 0,16",
 		
 		'getPeople' => "
-			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, 'person' as `contentType`,
+			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`,
 			IF(
 				TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 59,
 				IF(
@@ -713,6 +713,40 @@ class SelectorSQL{
 			FROM projects
 			WHERE id = :id
 			LIMIT 1",
+		
+		'getProjects' => "
+			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, 
+			IF(
+				TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 30,
+						DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, NOW()), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM projects AS p
+			LEFT JOIN users AS u ON (p.userID = u.id)",
 			
 			
 		/**
