@@ -92,6 +92,9 @@ class Router implements \Framework5\IRouter {
 			case 'article':
 				return 'wddsocial.page.global.WDDSocial\ArticlePage';
 			
+			case 'course':
+				return 'wddsocial.page.global.WDDSocial\CoursePage';
+			
 			case 'event':
 				return 'wddsocial.page.global.WDDSocial\EventPage';
 			
