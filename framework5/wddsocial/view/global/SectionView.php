@@ -76,7 +76,7 @@ HTML;
 			$classString = implode(' ', $options['classes']);
 		}
 		if(isset($options['extra'])){
-			$extras = static::get_extra($options['extra']);
+			$extras = static::get_extra($options['extra'], $options['extra_options']);
 		}
 		return <<<HTML
 
@@ -109,9 +109,15 @@ HTML;
 	
 	
 	# Extra content pieces (filters, slider controls, etc)
-	private function get_extra($id) {
+	private function get_extra($id, $options = null) {
 		
 		$lang = new \Framework5\Lang('wddsocial.lang.view.SectionLang');
+		
+		if ($id == 'directory_sorters') {
+			$alphabeticallyClass = ($options['active'] == 'alphabetically')?' class="current"':'';
+			$newestClass = ($options['active'] == 'newest')?' class="current"':'';
+			$oldestClass = ($options['active'] == 'oldest')?' class="current"':'';
+		}
 		
 		$extras = array(
 			'latest_filters' => <<<HTML
@@ -127,6 +133,13 @@ HTML
 						<a href="{$_SERVER['REQUEST_URI']}#all" title="{$lang->text('all_latest_activity')}" class="current">{$lang->text('all')}</a> 
 						<a href="{$_SERVER['REQUEST_URI']}#projects" title="{$lang->text('latest_projects')}">{$lang->text('projects')}</a> 
 						<a href="{$_SERVER['REQUEST_URI']}#articles" title="{$lang->text('latest_articles')}">{$lang->text('articles')}</a>
+					</div><!-- END SECONDARY -->
+HTML
+			,'directory_sorters' => <<<HTML
+<div class="secondary">
+						<a href="{$options['base_link']}alphabetically" title="Sort Alphabetically"$alphabeticallyClass>Alphabetically</a> 
+						<a href="{$options['base_link']}newest" title="Sort by Newest"$newestClass>Newest</a> 
+						<a href="{$options['base_link']}oldest" title="Sort by Oldest"$oldestClass>Oldest</a>
 					</div><!-- END SECONDARY -->
 HTML
 			,'slider_controls' => <<<HTML
