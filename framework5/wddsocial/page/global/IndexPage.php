@@ -86,12 +86,13 @@ class IndexPage implements \Framework5\IExecutable {
 			array('section' => 'begin_content_section', 'id' => 'latest',
 				'classes' => array('medium', 'with-secondary', 'filterable'),
 				'header' => $this->lang->text('latest_header'), 'extra' => 'latest_filters'));
-		
+			
 		$page = \Framework5\Request::segment(1);
-		if (!isset($page) or !is_numeric($page)) {
+		if (!isset($page) or !is_numeric($page))
 			$page = 1;
-		}
-		$limit = $page * 20;
+		
+		if ($page > 10)
+			$page = 10;
 		
 		# query
 		$query = $this->db->prepare($this->sql->getLatest . " LIMIT 0, " . $limit);
@@ -120,6 +121,10 @@ class IndexPage implements \Framework5\IExecutable {
 			# display section footer
 			echo render(':section',
 				array('section' => 'end_content_section', 'id' => 'latest'));	
+		}
+		
+		if ($page == 10) {
+			# display directory page redirects
 		}
 	}
 	
