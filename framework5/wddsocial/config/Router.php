@@ -19,6 +19,9 @@ class Router implements \Framework5\IRouter {
 			case '':
 				return 'wddsocial.page.global.WDDSocial\IndexPage';
 			
+			case 'home':
+				return 'wddsocial.page.global.WDDSocial\IndexPage';
+			
 			# main navigation
 			case 'people':
 				return 'wddsocial.page.global.WDDSocial\PeoplePage';
