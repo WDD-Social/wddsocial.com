@@ -79,10 +79,19 @@ class SigninPage implements \Framework5\IExecutable {
 		
 		# attempt user signin
 		if (UserSession::signin($email, $password)) {
+			
+			# check if user is verified
+			if (!UserSession::check_verification()) {
+				$fullsailEmail = UserSession::fullsail_email();
+				UserSession::signout();
+				return new FormResponse(false, 
+					render('wddsocial.view.form.WDDSocial\NotVerifiedView', $fullsailEmail));
+			}
+			
 			return new FormResponse(true);
 		}
 		else {
-			return new FormResponse(false, 'Incorrect username or password, please try again.');
+			return new FormResponse(false, 'Incorrect username or password, please try again');
 		}
 	}
 }
