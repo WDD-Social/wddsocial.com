@@ -87,11 +87,16 @@ class IndexPage implements \Framework5\IExecutable {
 				'classes' => array('medium', 'with-secondary', 'filterable'),
 				'header' => $this->lang->text('latest_header'), 'extra' => 'latest_filters'));
 			
+		# Pagination
 		$page = \Framework5\Request::segment(1);
 		if (!isset($page) or !is_numeric($page))
 			$page = 1;
 		
-		$limit = $page * 20;
+		# How many results per page
+		$perPage = 20;
+		
+		# Limit of selection
+		$limit = $page * $perPage;
 		
 		if ($page > 10)
 			$page = 10;
@@ -107,7 +112,7 @@ class IndexPage implements \Framework5\IExecutable {
 				array('type' => $item->type,'content' => $item));
 		}
 		
-		$query = $this->db->prepare($this->sql->getLatest . " LIMIT $limit, 20");
+		$query = $this->db->prepare($this->sql->getLatest . " LIMIT $limit, $perPage");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->fetch();
