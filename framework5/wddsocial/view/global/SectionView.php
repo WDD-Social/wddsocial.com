@@ -96,7 +96,7 @@ HTML;
 		if(isset($options['load_more'])){
 			$html .= <<<HTML
 
-					<p class="load-more"><a href="/" title="{$lang->text('load_more')} {$options['load_more']}...">{$lang->text('load_more')}</a></p>
+					<p class="load-more"><a href="{$options['load_more_link']}" title="{$lang->text('load_more')} {$options['load_more']}...">{$lang->text('load_more')}</a></p>
 HTML;
 		}
 		$html .= <<<HTML

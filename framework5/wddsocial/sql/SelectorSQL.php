@@ -150,8 +150,7 @@ class SelectorSQL{
 				)
 			) AS `date`
 			FROM users AS u
-			ORDER BY DATETIME DESC
-			LIMIT 0,20",
+			ORDER BY DATETIME DESC",
 		
 		'getUserLatest' => "
 			SELECT p.id, p.title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, 
@@ -331,9 +330,7 @@ class SelectorSQL{
 			LEFT JOIN events AS e ON (e.id = ec.eventID)
 			LEFT JOIN users AS u ON (u.id = c.userID)
 			WHERE u.id = :id
-			ORDER BY DATETIME DESC
-			LIMIT 0,20
-			",
+			ORDER BY DATETIME DESC",
 			
 			
 		/**
@@ -349,6 +346,12 @@ class SelectorSQL{
 		
 		'getUserAvatarByID' => "
 			SELECT avatar
+			FROM users
+			WHERE id = :id
+			LIMIT 1",
+		
+		'getUserFullSailEmailByID' => "
+			SELECT fullsailEmail AS email
 			FROM users
 			WHERE id = :id
 			LIMIT 1",

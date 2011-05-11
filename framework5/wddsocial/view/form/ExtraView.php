@@ -26,7 +26,7 @@ class ExtraView implements \Framework5\IView {
 	* 
 	*/
 	
-	private static function sign_in_intro(){
+	private function sign_in_intro(){
 		return <<<HTML
 
 					<h1 class="mega">Welcome back, we&rsquo;ve missed you!</h1>
@@ -39,7 +39,7 @@ HTML;
 	* 
 	*/
 	
-	private static function sign_up_intro(){
+	private function sign_up_intro(){
 		return <<<HTML
 
 					<h1 class="mega form">Join the community. Socialize.</h1>

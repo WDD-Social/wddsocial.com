@@ -25,6 +25,15 @@ class ValidatorSQL{
 			FROM users
 			WHERE fullsailEmail = :fullsailEmail",
 		
+		'checkUserVerification' => "
+			SELECT verified
+			FROM users
+			WHERE id = :id",
+		
+		'checkUserExpiration' => "
+			SELECT TIMESTAMPDIFF(DAY,`datetime`,NOW()) AS difference
+			FROM users",
+		
 		'checkIfLinkExists' => "
 			SELECT id
 			FROM links

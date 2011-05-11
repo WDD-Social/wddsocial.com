@@ -22,12 +22,20 @@ class VerifyPage implements \Framework5\IExecutable {
 		
 		# success
 		if ($response->status) {
-			echo 'true';
+			# display header
+			echo render('wddsocial.view.page.WDDSocial\VerifyView',
+				array('type' => 'success'));
+			
+			# display signin form
+			echo render('wddsocial.view.form.WDDSocial\SigninView', 
+				array('error' => $response->message));
 		}
 		
 		# error
 		else {
-			echo $response->message;
+			# display header
+			echo render('wddsocial.view.page.WDDSocial\VerifyView',
+				array('type' => 'error'));
 		}
 		
 		

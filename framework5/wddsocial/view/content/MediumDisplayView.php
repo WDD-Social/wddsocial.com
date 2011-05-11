@@ -38,7 +38,7 @@ class MediumDisplayView implements \Framework5\IView {
 				return $this->person_display($options['content']);
 			
 			default:
-				throw new Exception("MediumDisplayView requires parameter type (project, projectComment, article, articleComment, or person), '{$options['type']}' provided");
+				throw new Exception("MediumDisplayView requires parameter type (project, projectComment, article, articleComment, eventComment, or person), '{$options['type']}' provided");
 		}
 	}
 	
