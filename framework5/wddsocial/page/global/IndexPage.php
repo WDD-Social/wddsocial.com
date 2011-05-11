@@ -20,7 +20,6 @@ class IndexPage implements \Framework5\IExecutable {
 	
 	
 	public function execute() {
-		
 		# site header
 		echo render(':template',
 			array('section' => 'top', 'title' => $this->lang->text('page_title')));
@@ -82,25 +81,46 @@ class IndexPage implements \Framework5\IExecutable {
 	private function _dashboard_latest(){
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
-		# query
-		$query = $this->db->query($this->sql->getLatest);
-		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
-		
 		# display section header
 		echo render(':section',
 			array('section' => 'begin_content_section', 'id' => 'latest',
 				'classes' => array('medium', 'with-secondary', 'filterable'),
 				'header' => $this->lang->text('latest_header'), 'extra' => 'latest_filters'));
 		
+		$page = \Framework5\Request::segment(1);
+		if (!isset($page) or !is_numeric($page)) {
+			$page = 1;
+		}
+		$limit = $page * 20;
+		
+		# query
+		$query = $this->db->prepare($this->sql->getLatest . " LIMIT 0, " . $limit);
+		$query->execute();
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+		
 		# display section items
-		while($row = $query->fetch()){
+		while($item = $query->fetch()){
 			echo render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
-				array('type' => $row->type,'content' => $row));
+				array('type' => $item->type,'content' => $item));
 		}
 		
-		# display section footer
-		echo render(':section',
-			array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts'));
+		$query = $this->db->prepare($this->sql->getLatest . " LIMIT " . $limit . ", " . 20);
+		$query->execute();
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$query->fetch();
+		
+		if ($query->rowCount() > 0) {
+			$nextPage = $page + 1;
+			
+			# display section footer
+			echo render(':section',
+				array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/home/$nextPage"));	
+		}		
+		else {
+			# display section footer
+			echo render(':section',
+				array('section' => 'end_content_section', 'id' => 'latest'));	
+		}
 	}
 	
 	
