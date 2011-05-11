@@ -627,6 +627,40 @@ class SelectorSQL{
 			GROUP BY f.userID
 			ORDER BY f.datetime DESC
 			LIMIT 0,16",
+		
+		'getPeople' => "
+			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, 'person' as `contentType`,
+			IF(
+				TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, `datetime`, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 30,
+						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, NOW()), 'days ago'),
+							'yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, `datetime`, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) = 0,
+					'just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM users as u
+			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)",
 			
 			
 		/**
