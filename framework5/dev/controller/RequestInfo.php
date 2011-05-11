@@ -12,7 +12,6 @@ class RequestInfo {
 	private $_request_id;
 	
 	public function __construct($request_id) {
-		
 		$this->_request_id = $request_id;
 		$this->db = instance('core.controller.Framework5\Database');
 	}
@@ -25,10 +24,9 @@ class RequestInfo {
 		
 		# Get db instance and query
 		$sql = "SELECT * FROM fw5_request_log WHERE id = :id";
-		$data = array('id' => $this->_request_id);
 		$query = $this->db->prepare($sql);
-		$query->setFetchMode(\PDO::FETCH_CLASS,'Framework5\Dev\ExecutionDetails');
-		$query->execute($data);
+		$query->setFetchMode(\PDO::FETCH_CLASS, 'Framework5\Dev\ExecutionDetails');
+		$query->execute(array('id' => $this->_request_id));
 		return $query->fetch();
 	}
 	
@@ -39,11 +37,22 @@ class RequestInfo {
 		
 		# Get db instance and query
 		$sql = "SELECT * FROM fw5_execution_log WHERE request_id = :id";
-		$data = array('id' => $this->_request_id);
 		$query = $this->db->prepare($sql);
-		$query->setFetchMode(\PDO::FETCH_CLASS,'Framework5\Dev\ExecutionInfo');
-		$query->execute($data);
+		$query->setFetchMode(\PDO::FETCH_CLASS, 'Framework5\Dev\ExecutionInfo');
+		$query->execute(array('id' => $this->_request_id));
 		return $query->fetch();
+	}
+	
+	
+	public function get_trace() {
+		import('dev.model.request.Framework5\Dev\TraceInfo');
+		
+		# Get db instance and query
+		$sql = "SELECT * FROM fw5_trace_log WHERE request_id = :id";
+		$query = $this->db->prepare($sql);
+		$query->setFetchMode(\PDO::FETCH_CLASS, 'Framework5\Dev\TraceInfo');
+		$query->execute(array('id' => $this->_request_id));
+		return $query->fetchAll();
 	}
 	
 	
@@ -53,31 +62,23 @@ class RequestInfo {
 		
 		# Get db instance and query
 		$sql = "SELECT * FROM fw5_exception_log WHERE request_id = :id";
-		$data = array('id' => $this->_request_id);
 		$query = $this->db->prepare($sql);
-		$query->setFetchMode(\PDO::FETCH_CLASS,'Framework5\Dev\ExceptionInfo');
-		$query->execute($data);
+		$query->setFetchMode(\PDO::FETCH_CLASS, 'Framework5\Dev\ExceptionInfo');
+		$query->execute(array('id' => $this->_request_id));
 		return $query->fetch();
 		
 	}
 	
 	
-	
-	/**
-	* 
-	* 
-	* @return dev.model.ExceptionInfo
-	*/
 	public function get_debug() {
 		
 		import('dev.model.request.Framework5\Dev\DebugInfo');
 		
 		# check if the an exception exists in the database
 		$sql = "SELECT (data) FROM fw5_debug_log WHERE request_id = :id";
-		$data = array('id' => $this->_request_id);
 		$query = $this->db->prepare($sql);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'Framework5\Dev\DebugInfo');
-		$query->execute($data);
+		$query->execute(array('id' => $this->_request_id));
 		return $query->fetch();
 		
 		
