@@ -14,8 +14,12 @@ class Router implements \Framework5\IRouter {
 	public static function resolve($request) {
 		
 		switch ($request) {
+			case 'get':
+				return 'ajax.request.Ajax\Get';
+				
 			case 'latest':
 				return 'ajax.request.Ajax\GetLatest';
+				
 			case 'available':
 				return 'ajax.request.Ajax\Available';
 			
