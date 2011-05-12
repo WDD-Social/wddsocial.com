@@ -14,7 +14,7 @@ class DisplayVO{
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
 		
-		if($this->type == 'project' or $this->type == 'article' or $this->type == 'projectComment' or $this->type == 'articleComment' or $this->type == 'eventComment'){
+		if($this->type == 'project' or $this->type == 'article' or $this->type == 'event' or $this->type == 'projectComment' or $this->type == 'articleComment' or $this->type == 'eventComment'){
 			if ($this->type != 'eventComment')
 				$this->get_team();
 
@@ -47,6 +47,13 @@ class DisplayVO{
 				break;
 			case 'article':
 				$query = $this->db->prepare($this->sql->getArticleCommentsCount);
+				$query->execute($data);
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					$this->comments = $row->comments;
+				}
+				break;
+			case 'event':
+				$query = $this->db->prepare($this->sql->getEventCommentsCount);
 				$query->execute($data);
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
 					$this->comments = $row->comments;
@@ -105,6 +112,25 @@ class DisplayVO{
 				break;
 			case 'article':
 				$query = $this->db->prepare($this->sql->getArticleCategories);
+				$query->execute($data);
+				$all = array();
+				while($row = $query->fetch(\PDO::FETCH_OBJ)){
+					array_push($all,$row->title);
+				}
+				if(count($all) > 1){
+					$rand = array_rand($all,2);
+					foreach($rand as $categoryKey){
+						array_push($this->categories,$all[$categoryKey]);
+					}
+				}else{
+					foreach($all as $category){
+						array_push($this->categories,$category);
+					}
+				}
+				
+				break;
+			case 'event':
+				$query = $this->db->prepare($this->sql->getEventCategories);
 				$query->execute($data);
 				$all = array();
 				while($row = $query->fetch(\PDO::FETCH_OBJ)){
