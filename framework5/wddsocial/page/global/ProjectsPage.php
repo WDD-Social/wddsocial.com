@@ -56,8 +56,8 @@ class ProjectsPage implements \Framework5\IExecutable {
 		}
 		
 		# query
-		$query = $this->db->prepare($this->sql->getProjects . " ORDER BY $orderBy" . " LIMIT 0, {$paginator->limit}");
-		$query->execute(array('orderBy' => $orderBy));
+		$query = $this->db->prepare($this->sql->getProjects . " ORDER BY $orderBy LIMIT 0, {$paginator->limit}");
+		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
 		# display section items
@@ -66,7 +66,7 @@ class ProjectsPage implements \Framework5\IExecutable {
 				array('type' => $item->type,'content' => $item));
 		}
 		
-		$query = $this->db->prepare($this->sql->getProjects . " ORDER BY $orderBy" . " LIMIT {$paginator->limit}, {$paginator->per}");
+		$query = $this->db->prepare($this->sql->getProjects . " ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->fetch();
