@@ -86,23 +86,11 @@ class IndexPage implements \Framework5\IExecutable {
 			array('section' => 'begin_content_section', 'id' => 'latest',
 				'classes' => array('medium', 'with-secondary', 'filterable'),
 				'header' => $this->lang->text('latest_header'), 'extra' => 'latest_filters'));
-			
-		# Pagination
-		$page = \Framework5\Request::segment(1);
-		if (!isset($page) or !is_numeric($page))
-			$page = 1;
 		
-		# How many results per page
-		$perPage = 20;
-		
-		# Limit of selection
-		$limit = $page * $perPage;
-		
-		if ($page > 10)
-			$page = 10;
+		$paginator = new Paginator(1,20,10);
 		
 		# query
-		$query = $this->db->prepare($this->sql->getLatest . " LIMIT 0, $limit");
+		$query = $this->db->prepare($this->sql->getLatest . " LIMIT 0, {$paginator->limit}");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
@@ -112,26 +100,20 @@ class IndexPage implements \Framework5\IExecutable {
 				array('type' => $item->type,'content' => $item));
 		}
 		
-		$query = $this->db->prepare($this->sql->getLatest . " LIMIT $limit, $perPage");
+		$query = $this->db->prepare($this->sql->getLatest . " LIMIT {$paginator->limit}, {$paginator->per}");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->fetch();
 		
 		if ($query->rowCount() > 0) {
-			$nextPage = $page + 1;
-			
 			# display section footer
 			echo render(':section',
-				array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/home/$nextPage"));	
+				array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/home/{$paginator->next}"));	
 		}		
 		else {
 			# display section footer
 			echo render(':section',
 				array('section' => 'end_content_section', 'id' => 'latest'));	
-		}
-		
-		if ($page == 10) {
-			# display directory page redirects
 		}
 	}
 	
