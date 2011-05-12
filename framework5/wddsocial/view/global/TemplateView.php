@@ -63,7 +63,7 @@ class TemplateView implements \Framework5\IView {
 		<link rel="apple-touch-icon" href="{$root}images/site/social-apple-touch-icon.png">
 		<link rel="stylesheet/less" href="{$root}css/style.less">
 		<script src="{$root}js/libs/modernizr-1.6.min.js"></script>
-		<script src="{$root}js/less-1.0.41.min.js"></script>
+		<script src="{$root}js/libs/less-1.0.41.min.js"></script>
 	</head>
 	<body>
 		<section id="wrap">
