@@ -879,6 +879,12 @@ class SelectorSQL{
 			FROM events
 			WHERE id = :id
 			LIMIT 1",
+		
+		'getEvents' => "
+			SELECT e.id, userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
+			FROM events AS e
+			LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
+			WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1",
 			
 			
 		/**

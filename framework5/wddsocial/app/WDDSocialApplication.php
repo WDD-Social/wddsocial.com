@@ -67,6 +67,8 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		import('wddsocial.controller.WDDSocial\Exception');
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
+		import('wddsocial.sql.WDDSocial\SelectorSQL');
+		import('wddsocial.controller.WDDSocial\Paginator');
 		
 	}
 }

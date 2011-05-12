@@ -26,26 +26,19 @@ class ArticlesPage implements \Framework5\IExecutable {
 		echo render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(2);
+		$sorters = array('alphabetically', 'newest', 'oldest');
 		
-		if (isset($sorter) and ($sorter == 'alphabetically' or $sorter == 'newest' or $sorter == 'oldest'))
+		if (isset($sorter) and in_array($sorter, $sorters))
 			$active = $sorter;
 		else 
-			$active = 'alphabetically';
+			$active = $sorters[0];
 		
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'Articles', 'extra' => 'directory_sorters', 'extra_options' => array('base_link' => '/articles/1/', 'active' => $active)));
+				'header' => 'Articles', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/articles/1/', 'active' => $active));
 		
-		$page = \Framework5\Request::segment(1);
-		if (!isset($page) or !is_numeric($page))
-			$page = 1;
-		
-		# How many results per page
-		$perPage = 18;
-		
-		# Limit of selection
-		$limit = $page * $perPage;
+		$paginator = new Paginator(1,18);
 		
 		switch ($active) {
 			case 'alphabetically':
@@ -63,7 +56,7 @@ class ArticlesPage implements \Framework5\IExecutable {
 		}
 		
 		# query
-		$query = $this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy" . " LIMIT 0, $limit");
+		$query = $this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy" . " LIMIT 0, {$paginator->limit}");
 		$query->execute(array('orderBy' => $orderBy));
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
@@ -73,17 +66,15 @@ class ArticlesPage implements \Framework5\IExecutable {
 				array('type' => $item->type,'content' => $item));
 		}
 		
-		$query = $this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy" . " LIMIT $limit, $perPage");
+		$query = $this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy" . " LIMIT {$paginator->limit}, {$paginator->per}");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->fetch();
 		
 		if ($query->rowCount() > 0) {
-			$nextPage = $page + 1;
-			
 			# display section footer
 			echo render(':section',
-				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/articles/$nextPage/$active"));	
+				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/articles/{$paginator->next}/$active"));	
 		}		
 		else {
 			# display section footer
