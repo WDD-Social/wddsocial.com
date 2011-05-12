@@ -19,10 +19,10 @@ class DirectoryItemView implements \Framework5\IView {
 				return $this->content_display($options['content']);
 		
 			case 'event':
-				return $this->content_display($options['content']);
+				return $this->event_display($options['content']);
 		
 			case 'job':
-				return $this->content_display($options['content']);
+				return $this->job_display($options['content']);
 		
 			case 'course':
 				return $this->course_display($options['content']);
@@ -35,7 +35,7 @@ class DirectoryItemView implements \Framework5\IView {
 	
 	
 	/**
-	* Creates a project listing
+	* Creates a project/article listing
 	*/
 	
 	private function content_display($content){
@@ -94,9 +94,6 @@ HTML;
 						<h2><a href="/{$content->type}/{$content->vanityURL}" title="{$content->title}">{$content->title}</a></h2>
 						<p class="team">$membersText</p>
 						<p>{$content->description}</p>
-HTML;
-		$html .= <<<HTML
-
 						<p class="comments"><a href="/{$content->type}/{$content->vanityURL}#comments" title="{$content->title} | Comments">{$content->comments} comments</a> <span class="hidden">|</span> <span class="time">{$content->date}</span></p>
 HTML;
 		
@@ -112,6 +109,62 @@ HTML;
 HTML;
 		return $html;
 	}
+	
+	
+	
+	/**
+	* Creates an event listing
+	*/
+	
+	private function event_display($event){
+		$html = <<<HTML
+
+					<article class="with-secondary">
+						<div class="secondary">
+HTML;
+		# Determines what type of secondary controls to present (Flag or Edit/Delete)
+		if (UserSession::is_current($event->userID)) {
+			$html .= <<<HTML
+
+							<a href="/" title="Edit &ldquo;{$event->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="Delete &ldquo;{$event->title}&rdquo;" class="delete">Delete</a>
+HTML;
+		}
+		else if (UserSession::is_authorized()) {
+			$html .= <<<HTML
+
+							<a href="/" title="Flag &ldquo;{$event->title}&rdquo;" class="flag">Flag</a>
+HTML;
+		}
+		$html .= <<<HTML
+
+						</div><!-- END SECONDARY -->
+						
+						<p class="item-image"><a href="/files/ics/wddsocial.{$event->icsUID}.ics" title="Download {$event->title} iCal File" class="calendar-icon">
+							<span class="month">{$event->month}</span> 
+							<span class="day">{$event->day}</span> 
+							<span class="download"><img src="/images/site/icon-download.png" alt="Download iCal File"/>iCal</span>
+						</a></p>
+						<h2><a href="/event/{$event->vanityURL}" title="{$event->title}">{$event->title}</a></h2>
+						<p class="location">{$event->location}</p>
+						<p>{$event->startTime} - {$event->endTime}</p>
+						<p>{$event->description}</p>
+						<p class="comments"><a href="/event/{$event->vanityURL}#comments" title="{$event->title} | Comments">{$event->comments} comments</a></p>
+HTML;
+		
+		# Build categories
+		$categoryLinks = array();
+		foreach($event->categories as $category){
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+		}
+		$categoryLinks = implode(' ',$categoryLinks);
+		$html .= <<<HTML
+						<p class="tags">$categoryLinks</p>
+					</article><!-- END {$event->title} -->
+HTML;
+		return $html;
+	}
+	
 	
 	
 	/**

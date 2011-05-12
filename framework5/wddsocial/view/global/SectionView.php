@@ -75,9 +75,9 @@ HTML;
 		if(count($options['classes']) > 0){
 			$classString = implode(' ', $options['classes']);
 		}
-		if(isset($options['extra'])){
-			$extras = static::get_extra($options['extra'], $options['extra_options']);
-		}
+		if($options['sort'])
+			$extras = $this->sorters($options['sorters'], $options['active'], $options['base_link']);
+			
 		return <<<HTML
 
 				<section id="{$options['id']}" class="$classString">
@@ -113,12 +113,6 @@ HTML;
 		
 		$lang = new \Framework5\Lang('wddsocial.lang.view.SectionLang');
 		
-		if ($id == 'directory_sorters') {
-			$alphabeticallyClass = ($options['active'] == 'alphabetically')?' class="current"':'';
-			$newestClass = ($options['active'] == 'newest')?' class="current"':'';
-			$oldestClass = ($options['active'] == 'oldest')?' class="current"':'';
-		}
-		
 		$extras = array(
 			'latest_filters' => <<<HTML
 <div class="secondary filters">
@@ -135,13 +129,6 @@ HTML
 						<a href="{$_SERVER['REQUEST_URI']}#articles" title="{$lang->text('latest_articles')}">{$lang->text('articles')}</a>
 					</div><!-- END SECONDARY -->
 HTML
-			,'directory_sorters' => <<<HTML
-<div class="secondary">
-						<a href="{$options['base_link']}alphabetically" title="Sort Alphabetically"$alphabeticallyClass>Alphabetically</a> 
-						<a href="{$options['base_link']}newest" title="Sort by Newest"$newestClass>Newest</a> 
-						<a href="{$options['base_link']}oldest" title="Sort by Oldest"$oldestClass>Oldest</a>
-					</div><!-- END SECONDARY -->
-HTML
 			,'slider_controls' => <<<HTML
 <div class="slider-controls"><a href="{$_SERVER['REQUEST_URI']}" title="Featured 1" class="current">1</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 2">2</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 3">3</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 4">4</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 5">5</a></div>
 HTML
@@ -154,5 +141,32 @@ HTML
 		);
 		
 		return $extras[$id];
+	}
+	
+	
+	
+	# Extra content pieces (filters, slider controls, etc)
+	private function sorters($sorters, $active, $base_link) {
+		$string = <<<HTML
+
+					<div class="secondary">
+HTML;
+		foreach ($sorters as $sorter) {
+			$title = ucfirst($sorter);
+			if ($sorter == $active)
+				$class = ' class="current"';
+			else
+				$class = '';
+			
+			$string .= <<<HTML
+
+						<a href="{$base_link}$sorter" title="Sort | $title"$class>$title</a> 
+HTML;
+		}
+		$string .= <<<HTML
+
+					</div><!-- END SECONDARY -->
+HTML;
+		return $string;
 	}
 }
