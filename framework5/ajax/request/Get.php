@@ -20,12 +20,16 @@ class Get implements \Framework5\IExecutable {
 		
 		switch ($_POST['query']) {
 			case 'getUserIDByVanityURL':
-				$query = $this->db->prepare($this->sql->getUserIDByVanityURL);
-				$query->execute(array('vanityURL' => $_POST['vanityURL']));
-				$query->setFetchMode(\PDO::FETCH_OBJ);
-				$result = $query->fetch();
-				return $result->vanityURL;
+				echo $this->getUserIDByVanityURL($_POST['vanityURL']);
 				break;
 		}
+	}
+	
+	private function getUserIDByVanityURL($vanityURL){
+		$query = $this->db->prepare($this->sql->getUserIDByVanityURL);
+		$query->execute(array('vanityURL' => $_POST['vanityURL']));
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$result = $query->fetch();
+		return $result->id;
 	}
 }
