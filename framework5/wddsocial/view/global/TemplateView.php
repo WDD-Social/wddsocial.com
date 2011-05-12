@@ -10,6 +10,11 @@ namespace WDDSocial;
 
 class TemplateView implements \Framework5\IView {
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.view.global.TemplateLang');
+	}
+	
+	
 	/**
 	* Determines what type of content to render
 	*/
@@ -87,7 +92,6 @@ HTML;
 	
 	private function _templateFooter() {
 		$root = \Framework5\Request::root_path();
-		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		
 		# output
 		return <<<HTML
@@ -96,11 +100,11 @@ HTML;
 		<footer>
 			<nav>
 				<ul>
-					<!-- <li><a href="developer" title="WDD Social | {$lang->text('developer_desc')}">{$lang->text('developer')}</a></li> -->
-					<li><a href="about" title="WDD Social | {$lang->text('about_desc')}">{$lang->text('about')}</a></li>
-					<li><a href="contact" title="WDD Social | {$lang->text('contact_desc')}">{$lang->text('contact')}</a></li>
-					<li><a href="terms" title="WDD Social | {$lang->text('terms_desc')}">{$lang->text('terms')}</a></li>
-					<li><a href="privacy" title="WDD Social | {$lang->text('privacy_desc')}">{$lang->text('privacy')}</a></li>
+					<!-- <li><a href="developer" title="WDD Social | {$this->lang->text('developer_desc')}">{$this->lang->text('developer')}</a></li> -->
+					<li><a href="about" title="WDD Social | {$this->lang->text('about_desc')}">{$this->lang->text('about')}</a></li>
+					<li><a href="contact" title="WDD Social | {$this->lang->text('contact_desc')}">{$this->lang->text('contact')}</a></li>
+					<li><a href="terms" title="WDD Social | {$this->lang->text('terms_desc')}">{$this->lang->text('terms')}</a></li>
+					<li><a href="privacy" title="WDD Social | {$this->lang->text('privacy_desc')}">{$this->lang->text('privacy')}</a></li>
 				</ul>
 			</nav>
 			<small>&copy; 2011 WDD Social</small>
@@ -126,7 +130,6 @@ HTML;
 	*/
 	
 	private function _userArea() {
-		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		$userAvatar = (file_exists("images/avatars/{$_SESSION['user']->avatar}_small.jpg"))?"/images/avatars/{$_SESSION['user']->avatar}_small.jpg":"/images/site/user-default_small.jpg";
 		
 		# if the user is logged in
@@ -134,10 +137,10 @@ HTML;
 			return <<<HTML
 				
 				<section id="user-area" class="signed-in">
-					<p><strong><a href="/user/{$_SESSION['user']->vanityURL}" title="{$lang->text('user_profile_title')}"><img src="$userAvatar" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
-				 	<p><a href="/messages" title="{$lang->text('messages_title')}">{$lang->text('messages')} <span class="badge">3</span></a></p>
-				 	<p><a href="/account" title="{$lang->text('account_title')}">{$lang->text('account')}</a></p>
-				 	<p><a href="/signout" title="{$lang->text('signout_title')}">{$lang->text('signout')}</a></p>
+					<p><strong><a href="/user/{$_SESSION['user']->vanityURL}" title="{$this->lang->text('user_profile_title')}"><img src="$userAvatar" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
+				 	<p><a href="/messages" title="{$this->lang->text('messages_title')}">{$this->lang->text('messages')} <span class="badge">3</span></a></p>
+				 	<p><a href="/account" title="{$this->lang->text('account_title')}">{$this->lang->text('account')}</a></p>
+				 	<p><a href="/signout" title="{$this->lang->text('signout_title')}">{$this->lang->text('signout')}</a></p>
 				 </section><!-- END USER AREA -->
 HTML;
 		}
@@ -147,8 +150,8 @@ HTML;
 			return <<<HTML
 
 				<section id="user-area" class="signed-out">
-					<p><a href="/signup" title="{$lang->text('signup_title')}">{$lang->text('signup')}</a></p>
-					<p><a href="/signin" title="{$lang->text('signin_title')}">{$lang->text('signin')}</a></p>
+					<p><a href="/signup" title="{$this->lang->text('signup_title')}">{$this->lang->text('signup')}</a></p>
+					<p><a href="/signin" title="{$this->lang->text('signin_title')}">{$this->lang->text('signin')}</a></p>
 				</section><!-- END USER AREA -->
 HTML;
 		}
@@ -162,7 +165,6 @@ HTML;
 	
 	private function _navigation() {
 		$current = \Framework5\Request::segment(0);
-		$lang = new \Framework5\Lang('wddsocial.lang.view.TemplateLang');
 		
 		$html = <<<HTML
 
@@ -171,12 +173,12 @@ HTML;
 HTML;
 		
 		$navItems = array(
-			'people' => $lang->text('people'),
-			'projects' => $lang->text('projects'),
-			'articles' => $lang->text('articles'),
-			'courses' => $lang->text('courses'),
-			'events' => $lang->text('events'),
-			'jobs' => $lang->text('jobs')
+			'people' => $this->lang->text('people'),
+			'projects' => $this->lang->text('projects'),
+			'articles' => $this->lang->text('articles'),
+			'courses' => $this->lang->text('courses'),
+			'events' => $this->lang->text('events'),
+			'jobs' => $this->lang->text('jobs')
 		);
 		
 		foreach ($navItems as $key => $value) {
@@ -194,8 +196,8 @@ HTML;
 
 					</ul>
 					<form action="/search" method="get">
-						<input type="text" name="term" placeholder="{$lang->text('search_placeholder')}" />
-						<input type="submit" value="{$lang->text('search')}" />
+						<input type="text" name="term" placeholder="{$this->lang->text('search_placeholder')}" />
+						<input type="submit" value="{$this->lang->text('search')}" />
 					</form>
 				</nav>
 HTML;

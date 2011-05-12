@@ -4,7 +4,7 @@
 * WDD Social: Language Pack for view.SectionView
 */
 
-class SectionLang implements \Framework5\ILanguagePack {
+class SectionViewLang implements \Framework5\ILanguagePack {
 	
 	public static function content($id, $var) {
 		switch ($id) {
@@ -12,51 +12,56 @@ class SectionLang implements \Framework5\ILanguagePack {
 			# end_content_section()
 			
 			case 'load_more':
-				return 'Load More';
-			
-			
-			
-			#
-			# get_extra()
-			#
+				return 'XX'; # Load More
 			
 			# general
 			case 'all':
-				return 'All';
+				return 'XX'; # All
+			
 			case 'people':
-				return 'People';
+				return 'XX'; # People
+			
 			case 'projects':
-				return 'Projects';
+				return 'XX'; # Projects
+			
 			case 'articles':
-				return 'Articles';
+				return 'XX'; # Articles
 			
 			# latest_filters
 			case 'filter_all_title':
-				return 'All Latest Activity';
+				return 'XX'; # All Latest Activity
+			
 			case 'filter_people_title':
-				return 'Latest People';
+				return 'XX'; # Latest People
+			
 			case 'filter_projects_title':
-				return 'Latest Projects';
+				return 'XX'; # Latest Projects
+			
 			case 'filter_articles_title':
-				return 'Latest Articles';
+				return 'XX'; # Latest Articles
 			
 			# user_latest_filters
 			case 'all_latest_activity':
-				return 'All Latest Activity';
+				return 'XX'; # All Latest Activity
+			
 			case 'latest_projects':
-				return 'Latest Projects';
+				return 'XX'; # Latest Projects
+			
 			case 'latest_articles':
-				return 'Latest Articles';
+				return 'XX'; # Latest Articles
 			
 			# slider_controls
 			case 'related_images':
-				return 'Related Images';
+				return 'XX'; # Related Images
+			
 			case 'images':
-				return 'Images';
+				return 'XX'; # Images
+			
 			case 'related_videos':
-				return 'Related Videos';
+				return 'XX'; # Related Videos
+			
 			case 'videos':
-				return 'Videos';
+				return 'XX'; # Videos
 		}		
 	}
 }

@@ -12,7 +12,8 @@ class Lang extends Controller {
 	private static $_languages = array(
 		'en' => 'English',
 		'es' => 'Spanish',
-		'fr' => 'French');
+		'fr' => 'French',
+		'xx' => 'Testing');
 	
 	private static $_default_language = 'en'; # the default language
 	private static $_language; # the current language id (en,es,fr)

@@ -12,7 +12,7 @@ class CommentDisplayView implements \Framework5\IView {
 	
 	public function render($comments = null) {
 		
-		$lang = new \Framework5\Lang('wddsocial.lang.view.CommentDisplayLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.view.content.CommentDisplayLang');
 		
 		$html = "";
 		$commentCount = count($comments);

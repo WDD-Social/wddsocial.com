@@ -10,31 +10,34 @@ namespace WDDSocial;
 class ShareView implements \Framework5\IView {		
 	
 	public function render($options = null) {
+		
+		$lang = new \Framework5\Lang('wddsocial.lang.view.form.ShareViewLang');
+		
 		return <<<HTML
 
 					<form action="/create" method="post">
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
-							<label for="title">Title</label>
+							<label for="title">{$lang->text('title')}</label>
 							<input type="text" name="title" id="title" />
 						</fieldset>
 						<fieldset class="radio">
-							<label>Type</label>
+							<label>{$lang->text('type')}</label>
 							<div>
 								<input type="radio" id="project" name="type" value="project" checked />
-								<label for="project">Project</label>
+								<label for="project">{$lang->text('project')}</label>
 								
 								<input type="radio" id="article" name="type" value="article" />
-								<label for="article">Article</label>
+								<label for="article">{$lang->text('article')}</label>
 								
 								<input type="radio" id="event" name="type" value="event" />
-								<label for="event">Event</label>
+								<label for="event">{$lang->text('event')}</label>
 								
 								<input type="radio" id="job" name="type" value="job" />
-								<label for="job">Job</label>
+								<label for="job">{$lang->text('job')}</label>
 							</div>
 						</fieldset>
-						<input type="submit" name="submit" value="Create" />
+						<input type="submit" name="submit" value="{$lang->text('create')}" />
 					</form>
 HTML;
 	}

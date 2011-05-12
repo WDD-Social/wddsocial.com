@@ -10,22 +10,22 @@ class UserPageLang implements \Framework5\ILanguagePack {
 		switch ($id) {
 			
 			case 'edit':
-				return 'Edit';
+				return 'XX'; # Edit
 			
 			case 'edit_your_profile':
-				return 'Edit Your Profile';
+				return 'XX'; # Edit Your Profile
 			
 			case 'bio':
-				return 'Bio';
+				return 'XX'; # Bio
 			
 			case 'likes':
-				return 'Likes';
+				return 'XX'; # Likes
 			
 			case 'dislikes':
-				return 'Dislikes';
+				return 'XX'; # Dislikes
 			
 			case 'latest':
-				return 'Latest';			
+				return 'XX'; # Latest
 		}
 	}
 }
