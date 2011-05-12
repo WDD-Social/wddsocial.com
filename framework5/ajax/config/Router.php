@@ -18,7 +18,7 @@ class Router implements \Framework5\IRouter {
 				return 'ajax.request.Ajax\GetLatest';
 			
 			default:
-				return 'ajax.request.Ajax\BadRequest';
+				return 'ajax.request.Ajax\InvalidRequest';
 		}
 	}
 }
