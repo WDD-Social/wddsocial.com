@@ -13,8 +13,22 @@ $(function() {
 	
 	
 	
-	/* FILTERS, CARDSTACKS
+	/* FILTERS, CARDSTACKS, SLIDERS
 	****************************************************************** */
+	
+	/*
+$('#projects.slider').jslide({
+		width: 620,
+		height: 165,
+		items: 2,
+		loop: true,
+		slideshow: {
+			direction: 'next',
+			duration: 100,
+			delay: 500
+		}
+	});
+*/
 	
 	$('.filters a').live('click',function(){
 		$(this).parent().find('a.current').removeClass('current');
