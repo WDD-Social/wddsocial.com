@@ -22,6 +22,7 @@ class Router implements \Framework5\IRouter {
 			case 'home':
 				return 'wddsocial.page.global.WDDSocial\IndexPage';
 			
+			
 			# main navigation
 			case 'people':
 				return 'wddsocial.page.global.WDDSocial\PeoplePage';
@@ -66,6 +67,7 @@ class Router implements \Framework5\IRouter {
 			
 			
 			# footer navigation
+			
 			case 'developer':
 				return 'wddsocial.page.global.WDDSocial\DeveloperPage';
 			
@@ -82,6 +84,7 @@ class Router implements \Framework5\IRouter {
 				return 'wddsocial.page.global.WDDSocial\PrivacyPage';
 			
 			
+			# content pages
 			
 			case 'user':
 				return 'wddsocial.page.global.WDDSocial\UserPage';
@@ -105,6 +108,10 @@ class Router implements \Framework5\IRouter {
 				return 'wddsocial.page.form.WDDSocial\CreatePage';
 			
 			
+			# testing pages
+			
+			case 'testajax':
+				return 'wddsocial.page.test.WDDSocial\AjaxTest';
 			
 			# 404
 			default:
