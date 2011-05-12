@@ -363,6 +363,12 @@ class SelectorSQL{
 			WHERE email = :email AND `password` = MD5(:password)
 			LIMIT 1",
 		
+		'getUserIDByVanityURL' => "
+			SELECT id
+			FROM users
+			WHERE vanityURL = :vanityURL
+			LIMIT 1",
+		
 		'getUserByVanityURL' => "
 			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, website, twitter, facebook, github, dribbble, forrst
 			FROM users AS u
