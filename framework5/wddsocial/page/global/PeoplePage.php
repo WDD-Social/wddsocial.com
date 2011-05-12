@@ -38,7 +38,7 @@ class PeoplePage implements \Framework5\IExecutable {
 				'classes' => array('mega', 'with-secondary'), 
 				'header' => 'People', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/people/1/', 'active' => $active));
 		
-		$paginator = new Paginator(1,18);
+		$paginator = new Paginator(1,3);
 		
 		switch ($active) {
 			case 'alphabetically':
