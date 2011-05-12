@@ -1,18 +1,32 @@
 $(function() {
 	
-	/* VISUAL TWEAKS AND ENHANCEMENTS
+	/* VISUAL TWEAKS, ENHANCEMENTS, AND SETUP
 	****************************************************************** */
 	
 	$('.dashboard #latest').css({
 		minHeight: $('.dashboard #share').outerHeight(true) + $('.dashboard #events').outerHeight(true) + $('.dashboard #jobs').outerHeight(true)
 	});
 	
-	/* SETUP
-	****************************************************************** */
-	
 	$.ajaxSetup({
 		type: "POST"
 	});
+	
+	
+	
+	/* FILTERS, CARDSTACKS, SLIDERS
+	****************************************************************** */
+	
+	/* $('#projects.slider').jslide({
+		width: 620,
+		height: 165,
+		items: 2,
+		loop: true,
+		slideshow: {
+			direction: 'next',
+			duration: 100,
+			delay: 500
+		}
+	}); */
 	
 	$('.filters a').live('click',function(){
 		$(this).parent().find('a.current').removeClass('current');
@@ -28,20 +42,85 @@ $(function() {
 		return false;
 	});
 	
-	var i = 0;
-	$('#load-more').live('click',function(){
+	
+	
+	/* AJAX LOADING
+	****************************************************************** */
+	
+	// "Load more" variable setup
+	var urlArray = window.location.pathname.substring(1).split('/'),
+		page = (urlArray[0] === '')?'/':urlArray[0];
+		
+	switch (page) {
+		case 'user':
+			pageSegment = 2;
+			break;
+		default:
+			pageSegment = 1;
+	}
+	var pageNumber = (urlArray[pageSegment] === undefined)?1:urlArray[pageSegment];
+	
+	if (page === '/' || page === 'home' || page === 'user') {
+		var postsPerPage = $('#latest').find('article').length/pageNumber,
+			ajaxExtra = {};
+			
+		if (page === 'user') {
+			$.ajax({
+				url: '/ajax/get',
+				data: {
+					query: 'getUserIDByVanityURL',
+					vanityURL: urlArray[1]
+				},
+				success: function(response){
+					ajaxExtra = {
+						userID: response
+					};
+				}
+			});
+			var ajaxQuery = 'getUserLatest';
+		}
+	}
+	else if (page === 'people' || page === 'projects' || page === 'articles' || page === 'events') {
+		// SET UP LOAD MORE CODE FOR DIRECTORIES
+		var postsPerPage = $('#directory').find('article').length/pageNumber,
+			ajaxQuery = 'get' + page.charAt(0).toUpperCase() + page.slice(1),
+			ajaxExtra = {
+				active: $('#directory .secondary .current').html().toLowerCase()
+			};
+	}
+	
+	// "Load more" functionality
+	$('p.load-more a').live('click',function(){
+		var parent = $(this).parent();
 		$.ajax({
-			url: '/ajax/latest',
+			url: '/ajax/more',
 			dataType: 'html',
 			data: {
-				start: i,
-				limit: 1
+				start: pageNumber * postsPerPage,
+				limit: postsPerPage,
+				query: ajaxQuery,
+				extra: ajaxExtra
 			},
 			success: function(response){
-				$('#latest').append(response);
+				$(response).insertBefore(parent);
+				pageNumber++;
+				$.ajax({
+					url: '/ajax/more',
+					dataType: 'html',
+					data: {
+						start: pageNumber * postsPerPage,
+						limit: postsPerPage,
+						query: ajaxQuery,
+						extra: ajaxExtra
+					},
+					success: function(response){
+						if ($('<div></div>').append(response).find('article').length == 0) {
+							$(parent).remove();
+						}
+					}
+				});
 			}
 		});
-		i++;
 		return false;
 	});
 });

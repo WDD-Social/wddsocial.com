@@ -147,24 +147,36 @@ class IndexPage implements \Framework5\IExecutable {
 	private function _public_projects(){
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
+		# Build project array, of projects with images.
+		$projects = array();
+		for ($i = 0; $i < 100; $i++) {
+			$j = $i + 1;
+			$query = $this->db->query($this->sql->getRecentProjects . " LIMIT $i, $j");
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+			$project = $query->fetch();
+			if (file_exists("images/uploads/{$project->images[0]->file}_large.jpg")) {
+				array_push($projects, $project);
+				if (count($projects) >= 5) {
+					break;
+				}
+			}
+			continue;
+		}
+		
 		# query
-		$query = $this->db->query($this->sql->getRecentProjects);
-		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'projects', 
 				'classes' => array('large', 'slider'), 
 				'header' => $this->lang->text('projects_header'), 'extra' => 'slider_controls'));
 		
-		# Create section items ***GETS 10 PROJECTS***
-		/*while($row = $query->fetch()){
-			echo render('wddsocial.view.LargeDisplayView', array('type' => $row->type,'content' => $row));
-		}*/
-		$row = $query->fetchAll();
-		if(isset($row[0])){
-			echo render('wddsocial.view.content.WDDSocial\LargeDisplayView', 
-				array('type' => $row[0]->type,'content' => $row[0]));
-		}
+		# Display 5 projects 
+		/* foreach ($projects as $project) {
+			echo render('wddsocial.view.content.WDDSocial\LargeDisplayView', array('type' => $project->type,'content' => $project));
+		} */
+		
+		# Display 1 project
+		echo render('wddsocial.view.content.WDDSocial\LargeDisplayView', array('type' => $projects[0]->type,'content' => $projects[0]));
 		
 		# Create section footer
 		echo render(':section', 

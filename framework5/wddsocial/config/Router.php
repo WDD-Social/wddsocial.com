@@ -104,16 +104,18 @@ class Router implements \Framework5\IRouter {
 			case 'job':
 				return 'wddsocial.page.global.WDDSocial\JobPage';
 			
+			
+			# Form and process pages
+			
+			case 'remove':
+				return 'wddsocial.page.global.WDDSocial\RemovePage';
+			
 			case 'create':
 				return 'wddsocial.page.form.WDDSocial\CreatePage';
 			
 			
-			# testing pages
-			
-			case 'testajax':
-				return 'wddsocial.page.test.WDDSocial\AjaxTest';
-			
 			# 404
+			
 			default:
 				return 'wddsocial.page.error.WDDSocial\Http404';
 		}
