@@ -61,8 +61,7 @@ $(function() {
 	var pageNumber = (urlArray[pageSegment] === undefined)?1:urlArray[pageSegment];
 	
 	if (page === '/' || page === 'home' || page === 'user') {
-		var ajaxURL = '/ajax/more',
-			postsPerPage = $('#latest').find('article').length/pageNumber,
+		var postsPerPage = $('#latest').find('article').length/pageNumber,
 			ajaxExtra = {};
 			
 		if (page === 'user') {
@@ -78,18 +77,23 @@ $(function() {
 					};
 				}
 			});
-			var ajaxQuery = 'user';
+			var ajaxQuery = 'getUserLatest';
 		}
 	}
 	else if (page === 'people' || page === 'projects' || page === 'articles' || page === 'events') {
 		// SET UP LOAD MORE CODE FOR DIRECTORIES
+		var postsPerPage = $('#directory').find('article').length/pageNumber,
+			ajaxQuery = 'get' + page.charAt(0).toUpperCase() + page.slice(1),
+			ajaxExtra = {
+				active: $('#directory .secondary .current').html().toLowerCase()
+			};
 	}
 	
 	// "Load more" functionality
 	$('p.load-more a').live('click',function(){
 		var parent = $(this).parent();
 		$.ajax({
-			url: ajaxURL,
+			url: '/ajax/more',
 			dataType: 'html',
 			data: {
 				start: pageNumber * postsPerPage,
@@ -101,7 +105,7 @@ $(function() {
 				$(response).insertBefore(parent);
 				pageNumber++;
 				$.ajax({
-					url: ajaxURL,
+					url: '/ajax/more',
 					dataType: 'html',
 					data: {
 						start: pageNumber * postsPerPage,
