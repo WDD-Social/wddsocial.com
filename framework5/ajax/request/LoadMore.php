@@ -32,6 +32,9 @@ class LoadMore implements \Framework5\IExecutable {
 			case 'getArticles':
 				echo $this->getProjectsArticles($_POST['start'],$_POST['limit'],$_POST['extra']['active'],'articles');
 				break;
+			case 'getEvents':
+				echo $this->getEvents($_POST['start'],$_POST['limit'],$_POST['extra']['active']);
+				break;
 			default:
 				echo $this->getLatest($_POST['start'],$_POST['limit']);
 				break;
@@ -147,6 +150,41 @@ class LoadMore implements \Framework5\IExecutable {
 				break;
 		}
 		
+		$query->execute();
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+		
+		# display section items
+		while($item = $query->fetch()){
+			$response .= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => $item->type,'content' => $item));
+		}
+		return $response;
+	}
+	
+	
+	
+	private function getEvents($start, $limit, $active){
+		import('wddsocial.model.WDDSocial\DisplayVO');
+		
+		switch ($active) {
+			case 'upcoming':
+				$orderBy = 'startDateTime ASC';
+				break;
+			case 'alphabetically':
+				$orderBy = 'title ASC';
+				break;
+			case 'newest':
+				$orderBy = '`datetime` DESC';
+				break;
+			case 'oldest':
+				$orderBy = '`datetime` ASC';
+				break;
+			default:
+				$orderBy = 'title ASC';
+				break;
+		}
+		
+		# query
+		$query = $this->db->prepare($this->sql->getEvents . " ORDER BY $orderBy LIMIT $start, $limit");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
