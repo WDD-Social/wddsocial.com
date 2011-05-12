@@ -18,11 +18,23 @@ class GetLatest implements \Framework5\IExecutable {
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
 		
-		$limit = 10;
+		if (!isset($_POST['start'])) {
+			$start = 0;
+		}
+		else {
+			$start = $_POST['start'];
+		}
+		
+		if (!isset($_POST['limit'])) {
+			$limit = 10;
+		}
+		else {
+			$limit = $_POST['limit'];
+		}
 		
 		# query
 		import('wddsocial.model.WDDSocial\DisplayVO');
-		$query = $this->db->prepare($this->sql->getLatest . " LIMIT 0, $limit");
+		$query = $this->db->prepare($this->sql->getLatest . " LIMIT $start, $limit");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
