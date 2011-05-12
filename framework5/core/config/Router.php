@@ -16,6 +16,8 @@ class Router implements IRouter {
 	
 	public static function resolve($request) {
 		switch ($request) {
+			case 'ajax':
+				return 'ajax.app.Framework5\AjaxApplication';
 			case 'dev':
 				return 'dev.app.Framework5\DeveloperApplication';
 			default:

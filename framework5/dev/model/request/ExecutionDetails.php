@@ -10,6 +10,6 @@ namespace Framework5\Dev;
 
 class ExecutionDetails {
 	
-	public $request_id, $time, $uri;
+	public $request_id, $time, $uri, $remote_addr, $get, $post;
 	
 }
