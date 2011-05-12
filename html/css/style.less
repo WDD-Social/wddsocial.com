@@ -883,6 +883,106 @@ input, textarea, button{
 				width: 13.333333333%;
 				margin-right: 6.666666667%;
 				padding-left: 0;
+				
+				.calendar-icon{
+					display: block;
+					font-weight: bold;
+					color: #fff;
+					
+					span{
+						display: block; 
+						text-align: center;
+						}
+					
+					.month{
+						width: 94%;
+						padding: 5% 3%;
+						background-color: @green;
+						font-size: .9em;
+						text-transform: uppercase;
+						border: 1px solid darken(@green, 7%);
+						border-bottom: none;
+						.border-radius(3px);
+						-moz-border-bottom-left-radius: 0;
+						-moz-border-bottom-right-radius: 0;
+						-webkit-border-bottom-left-radius: 0;
+						-webkit-border-bottom-right-radius: 0;
+						border-bottom-left-radius: 0;
+						border-bottom-right-radius: 0;
+						}
+						
+					.day{
+						width: 94%;
+						padding: 0 3%;
+						background-color: lighten(@text-light-color,25%);
+						font-size: 1.9em;
+						letter-spacing: -.025em;
+						color: darken(@text-light-color,30%);
+						border: 1px solid lighten(@text-light-color,15%);
+						border-top: none;
+						.border-radius(3px);
+						-moz-border-top-left-radius: 0;
+						-moz-border-top-right-radius: 0;
+						-webkit-border-top-left-radius: 0;
+						-webkit-border-top-right-radius: 0;
+						border-top-left-radius: 0;
+						border-top-right-radius: 0;
+						}
+					
+					.download{
+						margin-top: 5px;
+						padding-left: 10%;
+						font-weight: normal;
+						text-align: left;
+						color: @text-color;
+						opacity: 0;
+						.transition;
+						
+						img{
+							float: left;
+							width: 9px;
+							height: 10px;
+							margin: 2px 3px 0 0;
+							}
+						}
+					}
+				
+				.calendar-icon:hover{
+					text-decoration: none;
+					
+					.month{
+						background-color: darken(@green,5%);
+						border-color: darken(@green,12%);
+						}
+						
+					.day{
+						background-color: lighten(@text-light-color,20%);
+						color: darken(@text-light-color,35%);
+						border-color: lighten(@text-light-color,5%);
+						}
+						
+					.download{
+						display: block;
+						opacity: .5;
+						}
+					}
+					
+				.calendar-icon:active{
+					.month{
+						background-color: darken(@green,10%);
+						border-color: darken(@green,17%);
+						}
+						
+					.day{
+						background-color: lighten(@text-light-color,15%);
+						color: darken(@text-light-color,40%);
+						border-color: @text-light-color;
+						}
+						
+					.download{
+						opacity: .75;
+						}
+					}
 				}
 			}
 		
