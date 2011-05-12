@@ -1,18 +1,20 @@
 $(function() {
 	
-	/* VISUAL TWEAKS AND ENHANCEMENTS
+	/* VISUAL TWEAKS, ENHANCEMENTS, AND SETUP
 	****************************************************************** */
 	
 	$('.dashboard #latest').css({
 		minHeight: $('.dashboard #share').outerHeight(true) + $('.dashboard #events').outerHeight(true) + $('.dashboard #jobs').outerHeight(true)
 	});
 	
-	/* SETUP
-	****************************************************************** */
-	
 	$.ajaxSetup({
 		type: "POST"
 	});
+	
+	
+	
+	/* FILTERS, CARDSTACKS
+	****************************************************************** */
 	
 	$('.filters a').live('click',function(){
 		$(this).parent().find('a.current').removeClass('current');
@@ -28,20 +30,61 @@ $(function() {
 		return false;
 	});
 	
-	var i = 0;
-	$('#load-more').live('click',function(){
+	
+	
+	/* AJAX LOADING
+	****************************************************************** */
+	
+	var urlArray = window.location.pathname.substring(1).split('/');
+	var page = (urlArray[0] === '')?'/':urlArray[0];
+	var pageNumber = (urlArray[1] === undefined)?1:urlArray[1];
+	
+	if (page === '/' || page === 'home' || page === 'user') {
+		var ajaxURL = '/ajax/latest';
+		var postsPerPage = $('#latest').find('article').length/pageNumber;
+		if (page === 'user') {
+			var ajaxQuery = 'user';
+		}
+		else {
+			var ajaxQuery = '';
+		}
+	}
+	else if (page === 'people' || page === 'projects' || page === 'articles' || page === 'events') {
+		console.log("ELSE IF RUNNING!!!!!!!!");
+	}
+	
+	$('p.load-more a').live('click',function(){
+		var parent = $(this).parent();
 		$.ajax({
-			url: '/ajax/latest',
+			url: ajaxURL,
+			type: 'POST',
 			dataType: 'html',
 			data: {
-				start: i,
-				limit: 1
+				start: pageNumber * postsPerPage,
+				limit: postsPerPage,
+				query: ajaxQuery
 			},
 			success: function(response){
-				$('#latest').append(response);
+				$(response).insertBefore(parent);
+				
+				pageNumber++;
+				$.ajax({
+					url: ajaxURL,
+					dataType: 'html',
+					data: {
+						start: pageNumber * postsPerPage,
+						limit: postsPerPage,
+						query: ajaxQuery
+					},
+					success: function(response){
+						if ($('<div></div>').append(response).find('article').length == 0) {
+							$(parent).remove();
+						}
+					}
+				});
 			}
 		});
-		i++;
+		
 		return false;
 	});
 });
