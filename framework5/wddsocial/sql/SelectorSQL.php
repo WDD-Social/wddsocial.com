@@ -676,8 +676,7 @@ class SelectorSQL{
 		'getRecentProjects' => "
 			SELECT id, title, description, vanityURL, `datetime`, 'project' AS `type`
 			FROM projects
-			ORDER BY `datetime` DESC
-			LIMIT 0,5",
+			ORDER BY `datetime` DESC",
 		
 		'getProjectByVanityURL' => "
 			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`, DATE_FORMAT(completeDate,'%M, %Y') AS `completeDate`,
