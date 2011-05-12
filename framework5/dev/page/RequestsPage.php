@@ -19,7 +19,7 @@ class RequestsPage implements \Framework5\IExecutable {
 		while($row = $requests->fetch()) {
 			$time = date("F j, Y, g:i a", $row->time);
 			
-		    echo "<a href=\"../request/{$row->id}\">{$row->id}</a> at $time [<a href=\"/{$row->uri}\">/{$row->uri}</a>] <br/>";
+		    echo "<a href=\"/dev/request/{$row->id}\">{$row->id}</a> at $time [<a href=\"/{$row->uri}\">/{$row->uri}</a>] <br/>";
 		}
 	}
 	
