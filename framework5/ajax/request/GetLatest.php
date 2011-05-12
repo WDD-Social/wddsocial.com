@@ -15,6 +15,8 @@ class GetLatest implements \Framework5\IExecutable {
 		# check user auth
 		if (!\WDDSocial\UserSession::is_authorized()) redirect('/');
 		
+		import('wddsocial.model.WDDSocial\DisplayVO');
+		
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
 		
@@ -32,10 +34,17 @@ class GetLatest implements \Framework5\IExecutable {
 			$limit = $_POST['limit'];
 		}
 		
-		# query
-		import('wddsocial.model.WDDSocial\DisplayVO');
-		$query = $this->db->prepare($this->sql->getLatest . " LIMIT $start, $limit");
-		$query->execute();
+		switch ($_POST['query']) {
+			case 'user':
+				$query = $this->db->prepare($this->sql->getUserLatest . " LIMIT $start, $limit");
+				$query->execute(array('id' => $_POST['userID']));
+				break;
+			default:
+				$query = $this->db->prepare($this->sql->getLatest . " LIMIT $start, $limit");
+				$query->execute();
+				break;
+		}
+		
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
 		# display section items
