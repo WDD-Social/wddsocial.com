@@ -61,7 +61,7 @@ $(function() {
 	var pageNumber = (urlArray[pageSegment] === undefined)?1:urlArray[pageSegment];
 	
 	if (page === '/' || page === 'home' || page === 'user') {
-		var ajaxURL = '/ajax/latest',
+		var ajaxURL = '/ajax/more',
 			postsPerPage = $('#latest').find('article').length/pageNumber,
 			ajaxExtra = {};
 			

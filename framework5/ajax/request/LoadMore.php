@@ -5,10 +5,11 @@ namespace Ajax;
 /**
 * Get news feed items
 * 
+* @author Anthony Colangelo (me@acolangelo.com)
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class GetLatest implements \Framework5\IExecutable {
+class LoadMore implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
@@ -25,12 +26,12 @@ class GetLatest implements \Framework5\IExecutable {
 				echo $this->getUserLatest($_POST['start'],$_POST['limit'],$_POST['extra']['userID']);
 				break;
 			default:
-				echo $this->getAllLatest($_POST['start'],$_POST['limit']);
+				echo $this->getLatest($_POST['start'],$_POST['limit']);
 				break;
 		}
 	}
 	
-	private function getAllLatest($start, $limit){
+	private function getLatest($start, $limit){
 		if (!isset($start)) {
 			$start = 0;
 		}
