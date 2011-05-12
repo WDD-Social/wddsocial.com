@@ -87,7 +87,7 @@ class IndexPage implements \Framework5\IExecutable {
 				'classes' => array('medium', 'with-secondary', 'filterable'),
 				'header' => $this->lang->text('latest_header'), 'extra' => 'latest_filters'));
 		
-		$paginator = new Paginator(1,5,10);
+		$paginator = new Paginator(1,20,10);
 		
 		# query
 		$query = $this->db->prepare($this->sql->getLatest . " LIMIT 0, {$paginator->limit}");
