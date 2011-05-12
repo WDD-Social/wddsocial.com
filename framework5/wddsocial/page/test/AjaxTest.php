@@ -17,6 +17,13 @@ class AjaxTest implements \Framework5\IExecutable {
 		
 		echo "<h1>AjaxTest</h1>";
 		
+		echo <<<HTML
+
+					<section id="latest" class="medium with-secondary filterable">
+					</section>
+					<p class="load-more"><a href="#" title="Load More Posts" id="load-more">Load More</a></p>
+HTML;
+		
 		# display site footer
 		echo render(':section', array('section' => 'end_content'));
 		
