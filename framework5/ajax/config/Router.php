@@ -17,8 +17,8 @@ class Router implements \Framework5\IRouter {
 			case 'get':
 				return 'ajax.request.Ajax\Get';
 				
-			case 'latest':
-				return 'ajax.request.Ajax\GetLatest';
+			case 'more':
+				return 'ajax.request.Ajax\LoadMore';
 				
 			case 'available':
 				return 'ajax.request.Ajax\Available';

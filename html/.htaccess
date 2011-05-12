@@ -372,7 +372,7 @@ FileETag None
 Options -MultiViews 
 
 # You can add custom pages to handle 500 or 403 pretty easily, if you like.
-ErrorDocument 404 /404.html
+ErrorDocument 404 /404.php
 
 # use utf-8 encoding for anything served text/plain or text/html
 AddDefaultCharset utf-8

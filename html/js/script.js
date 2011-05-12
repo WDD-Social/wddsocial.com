@@ -47,38 +47,58 @@ $(function() {
 	/* AJAX LOADING
 	****************************************************************** */
 	
-	var urlArray = window.location.pathname.substring(1).split('/');
-	var page = (urlArray[0] === '')?'/':urlArray[0];
-	var pageNumber = (urlArray[1] === undefined)?1:urlArray[1];
+	// "Load more" variable setup
+	var urlArray = window.location.pathname.substring(1).split('/'),
+		page = (urlArray[0] === '')?'/':urlArray[0];
+		
+	switch (page) {
+		case 'user':
+			pageSegment = 2;
+			break;
+		default:
+			pageSegment = 1;
+	}
+	var pageNumber = (urlArray[pageSegment] === undefined)?1:urlArray[pageSegment];
 	
 	if (page === '/' || page === 'home' || page === 'user') {
-		var ajaxURL = '/ajax/latest';
-		var postsPerPage = $('#latest').find('article').length/pageNumber;
+		var ajaxURL = '/ajax/more',
+			postsPerPage = $('#latest').find('article').length/pageNumber,
+			ajaxExtra = {};
+			
 		if (page === 'user') {
+			$.ajax({
+				url: '/ajax/get',
+				data: {
+					query: 'getUserIDByVanityURL',
+					vanityURL: urlArray[1]
+				},
+				success: function(response){
+					ajaxExtra = {
+						userID: response
+					};
+				}
+			});
 			var ajaxQuery = 'user';
-		}
-		else {
-			var ajaxQuery = '';
 		}
 	}
 	else if (page === 'people' || page === 'projects' || page === 'articles' || page === 'events') {
-		console.log("ELSE IF RUNNING!!!!!!!!");
+		// SET UP LOAD MORE CODE FOR DIRECTORIES
 	}
 	
+	// "Load more" functionality
 	$('p.load-more a').live('click',function(){
 		var parent = $(this).parent();
 		$.ajax({
 			url: ajaxURL,
-			type: 'POST',
 			dataType: 'html',
 			data: {
 				start: pageNumber * postsPerPage,
 				limit: postsPerPage,
-				query: ajaxQuery
+				query: ajaxQuery,
+				extra: ajaxExtra
 			},
 			success: function(response){
 				$(response).insertBefore(parent);
-				
 				pageNumber++;
 				$.ajax({
 					url: ajaxURL,
@@ -86,7 +106,8 @@ $(function() {
 					data: {
 						start: pageNumber * postsPerPage,
 						limit: postsPerPage,
-						query: ajaxQuery
+						query: ajaxQuery,
+						extra: ajaxExtra
 					},
 					success: function(response){
 						if ($('<div></div>').append(response).find('article').length == 0) {
@@ -96,7 +117,6 @@ $(function() {
 				});
 			}
 		});
-		
 		return false;
 	});
 });
