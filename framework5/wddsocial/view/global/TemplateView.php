@@ -63,7 +63,7 @@ class TemplateView implements \Framework5\IView {
 		<link rel="apple-touch-icon" href="{$root}images/site/social-apple-touch-icon.png">
 		<link rel="stylesheet/less" href="{$root}css/style.less">
 		<script src="{$root}js/libs/modernizr-1.6.min.js"></script>
-		<script src="{$root}js/less-1.0.41.min.js"></script>
+		<script src="{$root}js/libs/less-1.0.41.min.js"></script>
 	</head>
 	<body>
 		<section id="wrap">
@@ -109,6 +109,7 @@ HTML;
 		<script>!window.jQuery && document.write(unescape('%3Cscript src="{$root}js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
 		<script src="{$root}js/plugins.js"></script>
 		<script src="{$root}js/libs/jquery.easing.1.3.js"></script>
+		<script src="{$root}js/libs/jquery.jslide.js"></script>
 		<script src="{$root}js/script.js"></script>
 		<!--[if lt IE 7 ]>
 			<script src="{$root}js/libs/dd_belatedpng.js"></script>
