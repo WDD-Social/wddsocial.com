@@ -12,7 +12,8 @@ class GetLatest implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
-		//if (UserSession::is_authorized()) {}
+		# check user auth
+		if (!\WDDSocial\UserSession::is_authorized()) redirect('/');
 		
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
