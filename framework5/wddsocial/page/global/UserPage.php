@@ -42,27 +42,21 @@ class UserPage implements \Framework5\IExecutable {
 					'classes' => array('medium', 'with-secondary', 'filterable'),
 					'header' => $this->lang->text('latest'), 'extra' => 'user_latest_filters'));
 			
-			$page = \Framework5\Request::segment(2);
-			if (!isset($page) or !is_numeric($page))
-				$page = 1;
-			
-			$limit = $page * 20;
+			$paginator = new Paginator(2,20,10);
 			
 			# display section items
-			$activity = $this->getUserLatest($user->id, 0, $limit);
+			$activity = $this->getUserLatest($user->id, 0, $paginator->limit);
 			foreach ($activity as $item) {
 				echo render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
 					array('type' => $item->type,'content' => $item));
 			}
 			
-			$next = $this->getUserLatest($user->id, $limit, 20);
+			$next = $this->getUserLatest($user->id, $paginator->limit, 20);
 			
 			if (count($next) > 0) {
-				$nextPage = $page + 1;
-				
 				# display section footer
 				echo render(':section',
-					array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/user/{$user->vanityURL}/$nextPage"));	
+					array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/user/{$user->vanityURL}/{$paginator->next}"));	
 			}		
 			else {
 				# display section footer
