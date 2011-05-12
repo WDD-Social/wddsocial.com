@@ -16,8 +16,7 @@ $(function() {
 	/* FILTERS, CARDSTACKS, SLIDERS
 	****************************************************************** */
 	
-	/*
-$('#projects.slider').jslide({
+	/* $('#projects.slider').jslide({
 		width: 620,
 		height: 165,
 		items: 2,
@@ -27,8 +26,7 @@ $('#projects.slider').jslide({
 			duration: 100,
 			delay: 500
 		}
-	});
-*/
+	}); */
 	
 	$('.filters a').live('click',function(){
 		$(this).parent().find('a.current').removeClass('current');
