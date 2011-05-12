@@ -68,16 +68,19 @@ HTML;
 	
 	# Opens subcontent section, with optional classes, extras
 	private function begin_content_section($options){
-		if(!isset($options['id']) or !isset($options['header'])){
+		if (!isset($options['id']) or !isset($options['header']))
 			throw new Exception("SectionView begin_content_setion requires parameter id (section ID) and header (h1 text)");
+		
+		if (count($options['classes']) > 0)
+			$classString = implode(' ', $options['classes']);
+			
+		if ($options['sort'])
+			$extras = $this->sorters($options['sorters'], $options['active'], $options['base_link']);
+		
+		if (isset($options['extra'])) {
+			$extras = $this->get_extra($options['extra']);
 		}
 		
-		if(count($options['classes']) > 0){
-			$classString = implode(' ', $options['classes']);
-		}
-		if($options['sort'])
-			$extras = $this->sorters($options['sorters'], $options['active'], $options['base_link']);
-			
 		return <<<HTML
 
 				<section id="{$options['id']}" class="$classString">
