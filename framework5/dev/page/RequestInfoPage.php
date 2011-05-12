@@ -22,28 +22,24 @@ class RequestInfoPage implements \Framework5\IExecutable {
 		$info = new RequestInfo($request_id);
 		
 		# check for request details
-		$details = $info->get_details();
-		if ($details)
+		if ($details = $info->get_details())
 			render('dev.view.Framework5\Dev\ExecutionDetailsView', $details);
 		
 		# check for execution information
-		$execution = $info->get_execution();
-		if ($execution)
+		if ($execution = $info->get_execution())
 			render('dev.view.Framework5\Dev\ExecutionInfoView', $execution);
 		
 		# check for trace data
-		$trace = $info->get_trace();
-		if ($trace)
+		//$trace = $info->get_trace();
+		if ($trace = $info->get_trace())
 			echo render('dev.view.Framework5\Dev\TraceInfoView', $trace);
 		
 		# check for an exception
-		$exception = $info->get_exception();
-		if ($exception)
+		if ($exception = $info->get_exception())
 			render('dev.view.Framework5\Dev\ExceptionInfoView', $exception);
 		
 		# check for debug information
-		$debug = $info->get_debug();
-		if ($debug)
+		if ($debug = $info->get_debug())
 			render('dev.view.Framework5\Dev\DebugInfoView', $debug);
 		
 	}
