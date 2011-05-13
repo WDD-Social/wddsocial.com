@@ -17,7 +17,7 @@ class UserTypeSelector implements \Framework5\IView {
 		$required = ($options['required'] === true)?' *':'';
 		$html = <<<HTML
 
-						<fieldset class="radio">
+						<fieldset{$options['id']} class="radio" data-user="{$_SESSION['user']->id}">
 							<label>I am a{$required}</label>
 							<div>
 HTML;
