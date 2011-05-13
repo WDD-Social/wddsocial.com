@@ -16,7 +16,7 @@ class UserDetailInputs implements \Framework5\IView {
 						<fieldset>
 							<label for="start-date">Start Date</label>
 							<input type="date" name="start-date" id="start-date" value="{$options['startDateInput']}" />
-							<small>yyyy-mm-dd</small>
+							<small>YYYY-MM-DD</small>
 						</fieldset>
 HTML;
 		}
@@ -26,7 +26,7 @@ HTML;
 						<fieldset>
 							<label for="graduation-date">Graduation Date</label>
 							<input type="date" name="graduation-date" id="graduation-date" value="{$options['graduationDateInput']}" />
-							<small>yyyy-mm-dd</small>
+							<small>YYYY-MM-DD</small>
 						</fieldset>
 HTML;
 		}
