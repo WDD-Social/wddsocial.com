@@ -23,6 +23,8 @@ class AccountPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
+		UserSession::protect();
+		
 		# get the request user
 		$this->user = $this->get_user($_SESSION['user']->id);
 		
@@ -57,6 +59,9 @@ class AccountPage implements \Framework5\IExecutable {
 	
 	private function process_form(){
 		import('wddsocial.model.WDDSocial\FormResponse');
+		
+		
+		# Update basic data in user table
 		
 		$fields = array();
 		$errors = array();
@@ -164,6 +169,42 @@ class AccountPage implements \Framework5\IExecutable {
 			$query->execute(array('id' => $this->user->id));
 			$this->user = $this->get_user($this->user->id);
 		}
+		
+		
+		
+		# Update userDetail data
+		
+		$fields = array();
+		
+		if (isset($_POST['start-date']) and $_POST['start-date'] !== $this->user->extra['startDateInput'])
+			$fields['startDate'] = $_POST['start-date'];
+		
+		if (isset($_POST['graduation-date']) and $_POST['graduation-date'] !== $this->user->extra['graduationDateInput'])
+			$fields['graduationDate'] = $_POST['graduation-date'];
+		
+		if (isset($_POST['degree-location']) and $_POST['degree-location'] !== $this->user->extra['location'])
+			$fields['location'] = $_POST['degree-location'];
+		
+		if (isset($_POST['employer']) and $_POST['employer'] !== $this->user->extra['employerTitle'])
+			$fields['employerTitle'] = $_POST['employer'];
+		
+		if (isset($_POST['employer-link']) and $_POST['employer-link'] !== $this->user->extra['employerLink'])
+			$fields['employerLink'] = $_POST['employer-link'];
+		
+		$update = array();
+		foreach ($fields as $fieldName => $fieldContent) {
+			array_push($update,"$fieldName = '$fieldContent'");
+		}
+		$update = implode(', ',$update);
+		if ($update !== '') {
+			$query = $this->db->prepare($this->admin->updateUserDetail . $update . " WHERE userID = :id");
+			$query->execute(array('id' => $this->user->id));
+			$this->user = $this->get_user($this->user->id);
+		}
+			
+		
+		
+		# Change Password	
 		
 		if (strlen($_POST['new-password']) > 0) {
 			if (strlen($_POST['new-password']) < 6) {
