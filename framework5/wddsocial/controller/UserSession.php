@@ -66,6 +66,25 @@ class UserSession {
 	
 	
 	/**
+	* Refreshes user's data (used when updating)
+	*/
+	
+	public static function refresh() {
+		if ($_SESSION['user'] != null) {
+			$db = instance(':db');
+			$sql = instance(':sel-sql');
+	
+			$query = $db->prepare($sql->getUserSessionDataByID);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$data = array('id' => $_SESSION['user']->id);
+			$query->execute($data);
+			$_SESSION['user'] = $query->fetch();
+		}
+	}
+	
+	
+	
+	/**
 	* Checks if a user is the currently signed in user
 	*/
 	
