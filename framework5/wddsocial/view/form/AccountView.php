@@ -38,7 +38,8 @@ class AccountView implements \Framework5\IView {
 					<form action="/account" method="post" enctype="multipart/form-data">
 						<h1>Basics</h1>
 						<h2>* Notice *</h2>
-						<p><strong>Basics</strong>, <strong>contact info</strong>, and <strong>other simple fields</strong> are updatable. Actions such as <strong>uploading a new avatar</strong>, <strong>changing your password</strong>, and <strong>changing user-type-specific data</strong> (start date, graduation date, courses you teach, etc.) are coming shortly. Please check back soon for those actions.</p>
+						<p><strong>Basics</strong>, <strong>contact info</strong>, <strong>password</strong>, and <strong>other simple fields</strong> are updatable.</p>
+						<p>Actions such as <strong>uploading a new avatar</strong>, <strong>changing user-type-specific data</strong> (start date, graduation date, courses you teach, etc.), and more are coming shortly. Please check back soon for those actions.</p>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="first-name">First Name</label>
