@@ -77,6 +77,11 @@ class SignupPage implements \Framework5\IExecutable {
 			return new FormResponse(false, "You must agree to our <a href=\"/terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>");
 		}
 		
+		# check if user accepted terms
+		if (strlen($_POST['password']) < 6) {
+			return new FormResponse(false, "Your password was not long enough. Passwords must be at least 6 characters long, please try again.");
+		}
+		
 		
 		# database validation
 		$db = instance(':db');
