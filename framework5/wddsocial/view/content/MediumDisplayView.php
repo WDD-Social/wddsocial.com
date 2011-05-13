@@ -9,6 +9,10 @@ namespace WDDSocial;
 
 class MediumDisplayView implements \Framework5\IView {	
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.MediumDisplayLang');
+	}
+	
 	/**
 	* Determines what type of content to render
 	*/
@@ -45,52 +49,62 @@ class MediumDisplayView implements \Framework5\IView {
 	*/
 	
 	private function project_display($project){		
+		
+		# format natural language
 		$userVerbage = NaturalLanguage::view_profile($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($project->userID,"{$project->userFirstName} {$project->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$project->userAvatar}_medium.jpg"))?"/images/avatars/{$project->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
-		$teamIntro = static::format_team_string($project->userID,$project->team, ' with');
+		$teamIntro = $this->format_team_string($project->userID,$project->team, ' with');
 		
+		# output
 		$html = <<<HTML
 
 					<article class="projects with-secondary">
 						<div class="secondary">
 HTML;
 		
-		# Determines what type of secondary controls to present (Flag or Edit/Delete)
-		if(UserSession::is_current($project->userID)){
+		
+		# determines what type of secondary controls to present (Flag or Edit/Delete)
+		if (UserSession::is_current($project->userID)) {
 			$html .= <<<HTML
 
-							<a href="/" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
-							<a href="/" title="Delete &ldquo;{$project->title}&rdquo;" class="delete">Delete</a>
+							<a href="/" title="{$this->lang->text('edit_title', $project->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/" title="{$this->lang->text('delete_title', $project->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
-		}else if(UserValidator::is_project_owner($project->id)){
+		}
+		
+		else if(UserValidator::is_project_owner($project->id)){
 			$html .= <<<HTML
 
-							<a href="/" title="Edit &ldquo;{$project->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="{$this->lang->text('edit_title', $project->title)}" class="edit">{$this->lang->text('edit')}</a>
 HTML;
-		}else if(UserSession::is_authorized()){
+		}
+		
+		else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="/" title="Flag &ldquo;{$project->title}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="{$this->lang->text('flag_title', $project->title)}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
-		}	
+		}
+		
+		# output
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
 						<p class="item-image"><a href="/user/{$project->userURL}" title="$userVerbage"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="/user/{$project->userURL}" title="$userVerbage">$userDisplayName</a></strong> posted a <strong><a href="/project/{$project->vanityURL}" title="{$project->title}">project</a></strong>$teamIntro.</p>
+						<p class="intro"><strong><a href="/user/{$project->userURL}" title="$userVerbage">$userDisplayName</a></strong> {$this->lang->text('posted_a')} <strong><a href="/project/{$project->vanityURL}" title="{$project->title}">{$this->lang->text('project')}</a></strong>$teamIntro.</p>
 						<h2><a href="/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$project->description}</p>
 HTML;
 		
-		# Build images if needed
-		if(count($project->images) > 0){
+		# build images if needed
+		if (count($project->images) > 0) {
 			$html .= <<<HTML
 
 						<p class="images">			
 HTML;
-			foreach($project->images as $image){
+			foreach ($project->images as $image) {
 				if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
 					$html .= <<<HTML
 
@@ -105,13 +119,13 @@ HTML;
 		}
 		$html .= <<<HTML
 
-						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
+						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$this->lang->text('comments-title', $poject->title)}">{$this->lang->text('comments', $project->comments)}</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
-		foreach($project->categories as $category){
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+		foreach ($project->categories as $category) {
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -128,29 +142,38 @@ HTML;
 	*/
 	
 	private function project_comment_display($projectComment){
+	
+		# format natural language
 		$userVerbage = NaturalLanguage::view_profile($projectComment->userID,"{$projectComment->userFirstName} {$projectComment->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($projectComment->userID,"{$projectComment->userFirstName} {$projectComment->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$projectComment->userAvatar}_medium.jpg"))?"/images/avatars/{$projectComment->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
-		$teamIntro = static::format_team_string($projectComment->userID,$projectComment->team, 'By', false);
+		$teamIntro = $this->format_team_string($projectComment->userID,$projectComment->team, 'By', false);
+		
+		# output
 		$html = <<<HTML
 
 					<article class="comments with-secondary">
 						<div class="secondary">
 HTML;
 		
-		# Determines what type of secondary controls to present (Flag or Edit/Delete)
-		if(UserSession::is_current($projectComment->userID)){
+		# determines what type of secondary controls to present (Flag or Edit/Delete)
+		if (UserSession::is_current($projectComment->userID)) {
 			$html .= <<<HTML
 
-							<a href="/" title="Edit Comment on &ldquo;{$projectComment->title}&rdquo;" class="edit">Edit</a>
-							<a href="/" title="Delete Comment on &ldquo;{$projectComment->title}&rdquo;" class="delete">Delete</a>
+							<a href="/" title="{$this->lang->text('edit_comment', $projectComment->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/" title="{$this->lang->text('delete_comment', $projectComment->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
-		}else if(UserSession::is_authorized()){
+		}
+		
+		# authorized users can flag content
+		else if (UserSession::is_authorized()) {
 			$html .= <<<HTML
 
-							<a href="/" title="Flag Comment on &ldquo;{$projectComment->title}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="{$this->lang->text('flag_comment', $projectComment->title)}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
-		}	
+		}
+		
+		# output
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
@@ -163,12 +186,12 @@ HTML;
 HTML;
 		$html .= <<<HTML
 
-						<p class="comments"><a href="/project/{$projectComment->vanityURL}#comments" title="{$projectComment->title} | Comments">{$projectComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$projectComment->date}</span></p>
+						<p class="comments"><a href="/project/{$projectComment->vanityURL}#comments" title="{$this->lang->text('comments_title', $projectComment->title)}">{$this->lang->text('comments', $projectComment->comments)}</a> <span class="hidden">|</span> <span class="time">{$projectComment->date}</span></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
-		foreach($projectComment->categories as $category){
+		foreach ($projectComment->categories as $category) {
 			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
@@ -186,10 +209,14 @@ HTML;
 	*/
 	
 	private function article_display($article){
+		
+		# format natural language
 		$userVerbage = NaturalLanguage::view_profile($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($article->userID,"{$article->userFirstName} {$article->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$article->userAvatar}_medium.jpg"))?"/images/avatars/{$article->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
-		$teamIntro = static::format_team_string($article->userID,$article->team, ' with');
+		$teamIntro = $this->format_team_string($article->userID,$article->team, ' with');
+		
+		# output
 		$html = <<<HTML
 
 					<article class="articles with-secondary">
@@ -197,29 +224,36 @@ HTML;
 HTML;
 		
 		# Determines what type of secondary controls to present (Flag or Edit/Delete)
-		if(UserSession::is_current($article->userID)){
+		if (UserSession::is_current($article->userID)) {
 			$html .= <<<HTML
 
 							<a href="/" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
 							<a href="/" title="Delete &ldquo;{$article->title}&rdquo;" class="delete">Delete</a>
 HTML;
-		}else if(UserValidator::is_article_owner($article->id)){
+		}
+		
+		else if (UserValidator::is_article_owner($article->id)) {
 			$html .= <<<HTML
 
-							<a href="/" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
+							<a href="/" title="{$this->lang->text('edit_title', $article->title)}" class="edit">{$this->lang->text('edit')}</a>
 HTML;
-		}else if(UserSession::is_authorized()){
+		}
+		
+		# authorized users can flag
+		else if (UserSession::is_authorized()) {
 			$html .= <<<HTML
 
-							<a href="/" title="Flag &ldquo;{$article->title}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="{$this->lang->text('flag_title', $article->title)}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
-		}	
+		}
+		
+		# output
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
 						<p class="item-image"><a href="/user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="/user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> wrote an <strong><a href="/article/{$article->vanityURL}" title="{$article->title}">article</a></strong>$teamIntro.</p>
+						<p class="intro"><strong><a href="/user/{$article->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> {$this->lang->text('wrote_an')} <strong><a href="/article/{$article->vanityURL}" title="{$article->title}">{$this->lang->text('article')}</a></strong>$teamIntro.</p>
 						<h2><a href="/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
 HTML;
@@ -230,7 +264,8 @@ HTML;
 
 						<p class="images">			
 HTML;
-			foreach($article->images as $image){
+
+			foreach ($article->images as $image) {
 				if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
 					$html .= <<<HTML
 
@@ -238,20 +273,22 @@ HTML;
 HTML;
 				}
 			}
+			
 			$html .= <<<HTML
 
 						</p>			
 HTML;
 		}
+		
 		$html .= <<<HTML
 
-						<p class="comments"><a href="/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
+						<p class="comments"><a href="/article/{$article->vanityURL}#comments" title="{$this->lang->text('comments_title', $article->title)}">{$this->lang->text('comments', $article->comments)}</a> <span class="hidden">|</span> <span class="time">{$article->date}</span></p>
 HTML;
 		
-		# Build categories
+		# build categories
 		$categoryLinks = array();
-		foreach($article->categories as $category){
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+		foreach ($article->categories as $category) {
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -268,24 +305,30 @@ HTML;
 	*/
 	
 	private function article_comment_display($articleComment){
+	
+		# format natural language
 		$userVerbage = NaturalLanguage::view_profile($articleComment->userID,"{$articleComment->userFirstName} {$articleComment->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($articleComment->userID,"{$articleComment->userFirstName} {$articleComment->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$articleComment->userAvatar}_medium.jpg"))?"/images/avatars/{$articleComment->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
-		$teamIntro = static::format_team_string($articleComment->userID,$articleComment->team, 'By', false);
+		$teamIntro = $this->format_team_string($articleComment->userID,$articleComment->team, 'By', false);
+		
+		# output
 		$html = <<<HTML
 
 					<article class="comments with-secondary">
 						<div class="secondary">
 HTML;
 		
-		# Determines what type of secondary controls to present (Flag or Edit/Delete)
+		# determines what type of secondary controls to present (Flag or Edit/Delete)
 		if(UserSession::is_current($articleComment->userID)){
 			$html .= <<<HTML
 
 							<a href="/" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
 							<a href="/" title="Delete Comment on &ldquo;{$articleComment->title}&rdquo;" class="delete">Delete</a>
 HTML;
-		}else if(UserSession::is_authorized()){
+		}
+		
+		else if (UserSession::is_authorized()) {
 			$html .= <<<HTML
 
 							<a href="/" title="Flag Comment on &ldquo;{$articleComment->title}&rdquo;" class="flag">Flag</a>
@@ -303,13 +346,13 @@ HTML;
 HTML;
 		$html .= <<<HTML
 
-						<p class="comments"><a href="/article/{$articleComment->vanityURL}#comments" title="{$articleComment->title} | Comments">{$articleComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$articleComment->date}</span></p>
+						<p class="comments"><a href="/article/{$articleComment->vanityURL}#comments" title="{$this->lang->text('comments', $articleComment->title)}">{$this->lang->text('comments', $articleComment->comments)}</a> <span class="hidden">|</span> <span class="time">{$articleComment->date}</span></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
-		foreach($articleComment->categories as $category){
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+		foreach ($articleComment->categories as $category) {
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -325,10 +368,14 @@ HTML;
 	* Creates an event comment article
 	*/
 	
-	private function event_comment_display($eventComment){
+	private function event_comment_display($eventComment) {
+		
+		# format naturla language
 		$userVerbage = NaturalLanguage::view_profile($eventComment->userID,"{$eventComment->userFirstName} {$eventComment->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($eventComment->userID,"{$eventComment->userFirstName} {$eventComment->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$eventComment->userAvatar}_medium.jpg"))?"/images/avatars/{$eventComment->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
+		
+		# output
 		$html = <<<HTML
 
 					<article class="comments with-secondary">
@@ -336,18 +383,20 @@ HTML;
 HTML;
 		
 		# Determines what type of secondary controls to present (Flag or Edit/Delete)
-		if(UserSession::is_current($eventComment->userID)){
+		if (UserSession::is_current($eventComment->userID)) {
 			$html .= <<<HTML
 
-							<a href="/" title="Edit Comment on &ldquo;{$eventComment->title}&rdquo;" class="edit">Edit</a>
-							<a href="/" title="Delete Comment on &ldquo;{$eventComment->title}&rdquo;" class="delete">Delete</a>
+							<a href="/" title="{$this->lang->text('edit_comment', $eventComment->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/" title="{$this->lang->text('delete_comment', $eventComment->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="/" title="Flag Comment on &ldquo;{$eventComment->title}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="{$this->lang->text('flag_comment', $eventComment->title)}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
-		}	
+		}
+		
+		# comment
 		$html .= <<<HTML
 
 						</div><!-- END SECONDARY -->
@@ -360,7 +409,7 @@ HTML;
 HTML;
 		$html .= <<<HTML
 
-						<p class="comments"><a href="/event/{$eventComment->vanityURL}#comments" title="{$eventComment->title} | Comments">{$eventComment->comments} comments</a> <span class="hidden">|</span> <span class="time">{$eventComment->date}</span></p>
+						<p class="comments"><a href="/event/{$eventComment->vanityURL}#comments" title="{$this->lang->text('comments_title', $eventComment->title)}">{$this->lang->text('comments', $eventComment->comments)}</a> <span class="hidden">|</span> <span class="time">{$eventComment->date}</span></p>
 HTML;
 		
 		# Build categories
@@ -383,15 +432,18 @@ HTML;
 	*/
 	
 	private function person_display($person){
+		
+		# format natural language
 		$userVerbage = NaturalLanguage::view_profile($person->userID,"{$person->userFirstName} {$person->userLastName}");
 		$userDisplayName = NaturalLanguage::display_name($person->userID,"{$person->userFirstName} {$person->userLastName}");
 		$userAvatar = (file_exists("images/avatars/{$person->userAvatar}_medium.jpg"))?"/images/avatars/{$person->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		
+		# output
 		$html = <<<HTML
 
 					<article class="people">
 						<p class="item-image"><a href="/user/{$person->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
-						<p class="intro"><strong><a href="/user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> joined the community.</p>
+						<p class="intro"><strong><a href="/user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> {$this->lang->text('joined')}.</p>
 						<p>{$person->description}</p>
 						<p>{$person->date}</p>
 					</article><!-- END {$person->title} -->

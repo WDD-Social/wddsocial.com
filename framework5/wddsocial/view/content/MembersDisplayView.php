@@ -13,7 +13,7 @@ class MembersDisplayView implements \Framework5\IView {
 	
 	public function render($content = null) {
 	
-		$lang = new \Framework5\Lang('wddsocial.lang.view.MembersDisplayLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.view.content.MembersDisplayLang');
 		$html = "";
 		$possessiveTitle = NaturalLanguage::possessive($content->title);
 		

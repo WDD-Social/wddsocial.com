@@ -12,7 +12,7 @@ namespace WDDSocial;
 class EventLocationDisplayView implements \Framework5\IView {
 	
 	public function __construct() {
-		$this->lang = new \Framework5\Lang('wddsocial.lang.view.EventLocationLang');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.EventLocationLang');
 	}
 	
 	public function render($content = null) {
