@@ -21,7 +21,7 @@ class UserIntroView implements \Framework5\IView {
 		}
 		
 		# get dependencies
-		$lang = new \Framework5\Lang('wddsocial.lang.view.UserLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.page.global.UserPageLang');
 		$userDisplayName = NaturalLanguage::display_name($user->id,"{$user->firstName} {$user->lastName}");
 		$userAvatar = (file_exists("images/avatars/{$user->avatar}_full.jpg"))?"/images/avatars/{$user->avatar}_full.jpg":"/images/site/user-default_full.jpg";
 		
@@ -40,7 +40,7 @@ HTML;
 					</div><!-- END SECONDARY -->
 HTML;
 		}
-		$userIntro = static::getUserIntro($user);
+		$userIntro = $this->getUserIntro($user);
 		$html .= <<<HTML
 					
 					<img src="$userAvatar" alt="{$user->firstName} {$user->lastName}" />
@@ -88,7 +88,7 @@ HTML;
 	* Creates user intro sentence
 	*/
 	
-	private static function getUserIntro($user){
+	private function getUserIntro($user){
 		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are a":"<strong>{$user->firstName}</strong> is a";
 		
 		if(isset($user->age)){

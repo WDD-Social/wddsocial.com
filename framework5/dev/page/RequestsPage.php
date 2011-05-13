@@ -10,6 +10,7 @@ namespace Framework5\Dev;
 class RequestsPage implements \Framework5\IExecutable {
 	
 	public function execute() {
+		echo render('dev.view.Framework5\Dev\TemplateView');
 		
 		echo render('dev.view.Framework5\Dev\PageHeader');
 		

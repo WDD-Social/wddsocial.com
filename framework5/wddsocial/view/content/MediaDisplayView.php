@@ -13,7 +13,7 @@ class MediaDisplayView implements \Framework5\IView {
 	
 	public function render($options = null) {
 	
-		$lang = new \Framework5\Lang('wddsocial.lang.view.MediaDisplayLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.view.content.MediaDisplayLang');
 		$html = <<<HTML
 
 					<div class="{$options['active']}">
