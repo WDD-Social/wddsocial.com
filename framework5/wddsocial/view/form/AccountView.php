@@ -97,10 +97,25 @@ HTML;
 						</fieldset>
 HTML;
 		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector', array('typeID' => $user->typeID, 'required' => false));
-		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserDetailInputs', $user->extra);
+		$html .= <<<HTML
+
+						<div id="user-type-details">
+HTML;
+		switch ($user->typeID) {
+			case 1:
+				$html .= render('wddsocial.view.form.pieces.WDDSocial\StudentDetailInputs', $user->extra);
+				break;
+			case 2:
+				$html .= render('wddsocial.view.form.pieces.WDDSocial\TeacherDetailInputs', $user->extra);
+				break;
+			case 3:
+				$html .= render('wddsocial.view.form.pieces.WDDSocial\AlumDetailInputs', $user->extra);
+				break;
+		}
 		
 		$html .= <<<HTML
 
+						</div><!-- END user-type-details -->
 						<input type="submit" name="submit" value="Save" />
 
 						<h1>Contact</h1>
