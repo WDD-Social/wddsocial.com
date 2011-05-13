@@ -10,6 +10,11 @@ namespace WDDSocial;
 class ValidatorSQL{
 	private $_info = array(
 		
+		'checkUserPassword' => "
+			SELECT COUNT(*) AS `count`
+			FROM users
+			WHERE id = :id AND `password` = MD5(:password)",
+		
 		'checkIfUserVanityURLExists' => "
 			SELECT COUNT(*) AS `count`
 			FROM users
