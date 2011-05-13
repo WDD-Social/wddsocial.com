@@ -15,6 +15,8 @@ class AccountPage implements \Framework5\IExecutable {
 		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.UserPageLang');
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
+		$this->admin = instance(':admin-sql');
+		$this->val = instance(':val-sql');
 	}
 	
 	
@@ -25,8 +27,14 @@ class AccountPage implements \Framework5\IExecutable {
 		$this->user = $this->get_user($_SESSION['user']->id);
 		
 		if (isset($_POST['submit'])) {
-			$this->_process_form();
-			return true;
+			$response = $this->process_form();
+			
+			if ($response->status) {
+				redirect("/user/{$this->user->vanityURL}");
+			}
+			else {
+				$errorMessage = $response->message;
+			}
 		}
 		
 		# display site header
@@ -43,24 +51,144 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		# display site footer
 		echo render(':template', array('section' => 'bottom'));
-		
-		$this->_dump_user();
 	}
 	
 	
 	
-	private function _process_form(){
-		echo "<h1>POST:</h1>";
+	private function process_form(){
+		import('wddsocial.model.WDDSocial\FormResponse');
 		
-		echo "<pre>";
-		print_r($_POST);
-		echo "</pre>";
+		$fields = array();
+		$errors = array();
 		
-		echo "<h1>USER:</h1>";
+		if ($_POST['user-type'] !== $this->user->typeID)
+			$fields['typeID'] = $_POST['user-type'];
 		
-		echo "<pre>";
-		print_r($this->user);
-		echo "</pre>";
+		if ($_POST['first-name'] !== $this->user->firstName)
+			$fields['firstName'] = $_POST['first-name'];
+		
+		if ($_POST['last-name'] !== $this->user->lastName)
+			$fields['lastName'] = $_POST['last-name'];
+		
+		if ($_POST['email'] !== $this->user->email) {
+			# Check if email is unique
+			$query = $this->db->prepare($this->val->checkIfUserEmailExists);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$data = array('email' => $_POST['email']);
+			$query->execute($data);
+			$row = $query->fetch();
+			if ($row->count > 0) {
+				array_push($errors, 'email');
+			}
+			else {
+				$fields['email'] = $_POST['email'];
+			}
+		}
+		
+		if ($_POST['full-sail-email'] !== $this->user->fullsailEmail) {
+			# Check if Full Sail email is unique
+			$query = $this->db->prepare($this->val->checkIfUserFullSailEmailExists);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$data = array('fullsailEmail' => $_POST['full-sail-email']);
+			$query->execute($data);
+			$row = $query->fetch();
+			if ($row->count > 0) {
+				array_push($errors, 'Full Sail email');
+			}
+			else {
+				$fields['fullsailEmail'] = $_POST['full-sail-email'];
+			}
+		}
+		
+		if ($_POST['vanityURL'] !== $this->user->vanityURL) {
+			# Check if vanityURL is unique
+			$query = $this->db->prepare($this->val->checkIfUserVanityURLExists);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$data = array('vanityURL' => $_POST['vanityURL']);
+			$query->execute($data);
+			$row = $query->fetch();
+			if ($row->count > 0) {
+				array_push($errors, 'vanity URL');
+			}
+			else {
+				$fields['vanityURL'] = $_POST['vanityURL'];
+			}
+		}
+		
+		if ($_POST['bio'] !== $this->user->bio)
+			$fields['bio'] = $_POST['bio'];
+				
+		if ($_POST['hometown'] !== $this->user->hometown)
+			$fields['hometown'] = $_POST['hometown'];
+		
+		if ($_POST['birthday'] !== $this->user->birthday)
+			$fields['birthday'] = $_POST['birthday'];
+		
+		if ($_POST['website'] !== $this->user->contact['website'])
+			$fields['website'] = $_POST['website'];
+				
+		if ($_POST['twitter'] !== $this->user->contact['twitter'])
+			$fields['twitter'] = $_POST['twitter'];
+		
+		if ($_POST['facebook'] !== $this->user->contact['facebook'])
+			$fields['facebook'] = $_POST['facebook'];
+				
+		if ($_POST['github'] !== $this->user->contact['github'])
+			$fields['github'] = $_POST['github'];
+		
+		if ($_POST['dribbble'] !== $this->user->contact['dribbble'])
+			$fields['dribbble'] = $_POST['dribbble'];
+				
+		if ($_POST['forrst'] !== $this->user->contact['forrst'])
+			$fields['forrst'] = $_POST['forrst'];
+		
+		if (count($errors) > 0) {
+			$errorMessage = "The ";
+			if (count($errors) == 1) {
+				$errorMessage .= "{$errors[0]} you provided is already in use.";
+			}
+			else{
+				$errorMessage .=  NaturalLanguage::comma_list($errors);
+			}
+			$errorMessage .= " you provided are already in use. Your information must be unique, please try again.";
+			return new FormResponse(false, $errorMessage);
+		}
+		
+		$update = array();
+		foreach ($fields as $fieldName => $fieldContent) {
+			array_push($update,"$fieldName = '$fieldContent'");
+		}
+		$update = implode(', ',$update);
+		if ($update !== '') {
+			$query = $this->db->prepare($this->admin->updateUser . $update . " WHERE id = :id");
+			$query->execute(array('id' => $this->user->id));
+			$this->user = $this->get_user($this->user->id);
+			UserSession::refresh();
+		}
+		
+		if (strlen($_POST['new-password']) > 0) {
+			if (strlen($_POST['new-password']) < 6) {
+				return new FormResponse(false, "Your new password was not long enough. Passwords must be at least 6 characters long, please try again.");
+			}
+			if (strlen($_POST['old-password']) <= 0) {
+				return new FormResponse(false, "You need to enter your old password to change your password.");
+			}
+			else {
+				$query = $this->db->prepare($this->val->checkUserPassword);
+				$query->execute(array('id' => $this->user->id, 'password' => $_POST['old-password']));
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				$result = $query->fetch();
+				if ($result->count > 0) {
+					$query = $this->db->prepare($this->admin->changePassword);
+					$query->execute(array('id' => $this->user->id, 'old' => $_POST['old-password'], 'new' => $_POST['new-password']));
+				}
+				else {
+					return new FormResponse(false, "Your old password was incorrect, please try again.");
+				}
+			}
+		}
+		
+		return new FormResponse(true);
 	}
 	
 	

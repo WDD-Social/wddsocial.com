@@ -10,10 +10,36 @@ namespace WDDSocial;
 class AccountView implements \Framework5\IView {
 	public function render($options = null) {
 		$user = $options['user'];
+		if ($options['error'] != '') {
+			# Map post data to user object
+			$user->firstName = $_POST['first-name'];
+			$user->lastName = $_POST['last-name'];
+			$user->email = $_POST['email'];
+			$user->fullsailEmail = $_POST['full-sail-email'];
+			$user->vanityURL = $_POST['vanityURL'];
+			$user->hometown = $_POST['hometown'];
+			$user->birthday = $_POST['birthday'];
+			$user->bio = $_POST['bio'];
+			$user->typeID = $_POST['user-type'];
+			$user->contact['website'] = $_POST['website'];
+			$user->contact['twitter'] = $_POST['twitter'];
+			$user->contact['facebook'] = $_POST['facebook'];
+			$user->contact['github'] = $_POST['github'];
+			$user->contact['dribbble'] = $_POST['dribbble'];
+			$user->contact['forrst'] = $_POST['forrst'];
+			$user->extra['startDate'] = $_POST['start-date'];
+			$user->extra['location'] = $_POST['degree-location'];
+			$user->extra['graduationDate'] = $_POST['graduation-date'];
+			$user->extra['employerTitle'] = $_POST['employer'];
+			$user->extra['employerLink'] = $_POST['employer-link'];
+		}
 		$html .= <<<HTML
 
 					<form action="/account" method="post" enctype="multipart/form-data">
 						<h1>Basics</h1>
+						<h2>* Notice *</h2>
+						<p><strong>Basics</strong>, <strong>contact info</strong>, <strong>password</strong>, and <strong>other simple fields</strong> are updatable.</p>
+						<p>Actions such as <strong>uploading a new avatar</strong>, <strong>changing user-type-specific data</strong> (start date, graduation date, courses you teach, etc.), and more are coming shortly. Please check back soon for those actions.</p>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="first-name">First Name</label>

@@ -24,6 +24,15 @@ class AdminSQL{
 			SET avatar = MD5(CONCAT('user',id)), verificationCode = MD5(RAND())
 			WHERE id = @last_id;",
 		
+		'updateUser' => "
+			UPDATE users
+			SET ",
+		
+		'changePassword' => "
+			UPDATE users
+			SET `password` = MD5(:new)
+			WHERE id = :id AND `password` = MD5(:old)",
+		
 		'verifyUserByID' => "
 			UPDATE users
 			SET verified = 1
