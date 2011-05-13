@@ -163,7 +163,6 @@ class AccountPage implements \Framework5\IExecutable {
 			$query = $this->db->prepare($this->admin->updateUser . $update . " WHERE id = :id");
 			$query->execute(array('id' => $this->user->id));
 			$this->user = $this->get_user($this->user->id);
-			UserSession::refresh();
 		}
 		
 		if (strlen($_POST['new-password']) > 0) {
@@ -188,6 +187,12 @@ class AccountPage implements \Framework5\IExecutable {
 			}
 		}
 		
+		if($_FILES['avatar']['error'] != 4){
+			import('wddsocial.controller.processes.WDDSocial\Uploader');
+			Uploader::upload_user_avatar($_FILES['avatar'],"{$this->user->avatar}");
+		}
+		
+		UserSession::refresh();
 		return new FormResponse(true);
 	}
 	
