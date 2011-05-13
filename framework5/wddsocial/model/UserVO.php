@@ -9,7 +9,7 @@ namespace WDDSocial;
 */
 
 class UserVO {
-	public $id, $language, $firstName, $lastName, $avatar, $bio, $hometown, $age, $type, $contact = array(), $email, $fullsailEmail, $vanityURL, $extra = array();
+	public $id, $language, $firstName, $lastName, $avatar, $bio, $hometown, $age, $type, $typeID, $contact = array(), $email, $fullsailEmail, $vanityURL, $extra = array();
 	
 	public function __construct(){
 		$this->contact['website']=$this->website;
@@ -29,33 +29,20 @@ class UserVO {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		$data = array('id' => $id);
-		switch ($this->type) {
-		    case 'Student':
-		        $query = $db->prepare($sql->getStudentDetailByID);
-				$query->setFetchMode(\PDO::FETCH_OBJ);
-				$query->execute($data);
-				$row = $query->fetch();
-				$this->extra['startDate'] = $row->startDate;
-				$this->extra['location'] = $row->location;
-		        break;
-		    case 'Teacher':
-		    	$this->extra['courses'] = array();
-		        $query = $db->prepare($sql->getTeacherCoursesByID);
-		        $query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\CourseVO');
-				$query->execute($data);
-				while($course = $query->fetch()){
-					array_push($this->extra['courses'],$course);
-				}
-		        break;
-		    case 'Alum':
-		        $query = $db->prepare($sql->getAlumDetailByID);
-				$query->setFetchMode(\PDO::FETCH_OBJ);
-				$query->execute($data);
-				$row = $query->fetch();
-				$this->extra['graduationDate'] = $row->graduationDate;
-				$this->extra['employerTitle'] = $row->employerTitle;
-				$this->extra['employerLink'] = $row->employerLink;
-		        break;
+		$query = $db->prepare($sql->getUserDetailByID);
+		$query->setFetchMode(\PDO::FETCH_ASSOC);
+		$query->execute($data);
+		$row = $query->fetch();
+		$this->extra = $row;
+		
+		if ($this->type == 'teacher') {
+			$this->extra['courses'] = array();
+	        $query = $db->prepare($sql->getTeacherCoursesByID);
+	        $query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\CourseVO');
+			$query->execute($data);
+			while($course = $query->fetch()){
+				array_push($this->extra['courses'],$course);
+			}
 		}
 	}
 	
