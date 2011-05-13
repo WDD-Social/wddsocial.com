@@ -360,7 +360,7 @@ class SelectorSQL{
 			SELECT u.id, firstName, lastName, avatar, vanityURL, ut.title AS `type`
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
-			WHERE email = :email AND `password` = MD5(:password)
+			WHERE (email = :email OR fullsailEmail = :email) AND `password` = MD5(:password)
 			LIMIT 1",
 		
 		'getUserSessionDataByID' => "
