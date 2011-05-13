@@ -26,6 +26,7 @@ class SignupView implements \Framework5\IView {
 						<fieldset>
 							<label for="email">Email *</label>
 							<input type="email" name="email" id="email" value="{$_POST['email']}" />
+							<small>Used to sign in and for contacting you</small>
 						</fieldset>
 						<fieldset>
 							<label for="full-sail-email">Full Sail Email *</label>
