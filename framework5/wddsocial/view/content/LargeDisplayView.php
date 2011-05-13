@@ -31,7 +31,7 @@ class LargeDisplayView implements \Framework5\IView {
 	*/
 	
 	private function project_display($project){
-		$teamLinks = static::format_team($project->team);
+		$teamLinks = $this->format_team($project->team);
 		
 		$html = <<<HTML
 
@@ -62,7 +62,7 @@ HTML;
 	* Formats the team array into the correct string
 	*/
 	
-	private static function format_team($team){
+	private function format_team($team){
 		if(count($team) > 0){
 			
 			# Creates string according to how many team members there are for this piece of content
