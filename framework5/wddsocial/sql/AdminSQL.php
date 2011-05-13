@@ -28,6 +28,11 @@ class AdminSQL{
 			UPDATE users
 			SET ",
 		
+		'changePassword' => "
+			UPDATE users
+			SET `password` = MD5(:new)
+			WHERE id = :id AND `password` = MD5(:old)",
+		
 		'verifyUserByID' => "
 			UPDATE users
 			SET verified = 1
