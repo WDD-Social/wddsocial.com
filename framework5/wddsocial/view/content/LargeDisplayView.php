@@ -32,9 +32,7 @@ class LargeDisplayView implements \Framework5\IView {
 	*/
 	
 	public function render($options = null) {
-		# natural language is needed for this view
-		import('wddsocial.helper.WDDSocial\NaturalLanguage');
-		
+
 		# render selected view
 		switch ($options['type']) {
 			case 'project':

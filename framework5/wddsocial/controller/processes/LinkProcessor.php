@@ -10,7 +10,6 @@ namespace WDDSocial;
 
 class LinkProcessor {
 	public static function add_links($links, $titles, $contentID, $contentType){
-		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		
 		$db = instance(':db');
 		$val_sql = instance(':val-sql');
