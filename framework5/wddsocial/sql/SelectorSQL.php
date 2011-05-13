@@ -338,7 +338,7 @@ class SelectorSQL{
 		*/
 		
 		'getUserByID' => "
-			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, website, twitter, facebook, github, dribbble, forrst
+			SELECT u.id, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, birthday, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, ut.id as typeID, website, twitter, facebook, github, dribbble, forrst
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE u.id = :id
@@ -370,7 +370,7 @@ class SelectorSQL{
 			LIMIT 1",
 		
 		'getUserByVanityURL' => "
-			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, website, twitter, facebook, github, dribbble, forrst
+			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, ut.id as typeID, website, twitter, facebook, github, dribbble, forrst
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE vanityURL = :vanityURL
@@ -394,9 +394,10 @@ class SelectorSQL{
 			WHERE id = :id
 			LIMIT 1",
 		
-		'getStudentDetailByID' => "
-			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, location
-			FROM studentDetail
+		/* 'getStudentDetailByID' => " */
+		'getUserDetailByID' => "
+			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, DATE_FORMAT(startDate,'%Y-%m-%d') as startDateInput, DATE_FORMAT(graduationDate,'%M, %Y') AS graduationDate, DATE_FORMAT(graduationDate,'%Y-%m-%d') as graduationDateInput, location, employerTitle, employerLink
+			FROM userDetail
 			WHERE userID = :id
 			LIMIT 1",
 		
@@ -405,12 +406,6 @@ class SelectorSQL{
 			FROM teacherCourses AS tc
 			LEFT JOIN courses AS c ON (c.id = tc.courseID)
 			WHERE userID = :id",
-		
-		'getAlumDetailByID' => "
-			SELECT DATE_FORMAT(graduationDate,'%M, %Y') AS graduationDate, employerTitle, employerLink
-			FROM alumDetail
-			WHERE userID = :id
-			LIMIT 1",
 		
 		'getUserLikesByID' => "
 			SELECT c.title

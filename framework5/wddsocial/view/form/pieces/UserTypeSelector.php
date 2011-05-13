@@ -14,16 +14,17 @@ class UserTypeSelector implements \Framework5\IView {
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getUserTypes);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$required = ($options['required'] === true)?' *':'';
 		$html = <<<HTML
 
 						<fieldset class="radio">
-							<label>I am a *</label>
+							<label>I am a{$required}</label>
 							<div>
 HTML;
 		
 		while ($userType = $query->fetch()) {
 			$lowercaseTitle = strtolower($userType->title);
-			if ($userType->id == $options) {
+			if ($userType->id == $options['typeID']) {
 				$selected = 'checked';
 			}
 			else {

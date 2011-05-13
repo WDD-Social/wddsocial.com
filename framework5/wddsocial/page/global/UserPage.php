@@ -23,7 +23,7 @@ class UserPage implements \Framework5\IExecutable {
 	public function execute() {
 		
 		# get the request user
-		$user = $this->getUser(\Framework5\Request::segment(1));
+		$user = $this->_get_user(\Framework5\Request::segment(1));
 		
 		# if the user does not exist
 		if ($user) {
@@ -45,13 +45,13 @@ class UserPage implements \Framework5\IExecutable {
 			$paginator = new Paginator(2,20,10);
 			
 			# display section items
-			$activity = $this->getUserLatest($user->id, 0, $paginator->limit);
+			$activity = $this->_get_user_latest($user->id, 0, $paginator->limit);
 			foreach ($activity as $item) {
 				echo render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
 					array('type' => $item->type,'content' => $item));
 			}
 			
-			$next = $this->getUserLatest($user->id, $paginator->limit, 20);
+			$next = $this->_get_user_latest($user->id, $paginator->limit, 20);
 			
 			if (count($next) > 0) {
 				# display section footer
@@ -92,7 +92,7 @@ class UserPage implements \Framework5\IExecutable {
 	* Gets the user and data
 	*/
 	
-	private function getUser($vanityURL){
+	private function _get_user($vanityURL){
 		
 		import('wddsocial.model.WDDSocial\UserVO');
 		
@@ -110,7 +110,7 @@ class UserPage implements \Framework5\IExecutable {
 	* Gets latest activity relating to user
 	*/
 	
-	private function getUserLatest($id, $start = 0, $limit = 20){
+	private function _get_user_latest($id, $start = 0, $limit = 20){
 		
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
