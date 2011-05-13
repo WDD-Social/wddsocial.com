@@ -9,6 +9,10 @@ namespace WDDSocial;
 
 class SmallDisplayView implements \Framework5\IView {	
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
+	}
+	
 	/**
 	* Determines what type of content to render
 	*/
@@ -36,22 +40,27 @@ class SmallDisplayView implements \Framework5\IView {
 	*/
 	
 	private function article_display($article){
+		
+		# user avatar
 		$userAvatar = (file_exists("images/avatars/{$article->userAvatar}_medium.jpg"))?"/images/avatars/{$article->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		
+		# output
 		$html = <<<HTML
 
 					<article class="slider-item">
 						<p class="item-image"><a href="/user/{$article->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
 						<h2><a href="/article/{$article->vanityURL}" title="{$article->title}">{$article->title}</a></h2>
 						<p>{$article->description}</p>
-						<p class="comments"><a href="/article/{$article->vanityURL}#comments" title="{$article->title} | Comments">{$article->comments} comments</a></p>
+						<p class="comments"><a href="/article/{$article->vanityURL}#comments" title="{$this->lang->text('comments_title', $article->title)}">{$this->lang->text('comments', $article->comments)}</a></p>
 HTML;
+
 		# Build categories
 		$categoryLinks = array();
-		foreach($article->categories as $category){
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+		foreach ($article->categories as $category) {
+			array_push($categoryLinks, "<a href=\"/search/$category\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
-		$categoryLinks = implode(' ',$categoryLinks);
+		
+		$categoryLinks = implode(' ', $categoryLinks);
 		$html .= <<<HTML
 						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$article->title} -->
@@ -74,24 +83,27 @@ HTML;
 HTML;
 		
 		# Determines if user is signed in, to show secondary or not
-		if(UserSession::is_authorized()){
+		if (UserSession::is_authorized()) {
 			$html .=<<<HTML
 						
 						<div class="secondary">
 HTML;
 			# Determines what type of secondary controls to present (Flag or Edit/Delete)
-			if(UserSession::is_current($event->userID)){
+			if (UserSession::is_current($event->userID)) {
 				$html .= <<<HTML
 
-							<a href="/" title="Edit &ldquo;{$event->title}&rdquo;" class="edit">Edit</a>
-							<a href="/" title="Delete &ldquo;{$event->title}&rdquo;" class="delete">Delete</a>
-HTML;
-			}else if(UserSession::is_authorized()){
-				$html .= <<<HTML
-
-							<a href="/" title="Flag &ldquo;{$event->title}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="{$this->lang->text('edit_title', $event->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/" title="{$this->lang->text('delete_title', $event->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 			}
+			
+			else if (UserSession::is_authorized()) {
+				$html .= <<<HTML
+
+							<a href="/" title="{$this->lang->text('flag_title', $event->title)}" class="flag">{$this->lang->text('flag')}</a>
+HTML;
+			}
+			
 			$html .=<<<HTML
 						
 					</div><!-- END SECONDARY -->	
@@ -100,22 +112,24 @@ HTML;
 			
 		$html .= <<<HTML
 
-						<p class="item-image"><a href="/files/ics/wddsocial.{$event->icsUID}.ics" title="Download {$event->title} iCal File" class="calendar-icon">
+						<p class="item-image"><a href="/files/ics/wddsocial.{$event->icsUID}.ics" title="{$this->lang->text('download_ical', $event->title)}" class="calendar-icon">
 							<span class="month">{$event->month}</span> 
 							<span class="day">{$event->day}</span> 
-							<span class="download"><img src="/images/site/icon-download.png" alt="Download iCal File"/>iCal</span>
+							<span class="download"><img src="/images/site/icon-download.png" alt="Download iCal File"/>{$this->lang->text('ical')}</span>
 						</a></p>
 						<h2><a href="/event/{$event->vanityURL}" title="{$event->title}">{$event->title}</a></h2>
 						<p class="location">{$event->location}</p>
 						<p>{$event->startTime}</p>
 						<p>{$event->description}</p>
-						<p class="comments"><a href="/event/{$event->vanityURL}#comments" title="{$event->title} | Comments">{$event->comments} comments</a></p>
+						<p class="comments"><a href="/event/{$event->vanityURL}#comments" title="{$this->lang->text('comments_title', $event->title)}">{$this->lang->text('comments', $event->comments)}</a></p>
 HTML;
+
 		# Build categories
 		$categoryLinks = array();
-		foreach($event->categories as $category){
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+		foreach ($event->categories as $category) {
+			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
+		
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
 						<p class="tags">$categoryLinks</p>
@@ -130,32 +144,39 @@ HTML;
 	* Creates a job article
 	*/
 	
-	private function job_display($job){
+	private function job_display($job) {
+		
+		# company site
 		$companyLink = ($job->website == '')?"http://google.com/?q={$job->company}":"http://{$job->website}";
+		
+		# job posting avatar
 		$jobAvatar = (file_exists("images/jobs/{$job->avatar}_medium.jpg"))?"/images/jobs/{$job->avatar}_medium.jpg":"/images/site/job-default_medium.jpg";
 		
+		# output
 		$html = <<<HTML
 
 					<article class="with-secondary">
 HTML;
 		
 		# Determines if user is signed in, to show secondary or not
-		if(UserSession::is_authorized()){
+		if (UserSession::is_authorized()) {
 			$html .=<<<HTML
 						
 						<div class="secondary">
 HTML;
 			# Determines what type of secondary controls to present (Flag or Edit/Delete)
-			if(UserSession::is_current($job->userID)){
+			if (UserSession::is_current($job->userID)) {
 				$html .= <<<HTML
 
-							<a href="/" title="Edit &ldquo;{$job->title} | {$job->company}&rdquo;" class="edit">Edit</a>
-							<a href="/" title="Delete &ldquo;{$job->title} | {$job->company}&rdquo;" class="delete">Delete</a>
+							<a href="/" title="{$this->lang->text('edit_title', "{$job->title} | {$job->company}")} class="edit">{$this->lang->text('edit')}</a>
+							<a href="/" title="{$this->lang->text('delete_title', "{$job->title} | {$job->company}")} class="delete">{$this->lang->text('delete')}</a>
 HTML;
-			}else if(UserSession::is_authorized()){
+			}
+			
+			else if (UserSession::is_authorized()) {
 				$html .= <<<HTML
 
-							<a href="/" title="Flag &ldquo;{$job->title} | {$job->company}&rdquo;" class="flag">Flag</a>
+							<a href="/" title="{$this->lang->text('flag_title', "{$job->title} | {$job->company}")}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
 			}
 			$html .=<<<HTML
@@ -169,9 +190,9 @@ HTML;
 						<p class="item-image"><a href="$companyLink" title="{$job->company}"><img src="$jobAvatar" alt="{$job->company}"/></a></p>
 						<h2><a href="/job/{$job->vanityURL}" title="{$job->title} | {$job->company}">{$job->title}</a></h2>
 						<p class="company"><a href="$companyLink" title="{$job->company}">{$job->company}</a></p>
-						<p><a href="http://maps.google.com/?q={$job->location}" title="Search Google Maps for {$job->location}">{$job->location}</a></p>
+						<p><a href="http://maps.google.com/?q={$job->location}" title="{$this->lang->text('search_maps', $job->location)}">{$job->location}</a></p>
 						<p>{$job->description}</p>
-						<p class="job-type"><a href="/jobs#{$job->jobType}" title="See {$job->jobType} Job Postings">{$job->jobType}</a></p>
+						<p class="job-type"><a href="/jobs#{$job->jobType}" title="{$this->lang->text('see_all_jobs', $job->jobType)}">{$job->jobType}</a></p>
 HTML;
 		
 		# Build categories

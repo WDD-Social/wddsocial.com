@@ -4,7 +4,7 @@
 * WDD Social: Language Pack for 
 */
 
-class MediumDisplayLang implements \Framework5\ILanguagePack {
+class DisplayViewLang implements \Framework5\ILanguagePack {
 	
 	
 	public static function content($id, $var) {
@@ -29,22 +29,10 @@ class MediumDisplayLang implements \Framework5\ILanguagePack {
 			case 'flag_title':
 				return "Flag &ldquo;{$var}&rdquo;";
 			
-			case 'posted_a':
-				return 'posted a';
-			
-			case 'wrote_an':
-				return 'wrote an';
-			
-			case 'project':
-				return 'project';
-			
-			case 'article':
-				return 'article';
-			
 			case 'comments':
 				if ($var == '1') return "{$var} comment";
 				return "{$var} comments";
-			
+						
 			case 'comments_title':
 				return "{$var} | Comments";
 			
@@ -57,11 +45,35 @@ class MediumDisplayLang implements \Framework5\ILanguagePack {
 			case 'flag_comment':
 				return "Flag Comment on &ldquo;{$var}&rdquo;";
 			
+			case 'posted_a':
+				return 'posted a';
+			
+			case 'wrote_an':
+				return 'wrote an';
+			
+			case 'project':
+				return 'project';
+			
+			case 'article':
+				return 'article';
+			
 			case 'category_title':
 				return "Categories | {$var}";
 			
 			case 'joined':
 				return 'joined the community';
+			
+			case 'download_ical':
+				return "Download {$var} iCal File";
+			
+			case 'ical':
+				return 'iCal';
+			
+			case 'search_maps':
+				return "Search Google Maps for {$var}";
+			
+			case 'see_all_jobs':
+				return "See {$var} Job Postings";
 		}
 	}
 }

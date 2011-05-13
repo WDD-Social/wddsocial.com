@@ -37,9 +37,6 @@ class AccountView implements \Framework5\IView {
 
 					<form action="/account" method="post" enctype="multipart/form-data">
 						<h1>Basics</h1>
-						<h2>* Notice *</h2>
-						<p><strong>Basics</strong>, <strong>contact info</strong>, <strong>password</strong>, and <strong>other simple fields</strong> are updatable.</p>
-						<p>Actions such as <strong>uploading a new avatar</strong>, <strong>changing user-type-specific data</strong> (start date, graduation date, courses you teach, etc.), and more are coming shortly. Please check back soon for those actions.</p>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="first-name">First Name</label>
@@ -99,11 +96,26 @@ HTML;
 							<small>Describe yourself in <span class="count">255</span> characters or less</small>
 						</fieldset>
 HTML;
-		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector', array('typeID' => $user->typeID, 'required' => false));
-		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserDetailInputs', $user->extra);
+		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector', array('typeID' => $user->typeID, 'id' => ' id="user-type"', 'required' => false));
+		$html .= <<<HTML
+
+						<div id="user-type-details">
+HTML;
+		switch ($user->typeID) {
+			case 1:
+				$html .= render('wddsocial.view.form.pieces.WDDSocial\StudentDetailInputs', $user->extra);
+				break;
+			case 2:
+				$html .= render('wddsocial.view.form.pieces.WDDSocial\TeacherDetailInputs', $user->extra);
+				break;
+			case 3:
+				$html .= render('wddsocial.view.form.pieces.WDDSocial\AlumDetailInputs', $user->extra);
+				break;
+		}
 		
 		$html .= <<<HTML
 
+						</div><!-- END user-type-details -->
 						<input type="submit" name="submit" value="Save" />
 
 						<h1>Contact</h1>

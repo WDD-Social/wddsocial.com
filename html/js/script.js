@@ -43,8 +43,29 @@ $(function() {
 	});
 	
 	
+	$('#user-type.radio input[type="radio"]').live('change', function(){
+		var type = $(this).attr('id');
+		var user = $(this).parent().parent().data('user');
+		$('#user-type-details').slideUp(250,function(){
+			$.ajax({
+				url: '/ajax/content',
+				dataType: 'html',
+				data: {
+					section: 'getUserDetail',
+					usertype: type,
+					userID: user
+				},
+				success: function(response){
+					$('#user-type-details').html(response).slideDown(250);
+					console.log(response);
+				}
+			});
+		});
+	});
 	
-	/* AJAX LOADING
+	
+	
+	/* AJAX LOAD MORE
 	****************************************************************** */
 	
 	// "Load more" variable setup
