@@ -176,20 +176,25 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		$fields = array();
 		
-		if (isset($_POST['start-date']) and $_POST['start-date'] !== $this->user->extra['startDateInput'])
-			$fields['startDate'] = $_POST['start-date'];
+		if (isset($_POST['start-date']) and $_POST['start-date'] !== $this->user->extra['startDateInput']) {
+			$fields['startDate'] = ($_POST['start-date'] == '')?NULL:$_POST['start-date'];
+		}
 		
-		if (isset($_POST['graduation-date']) and $_POST['graduation-date'] !== $this->user->extra['graduationDateInput'])
-			$fields['graduationDate'] = $_POST['graduation-date'];
+		if (isset($_POST['graduation-date']) and $_POST['graduation-date'] !== $this->user->extra['graduationDateInput']) {
+			$fields['graduationDate'] = ($_POST['graduation-date'] == '')?NULL:$_POST['graduation-date'];
+		}
 		
-		if (isset($_POST['degree-location']) and $_POST['degree-location'] !== $this->user->extra['location'])
-			$fields['location'] = $_POST['degree-location'];
+		if (isset($_POST['degree-location']) and $_POST['degree-location'] !== $this->user->extra['location']) {
+			$fields['location'] = ($_POST['degree-location'] == '')?NULL:$_POST['degree-location'];
+		}
 		
-		if (isset($_POST['employer']) and $_POST['employer'] !== $this->user->extra['employerTitle'])
-			$fields['employerTitle'] = $_POST['employer'];
+		if (isset($_POST['employer']) and $_POST['employer'] !== $this->user->extra['employerTitle']) {
+			$fields['employerTitle'] = ($_POST['employer'] === '')?NULL:$_POST['employer'];
+		}
 		
-		if (isset($_POST['employer-link']) and $_POST['employer-link'] !== $this->user->extra['employerLink'])
-			$fields['employerLink'] = $_POST['employer-link'];
+		if (isset($_POST['employer-link']) and $_POST['employer-link'] !== $this->user->extra['employerLink']) {
+			$fields['employerLink'] = ($_POST['employer-link'] === '')?NULL:$_POST['employer-link'];
+		}
 		
 		$update = array();
 		foreach ($fields as $fieldName => $fieldContent) {
