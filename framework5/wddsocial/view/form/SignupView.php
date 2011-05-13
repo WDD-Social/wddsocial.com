@@ -13,7 +13,7 @@ class SignupView implements \Framework5\IView {
 		$html = <<<HTML
 
 					<form action="/signup" method="post" enctype="multipart/form-data">
-						<h1>Basic</h1>
+						<h1>Basics</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="first-name">First Name *</label>
@@ -38,9 +38,9 @@ class SignupView implements \Framework5\IView {
 							<small>6 or more characters</small>
 						</fieldset>
 						
-						<h1>Background</h1>
+						<h1>More Information</h1>
 HTML;
-		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector',1);
+		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector', array('typeID' => 1, 'required' => true));
 		$html .= <<<HTML
 
 						<fieldset>
