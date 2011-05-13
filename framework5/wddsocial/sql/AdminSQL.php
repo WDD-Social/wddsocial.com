@@ -22,10 +22,17 @@ class AdminSQL{
 			
 			UPDATE users
 			SET avatar = MD5(CONCAT('user',id)), verificationCode = MD5(RAND())
-			WHERE id = @last_id;",
+			WHERE id = @last_id;
+			
+			INSERT INTO userDetail (userID)
+			VALUES (@last_id);",
 		
 		'updateUser' => "
 			UPDATE users
+			SET ",
+		
+		'updateUserDetail' => "
+			UPDATE userDetail
 			SET ",
 		
 		'changePassword' => "
