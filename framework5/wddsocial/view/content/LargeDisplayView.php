@@ -9,6 +9,10 @@ namespace WDDSocial;
 
 class LargeDisplayView implements \Framework5\IView {	
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
+	}
+	
 	/**
 	* Determines what type of content to render
 	*/
@@ -40,15 +44,16 @@ class LargeDisplayView implements \Framework5\IView {
 						<h2><a href="/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$teamLinks}</p>
 						<p>{$project->description}</p>
-						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$project->title} | Comments">{$project->comments} comments</a></p>
+						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$this->lang->text('comments_title', $project->title)}">{$this->lang->text('comments', $project->comments)}</a></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
-		foreach($project->categories as $category){
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+		foreach ($project->categories as $category) {
+			array_push($categoryLinks, "<a href=\"/search/$category\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
-		$categoryLinks = implode(' ',$categoryLinks);
+		
+		$categoryLinks = implode(' ', $categoryLinks);
 		$html .= <<<HTML
 						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$project->title} -->
@@ -63,30 +68,39 @@ HTML;
 	*/
 	
 	private function format_team($team){
-		if(count($team) > 0){
-			
+		if (count($team) > 0) {
 			# Creates string according to how many team members there are for this piece of content
-			if(count($team) == 1){
+			if (count($team) == 1) {
 				$userVerbage = \WDDSocial\NaturalLanguage::view_profile($team[0]->id,"{$team[0]->firstName} {$team[0]->lastName}");
 				$teamString .= "<a href=\"/user/{$team[0]->vanityURL}\" title=\"$userVerbage\">{$team[0]->firstName} {$team[0]->lastName}</a>";
-			}else if(count($team) == 2){
+			}
+			
+			# if 2 team members
+			else if (count($team) == 2) {
 				$teamString = array();
-				foreach($team as $member){
+				foreach ($team as $member) {
 					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($member->id,"{$member->firstName} {$member->lastName}");
 					array_push($teamString, "<a href=\"/user/{$member->vanityURL}\" title=\"$userVerbage\">{$member->firstName} {$member->lastName}</a>");
 				}
-				$teamString = implode(' and ',$teamString);
-			}else{
-				for($i = 0; $i < count($team); $i++){
+				$teamString = implode(" {$this->lang->text('and')} ", $teamString);
+			}
+			
+			# more than 2 team members
+			else {
+				for ($i = 0; $i < count($team); $i++) {
 					$userVerbage = \WDDSocial\NaturalLanguage::view_profile($team[$i]->id,"{$team[$i]->firstName} {$team[$i]->lastName}");
-					if($i == count($team)-1){
-						$teamString .= "and <a href=\"/user/{$team[$i]->vanityURL}\" title=\"$userVerbage\">{$team[$i]->firstName} {$team[$i]->lastName}</a>";
-					}else{
+					if ($i == count($team)-1) {
+						$teamString .= "{$this->lang->text('and')} <a href=\"/user/{$team[$i]->vanityURL}\" title=\"$userVerbage\">{$team[$i]->firstName} {$team[$i]->lastName}</a>";
+					}
+					
+					else {
 						$teamString .= "<a href=\"/user/{$team[$i]->vanityURL}\" title=\"$userVerbage\">{$team[$i]->firstName} {$team[$i]->lastName}</a>, ";
 					}
 				}
 			}
-		}else{
+		}
+		
+		else {
 			$teamString = "";
 		}
 		
