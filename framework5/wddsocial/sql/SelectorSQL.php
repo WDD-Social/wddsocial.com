@@ -401,7 +401,6 @@ class SelectorSQL{
 			WHERE id = :id
 			LIMIT 1",
 		
-		/* 'getStudentDetailByID' => " */
 		'getUserDetailByID' => "
 			SELECT DATE_FORMAT(startDate,'%M, %Y') AS startDate, DATE_FORMAT(startDate,'%Y-%m-%d') as startDateInput, DATE_FORMAT(graduationDate,'%M, %Y') AS graduationDate, DATE_FORMAT(graduationDate,'%Y-%m-%d') as graduationDateInput, location, employerTitle, employerLink
 			FROM userDetail
