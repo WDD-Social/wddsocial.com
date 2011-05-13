@@ -20,7 +20,7 @@ class JobDetailsLang implements \Framework5\ILanguagePack {
 					case 'Part-Time':
 						return 'XX'; # Part-Time
 					default:
-						throw new Exception('invalid language pack job type');
+						return $var;
 				}
 			
 			case 'job_type_intern':
@@ -29,13 +29,8 @@ class JobDetailsLang implements \Framework5\ILanguagePack {
 			case 'job_type_gig':
 				 return "a <strong><a href=\"/jobs\" title=\"$var Jobs\">$var</a></strong> gig";
 			
-			case 'search_maps':
-				return "XX $var"; # Search Google Maps for $var
-			
-			case 'edit_title':
+			case 'edit_job_title':
 				return "XX {$var['title']} XX {$var['company']} XX"; # Edit {$var['title']} at {$var['company']} Details
-			case 'edit':
-				return "XX"; # Edit
 			
 			case 'jobtype_display':
 				return "XX $var"; # This job is {$var}.
