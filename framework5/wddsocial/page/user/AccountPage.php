@@ -193,14 +193,6 @@ class AccountPage implements \Framework5\IExecutable {
 	
 	
 	
-	private function _dump_user(){
-		echo "<pre>";
-		print_r($this->user);
-		echo "</pre>";
-	}
-	
-	
-	
 	/**
 	* Gets the user and data
 	*/
