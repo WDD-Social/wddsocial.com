@@ -55,6 +55,7 @@ HTML;
 						<fieldset>
 							<label for="birthday">Birthday</label>
 							<input type="text" name="birthday" id="birthday" value="{$_POST['birthday']}" />
+							<small>YYYY-MM-DD</small>
 						</fieldset>
 						<fieldset>
 							<label for="bio">Bio</label>
