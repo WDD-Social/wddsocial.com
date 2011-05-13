@@ -4,7 +4,7 @@
 * WDD Social: Language Pack for 
 */
 
-class MediumDisplayLang implements \Framework5\ILanguagePack {
+class DisplayViewLang implements \Framework5\ILanguagePack {
 	
 	
 	public static function content($id, $var) {
@@ -29,18 +29,6 @@ class MediumDisplayLang implements \Framework5\ILanguagePack {
 			case 'flag_title':
 				return "XX {$var}"; # Flag &ldquo;{$var}&rdquo;
 			
-			case 'posted_a':
-				return 'XX'; # posted a
-			
-			case 'wrote_an':
-				return 'XX'; # wrote an
-			
-			case 'project':
-				return 'XX'; # project
-			
-			case 'article':
-				return 'XX'; # article
-			
 			case 'comments':
 				if ($var == '1') return "{$var} XX"; # {$var} comment
 				return "{$var} XX"; # {$var} comments
@@ -57,21 +45,38 @@ class MediumDisplayLang implements \Framework5\ILanguagePack {
 			case 'flag_comment':
 				return "XX {$var}"; # Flag Comment on &ldquo;{$var}&rdquo;
 			
+			case 'posted_a':
+				return 'XX'; # posted a
+			
+			case 'wrote_an':
+				return 'XX'; # wrote an
+			
+			case 'project':
+				return 'XX'; # project
+			
+			case 'article':
+				return 'XX'; # article
+			
 			case 'category_title':
 				return "XX | {$var}"; # Categories | {$var}
 			
 			case 'joined':
 				return 'XX'; # joined the community
 			
-			case '':
-				return '';
+			case 'and':
+				return 'XX'; # and
 			
-			case '':
-				return '';
+			case 'download_ical':
+				return "XX {$var}"; # Download {$var} iCal File
 			
+			case 'ical':
+				return 'XX'; # iCal
 			
+			case 'search_maps':
+				return "XX {$var}"; # Search Google Maps for {$var}
 			
-			
+			case 'see_all_jobs':
+				return "XX {$var}"; # See {$var} Job Postings
 		}
 	}
 }
