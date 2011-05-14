@@ -3,6 +3,7 @@
 namespace WDDSocial;
 
 /*
+* Displays a user in the global People directory
 * 
 * @author Anthony Colangelo (me@acolangelo.com)
 */
