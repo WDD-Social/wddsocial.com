@@ -106,16 +106,16 @@ class DisplayViewLang implements \Framework5\ILanguagePack {
 			
 			# Events
 			case 'download_ical':
-				return " {$var}"; # Download {$var} iCal File
+				return "Download {$var} iCal File";
 			
 			case 'ical':
-				return ''; # iCal
+				return 'iCal';
 			
 			case 'download_ical_file':
-				return ''; # Download iCal File
+				return 'Download iCal File';
 			
 			case 'owner_edit_event':
-				return " $var "; # Edit $var Location and Time
+				return "Edit $var Location and Time";
 			
 			
 			# Comments

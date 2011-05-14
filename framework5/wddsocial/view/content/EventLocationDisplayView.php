@@ -40,7 +40,7 @@ HTML;
 						</a></p>
 						<h2>{$content->location}</h2>
 						<p>{$content->startTime} - {$content->endTime}</p>
-						<p><a href="/files/ics/wddsocial.{$content->icsUID}.ics" title="{$this->lang->text('download_ical_title', $content->title)}">{$this->lang->text('download_ical_file')}</a></p>
+						<p><a href="/files/ics/wddsocial.{$content->icsUID}.ics" title="{$this->lang->text('download_ical', $content->title)}">{$this->lang->text('download_ical_file')}</a></p>
 					</article><!-- END {$content->title} -->
 HTML;
 		return $html;
