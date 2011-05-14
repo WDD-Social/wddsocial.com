@@ -4,7 +4,7 @@
 * WDD Social: Language Pack for 
 */
 
-class CommonLang implements \Framework5\ILanguagePack
+class CommonLang implements \Framework5\ILanguagePack {
 	
 	public static function content($id, $var) {
 		switch ($id) {
