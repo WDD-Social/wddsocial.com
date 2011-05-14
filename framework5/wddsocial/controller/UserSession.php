@@ -167,6 +167,12 @@ class UserSession {
 	}
 	
 	
+	public static function user_lang() {
+		static::session_started();
+		return $_SESSION['user']->lang;
+	}
+	
+	
 	private static function session_started() {
 		if (!static::$_init)
 			throw new Exception("Cannot call UserSession methods before calling UserSession::init()");
