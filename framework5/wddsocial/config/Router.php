@@ -107,11 +107,14 @@ class Router implements \Framework5\IRouter {
 			
 			# Form and process pages
 			
-			case 'remove':
-				return 'wddsocial.page.processes.WDDSocial\RemovePage';
-			
 			case 'create':
 				return 'wddsocial.page.form.WDDSocial\CreatePage';
+			
+			case 'edit':
+				return 'wddsocial.page.form.WDDSocial\EditPage';
+			
+			case 'remove':
+				return 'wddsocial.page.processes.WDDSocial\RemovePage';
 			
 			
 			# 404
