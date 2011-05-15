@@ -117,6 +117,9 @@ HTML;
 
 						</div><!-- END user-type-details -->
 						<input type="submit" name="submit" value="Save" />
+HTML;
+		$html .= render('wddsocial.view.form.pieces.WDDSocial\LikesDislikesInputs', array('likes' => $user->extra['likes'], 'dislikes' => $user->extra['dislikes']));
+		$html .= <<<HTML
 
 						<h1>Contact</h1>
 						<fieldset>
