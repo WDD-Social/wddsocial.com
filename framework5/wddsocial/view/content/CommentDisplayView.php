@@ -47,8 +47,8 @@ HTML;
 					$html .= <<<HTML
 
 						<div class="secondary">
-							<a href="/" title="{$lang->text('edit_comment_title')}" class="edit">{$lang->text('edit')}</a> 
-							<a href="/" title="{$lang->text('delete_comment_title')}" class="delete">{$lang->text('delete')}</a>
+							<a href="/edit/comment/{$comment->id}" title="{$lang->text('edit_comment_title')}" class="edit">{$lang->text('edit')}</a> 
+							<a href="/delete/comment/{$comment->id}" title="{$lang->text('delete_comment_title')}" class="delete">{$lang->text('delete')}</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -58,7 +58,7 @@ HTML;
 					$html .= <<<HTML
 
 						<div class="secondary">
-							<a href="/" title="{$lang->text('flag_user_comment', $possessive)}" class="flag">{$lang->text('flag')}</a>
+							<a href="/flag/comment/{$comment->id}" title="{$lang->text('flag_user_comment', $possessive)}" class="flag">{$lang->text('flag')}</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}

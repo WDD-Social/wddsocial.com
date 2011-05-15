@@ -21,8 +21,8 @@ class OverviewDisplayView implements \Framework5\IView {
 			$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
-						<a href="/" title="{$lang->text('delete_title', $content->title)}" class="delete">{$lang->text('delete')}</a>
+						<a href="/edit/{$content->type}/{$content->vanityURL}" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/delete/{$content->type}/{$content->vanityURL}" title="{$lang->text('delete_title', $content->title)}" class="delete">{$lang->text('delete')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}
@@ -35,14 +35,14 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/edit/{$content->type}/{$content->vanityURL}" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
+						<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -52,14 +52,14 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/edit/{$content->type}/{$content->vanityURL}" title="{$lang->text('edit_title', $content->title)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
+						<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -68,7 +68,7 @@ HTML;
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
+						<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}

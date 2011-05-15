@@ -33,7 +33,7 @@ class JobDetailsDisplayView implements \Framework5\IView {
 			$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('edit_job_title', array('title' => $content->title, 'company' => $content->company))}" class="edit">{$lang->text('edit')}</a>
+						<a href="/edit/job/{$content->vanityURL}" title="{$lang->text('edit_job_title', array('title' => $content->title, 'company' => $content->company))}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}
