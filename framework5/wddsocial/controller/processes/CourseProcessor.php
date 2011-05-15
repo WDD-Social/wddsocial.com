@@ -93,4 +93,31 @@ class CourseProcessor {
 			$message .= " not added to the {$contentType}.";
 		}
 	}
+	
+	
+	
+	public static function update_teacher_courses($userID, $currentCourses, $newCourses){
+		$db = instance(':db');
+		$sql = instance(':admin-sql');
+		
+		foreach ($newCourses as $newCourse) {
+			if (in_array($newCourse, $currentCourses)) {
+				unset($currentCourses[array_search($newCourse, $currentCourses)]);
+				unset($newCourses[array_search($newCourse, $newCourses)]);
+			}
+		}
+		if (count($currentCourses) > 0) {
+			foreach ($currentCourses as $currentCourse) {
+				$query = $db->prepare($sql->deleteTeacherCourse);
+				$query->execute(array('userID' => $userID, 'courseID' => $currentCourse));
+			}
+		}
+		
+		if (count($newCourses) > 0) {
+			foreach ($newCourses as $newCourse) {
+				$query = $db->prepare($sql->addTeacherCourse);
+				$query->execute(array('userID' => $userID, 'courseID' => $newCourse));
+			}
+		}
+	}
 }
