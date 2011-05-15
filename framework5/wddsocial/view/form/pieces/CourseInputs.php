@@ -20,7 +20,7 @@ class CourseInputs implements \Framework5\IView {
 		$html = <<<HTML
 
 						<h1 id="courses">Courses</h1>
-						<p>Does this {$_POST['type']} relate to any of your courses?</p>
+						<p>Does this {$_POST['type']} relate to any courses?</p>
 						<fieldset>
 HTML;
 		for ($i = 1; $i < 3; $i++) {
