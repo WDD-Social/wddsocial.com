@@ -127,7 +127,7 @@ HTML;
 			case 'Teacher':
 				if(isset($user->extra['courses']) and count($user->extra['courses']) > 0){
 					$sentence .= " who teaches ";
-					if (count($user->extra['courses'] == 1)) {
+					if (count($user->extra['courses']) == 1) {
 						$course = $user->extra['courses'][0];
 						$sentence .= "<strong><a href=\"/course/{$course->id}\" title=\"{$course->title}\">{$course->id}</a></strong>";
 					}
