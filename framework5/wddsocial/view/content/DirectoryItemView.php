@@ -123,7 +123,7 @@ HTML;
 						<div class="secondary">
 HTML;
 		# Determines what type of secondary controls to present (Flag or Edit/Delete)
-		if (UserSession::is_current($event->userID)) {
+		if (UserValidator::is_event_owner($event->id)) {
 			$html .= <<<HTML
 
 							<a href="/edit/event/{$event->vanityURL}" title="Edit &ldquo;{$event->title}&rdquo;" class="edit">Edit</a>
