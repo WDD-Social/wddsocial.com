@@ -8,7 +8,7 @@ namespace WDDSocial;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class EditPageDebug implements \Framework5\IExecutable {
+class EditPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		UserSession::protect();
@@ -48,6 +48,28 @@ class EditPageDebug implements \Framework5\IExecutable {
 		if ($query->rowCount() > 0) {
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 			$content = $query->fetch();
+			switch ($type) {
+				case 'project':
+					if (!UserValidator::is_project_owner($content->id)) {
+						redirect('/');
+					}
+					break;
+				case 'article':
+					if (!UserValidator::is_article_owner($content->id)) {
+						redirect('/');
+					}
+					break;
+				case 'event':
+					if (!UserValidator::is_event_owner($content->id)) {
+						redirect('/');
+					}
+					break;
+				case 'job':
+					if (!UserValidator::is_job_owner($content->id)) {
+						redirect('/');
+					}
+					break;
+			}
 		}
 		else {
 			redirect('/');

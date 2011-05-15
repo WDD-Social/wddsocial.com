@@ -12,7 +12,7 @@ namespace WDDSocial;
 class EventLocationDisplayView implements \Framework5\IView {
 	
 	public function __construct() {
-		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
 	}
 	
 	public function render($content = null) {
@@ -21,10 +21,10 @@ class EventLocationDisplayView implements \Framework5\IView {
 		$html = "";
 		
 		# if current user is author, show edit controls
-		if (UserSession::is_current($content->userID)) {
+		if (UserValidator::is_event_owner($content->id)) {
 			$html .= <<<HTML
 					<div class="secondary icons">
-						<a href="/" title="{$this->lang->text('owner_edit_title', $possessiveTitle)}" class="edit">{$this->lang->text('edit')}</a>
+						<a href="/edit/event/{$content->vanityURL}#location" title="{$this->lang->text('owner_edit_event', $possessiveTitle)}" class="edit">{$this->lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}

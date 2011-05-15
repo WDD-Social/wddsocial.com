@@ -72,18 +72,18 @@ HTML;
 		if(UserSession::is_current($content->userID)){
 			$html .= <<<HTML
 
-							<a href="/" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
-							<a href="/" title="Delete &ldquo;{$content->title}&rdquo;" class="delete">Delete</a>
+							<a href="/edit/{$content->type}/{$content->vanityURL}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
+							<a href="/delete/{$content->type}/{$content->vanityURL}" title="Delete &ldquo;{$content->title}&rdquo;" class="delete">Delete</a>
 HTML;
-		}else if(UserValidator::is_project_owner($content->id)){
+		}else if( ($content->type == 'project' and UserValidator::is_project_owner($content->id)) or ($content->type == 'article' and UserValidator::is_article_owner($content->id)) ){
 			$html .= <<<HTML
 
-							<a href="/" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
+							<a href="/edit/{$content->type}/{$content->vanityURL}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
 HTML;
 		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="/" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
+							<a href="/flag/{$content->type}/{$content->vanityURL}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
@@ -123,17 +123,17 @@ HTML;
 						<div class="secondary">
 HTML;
 		# Determines what type of secondary controls to present (Flag or Edit/Delete)
-		if (UserSession::is_current($event->userID)) {
+		if (UserValidator::is_event_owner($event->id)) {
 			$html .= <<<HTML
 
-							<a href="/" title="Edit &ldquo;{$event->title}&rdquo;" class="edit">Edit</a>
-							<a href="/" title="Delete &ldquo;{$event->title}&rdquo;" class="delete">Delete</a>
+							<a href="/edit/event/{$event->vanityURL}" title="Edit &ldquo;{$event->title}&rdquo;" class="edit">Edit</a>
+							<a href="/delete/event/{$event->vanityURL}" title="Delete &ldquo;{$event->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}
 		else if (UserSession::is_authorized()) {
 			$html .= <<<HTML
 
-							<a href="/" title="Flag &ldquo;{$event->title}&rdquo;" class="flag">Flag</a>
+							<a href="/flag/event/{$event->vanityURL}" title="Flag &ldquo;{$event->title}&rdquo;" class="flag">Flag</a>
 HTML;
 		}
 		$html .= <<<HTML
