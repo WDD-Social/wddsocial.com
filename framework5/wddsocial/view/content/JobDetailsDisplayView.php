@@ -29,7 +29,7 @@ class JobDetailsDisplayView implements \Framework5\IView {
 		
 		# output
 		$html = "";
-		if (UserSession::is_current($content->userID)) {
+		if (UserValidator::is_job_owner($content->id)) {
 			$html .= <<<HTML
 
 					<div class="secondary icons">
