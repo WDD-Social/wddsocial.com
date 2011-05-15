@@ -26,7 +26,7 @@ class UserContactView implements \Framework5\IView {
 		
 		foreach ($user->contact as $contact) {
 			$total++;
-			if(isset($contact)){
+			if(isset($contact) and $contact != ''){
 				$complete++;
 			}
 		}
@@ -68,7 +68,7 @@ HTML;
 HTML;
 		}
 		
-		if(isset($user->contact['website'])){
+		if(isset($user->contact['website']) and $user->contact['website'] != ''){
 			$html .= <<<HTML
 
 						<li>
@@ -80,7 +80,7 @@ HTML;
 HTML;
 		}
 		
-		if(isset($user->contact['twitter'])){
+		if(isset($user->contact['twitter']) and $user->contact['twitter'] != ''){
 			$html .= <<<HTML
 
 						<li>
@@ -92,7 +92,7 @@ HTML;
 HTML;
 		}
 		
-		if(isset($user->contact['facebook'])){
+		if(isset($user->contact['facebook']) and $user->contact['facebook'] != ''){
 			$html .= <<<HTML
 
 						<li>
@@ -104,7 +104,7 @@ HTML;
 HTML;
 		}
 		
-		if(isset($user->contact['github'])){
+		if(isset($user->contact['github']) and $user->contact['github'] != ''){
 			$html .= <<<HTML
 
 						<li>
@@ -116,7 +116,7 @@ HTML;
 HTML;
 		}
 		
-		if(isset($user->contact['dribbble'])){
+		if(isset($user->contact['dribbble']) and $user->contact['dribbble'] != ''){
 			$html .= <<<HTML
 
 						<li>
@@ -128,7 +128,7 @@ HTML;
 HTML;
 		}
 		
-		if(isset($user->contact['forrst'])){
+		if(isset($user->contact['forrst']) and $user->contact['forrst'] != ''){
 			$html .= <<<HTML
 
 						<li>
@@ -145,10 +145,10 @@ HTML;
 					</ul>
 HTML;
 		
-		if(UserSession::is_current($user->id) and $percentage < .5){
+		if(UserSession::is_current($user->id) and $percentage < .4){
 			$html .= <<<HTML
 
-					<p class="incomplete extra-spacing">People want to talk to you, but they need to know how! Why don&rsquo;t you <strong><a href="/account" title="">add some contact info?</a></strong></p>
+					<p class="incomplete extra-spacing">People want to talk to you, but they need to know how! Why don&rsquo;t you <strong><a href="/account#contact" title="">add some contact info?</a></strong></p>
 HTML;
 		}
 				
