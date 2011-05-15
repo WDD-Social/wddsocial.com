@@ -96,22 +96,23 @@ HTML;
 			$sentence .= " $aan <strong>{$user->age}-year-old</strong>";
 		}
 		if($user->type == 'Student'){
-			if(isset($user->extra['location']) and isset($user->age) and $user->age != ''){
+			if(isset($user->extra['location']) and $user->extra['location'] != '' and isset($user->age) and $user->age != ''){
 				$sentence .= ",";
 			}
-			else {
-				$sentence .= " an";
-			}
-			if(isset($user->extra['location'])){
+			if(isset($user->extra['location']) and $user->extra['location'] != ''){
+				if ($user->age == '')
+					$sentence .= " an";
 				$sentence .= " <strong>{$user->extra['location']}</strong>";
 			}
 		}
 		$userType = strtolower($user->type);
-		if ($user->age == '' and $userType != 'student') {
+		if ($user->age == '') {
 			if ($userType == 'teacher')
 				$sentence .= " a";
 			else if ($userType == 'alum')
 				$sentence .= " an";
+			else if ($userType == 'student' and $user->extra['location'] == '')
+				$sentence .= " a";
 		}
 		$sentence .= " <strong>{$userType}</strong>";
 		if($user->hometown != ''){
