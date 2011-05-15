@@ -32,11 +32,20 @@ class Content implements \Framework5\IExecutable {
 		$query->execute(array('id' => $userID));
 		$query->setFetchMode(\PDO::FETCH_ASSOC);
 		$result = $query->fetch();
+		
 		switch ($userType) {
 			case 'student':
 				return render('wddsocial.view.form.pieces.WDDSocial\StudentDetailInputs', $result);
 				break;
 			case 'teacher':
+				import('wddsocial.model.WDDSocial\CourseVO');
+				$query = $this->db->prepare($this->sql->getTeacherCoursesByID);
+		        $query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\CourseVO');
+				$query->execute(array('id' => $userID));
+				$result['courses'] = array();
+				while($course = $query->fetch()){
+					array_push($result['courses'],$course);
+				}
 				return render('wddsocial.view.form.pieces.WDDSocial\TeacherDetailInputs', $result);
 				break;
 			case 'alum':
