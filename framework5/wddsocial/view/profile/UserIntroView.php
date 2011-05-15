@@ -118,9 +118,9 @@ HTML;
 					$sentence .= " who teaches";
 					for($i =0; $i < count($user->extra['courses']); $i++){
 						if($i == count($user->extra['courses'])-1){
-							$sentence .= " and <strong><a href=\"/course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>";
+							$sentence .= " and <strong><a href=\"/course/{$user->extra['courses'][$i]->id}\" title=\"{$user->extra['courses'][$i]->title}\">{$user->extra['courses'][$i]->id}</a></strong>";
 						}else{
-							$sentence .= " <strong><a href=\"/course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>,";
+							$sentence .= " <strong><a href=\"/course/{$user->extra['courses'][$i]->id}\" title=\"{$user->extra['courses'][$i]->title}\">{$user->extra['courses'][$i]->id}</a></strong>,";
 						}
 					}
 				}
