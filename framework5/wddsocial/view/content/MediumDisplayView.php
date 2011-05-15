@@ -324,7 +324,7 @@ HTML;
 			$html .= <<<HTML
 
 							<a href="/edit/comment/{$articleComment->id}" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
-							<a href="/delete/comment/{$articleComment->id}" title="Delete $articleComment on &ldquo;{$articleComment->title}&rdquo;" class="delete">Delete</a>
+							<a href="/delete/comment/{$articleComment->id}" title="Delete {$articleComment->title} on &ldquo;{$articleComment->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}
 		
