@@ -69,6 +69,16 @@ class TemplateView implements \Framework5\IView {
 		<link rel="stylesheet/less" href="{$root}css/style.less">
 		<script src="{$root}js/libs/modernizr-1.6.min.js"></script>
 		<script src="{$root}js/libs/less-1.0.41.min.js"></script>
+		<script type="text/javascript">
+			var _gaq = _gaq || [];
+			_gaq.push(['_setAccount', 'UA-17688306-7']);
+			_gaq.push(['_trackPageview']);
+			(function() {
+				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+				ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+				var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+			})();
+		</script>
 	</head>
 	<body>
 		<section id="wrap">
