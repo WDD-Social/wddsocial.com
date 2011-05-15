@@ -89,20 +89,30 @@ HTML;
 	*/
 	
 	private function getUserIntro($user){
-		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are a":"<strong>{$user->firstName}</strong> is a";
+		$sentence = (UserSession::is_current($user->id))?"<strong>You</strong> are":"<strong>{$user->firstName}</strong> is";
 		
-		if(isset($user->age)){
-			$sentence .= " <strong>{$user->age}-year-old</strong>";
+		if($user->age != ''){
+			$aan = ($user->age == 18)?'an':'a';
+			$sentence .= " $aan <strong>{$user->age}-year-old</strong>";
 		}
 		if($user->type == 'Student'){
-			if(isset($user->extra['location'])){
+			if(isset($user->extra['location']) and isset($user->age) and $user->age != ''){
 				$sentence .= ",";
+			}
+			else {
+				$sentence .= " an";
 			}
 			if(isset($user->extra['location'])){
 				$sentence .= " <strong>{$user->extra['location']}</strong>";
 			}
 		}
 		$userType = strtolower($user->type);
+		if ($user->age == '' and $userType != 'student') {
+			if ($userType == 'teacher')
+				$sentence .= " a";
+			else if ($userType == 'alum')
+				$sentence .= " an";
+		}
 		$sentence .= " <strong>{$userType}</strong>";
 		if($user->hometown != ''){
 			$sentence .= " from <strong><a href=\"http://maps.google.com/?q={$user->hometown}\" title=\"Search Google Maps for {$user->hometown}\">{$user->hometown}</a></strong>";

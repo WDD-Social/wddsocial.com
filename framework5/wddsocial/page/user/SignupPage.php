@@ -162,10 +162,7 @@ class SignupPage implements \Framework5\IExecutable {
 				'email' => $_POST['email'],
 				'fullsailEmail' => $_POST['full-sail-email'],
 				'password' => $_POST['password'],
-				'vanityURL' => $vanityURL,
-				'bio' => $_POST['bio'],
-				'hometown' => $_POST['hometown'],
-				'birthday' => $_POST['birthday']);
+				'vanityURL' => $vanityURL);
 			
 			# Insert user into database
 			$query->execute($data);
@@ -173,7 +170,8 @@ class SignupPage implements \Framework5\IExecutable {
 			# Get new user's ID
 			$userID = $db->lastInsertID();
 			
-			# Fetch user's avatar code
+			/*
+# Fetch user's avatar code
 			$query = $db->prepare($sel_sql->getUserAvatarByID);
 			$query->setFetchMode(\PDO::FETCH_OBJ);
 			$data = array('id' => $userID);
@@ -185,6 +183,7 @@ class SignupPage implements \Framework5\IExecutable {
 				import('wddsocial.controller.processes.WDDSocial\Uploader');
 				Uploader::upload_user_avatar($_FILES['avatar'],"$avatar");
 			}
+*/
 			
 			# get user verification code
 			$query = $db->prepare($sel_sql->getUserVerificationCode);

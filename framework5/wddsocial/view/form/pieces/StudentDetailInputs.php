@@ -12,11 +12,12 @@ class StudentDetailInputs implements \Framework5\IView {
 	public function render($options = null) {
 		$campusSelected = ($options['location'] == 'on-campus')?' checked':'';
 		$onlineSelected = ($options['location'] == 'online')?' checked':'';
+		$startDateValue = ($options['startDateInput'] == '0000-00-00')?'':$options['startDateInput'];
 		return <<<HTML
 
 						<fieldset>
 							<label for="start-date">Start Date</label>
-							<input type="date" name="start-date" id="start-date" value="{$options['startDateInput']}" />
+							<input type="text" name="start-date" id="start-date" value="{$startDateValue}" />
 							<small>YYYY-MM-DD</small>
 						</fieldset>
 						<fieldset class="radio">

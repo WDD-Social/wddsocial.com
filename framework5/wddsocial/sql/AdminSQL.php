@@ -15,8 +15,8 @@ class AdminSQL{
 		*/
 		
 		'addUser' => "
-			INSERT INTO users (typeID, firstName, lastName, email, fullsailEmail, `password`, vanityURL, bio, hometown, birthday, `datetime`)
-			VALUES (:typeID, :firstName, :lastName, :email, :fullsailEmail, MD5(:password), :vanityURL, :bio, :hometown, :birthday, NOW());
+			INSERT INTO users (typeID, firstName, lastName, email, fullsailEmail, `password`, vanityURL, `datetime`)
+			VALUES (:typeID, :firstName, :lastName, :email, :fullsailEmail, MD5(:password), :vanityURL, NOW());
 			
 			SET @last_id = LAST_INSERT_ID();
 			
