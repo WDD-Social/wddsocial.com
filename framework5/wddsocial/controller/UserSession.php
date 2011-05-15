@@ -74,6 +74,18 @@ class UserSession {
 	
 	
 	/**
+	* Get the current users id
+	*/
+	
+	public static function userid() {
+		static::session_started();
+		if (!static::is_authorized()) return false;
+		return $_SESSION['user']->id;
+	}
+	
+	
+	
+	/**
 	* Refreshes user's data (used when updating)
 	*/
 	
