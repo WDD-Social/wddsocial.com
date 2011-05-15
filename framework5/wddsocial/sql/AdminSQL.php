@@ -35,6 +35,14 @@ class AdminSQL{
 			UPDATE userDetail
 			SET ",
 		
+		'addTeacherCourse' => "
+			INSERT INTO teacherCourses (userID, courseID)
+			VALUES (:userID, :courseID)",
+		
+		'deleteTeacherCourse' => "
+			DELETE FROM teacherCourses
+			WHERE userID = :userID AND courseID = :courseID",
+		
 		'changePassword' => "
 			UPDATE users
 			SET `password` = MD5(:new)
