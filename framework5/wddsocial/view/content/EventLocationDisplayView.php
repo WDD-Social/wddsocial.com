@@ -21,7 +21,7 @@ class EventLocationDisplayView implements \Framework5\IView {
 		$html = "";
 		
 		# if current user is author, show edit controls
-		if (UserSession::is_current($content->userID)) {
+		if (UserValidator::is_event_owner($content->id)) {
 			$html .= <<<HTML
 					<div class="secondary icons">
 						<a href="/edit/event/{$content->vanityURL}#location" title="{$this->lang->text('owner_edit_title', $possessiveTitle)}" class="edit">{$this->lang->text('edit')}</a>
