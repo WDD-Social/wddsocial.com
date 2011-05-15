@@ -29,51 +29,28 @@ class EditPage implements \Framework5\IExecutable {
 		switch ($type) {
 			case 'project':
 				$query = $this->db->prepare($this->sel->getProjectByVanityURL);
-				$query->execute(array('vanityURL' => $vanityURL));
-				if ($query->rowCount() > 0) {
-					$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
-					$content = $query->fetch();
-				}
-				else {
-					redirect('/');
-				}
 				break;
 			case 'article':
 				$query = $this->db->prepare($this->sel->getArticleByVanityURL);
-				$query->execute(array('vanityURL' => $vanityURL));
-				if ($query->rowCount() > 0) {
-					$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
-					$content = $query->fetch();
-				}
-				else {
-					redirect('/');
-				}
 				break;
 			case 'event':
 				$query = $this->db->prepare($this->sel->getEventByVanityURL);
-				$query->execute(array('vanityURL' => $vanityURL));
-				if ($query->rowCount() > 0) {
-					$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
-					$content = $query->fetch();
-				}
-				else {
-					redirect('/');
-				}
 				break;
 			case 'job':
 				$query = $this->db->prepare($this->sel->getJobByVanityURL);
-				$query->execute(array('vanityURL' => $vanityURL));
-				if ($query->rowCount() > 0) {
-					$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
-					$content = $query->fetch();
-				}
-				else {
-					redirect('/');
-				}
 				break;
 			default:
 				redirect('/');
 				break;
+		}
+		$query->execute(array('vanityURL' => $vanityURL));
+		
+		if ($query->rowCount() > 0) {
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+			$content = $query->fetch();
+		}
+		else {
+			redirect('/');
 		}
 		
 		echo "<pre>";
