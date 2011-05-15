@@ -24,7 +24,7 @@ class EventLocationDisplayView implements \Framework5\IView {
 		if (UserSession::is_current($content->userID)) {
 			$html .= <<<HTML
 					<div class="secondary icons">
-						<a href="/edit/event/{$content->vanityURL}#location" title="{$this->lang->text('owner_edit_title', $possessiveTitle)}" class="edit">{$this->lang->text('edit')}</a>
+						<a href="/edit/event/{$content->vanityURL}#location" title="{$this->lang->text('owner_edit_event', $possessiveTitle)}" class="edit">{$this->lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}
