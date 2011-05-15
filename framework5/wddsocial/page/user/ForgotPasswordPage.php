@@ -36,7 +36,7 @@ class ForgotPasswordPage implements \Framework5\IExecutable {
 		
 		
 		else {
-			$intro = "Have you forgot your password? Enter one of the addresses entered during signup and we'll email you a link to reset your password.";
+			$intro = "Have you forgotten your password? Enter one of the email addresses you entered during signup and we&rsquo;ll email you a link to reset your password.";
 			$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', 
 					array('section' => 'top', 'title' => 'Forgot Password', 'intro' => $intro));
 		}
