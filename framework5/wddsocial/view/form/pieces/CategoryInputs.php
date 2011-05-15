@@ -12,9 +12,12 @@ class CategoryInputs implements \Framework5\IView {
 	public function render($options = null) {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
-		$query = $db->query($sql->getThreeRandomCategories);
+		
+		$query = $db->query($sql->getRandomCategories . " LIMIT 3");
+		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$categories = $query->fetchAll();
+		
 		$html = <<<HTML
 
 						<h1 id="categories">Categories</h1>

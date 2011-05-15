@@ -26,7 +26,7 @@ class AccountPage implements \Framework5\IExecutable {
 		UserSession::protect();
 		
 		# get the request user
-		$this->user = $this->get_user($_SESSION['user']->id);
+		$this->user = $this->get_user(UserSession::userid());
 		
 		if (isset($_POST['submit'])) {
 			$response = $this->process_form();
@@ -60,6 +60,7 @@ class AccountPage implements \Framework5\IExecutable {
 	private function process_form(){
 		import('wddsocial.model.WDDSocial\FormResponse');
 		import('wddsocial.controller.processes.WDDSocial\CourseProcessor');
+		import('wddsocial.controller.processes.WDDSocial\LikesDislikesProcessor');
 		
 		# Update basic data in user table
 		
@@ -209,6 +210,8 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		
 		
+		# Update teacher courses, if user is a teacher
+		
 		if ($_POST['user-type'] == 2) {
 			$currentCourses = array();
 			$newCourses = array();
@@ -221,6 +224,27 @@ class AccountPage implements \Framework5\IExecutable {
 			}
 			CourseProcessor::update_teacher_courses($this->user->id, $currentCourses, $newCourses);
 		}
+		
+		
+		
+		# Update likes/dislikes
+		
+		$newLikes = array();
+		foreach ($_POST['likes'] as $newLike) {
+			if ($newLike != '')
+				array_push($newLikes, $newLike);
+		}
+		
+		$newDislikes = array();
+		foreach ($_POST['dislikes'] as $newDislike) {
+			if ($newDislike != '')
+				array_push($newDislikes, $newDislike);
+		}
+		$currentLikes = $this->user->extra['likes'];
+		$currentDislikes = $this->user->extra['dislikes'];
+		
+		LikesDislikesProcessor::update_likes($this->user->id, $currentLikes, $newLikes);
+		LikesDislikesProcessor::update_dislikes($this->user->id, $currentDislikes, $newDislikes);
 		
 		
 		
