@@ -18,11 +18,14 @@ class TeacherDetailInputs implements \Framework5\IView {
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$courses = $query->fetchAll();
 		
+		$graduationDateValue = ($options['graduationDateInput'] == '0000-00-00')?'':$options['graduationDateInput'];
+		
 		$html .= <<<HTML
 
 						<fieldset>
 							<label for="graduation-date">Full Sail Graduation Date</label>
-							<input type="text" name="graduation-date" id="graduation-date" value="{$options['graduationDateInput']}" />
+							<p>Are you also an alum? When did you graduate?</p>
+							<input type="text" name="graduation-date" id="graduation-date" value="{$graduationDateValue}" />
 							<small>YYYY-MM-DD</small>
 						</fieldset>
 HTML;
