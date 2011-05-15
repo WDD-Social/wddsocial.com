@@ -96,7 +96,7 @@ HTML;
 							<small>Describe yourself in <span class="count">255</span> characters or less</small>
 						</fieldset>
 HTML;
-		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector', array('typeID' => $user->typeID, 'id' => ' id="user-type"', 'required' => false));
+		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector', array('typeID' => $user->typeID, 'id' => ' id="user-type"'));
 		$html .= <<<HTML
 
 						<div id="user-type-details">

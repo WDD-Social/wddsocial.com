@@ -14,11 +14,11 @@ class UserTypeSelector implements \Framework5\IView {
 		$sql = instance(':sel-sql');
 		$query = $db->query($sql->getUserTypes);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$required = ($options['required'] === true)?' *':'';
+		$userID = UserSession::userid();
 		$html = <<<HTML
 
-						<fieldset{$options['id']} class="radio" data-user="{$_SESSION['user']->id}">
-							<label>I am a{$required}</label>
+						<fieldset{$options['id']} class="radio" data-user="{$userID}">
+							<label>I am a</label>
 							<div>
 HTML;
 		
