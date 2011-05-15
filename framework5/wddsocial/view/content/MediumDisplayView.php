@@ -119,7 +119,7 @@ HTML;
 		}
 		$html .= <<<HTML
 
-						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$this->lang->text('comments-title', $poject->title)}">{$this->lang->text('comments', $project->comments)}</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
+						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$this->lang->text('comments_title', $project->title)}">{$this->lang->text('comments', $project->comments)}</a> <span class="hidden">|</span> <span class="time">{$project->date}</span></p>
 HTML;
 		
 		# Build categories

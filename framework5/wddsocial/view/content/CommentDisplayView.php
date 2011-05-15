@@ -12,7 +12,7 @@ class CommentDisplayView implements \Framework5\IView {
 	
 	public function render($comments = null) {
 		
-		$lang = new \Framework5\Lang('wddsocial.lang.view.content.CommentDisplayLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
 		
 		$html = "";
 		$commentCount = count($comments);
@@ -47,8 +47,8 @@ HTML;
 					$html .= <<<HTML
 
 						<div class="secondary">
-							<a href="/" title="{$lang->text('edit_title')}" class="edit">{$lang->text('edit')}</a> 
-							<a href="/" title="{$lang->text('delete_title')}" class="delete">{$lang->text('delete')}</a>
+							<a href="/" title="{$lang->text('edit_comment_title')}" class="edit">{$lang->text('edit')}</a> 
+							<a href="/" title="{$lang->text('delete_comment_title')}" class="delete">{$lang->text('delete')}</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}

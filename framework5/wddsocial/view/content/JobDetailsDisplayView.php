@@ -12,10 +12,12 @@ namespace WDDSocial;
 class JobDetailsDisplayView implements \Framework5\IView {
 	
 	public function render($content = null) {
+		
+		$lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
+		
 		$companyLink = ($content->website == '')?"http://google.com/?q={$content->company}":"http://{$content->website}";
 		$jobAvatar = (file_exists("images/jobs/{$content->avatar}_medium.jpg"))?"/images/jobs/{$content->avatar}_medium.jpg":"/images/site/job-default_medium.jpg";
 		
-		$lang = new \Framework5\Lang('wddsocial.lang.view.JobDetailsLang');
 		$localJobType = $lang->text('jobtype', $content->jobType);
 		
 		if ($content->jobType == 'Internship') {
@@ -31,7 +33,7 @@ class JobDetailsDisplayView implements \Framework5\IView {
 			$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('edit_title', array('title' => $content->title, 'company' => $content->company))}" class="edit">{$lang->text('edit')}</a>
+						<a href="/" title="{$lang->text('edit_job_title', array('title' => $content->title, 'company' => $content->company))}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 		}
