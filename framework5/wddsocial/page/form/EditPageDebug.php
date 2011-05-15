@@ -50,24 +50,25 @@ class EditPage implements \Framework5\IExecutable {
 			$content = $query->fetch();
 			switch ($type) {
 				case 'project':
-					$query = $this->db->prepare($this->val->isUserProjectOwner);
-					$query->execute(array('userID' => UserSession::userid(), 'projectID' => $content->id));
+					if (!UserValidator::is_project_owner($content->id)) {
+						redirect('/');
+					}
 					break;
 				case 'article':
-					$query = $this->db->prepare($this->val->isUserArticleOwner);
-					$query->execute(array('userID' => UserSession::userid(), 'articleID' => $content->id));
+					if (!UserValidator::is_article_owner($content->id)) {
+						redirect('/');
+					}
 					break;
 				case 'event':
-					$query = $this->db->prepare($this->val->isUserEventOwner);
-					$query->execute(array('userID' => UserSession::userid(), 'eventID' => $content->id));
+					if (!UserValidator::is_event_owner($content->id)) {
+						redirect('/');
+					}
 					break;
 				case 'job':
-					$query = $this->db->prepare($this->val->isUserJobOwner);
-					$query->execute(array('userID' => UserSession::userid(), 'jobID' => $content->id));
+					if (!UserValidator::is_job_owner($content->id)) {
+						redirect('/');
+					}
 					break;
-			}
-			if ($query->rowCount() == 0) {
-				redirect('/');
 			}
 		}
 		else {
