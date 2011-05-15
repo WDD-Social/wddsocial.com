@@ -116,6 +116,9 @@ class Router implements \Framework5\IRouter {
 			case 'edit':
 				return 'wddsocial.page.form.WDDSocial\EditPage';
 			
+			case 'editdebug':
+				return 'wddsocial.page.form.WDDSocial\EditPageDebug';
+			
 			case 'remove':
 				return 'wddsocial.page.processes.WDDSocial\RemovePage';
 			
