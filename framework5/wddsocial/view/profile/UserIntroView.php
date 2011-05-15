@@ -116,11 +116,17 @@ HTML;
 			case 'Teacher':
 				if(isset($user->extra['courses']) and count($user->extra['courses']) > 0){
 					$sentence .= " who teaches ";
-					$courses = array();
-					foreach ($user->extra['courses'] as $course) {
-						array_push($courses,"<strong><a href=\"/course/{$course->id}\" title=\"{$course->title}\">{$course->id}</a></strong>");
+					if (count($user->extra['courses'] == 1)) {
+						$course = $user->extra['courses'][0];
+						$sentence .= "<strong><a href=\"/course/{$course->id}\" title=\"{$course->title}\">{$course->id}</a></strong>";
 					}
-					$sentence .= NaturalLanguage::comma_list($courses);
+					else {
+						$courses = array();
+						foreach ($user->extra['courses'] as $course) {
+							array_push($courses,"<strong><a href=\"/course/{$course->id}\" title=\"{$course->title}\">{$course->id}</a></strong>");
+						}
+						$sentence .= NaturalLanguage::comma_list($courses);	
+					}
 				}
 				break;
 			case 'Alum':
