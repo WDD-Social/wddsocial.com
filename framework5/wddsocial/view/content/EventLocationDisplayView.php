@@ -12,7 +12,7 @@ namespace WDDSocial;
 class EventLocationDisplayView implements \Framework5\IView {
 	
 	public function __construct() {
-		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.EventLocationLang');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
 	}
 	
 	public function render($content = null) {
@@ -33,7 +33,7 @@ HTML;
 		$html .= <<<HTML
 
 					<article class="location-and-time">
-						<p class="item-image"><a href="/files/ics/wddsocial.{$content->icsUID}.ics" title="{$this->lang->text('download_ical_title', $content->title)}" class="calendar-icon">
+						<p class="item-image"><a href="/files/ics/wddsocial.{$content->icsUID}.ics" title="{$this->lang->text('download_ical', $content->title)}" class="calendar-icon">
 							<span class="month">{$content->month}</span> 
 							<span class="day">{$content->day}</span> 
 							<span class="download"><img src="/images/site/icon-download.png" alt="{$this->lang->text('download_ical_file')}"/>iCal</span>

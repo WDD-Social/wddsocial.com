@@ -10,7 +10,6 @@ namespace WDDSocial;
 
 class TeamMemberProcessor {
 	public static function add_team_members($members, $contentID, $contentType, $titles = array()){
-		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');

@@ -3,23 +3,37 @@
 namespace WDDSocial;
 
 /*
+* LargeDisplayView
 * 
+* Renders the large display view which shows a featured project
+* on the home page.
+* 
+* This display view currently only creates one view, but 
+* may be expanded in the future to allow more types of 
+* content to be displayed in the same view format.
+*  
 * @author Anthony Colangelo (me@acolangelo.com)
+* @package wddsocial.view.content.LargeDisplayView
+* @param $options['type'] = 'project'; //type of view to display
+* @param $options['content'] = $obj; //project to display
 */
 
 class LargeDisplayView implements \Framework5\IView {	
 	
 	public function __construct() {
+		# load localization package
 		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
 	}
+	
+	
 	
 	/**
 	* Determines what type of content to render
 	*/
 	
 	public function render($options = null) {
-		import('wddsocial.helper.WDDSocial\NaturalLanguage');
-		
+
+		# render selected view
 		switch ($options['type']) {
 			case 'project':
 				return $this->project_display($options['content']);
@@ -35,8 +49,11 @@ class LargeDisplayView implements \Framework5\IView {
 	*/
 	
 	private function project_display($project){
+		
+		# get links to all team members profiles
 		$teamLinks = $this->format_team($project->team);
 		
+		# output
 		$html = <<<HTML
 
 					<article class="slider-item">
@@ -47,24 +64,24 @@ class LargeDisplayView implements \Framework5\IView {
 						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$this->lang->text('comments_title', $project->title)}">{$this->lang->text('comments', $project->comments)}</a></p>
 HTML;
 		
-		# Build categories
+		# render categories
 		$categoryLinks = array();
 		foreach ($project->categories as $category) {
 			array_push($categoryLinks, "<a href=\"/search/$category\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
-		
 		$categoryLinks = implode(' ', $categoryLinks);
 		$html .= <<<HTML
 						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$project->title} -->
 HTML;
+		
 		return $html;
 	}
 	
 	
 	
 	/**
-	* Formats the team array into the correct string
+	* Formats an array of team members into a string of profile links
 	*/
 	
 	private function format_team($team){
@@ -100,6 +117,7 @@ HTML;
 			}
 		}
 		
+		# no team members
 		else {
 			$teamString = "";
 		}
