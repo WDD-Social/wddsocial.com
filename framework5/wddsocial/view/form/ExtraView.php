@@ -51,7 +51,7 @@ HTML;
 		return <<<HTML
 
 					<h1 class="mega form">Join the community. Socialize.</h1>
-					<h2 class="form">* Required</h2>
+					<h2 class="form">All Fields Required</h2>
 HTML;
 	}
 	
