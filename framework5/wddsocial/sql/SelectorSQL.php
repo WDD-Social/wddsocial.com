@@ -946,7 +946,13 @@ class SelectorSQL{
 		/**
 		* Category queries
 		*/
-			
+		
+		'getCategoryIDByTitle' => "
+			SELECT id
+			FROM categories
+			WHERE title = :title
+			LIMIT 1",
+		
 		'getProjectCategories' => "
 			SELECT title
 			FROM categories AS c
@@ -1272,11 +1278,10 @@ class SelectorSQL{
 			SELECT id, title
 			FROM jobTypes",
 		
-		'getThreeRandomCategories' => "
+		'getRandomCategories' => "
 			SELECT title
 			FROM categories
-			ORDER BY RAND()
-			LIMIT 3",
+			ORDER BY RAND()",
 		
 		'getThreeRandomUsers' => "
 			SELECT CONCAT_WS(' ',firstName,lastName) AS `name`
