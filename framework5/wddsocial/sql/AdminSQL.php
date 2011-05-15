@@ -27,6 +27,20 @@ class AdminSQL{
 			INSERT INTO userDetail (userID)
 			VALUES (@last_id);",
 		
+		'changePassword' => "
+			UPDATE users
+			SET `password` = MD5(:new)
+			WHERE id = :id AND `password` = MD5(:old)",
+		
+		'verifyUserByID' => "
+			UPDATE users
+			SET verified = 1
+			WHERE id = :id;
+			
+			UPDATE users
+			SET verificationCode = NULL
+			WHERE id = :id;",
+		
 		'updateUser' => "
 			UPDATE users
 			SET ",
@@ -43,19 +57,21 @@ class AdminSQL{
 			DELETE FROM teacherCourses
 			WHERE userID = :userID AND courseID = :courseID",
 		
-		'changePassword' => "
-			UPDATE users
-			SET `password` = MD5(:new)
-			WHERE id = :id AND `password` = MD5(:old)",
+		'addUserLike' => "
+			INSERT INTO userLikes (userID, categoryID)
+			VALUES (:userID, :categoryID)",
 		
-		'verifyUserByID' => "
-			UPDATE users
-			SET verified = 1
-			WHERE id = :id;
-			
-			UPDATE users
-			SET verificationCode = NULL
-			WHERE id = :id;",
+		'deleteUserLike' => "
+			DELETE FROM userLikes
+			WHERE userID = :userID AND categoryID = :categoryID",
+		
+		'addUserDislike' => "
+			INSERT INTO userDislikes (userID, categoryID)
+			VALUES (:userID, :categoryID)",
+		
+		'deleteUserDislike' => "
+			DELETE FROM userDislikes
+			WHERE userID = :userID AND categoryID = :categoryID",
 		
 		/**
 		* Project Queries
