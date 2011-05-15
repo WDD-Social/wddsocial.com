@@ -33,6 +33,7 @@ class AccountView implements \Framework5\IView {
 			$user->extra['employerTitle'] = $_POST['employer'];
 			$user->extra['employerLink'] = $_POST['employer-link'];
 		}
+		$user->birthday = ($user->birthday == '0000-00-00')?'':$user->birthday;
 		$html .= <<<HTML
 
 					<form action="/account" method="post" enctype="multipart/form-data">
@@ -121,7 +122,7 @@ HTML;
 		$html .= render('wddsocial.view.form.pieces.WDDSocial\LikesDislikesInputs', array('likes' => $user->extra['likes'], 'dislikes' => $user->extra['dislikes']));
 		$html .= <<<HTML
 
-						<h1>Contact</h1>
+						<h1 id="contact">Contact</h1>
 						<fieldset>
 							<label for="website">Website</label>
 							<input type="text" name="website" id="website" placeholder="example.com" value="{$user->contact['website']}" />
