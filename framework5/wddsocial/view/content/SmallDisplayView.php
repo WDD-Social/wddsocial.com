@@ -92,15 +92,15 @@ HTML;
 			if (UserSession::is_current($event->userID)) {
 				$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('edit_title', $event->title)}" class="edit">{$this->lang->text('edit')}</a>
-							<a href="/" title="{$this->lang->text('delete_title', $event->title)}" class="delete">{$this->lang->text('delete')}</a>
+							<a href="/edit/event/{$event->vanityURL}" title="{$this->lang->text('edit_title', $event->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/event/{$event->vanityURL}" title="{$this->lang->text('delete_title', $event->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 			}
 			
 			else if (UserSession::is_authorized()) {
 				$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('flag_title', $event->title)}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/event/{$event->vanityURL}" title="{$this->lang->text('flag_title', $event->title)}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
 			}
 			
@@ -168,15 +168,15 @@ HTML;
 			if (UserSession::is_current($job->userID)) {
 				$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('edit_title', "{$job->title} | {$job->company}")} class="edit">{$this->lang->text('edit')}</a>
-							<a href="/" title="{$this->lang->text('delete_title', "{$job->title} | {$job->company}")} class="delete">{$this->lang->text('delete')}</a>
+							<a href="/edit/job/{$job->vanityURL}" title="{$this->lang->text('edit_title', "{$job->title} | {$job->company}")} class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/job/{$job->vanityURL}" title="{$this->lang->text('delete_title', "{$job->title} | {$job->company}")} class="delete">{$this->lang->text('delete')}</a>
 HTML;
 			}
 			
 			else if (UserSession::is_authorized()) {
 				$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('flag_title', "{$job->title} | {$job->company}")}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/job/{$job->vanityURL}" title="{$this->lang->text('flag_title', "{$job->title} | {$job->company}")}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
 			}
 			$html .=<<<HTML
