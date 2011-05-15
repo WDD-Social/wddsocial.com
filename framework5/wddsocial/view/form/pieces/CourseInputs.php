@@ -13,7 +13,8 @@ class CourseInputs implements \Framework5\IView {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		
-		$query = $db->query($sql->getThreeRandomCourses);
+		$query = $db->query($sql->getRandomCourses . " LIMIT 2");
+		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$courses = $query->fetchAll();
 		
