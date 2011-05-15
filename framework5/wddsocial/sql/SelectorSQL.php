@@ -1290,11 +1290,10 @@ class SelectorSQL{
 			ORDER BY RAND()
 			LIMIT 3",
 		
-		'getThreeRandomCourses' => "
+		'getRandomCourses' => "
 			SELECT id
 			FROM courses
-			ORDER BY RAND()
-			LIMIT 3"
+			ORDER BY RAND()"
 						
 	);
 	
