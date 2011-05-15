@@ -28,8 +28,13 @@ class NaturalLanguage{
 	*/
 	
 	public static function ownership($id, $name){
-		$possessive = static::possessive($name);
-		return (UserSession::is_current($id))?"Your":$possessive;
+		$lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
+		if (UserSession::is_current($id)) {
+			return $lang->text('your');
+		}
+		else {
+			return static::possessive($name);
+		}
 	}
 	
 	
@@ -38,9 +43,14 @@ class NaturalLanguage{
 	* Creates the view profile text for display
 	*/
 	
-	public static function view_profile($id, $name){
-		$withPossessive = "View " . static::possessive($name) . " Profile";
-		return (UserSession::is_current($id))?"View Your Profile":$withPossessive;
+	public static function view_profile($id, $name) {
+		$lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
+		if (UserSession::is_current($id)) {
+			return $lang->text('view_own_profile');
+		}
+		else {
+			return $lang->text('view_user_profile', static::possessive($name));
+		}
 	}
 	
 	
@@ -49,8 +59,9 @@ class NaturalLanguage{
 	* Creates the display name of a user
 	*/
 	
-	public static function display_name($id, $name){
-		return (UserSession::is_current($id))?"You":$name;
+	public static function display_name($id, $name) {
+		$lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
+		return (UserSession::is_current($id))?$lang->text('you'):$name;
 	}
 	
 	
@@ -60,9 +71,10 @@ class NaturalLanguage{
 	*/
 	
 	public static function comma_list($strings){
+		$lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
 		for($i = 0; $i < count($strings); $i++){
 			if($i == count($strings)-1){
-				$list .= "and {$strings[$i]}";
+				$list .= "{$lang->text('and')} {$strings[$i]}";
 			}else{
 				$list .= "{$strings[$i]}";
 				$list .= (count($strings) > 2)?', ':' ';

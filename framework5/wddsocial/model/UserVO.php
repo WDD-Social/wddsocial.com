@@ -35,7 +35,8 @@ class UserVO {
 		$row = $query->fetch();
 		$this->extra = $row;
 		
-		if ($this->type == 'teacher') {
+		if ($this->typeID == 2) {
+			import('wddsocial.model.WDDSocial\CourseVO');
 			$this->extra['courses'] = array();
 	        $query = $db->prepare($sql->getTeacherCoursesByID);
 	        $query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\CourseVO');

@@ -59,7 +59,7 @@ class AccountPage implements \Framework5\IExecutable {
 	
 	private function process_form(){
 		import('wddsocial.model.WDDSocial\FormResponse');
-		
+		import('wddsocial.controller.processes.WDDSocial\CourseProcessor');
 		
 		# Update basic data in user table
 		
@@ -206,7 +206,22 @@ class AccountPage implements \Framework5\IExecutable {
 			$query->execute(array('id' => $this->user->id));
 			$this->user = $this->get_user($this->user->id);
 		}
-			
+		
+		
+		
+		if ($_POST['user-type'] == 2) {
+			$currentCourses = array();
+			$newCourses = array();
+			foreach ($this->user->extra['courses'] as $currentCourse) {
+				array_push($currentCourses, $currentCourse->id);
+			}
+			foreach ($_POST['courses'] as $newCourse) {
+				if ($newCourse != '')
+					array_push($newCourses, $newCourse);
+			}
+			CourseProcessor::update_teacher_courses($this->user->id, $currentCourses, $newCourses);
+		}
+		
 		
 		
 		# Change Password	

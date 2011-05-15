@@ -92,6 +92,7 @@ HTML;
 	
 	private function _templateFooter() {
 		$root = \Framework5\Request::root_path();
+		$request_id = \Framework5\Request::request_id(); # used for bug tracker link
 		
 		# output
 		return <<<HTML
@@ -101,10 +102,11 @@ HTML;
 			<nav>
 				<ul>
 					<!-- <li><a href="developer" title="WDD Social | {$this->lang->text('developer_desc')}">{$this->lang->text('developer')}</a></li> -->
-					<li><a href="about" title="WDD Social | {$this->lang->text('about_desc')}">{$this->lang->text('about')}</a></li>
-					<li><a href="contact" title="WDD Social | {$this->lang->text('contact_desc')}">{$this->lang->text('contact')}</a></li>
-					<li><a href="terms" title="WDD Social | {$this->lang->text('terms_desc')}">{$this->lang->text('terms')}</a></li>
-					<li><a href="privacy" title="WDD Social | {$this->lang->text('privacy_desc')}">{$this->lang->text('privacy')}</a></li>
+					<li><a href="/bugs/report/{$request_id}" title="WDD Social | Bug Tracker">Report a Problem</a></li>
+					<li><a href="/about" title="WDD Social | {$this->lang->text('about_desc')}">{$this->lang->text('about')}</a></li>
+					<li><a href="/contact" title="WDD Social | {$this->lang->text('contact_desc')}">{$this->lang->text('contact')}</a></li>
+					<li><a href="/terms" title="WDD Social | {$this->lang->text('terms_desc')}">{$this->lang->text('terms')}</a></li>
+					<li><a href="/privacy" title="WDD Social | {$this->lang->text('privacy_desc')}">{$this->lang->text('privacy')}</a></li>
 				</ul>
 			</nav>
 			<small>&copy; 2011 WDD Social</small>

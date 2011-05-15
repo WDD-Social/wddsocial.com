@@ -357,7 +357,7 @@ class SelectorSQL{
 			LIMIT 1",
 		
 		'getUserByLogin' => "
-			SELECT u.id, firstName, lastName, avatar, vanityURL, ut.title AS `type`
+			SELECT u.id, firstName, lastName, avatar, vanityURL, ut.title AS `type`, languageID as `lang`
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE (email = :email OR fullsailEmail = :email) AND `password` = MD5(:password)
@@ -1290,11 +1290,10 @@ class SelectorSQL{
 			ORDER BY RAND()
 			LIMIT 3",
 		
-		'getThreeRandomCourses' => "
+		'getRandomCourses' => "
 			SELECT id
 			FROM courses
-			ORDER BY RAND()
-			LIMIT 3"
+			ORDER BY RAND()"
 						
 	);
 	

@@ -18,8 +18,13 @@ class Router implements IRouter {
 		switch ($request) {
 			case 'ajax':
 				return 'ajax.app.Framework5\AjaxApplication';
+			
+			case 'bugs':
+				return 'bugs.app.Framework5\BugTrackerApplication';
+			
 			case 'dev':
 				return 'dev.app.Framework5\DeveloperApplication';
+			
 			default:
 				return 'wddsocial.app.Framework5\WDDSocialApplication';
 		}

@@ -4,8 +4,7 @@
 * WDD Social: Language Pack for 
 */
 
-class DisplayViewLang implements \Framework5\ILanguagePack {
-	
+class CommonLang implements \Framework5\ILanguagePack {
 	
 	public static function content($id, $var) {
 		switch ($id) {
@@ -50,6 +49,12 @@ class DisplayViewLang implements \Framework5\ILanguagePack {
 			case 'and':
 				return 'and';
 			
+			case 'you':
+				return 'You';
+			
+			case 'your':
+				return 'Your';
+			
 			case 'search_maps':
 				return "Search Google Maps for {$var}";
 			
@@ -88,6 +93,14 @@ class DisplayViewLang implements \Framework5\ILanguagePack {
 			
 			case 'apply_now':
 				return 'Apply Now';
+			
+			
+			# Natural Language
+			case 'view_user_profile':
+				return "View {$var} Profile";
+			
+			case 'view_own_profile':
+				return 'View Your Profile';
 			
 			
 			# Members

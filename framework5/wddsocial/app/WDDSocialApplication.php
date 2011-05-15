@@ -28,8 +28,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		\WDDSocial\UserSession::init();
 		
 		# enable localization module
-		import('core.module.i18n.Framework5\Lang');
-		Lang::language('en');
+		$this->localize();
 		
 		# resolve request to a page controller
 		import('wddsocial.config.WDDSocial\Router');
@@ -70,5 +69,14 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		import('wddsocial.sql.WDDSocial\SelectorSQL');
 		import('wddsocial.controller.WDDSocial\Paginator');
 		
+	}
+	
+	
+	
+	private function localize() {
+		import('core.module.i18n.Framework5\Lang');
+		if (\WDDSocial\UserSession::is_authorized()) {
+			Lang::language(\WDDSocial\UserSession::user_lang());
+		}
 	}
 }

@@ -13,14 +13,15 @@ class CourseInputs implements \Framework5\IView {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		
-		$query = $db->query($sql->getThreeRandomCourses);
+		$query = $db->query($sql->getRandomCourses . " LIMIT 2");
+		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$courses = $query->fetchAll();
 		
 		$html = <<<HTML
 
 						<h1 id="courses">Courses</h1>
-						<p>Does this {$_POST['type']} relate to any of your courses?</p>
+						<p>Does this {$_POST['type']} relate to any courses?</p>
 						<fieldset>
 HTML;
 		for ($i = 1; $i < 3; $i++) {
