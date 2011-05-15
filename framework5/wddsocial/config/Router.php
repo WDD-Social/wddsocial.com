@@ -56,6 +56,9 @@ class Router implements \Framework5\IRouter {
 			case 'signout':
 				return 'wddsocial.page.user.WDDSocial\SignoutPage';
 			
+			case 'forgot-password':
+				return 'wddsocial.page.user.WDDSocial\ForgotPasswordPage';
+			
 			case 'account':
 				return 'wddsocial.page.user.WDDSocial\AccountPage';
 			
@@ -107,11 +110,14 @@ class Router implements \Framework5\IRouter {
 			
 			# Form and process pages
 			
-			case 'remove':
-				return 'wddsocial.page.processes.WDDSocial\RemovePage';
-			
 			case 'create':
 				return 'wddsocial.page.form.WDDSocial\CreatePage';
+			
+			case 'edit':
+				return 'wddsocial.page.form.WDDSocial\EditPage';
+			
+			case 'remove':
+				return 'wddsocial.page.processes.WDDSocial\RemovePage';
 			
 			
 			# 404
