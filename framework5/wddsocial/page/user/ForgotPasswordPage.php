@@ -17,28 +17,27 @@ class ForgotPasswordPage implements \Framework5\IExecutable {
 	
 	
 	public function execute() {
-
+		
+		# form was submitted
 		if (isset($_POST['submit'])) {		
 			
 			# form success
 			if ($this->_process_form()) {
 				$intro = "A link has been sent to your email address to reset your password.";
-				$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', 
-					array('section' => 'top', 'title' => 'Forgot Password', 'intro' => $intro));
+				$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', array('intro' => $intro));
 			}
 			
 			# form failure
 			else {
-				$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', 
-					array('section' => 'top', 'title' => 'Forgot Password', 'error' => $this->errorMsg));
+				$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', array('error' => $this->errorMsg));
 			}
 		}
 		
-		
+		# form was not submitted
 		else {
 			$intro = "Have you forgotten your password? Enter one of the email addresses you entered during signup and we&rsquo;ll email you a link to reset your password.";
-			$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', 
-					array('section' => 'top', 'title' => 'Forgot Password', 'intro' => $intro));
+			$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', array('intro' => $intro));
+
 		}
 		
 		

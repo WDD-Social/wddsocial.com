@@ -59,6 +59,9 @@ class Router implements \Framework5\IRouter {
 			case 'forgot-password':
 				return 'wddsocial.page.user.WDDSocial\ForgotPasswordPage';
 			
+			case 'new-password':
+				return 'wddsocial.page.user.WDDSocial\NewPasswordPage';
+			
 			case 'account':
 				return 'wddsocial.page.user.WDDSocial\AccountPage';
 			
