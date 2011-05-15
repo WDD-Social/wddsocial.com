@@ -25,7 +25,7 @@ class MembersDisplayView implements \Framework5\IView {
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('edit_team', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/edit/{$content->type}/{$content->vanityURL}#team" title="{$lang->text('edit_team', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -35,7 +35,7 @@ HTML;
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('edit_authors', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/edit/{$content->type}/{$content->vanityURL}#authors" title="{$lang->text('edit_authors', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}
@@ -45,7 +45,7 @@ HTML;
 					$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/" title="{$lang->text('edit_members', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
+						<a href="/edit/{$content->type}/{$content->vanityURL}" title="{$lang->text('edit_members', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 				}

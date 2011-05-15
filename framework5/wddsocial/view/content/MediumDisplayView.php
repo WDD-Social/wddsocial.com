@@ -68,22 +68,22 @@ HTML;
 		if (UserSession::is_current($project->userID)) {
 			$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('edit_title', $project->title)}" class="edit">{$this->lang->text('edit')}</a>
-							<a href="/" title="{$this->lang->text('delete_title', $project->title)}" class="delete">{$this->lang->text('delete')}</a>
+							<a href="/edit/project/{$project->vanityURL}" title="{$this->lang->text('edit_title', $project->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/project/{$project->vanityURL}" title="{$this->lang->text('delete_title', $project->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 		}
 		
 		else if(UserValidator::is_project_owner($project->id)){
 			$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('edit_title', $project->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/edit/project/{$project->vanityURL}" title="{$this->lang->text('edit_title', $project->title)}" class="edit">{$this->lang->text('edit')}</a>
 HTML;
 		}
 		
 		else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('flag_title', $project->title)}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/project/{$project->vanityURL}" title="{$this->lang->text('flag_title', $project->title)}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
 		}
 		
@@ -160,8 +160,8 @@ HTML;
 		if (UserSession::is_current($projectComment->userID)) {
 			$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('edit_comment', $projectComment->title)}" class="edit">{$this->lang->text('edit')}</a>
-							<a href="/" title="{$this->lang->text('delete_comment', $projectComment->title)}" class="delete">{$this->lang->text('delete')}</a>
+							<a href="/edit/comment/{$projectComment->id}" title="{$this->lang->text('edit_comment', $projectComment->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/comment/{$projectComment->id}" title="{$this->lang->text('delete_comment', $projectComment->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 		}
 		
@@ -169,7 +169,7 @@ HTML;
 		else if (UserSession::is_authorized()) {
 			$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('flag_comment', $projectComment->title)}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/comment/{$projectComment->id}" title="{$this->lang->text('flag_comment', $projectComment->title)}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
 		}
 		
@@ -227,15 +227,15 @@ HTML;
 		if (UserSession::is_current($article->userID)) {
 			$html .= <<<HTML
 
-							<a href="/" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
-							<a href="/" title="Delete &ldquo;{$article->title}&rdquo;" class="delete">Delete</a>
+							<a href="/edit/article/{$article->vanityURL}" title="Edit &ldquo;{$article->title}&rdquo;" class="edit">Edit</a>
+							<a href="/delete/article/{$article->vanityURL}" title="Delete &ldquo;{$article->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}
 		
 		else if (UserValidator::is_article_owner($article->id)) {
 			$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('edit_title', $article->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/edit/article/{$article->vanityURL}" title="{$this->lang->text('edit_title', $article->title)}" class="edit">{$this->lang->text('edit')}</a>
 HTML;
 		}
 		
@@ -243,7 +243,7 @@ HTML;
 		else if (UserSession::is_authorized()) {
 			$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('flag_title', $article->title)}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/article/{$article->vanityURL}" title="{$this->lang->text('flag_title', $article->title)}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
 		}
 		
@@ -323,15 +323,15 @@ HTML;
 		if(UserSession::is_current($articleComment->userID)){
 			$html .= <<<HTML
 
-							<a href="/" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
-							<a href="/" title="Delete Comment on &ldquo;{$articleComment->title}&rdquo;" class="delete">Delete</a>
+							<a href="/edit/comment/{$articleComment->id}" title="Edit Comment on &ldquo;{$articleComment->title}&rdquo;" class="edit">Edit</a>
+							<a href="/delete/comment/{$articleComment->id}" title="Delete {$articleComment->title} on &ldquo;{$articleComment->title}&rdquo;" class="delete">Delete</a>
 HTML;
 		}
 		
 		else if (UserSession::is_authorized()) {
 			$html .= <<<HTML
 
-							<a href="/" title="Flag Comment on &ldquo;{$articleComment->title}&rdquo;" class="flag">Flag</a>
+							<a href="/flag/comment/{$articleComment->id}" title="Flag Comment on &ldquo;{$articleComment->title}&rdquo;" class="flag">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
@@ -386,13 +386,13 @@ HTML;
 		if (UserSession::is_current($eventComment->userID)) {
 			$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('edit_comment', $eventComment->title)}" class="edit">{$this->lang->text('edit')}</a>
-							<a href="/" title="{$this->lang->text('delete_comment', $eventComment->title)}" class="delete">{$this->lang->text('delete')}</a>
+							<a href="/edit/comment/{$eventComment->id}" title="{$this->lang->text('edit_comment', $eventComment->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/comment/{$eventComment->id}" title="{$this->lang->text('delete_comment', $eventComment->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 		}else if(UserSession::is_authorized()){
 			$html .= <<<HTML
 
-							<a href="/" title="{$this->lang->text('flag_comment', $eventComment->title)}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/comment/{$eventComment->id}" title="{$this->lang->text('flag_comment', $eventComment->title)}" class="flag">{$this->lang->text('flag')}</a>
 HTML;
 		}
 		

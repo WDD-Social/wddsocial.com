@@ -7,7 +7,7 @@ namespace WDDSocial;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class RemovePage implements \Framework5\IExecutable {
+class DeletePage implements \Framework5\IExecutable {
 	public function execute() {
 		UserSession::protect();
 		$types = array('project','article','event','job','user');

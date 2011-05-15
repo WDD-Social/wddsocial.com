@@ -51,6 +51,28 @@ class ValidatorSQL{
 			WHERE embedCode = :embedCode
 			LIMIT 1",
 		
+		'isUserProjectOwner' => "
+			SELECT p.id
+			FROM projects AS p
+			LEFT JOIN userProjects AS up ON (p.id = up.projectID)
+			WHERE p.id = :projectID AND (p.userID = :userID OR up.userID = :userID)",
+		
+		'isUserArticleOwner' => "
+			SELECT a.id
+			FROM articles AS a
+			LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
+			WHERE a.id = :articleID AND (a.userID = :userID OR ua.userID = :userID)",
+		
+		'isUserEventOwner' => "
+			SELECT id
+			FROM events
+			WHERE id = :eventID AND userID = :userID",
+		
+		'isUserJobOwner' => "
+			SELECT id
+			FROM jobs
+			WHERE id = :jobID AND userID = :userID",
+					
 		'getProjectOwners' => "
 			SELECT userID
 			FROM userProjects
