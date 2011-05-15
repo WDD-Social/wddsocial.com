@@ -15,7 +15,7 @@ class NewPasswordView implements \Framework5\IView {
 		
 		return <<<HTML
 
-					<form action="/new-password" method="post" class="small">
+					<form action="/new-password/{$options['code']}" method="post" class="small">
 						{$intro}
 						{$error}
 						<fieldset>

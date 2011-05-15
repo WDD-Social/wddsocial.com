@@ -11,25 +11,33 @@ class ReportPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
+		$reportBugView = 'bugs.view.page.Framework5\Bugs\ReportBugView';
+		$bugReportedView = 'bugs.view.page.Framework5\Bugs\BugReportedView';
+		
 		# form submitted
 		if (isset($_POST['submit'])) {
 			if ($this->_process_form()) {
-				$page = render('bugs.view.page.Framework5\Bugs\BugReportedView');
+				$page = render($bugReportedView);
 			}
 			else {
-				$page = render('bugs.view.page.Framework5\Bugs\ReportBugView', $this->errorMsg);
+				$page = render($reportBugView, $this->errorMsg);
 			}
 		}
 		
 		# form not submitted
 		else {
-			$page = render('bugs.view.page.Framework5\Bugs\ReportBugView');
+			$page = render($reportBugView);
 		}
 		
 		# display page
 		echo render(':template', $page);
 	}
 	
+	
+	
+	/**
+	* Handles form submit
+	*/
 	
 	private function _process_form() {
 		
@@ -52,17 +60,16 @@ class ReportPage implements \Framework5\IExecutable {
 		}
 		
 		# insert bug into db
+		$sql = "
+			INSERT INTO fw5_bugs (request_id, message, user_id)
+			VALUES (:request_id, :message, :user_id)";
+		
 		$db = instance(':db');
-		
-		$query = $db->prepare(
-			"INSERT INTO fw5_bugs (request_id, message, user_id) VALUES (?, ?, ?);");
-		
-		$data = array(
+		$query = $db->prepare($sql);
+		$query->execute(array(
 			'request_id' => $request_id,
 			'message' => $_POST['message'],
-			'user_id' => $user_id);
-		
-		$query->execute($data);
+			'user_id' => $user_id));
 		
 		return true;
 	}
