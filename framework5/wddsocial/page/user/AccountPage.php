@@ -71,10 +71,10 @@ class AccountPage implements \Framework5\IExecutable {
 			$fields['typeID'] = $_POST['user-type'];
 		
 		if ($_POST['first-name'] != $this->user->firstName)
-			$fields['firstName'] = $_POST['first-name'];
+			$fields['firstName'] = addslashes($_POST['first-name']);
 		
 		if ($_POST['last-name'] != $this->user->lastName)
-			$fields['lastName'] = $_POST['last-name'];
+			$fields['lastName'] = addslashes($_POST['last-name']);
 		
 		if ($_POST['email'] != $this->user->email) {
 			# Check if email is unique
@@ -87,7 +87,7 @@ class AccountPage implements \Framework5\IExecutable {
 				array_push($errors, 'email');
 			}
 			else {
-				$fields['email'] = $_POST['email'];
+				$fields['email'] = addslashes($_POST['email']);
 			}
 		}
 		
@@ -102,7 +102,7 @@ class AccountPage implements \Framework5\IExecutable {
 				array_push($errors, 'Full Sail email');
 			}
 			else {
-				$fields['fullsailEmail'] = $_POST['full-sail-email'];
+				$fields['fullsailEmail'] = addslashes($_POST['full-sail-email']);
 			}
 		}
 		
@@ -117,36 +117,36 @@ class AccountPage implements \Framework5\IExecutable {
 				array_push($errors, 'vanity URL');
 			}
 			else {
-				$fields['vanityURL'] = $_POST['vanityURL'];
+				$fields['vanityURL'] = addslashes($_POST['vanityURL']);
 			}
 		}
 		
 		if ($_POST['bio'] != $this->user->bio)
-			$fields['bio'] = $_POST['bio'];
+			$fields['bio'] = addslashes($_POST['bio']);
 				
 		if ($_POST['hometown'] != $this->user->hometown)
-			$fields['hometown'] = $_POST['hometown'];
+			$fields['hometown'] = addslashes($_POST['hometown']);
 		
 		if ($_POST['birthday'] != $this->user->birthday)
-			$fields['birthday'] = $_POST['birthday'];
+			$fields['birthday'] = addslashes($_POST['birthday']);
 		
 		if ($_POST['website'] != $this->user->contact['website'])
-			$fields['website'] = $_POST['website'];
+			$fields['website'] = addslashes($_POST['website']);
 				
 		if ($_POST['twitter'] != $this->user->contact['twitter'])
-			$fields['twitter'] = $_POST['twitter'];
+			$fields['twitter'] = addslashes($_POST['twitter']);
 		
 		if ($_POST['facebook'] != $this->user->contact['facebook'])
-			$fields['facebook'] = $_POST['facebook'];
+			$fields['facebook'] = addslashes($_POST['facebook']);
 				
 		if ($_POST['github'] != $this->user->contact['github'])
-			$fields['github'] = $_POST['github'];
+			$fields['github'] = addslashes($_POST['github']);
 		
 		if ($_POST['dribbble'] != $this->user->contact['dribbble'])
-			$fields['dribbble'] = $_POST['dribbble'];
+			$fields['dribbble'] = addslashes($_POST['dribbble']);
 				
 		if ($_POST['forrst'] != $this->user->contact['forrst'])
-			$fields['forrst'] = $_POST['forrst'];
+			$fields['forrst'] = addslashes($_POST['forrst']);
 		
 		if (count($errors) > 0) {
 			$errorMessage = "The ";
@@ -178,23 +178,23 @@ class AccountPage implements \Framework5\IExecutable {
 		$fields = array();
 		
 		if (isset($_POST['start-date']) and $_POST['start-date'] != $this->user->extra['startDateInput']) {
-			$fields['startDate'] = ($_POST['start-date'] == '')?NULL:$_POST['start-date'];
+			$fields['startDate'] = ($_POST['start-date'] == '')?NULL:addslashes($_POST['start-date']);
 		}
 		
 		if (isset($_POST['graduation-date']) and $_POST['graduation-date'] != $this->user->extra['graduationDateInput']) {
-			$fields['graduationDate'] = ($_POST['graduation-date'] == '')?NULL:$_POST['graduation-date'];
+			$fields['graduationDate'] = ($_POST['graduation-date'] == '')?NULL:addslashes($_POST['graduation-date']);
 		}
 		
 		if (isset($_POST['degree-location']) and $_POST['degree-location'] != $this->user->extra['location']) {
-			$fields['location'] = ($_POST['degree-location'] == '')?NULL:$_POST['degree-location'];
+			$fields['location'] = ($_POST['degree-location'] == '')?NULL:addslashes($_POST['degree-location']);
 		}
 		
 		if (isset($_POST['employer']) and $_POST['employer'] != $this->user->extra['employerTitle']) {
-			$fields['employerTitle'] = ($_POST['employer'] === '')?NULL:$_POST['employer'];
+			$fields['employerTitle'] = ($_POST['employer'] === '')?NULL:addslashes($_POST['employer']);
 		}
 		
 		if (isset($_POST['employer-link']) and $_POST['employer-link'] != $this->user->extra['employerLink']) {
-			$fields['employerLink'] = ($_POST['employer-link'] === '')?NULL:$_POST['employer-link'];
+			$fields['employerLink'] = ($_POST['employer-link'] === '')?NULL:addslashes($_POST['employer-link']);
 		}
 		
 		$update = array();
