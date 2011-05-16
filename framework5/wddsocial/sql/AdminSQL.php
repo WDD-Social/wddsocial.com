@@ -114,6 +114,10 @@ class AdminSQL{
 			INSERT INTO projectComments (projectID, commentID)
 			VALUES (:projectID,:commentID)",
 		
+		'updateProject' => "
+			UPDATE projects
+			SET ",
+		
 		/**
 		* Article Queries
 		*/
@@ -154,6 +158,10 @@ class AdminSQL{
 		'addArticleComment' => "
 			INSERT INTO articleComments (articleID, commentID)
 			VALUES (:articleID,:commentID)",
+		
+		'updateArticle' => "
+			UPDATE articles
+			SET ",
 		
 		/**
 		* Event Queries
@@ -197,6 +205,10 @@ class AdminSQL{
 			INSERT INTO eventComments (eventID, commentID)
 			VALUES (:eventID,:commentID)",
 		
+		'updateEvent' => "
+			UPDATE events
+			SET ",
+		
 		/**
 		* Job Queries
 		*/
@@ -234,6 +246,10 @@ class AdminSQL{
 		'addJobVideo' => "
 			INSERT INTO jobVideos (jobID, videoID)
 			VALUES (:jobID,:videoID)",
+		
+		'updateJob' => "
+			UPDATE jobs
+			SET ",
 		
 		/**
 		* Category Queries
