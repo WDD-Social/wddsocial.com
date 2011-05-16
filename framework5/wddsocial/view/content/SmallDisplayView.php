@@ -168,8 +168,8 @@ HTML;
 			if (UserSession::is_current($job->userID)) {
 				$html .= <<<HTML
 
-							<a href="/edit/job/{$job->vanityURL}" title="{$this->lang->text('edit_title', "{$job->title} | {$job->company}")} class="edit">{$this->lang->text('edit')}</a>
-							<a href="/delete/job/{$job->vanityURL}" title="{$this->lang->text('delete_title', "{$job->title} | {$job->company}")} class="delete">{$this->lang->text('delete')}</a>
+							<a href="/edit/job/{$job->vanityURL}" title="{$this->lang->text('edit_title', "{$job->title} | {$job->company}")}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/job/{$job->vanityURL}" title="{$this->lang->text('delete_title', "{$job->title} | {$job->company}")}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 			}
 			

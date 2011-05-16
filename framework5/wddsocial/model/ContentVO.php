@@ -8,7 +8,7 @@ namespace WDDSocial;
 */
 
 class ContentVO {
-	public $id, $userID, $title, $type, $description, $content, $categories = array(), $links = array(), $team = array(), $images = array(), $videos = array(), $comments = array();
+	public $id, $userID, $title, $type, $description, $content, $categories = array(), $links = array(), $team = array(), $images = array(), $videos = array(), $comments = array(), $courses = array();
 	
 	private $db, $sql;
 	
@@ -28,6 +28,7 @@ class ContentVO {
 		}
 		if($this->type == 'project' or $this->type == 'article' or $this->type == 'event'){
 			$this->getComments();
+			$this->getCourses();
 		}
 	}
 	
@@ -209,6 +210,33 @@ class ContentVO {
 				$query->execute($data);
 				while($comment = $query->fetch(\PDO::FETCH_OBJ)){
 					array_push($this->comments,$comment);
+				}
+				break;
+		}
+	}
+	
+	private function getCourses(){
+		$data = array('id' => $this->id);
+		switch ($this->type){
+			case 'project':
+				$query = $this->db->prepare($this->sql->getProjectCourses);
+				$query->execute($data);
+				while($comment = $query->fetch(\PDO::FETCH_OBJ)){
+					array_push($this->courses,$comment);
+				}
+				break;
+			case 'article':
+				$query = $this->db->prepare($this->sql->getArticleCourses);
+				$query->execute($data);
+				while($comment = $query->fetch(\PDO::FETCH_OBJ)){
+					array_push($this->courses,$comment);
+				}
+				break;
+			case 'event':
+				$query = $this->db->prepare($this->sql->getEventCourses);
+				$query->execute($data);
+				while($comment = $query->fetch(\PDO::FETCH_OBJ)){
+					array_push($this->courses,$comment);
 				}
 				break;
 		}
