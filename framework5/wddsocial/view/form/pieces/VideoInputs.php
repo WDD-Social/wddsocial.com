@@ -15,14 +15,25 @@ class VideoInputs implements \Framework5\IView {
 						<h1 id="videos">Videos</h1>
 						<p>Please provide the <strong><a href="http://youtube.com/" title="YouTube - Broadcast Yourself.">YouTube</a></strong> or <strong><a href="http://vimeo.com/" title="Vimeo, Video Sharing For You">Vimeo</a></strong> embed codes.</p>
 HTML;
-		# display image uploaders
-		for ($i = 1; $i < 2; $i++) {
-			if ($i == 1) {
-				$videoNumber = '';
+		# display video uploaders
+		$limit = (isset($options['videos']))?count($options['videos']) + 2:2;
+		$i = 1;
+		if (isset($options['videos'])) {
+			foreach ($options['videos'] as $video) {
+				$videoNumber = ($i == 1)?'':" $i";
+				$embedCode = htmlspecialchars($video->embedCode);
+				$html .= <<<HTML
+
+						<fieldset>
+							<label for="video$i">Video$videoNumber</label>
+							<input type="text" name="videos[]" id="video$i" value="{$embedCode}" />
+						</fieldset>
+HTML;
+				$i++;
 			}
-			else {
-				$videoNumber = " $i";
-			}
+		}
+		for ($i; $i < $limit; $i++) {
+			$videoNumber = ($i == 1)?'':" $i";
 			$html .= <<<HTML
 
 						<fieldset>

@@ -13,8 +13,8 @@ class CategoryInputs implements \Framework5\IView {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		
-		$query = $db->query($sql->getRandomCategories . " LIMIT 3");
-		$query->execute();
+		$randomLimit = (isset($options['categories']))?count($options['categories']) + 2:2;
+		$query = $db->query($sql->getRandomCategories . " LIMIT $randomLimit");
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$categories = $query->fetchAll();
 		
@@ -23,7 +23,17 @@ class CategoryInputs implements \Framework5\IView {
 						<h1 id="categories">Categories</h1>
 						<fieldset>
 HTML;
-		for ($i = 1; $i < 4; $i++) {
+		$i = 1;
+		if (isset($options['categories'])) {
+			foreach ($options['categories'] as $category) {
+				$html .= <<<HTML
+
+							<input type="text" name="categories[]" id="category$i" placeholder="{$categories[$i-1]->title}" value="{$category->title}" />
+HTML;
+				$i++;
+			}
+		}
+		for ($i; $i < $randomLimit; $i++) {
 			$html .= <<<HTML
 
 							<input type="text" name="categories[]" id="category$i" placeholder="{$categories[$i-1]->title}" />
