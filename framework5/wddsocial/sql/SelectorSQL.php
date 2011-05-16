@@ -680,7 +680,7 @@ class SelectorSQL{
 			ORDER BY `datetime` DESC",
 		
 		'getProjectByVanityURL' => "
-			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`, DATE_FORMAT(completeDate,'%M, %Y') AS `completeDate`,
+			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`, DATE_FORMAT(completeDate,'%M, %Y') AS `completeDate`, DATE_FORMAT(completeDate, '%Y-%m-%d') AS `completeDateInput`,
 			IF(
 				TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 59,
 				IF(
@@ -712,6 +712,41 @@ class SelectorSQL{
 			) AS `date`
 			FROM projects
 			WHERE vanityURL = :vanityURL
+			LIMIT 1",
+		
+		'getProjectByID' => "
+			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`, DATE_FORMAT(completeDate,'%M, %Y') AS `completeDate`, DATE_FORMAT(completeDate, '%Y-%m-%d') AS `completeDateInput`,
+			IF(
+				TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, `datetime`, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 30,
+						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, NOW()), 'days ago'),
+							'yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, `datetime`, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) = 0,
+					'less than a minute ago',
+					IF(
+						TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM projects
+			WHERE id = :id
 			LIMIT 1",
 		
 		'getProjectVanityURL' => "
@@ -803,6 +838,41 @@ class SelectorSQL{
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
 		
+		'getArticleByID' => "
+			SELECT id, userID, title, description, content, vanityURL, 'article' AS `type`,
+			IF(
+				TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, `datetime`, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 30,
+						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, NOW()), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, `datetime`, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM articles
+			WHERE id = :id
+			LIMIT 1",
+		
 		'getArticleVanityURL' => "
 			SELECT vanityURL
 			FROM articles
@@ -864,9 +934,15 @@ class SelectorSQL{
 			LIMIT 0,10",
 		
 		'getEventByVanityURL' => "
-			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`
+			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`, DATE_FORMAT(startDateTime, '%Y-%m-%d') AS `startDateInput`, DATE_FORMAT(startDateTime,'%k:%i:%s') AS `startTimeInput`, TIMESTAMPDIFF(HOUR,startDateTime,endDateTime) AS duration
 			FROM events
 			WHERE vanityURL = :vanityURL
+			LIMIT 1",
+		
+		'getEventByID' => "
+			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`, DATE_FORMAT(startDateTime, '%Y-%m-%d') AS `startDateInput`, DATE_FORMAT(startDateTime,'%k:%i:%s') AS `startTimeInput`, TIMESTAMPDIFF(HOUR,startDateTime,endDateTime) AS duration
+			FROM events
+			WHERE id = :id
 			LIMIT 1",
 		
 		'getEventCommentData' => "
@@ -905,10 +981,17 @@ class SelectorSQL{
 			LIMIT 0,3",
 		
 		'getJobByVanityURL' => "
-			SELECT j.id, userID, j.title, description, content, vanityURL, 'job' AS `type`, company, jt.title AS jobType, avatar, location, compensation, website, email
+			SELECT j.id, userID, j.title, description, content, vanityURL, 'job' AS `type`, company, jt.id AS jobTypeID, jt.title AS jobType, avatar, location, compensation, website, email
 			FROM jobs AS j
 			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
 			WHERE vanityURL = :vanityURL
+			LIMIT 1",
+		
+		'getJobByID' => "
+			SELECT j.id, userID, j.title, description, content, vanityURL, 'job' AS `type`, company, jt.id AS jobTypeID, jt.title AS jobType, avatar, location, compensation, website, email
+			FROM jobs AS j
+			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
+			WHERE j.id = :id
 			LIMIT 1",
 		
 		'getJobVanityURL' => "
@@ -1076,6 +1159,30 @@ class SelectorSQL{
 			LEFT JOIN jobVideos AS jv ON(v.id = jv.videoID)
 			WHERE jv.jobID = :id
 			ORDER BY v.id ASC",
+			
+			
+		/**
+		* Course queries
+		*/
+			
+		'getProjectCourses' => "
+			SELECT id, title
+			FROM courses AS c
+			LEFT JOIN projectCourses AS pc ON (c.id = pc.courseID)
+			WHERE pc.projectID = :id",
+		
+		'getArticleCourses' => "
+			SELECT id, title
+			FROM courses AS c
+			LEFT JOIN articleCourses AS ac ON (c.id = ac.courseID)
+			WHERE ac.articleID = :id",
+		
+		'getEventCourses' => "
+			SELECT id, title
+			FROM courses AS c
+			LEFT JOIN eventCourses AS ec ON (c.id = ec.courseID)
+			WHERE ec.eventID = :id",
+			
 			
 			
 		/**
@@ -1283,17 +1390,15 @@ class SelectorSQL{
 			FROM categories
 			ORDER BY RAND()",
 		
-		'getThreeRandomUsers' => "
+		'getRandomUsers' => "
 			SELECT CONCAT_WS(' ',firstName,lastName) AS `name`
 			FROM users
-			ORDER BY RAND()
-			LIMIT 3",
+			ORDER BY RAND()",
 		
-		'getThreeRandomRoles' => "
+		'getRandomRoles' => "
 			SELECT title
 			FROM userProjects
-			ORDER BY RAND()
-			LIMIT 3",
+			ORDER BY RAND()",
 		
 		'getRandomCourses' => "
 			SELECT id

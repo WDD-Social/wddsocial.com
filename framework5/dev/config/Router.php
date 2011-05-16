@@ -23,6 +23,9 @@ class Router implements \Framework5\IRouter {
 			case 'request':
 				return 'dev.page.Framework5\Dev\RequestInfoPage';
 			
+			case 'bugs':
+				return 'dev.page.Framework5\Dev\BugTrackerPage';
+			
 			case 'phpinfo':
 				return 'dev.page.Framework5\Dev\PHPInfoPage';
 			

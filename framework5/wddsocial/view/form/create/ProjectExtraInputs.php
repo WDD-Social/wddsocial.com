@@ -10,8 +10,8 @@ namespace WDDSocial;
 class ProjectExtraInputs implements \Framework5\IView {		
 	
 	public function render($options = null) {
-		if (isset($options['completeDate'])) {
-			$dateValue = ($options['completeDate'] == '0000-00-00')?'':$options['completeDate'];
+		if (isset($options['data'])) {
+			$dateValue = ($options['data']->completeDateInput == '0000-00-00')?'':$options['data']->completeDateInput;
 		}
 		else {
 			$dateValue = date('Y-m-d');
