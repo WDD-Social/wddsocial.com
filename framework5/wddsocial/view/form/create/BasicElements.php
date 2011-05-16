@@ -59,9 +59,18 @@ class BasicElements implements \Framework5\IView {
 			$descriptionAutofocus = ' autofocus';
 		}
 		
+		switch (\Framework5\Request::segment(0)) {
+			case 'create':
+				$h1 = "Create a New {$capitalizedTitle}";
+				break;
+			case 'edit':
+				$h1 = "Edit {$capitalizedTitle}";
+				break;
+		}
+		
 		return <<<HTML
 
-					<h1 class="mega">Create a New {$capitalizedTitle}</h1>
+					<h1 class="mega">$h1</h1>
 					<form action="/{$action}" method="post" enctype="multipart/form-data">
 						<h1>Details</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
