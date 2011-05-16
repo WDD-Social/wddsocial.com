@@ -119,7 +119,7 @@ class EditPage implements \Framework5\IExecutable {
 		}
 		
 		# display image section
-		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs');
+		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
 		
 		# display video section
 		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos));
