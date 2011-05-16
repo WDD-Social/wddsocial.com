@@ -13,6 +13,11 @@ class EditPage implements \Framework5\IExecutable {
 	public function execute() {
 		UserSession::protect();
 		
+		$this->db = instance(':db');
+		$this->sel = instance(':sel-sql');
+		$this->val = instance(':val-sql');
+		$this->admin = instance(':admin-sql');
+		
 		# handle form submission
 		if (isset($_POST['submit'])){
 			$response = $this->_process_form();
@@ -24,6 +29,14 @@ class EditPage implements \Framework5\IExecutable {
 			}
 		}
 		
+		
+		
+		
+		else {
+		
+		
+		
+		
 		$types = array('project','article','event','job');
 		$type = \Framework5\Request::segment(1);
 		$vanityURL = \Framework5\Request::segment(2);
@@ -31,11 +44,6 @@ class EditPage implements \Framework5\IExecutable {
 			redirect('/');
 		
 		import('wddsocial.model.WDDSocial\ContentVO');
-		
-		$this->db = instance(':db');
-		$this->sel = instance(':sel-sql');
-		$this->val = instance(':val-sql');
-		$this->admin = instance(':admin-sql');
 		
 		switch ($type) {
 			case 'project':
@@ -144,6 +152,15 @@ class EditPage implements \Framework5\IExecutable {
 		
 		# display site footer
 		echo render(':template', array('section' => 'bottom'));
+		
+		
+		
+		
+		}
+		
+		
+		
+		
 	}
 	
 	
@@ -156,6 +173,7 @@ class EditPage implements \Framework5\IExecutable {
 		import('wddsocial.model.WDDSocial\ContentVO');
 		import('wddsocial.model.WDDSocial\FormResponse');
 		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
+		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		
 		$this->db = instance(':db');
 		$this->sel = instance(':sel-sql');
@@ -181,62 +199,94 @@ class EditPage implements \Framework5\IExecutable {
 		$fields = array();
 		
 		if ($_POST['title'] != $content->title)
-			$fields['title'] = $_POST['title'];
+			$fields['title'] = addslashes($_POST['title']);
 		
 		if ($_POST['description'] != $content->description)
-			$fields['description'] = $_POST['description'];
+			$fields['description'] = addslashes($_POST['description']);
 		
 		if ($_POST['content'] != $content->content)
-			$fields['content'] = $_POST['content'];
+			$fields['content'] = addslashes($_POST['content']);
 		
 		if ($_POST['vanityURL'] != $content->vanityURL and $_POST['vanityURL'] != '')
-			$fields['vanityURL'] = $_POST['vanityURL'];
+			$fields['vanityURL'] = addslashes($_POST['vanityURL']);
 		else if ($_POST['vanityURL'] == '')
 			VanityURLProcessor::generate($content->id, $content->type);
 		
 		switch ($content->type) {
 			case 'project':
 				if ($_POST['completed-date'] != $content->completeDateInput)
-					$fields['completedDate'] = $_POST['completed-date'];
+					$fields['completeDate'] = addslashes($_POST['completed-date']);
 				break;
 			case 'event':
 				if ($_POST['location'] != $content->location)
-					$fields['location'] = $_POST['location'];
-				if ( ($_POST['date'] != $content->startDateInput) or ($_POST['start-time'] != $content->startTimeInput))
-					$fields['startDatetime'] = $_POST['date'] . ' ' . $_POST['start-time'];
+					$fields['location'] = addslashes($_POST['location']);
 				if ($_POST['duration'] != $content->duration)
-					$fields['duration'] = $_POST['duration'];
+					$content->duration = addslashes($_POST['duration']);
+				if ($content->duration < 1)
+					$content->duration = 1;
+				$baseDatetime = addslashes($_POST['date']) . ' ' . addslashes($_POST['start-time']);
+				$fields['startDatetime'] = $baseDatetime;
+				$fields['endDatetime'] = "DATE_ADD('{$baseDatetime}', INTERVAL {$content->duration} HOUR)";
 				break;
 			case 'job':
-				if ($_POST['job-type'] != $content->jobTypeID)
-					$fields['typeID'] = $_POST['job-type'];
 				if ($_POST['company'] != $content->company)
-					$fields['company'] = $_POST['company'];
+					$fields['company'] = addslashes($_POST['company']);
 				if ($_POST['location'] != $content->location)
-					$fields['location'] = $_POST['location'];
+					$fields['location'] = addslashes($_POST['location']);
 				if ($_POST['compensation'] != $content->compensation)
-					$fields['compensation'] = $_POST['compensation'];
+					$fields['compensation'] = addslashes($_POST['compensation']);
 				if ($_POST['website'] != $content->website)
-					$fields['website'] = $_POST['website'];
+					$fields['website'] = addslashes($_POST['website']);
 				if ($_POST['email'] != $content->email)
-					$fields['email'] = $_POST['email'];
+					$fields['email'] = addslashes($_POST['email']);
 				break;
 		}
 		
-		/* echo "<h1>FIELDS</h1>";
-		echo "<pre>";
-		print_r($fields);
-		echo "</pre>";
 		
-		echo "<h1>POST</h1>";
-		echo "<pre>";
-		print_r($_POST);
-		echo "</pre>";
 		
-		echo "<h1>CONTENT</h1>";
-		echo "<pre>";
-		print_r($content);
-		echo "</pre>"; */
+		if (count($fields) > 0) {
+			$update = array();
+			foreach ($fields as $fieldName => $fieldContent) {
+				if ($fieldName == 'endDatetime') {
+					array_push($update,"endDatetime = $fieldContent");
+				}
+				else {
+					array_push($update,"$fieldName = '$fieldContent'");
+				}
+			}
+			$update = implode(', ',$update);
+			if (is_array($update)) {
+				$update = '';
+			}
+
+			if ($update != '') {
+				$update .= " WHERE id = :id";
+				$data = array('id' => $content->id);
+				switch ($content->type) {
+					case 'project':
+						$query = $this->db->prepare($this->admin->updateProject . $update);
+						break;
+					case 'article':
+						$query = $this->db->prepare($this->admin->updateArticle . $update);
+						break;
+					case 'event':
+						$query = $this->db->prepare($this->admin->updateEvent . $update);
+						break;
+					case 'job':
+						$query = $this->db->prepare($this->admin->updateJob . $update);
+						break;
+				}
+				$query->execute($data);
+				/* if ($content->type == 'event') {
+					$data = array('id' => $content->id);
+					$query = $this->db->prepare($this->sel->getEventICSValues);
+					$query->execute($data);
+					$query->setFetchMode(\PDO::FETCH_OBJ);
+					$event = $query->fetch();
+					Uploader::create_ics_file($event);
+				} */
+			}
+		}
 		
 		$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
 		
