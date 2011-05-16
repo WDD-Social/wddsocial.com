@@ -16,6 +16,7 @@ class PageHeader implements \Framework5\IView {
 	<ul>
 		<li><a href="/dev/requests">requests</a></li>
 		<li><a href="/dev/phpinfo">phpinfo</a></li>
+		<li><a href="/dev/bugs">bugs</a></li>
 	</ul>
 
 HTML;

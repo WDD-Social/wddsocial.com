@@ -232,10 +232,11 @@ HTML;
 HTML;
 		
 		if ($content->content != '') {
+			$article = nl2br($content->content);
 			$html .= <<<HTML
 
 					<section class="content">
-						<p>{$content->content}</p>
+						<p>{$article}</p>
 HTML;
 			if ($content->type == 'job') {
 				$html .= <<<HTML
