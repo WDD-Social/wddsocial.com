@@ -13,6 +13,19 @@ class EditPage implements \Framework5\IExecutable {
 	public function execute() {
 		UserSession::protect();
 		
+		# handle form submission
+		if (isset($_POST['submit'])){
+			$response = $this->_process_form();
+			
+			# redirect user on success
+			if ($response->status) {
+				# redirect user to new content page
+				redirect("{$response->message}");
+			}
+		}
+		
+		else {
+		
 		$types = array('project','article','event','job');
 		$type = \Framework5\Request::segment(1);
 		$vanityURL = \Framework5\Request::segment(2);
@@ -75,22 +88,6 @@ class EditPage implements \Framework5\IExecutable {
 			redirect('/');
 		}
 		
-
-		echo "<pre>";
-		print_r($content);
-		echo "</pre>";
-		
-		# handle form submission
-		if (isset($_POST['submit'])){
-			$response = $this->_process_form();
-			
-			# redirect user on success
-			if ($response->status) {
-				# redirect user to new content page
-				redirect("{$response->message}");
-			}
-		}
-		
 		$typeTitle = ucfirst($content->type);
 		
 		# display site header
@@ -149,6 +146,7 @@ class EditPage implements \Framework5\IExecutable {
 		
 		# display site footer
 		echo render(':template', array('section' => 'bottom'));
+		}
 	}
 	
 	
@@ -158,5 +156,82 @@ class EditPage implements \Framework5\IExecutable {
 	*/
 	
 	private function _process_form() {
+		import('wddsocial.model.WDDSocial\ContentVO');
+		
+		$this->db = instance(':db');
+		$this->sel = instance(':sel-sql');
+		
+		switch ($_POST['type']) {
+			case 'project':
+				$query = $this->db->prepare($this->sel->getProjectByID);
+				break;
+			case 'article':
+				$query = $this->db->prepare($this->sel->getArticleByID);
+				break;
+			case 'event':
+				$query = $this->db->prepare($this->sel->getEventByID);
+				break;
+			case 'job':
+				$query = $this->db->prepare($this->sel->getJobByID);
+				break;
+		}
+		$query->execute(array('id' => $_POST['contentID']));
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+		$content = $query->fetch();
+		
+		$fields = array();
+		
+		if ($_POST['title'] != $content->title)
+			$fields['title'] = $_POST['title'];
+		
+		if ($_POST['description'] != $content->description)
+			$fields['description'] = $_POST['description'];
+		
+		if ($_POST['content'] != $content->content )
+			$fields['content'] = $_POST['content'];
+		
+		switch ($content->type) {
+			case 'project':
+				if ($_POST['completed-date'] != $content->completeDateInput )
+					$fields['completedDate'] = $_POST['completed-date'];
+				break;
+			case 'event':
+				if ($_POST['location'] != $content->location )
+					$fields['location'] = $_POST['location'];
+				if ( ($_POST['date'] != $content->startDateInput) or ($_POST['start-time'] != $content->startTimeInput))
+					$fields['startDatetime'] = $_POST['date'] . ' ' . $_POST['start-time'];
+				if ($_POST['duration'] != $content->duration)
+					$fields['duration'] = $_POST['duration'];
+				break;
+			case 'job':
+				if ($_POST['job-type'] != $content->jobTypeID)
+					$fields['typeID'] = $_POST['job-type'];
+				if ($_POST['company'] != $content->company)
+					$fields['company'] = $_POST['company'];
+				if ($_POST['location'] != $content->location)
+					$fields['location'] = $_POST['location'];
+				if ($_POST['compensation'] != $content->compensation)
+					$fields['compensation'] = $_POST['compensation'];
+				if ($_POST['website'] != $content->website)
+					$fields['website'] = $_POST['website'];
+				if ($_POST['email'] != $content->email)
+					$fields['email'] = $_POST['email'];
+				break;
+		}
+		
+		echo "<h1>FIELDS</h1>";
+		echo "<pre>";
+		print_r($fields);
+		echo "</pre>";
+		
+		echo "<h1>POST</h1>";
+		echo "<pre>";
+		print_r($_POST);
+		echo "</pre>";
+		
+		echo "<h1>CONTENT</h1>";
+		echo "<pre>";
+		print_r($content);
+		echo "</pre>";
 	}
 }
