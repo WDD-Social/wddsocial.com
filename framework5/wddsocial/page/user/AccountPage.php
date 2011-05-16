@@ -136,7 +136,7 @@ class AccountPage implements \Framework5\IExecutable {
 		if ($_POST['twitter'] != $this->user->contact['twitter'])
 			$fields['twitter'] = $_POST['twitter'];
 		
-		if !=
+		if ($_POST['facebook'] != $this->user->contact['facebook'])
 			$fields['facebook'] = $_POST['facebook'];
 				
 		if ($_POST['github'] != $this->user->contact['github'])
