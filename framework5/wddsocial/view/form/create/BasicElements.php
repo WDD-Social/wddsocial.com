@@ -26,6 +26,9 @@ class BasicElements implements \Framework5\IView {
 	
 	private function header($options){
 		import('wddsocial.helper.WDDSocial\StringCleaner');
+		
+		$action = \Framework5\Request::segment(0);
+		
 		if (isset($options['data']) and is_array($options['data'])) {
 			$content->type = $options['data']['type'];
 			$content->title = $options['data']['title'];
@@ -59,9 +62,10 @@ class BasicElements implements \Framework5\IView {
 		return <<<HTML
 
 					<h1 class="mega">Create a New {$capitalizedTitle}</h1>
-					<form action="/create" method="post" enctype="multipart/form-data">
+					<form action="/{$action}" method="post" enctype="multipart/form-data">
 						<h1>Details</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
+						<input type="hidden" name="contentID" value="{$content->id}" />
 						<input type="hidden" name="type" value="{$content->type}" />
 						<input type="hidden" name="process" value="{$options['process']}" />
 						<fieldset>
