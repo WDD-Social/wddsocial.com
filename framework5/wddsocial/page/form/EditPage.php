@@ -24,8 +24,6 @@ class EditPage implements \Framework5\IExecutable {
 			}
 		}
 		
-		else {
-		
 		$types = array('project','article','event','job');
 		$type = \Framework5\Request::segment(1);
 		$vanityURL = \Framework5\Request::segment(2);
@@ -146,7 +144,6 @@ class EditPage implements \Framework5\IExecutable {
 		
 		# display site footer
 		echo render(':template', array('section' => 'bottom'));
-		}
 	}
 	
 	
@@ -157,6 +154,8 @@ class EditPage implements \Framework5\IExecutable {
 	
 	private function _process_form() {
 		import('wddsocial.model.WDDSocial\ContentVO');
+		import('wddsocial.model.WDDSocial\FormResponse');
+		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
 		
 		$this->db = instance(':db');
 		$this->sel = instance(':sel-sql');
@@ -187,16 +186,21 @@ class EditPage implements \Framework5\IExecutable {
 		if ($_POST['description'] != $content->description)
 			$fields['description'] = $_POST['description'];
 		
-		if ($_POST['content'] != $content->content )
+		if ($_POST['content'] != $content->content)
 			$fields['content'] = $_POST['content'];
+		
+		if ($_POST['vanityURL'] != $content->vanityURL and $_POST['vanityURL'] != '')
+			$fields['vanityURL'] = $_POST['vanityURL'];
+		else if ($_POST['vanityURL'] == '')
+			VanityURLProcessor::generate($content->id, $content->type);
 		
 		switch ($content->type) {
 			case 'project':
-				if ($_POST['completed-date'] != $content->completeDateInput )
+				if ($_POST['completed-date'] != $content->completeDateInput)
 					$fields['completedDate'] = $_POST['completed-date'];
 				break;
 			case 'event':
-				if ($_POST['location'] != $content->location )
+				if ($_POST['location'] != $content->location)
 					$fields['location'] = $_POST['location'];
 				if ( ($_POST['date'] != $content->startDateInput) or ($_POST['start-time'] != $content->startTimeInput))
 					$fields['startDatetime'] = $_POST['date'] . ' ' . $_POST['start-time'];
@@ -219,7 +223,7 @@ class EditPage implements \Framework5\IExecutable {
 				break;
 		}
 		
-		echo "<h1>FIELDS</h1>";
+		/* echo "<h1>FIELDS</h1>";
 		echo "<pre>";
 		print_r($fields);
 		echo "</pre>";
@@ -232,6 +236,10 @@ class EditPage implements \Framework5\IExecutable {
 		echo "<h1>CONTENT</h1>";
 		echo "<pre>";
 		print_r($content);
-		echo "</pre>";
+		echo "</pre>"; */
+		
+		$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
+		
+		return new FormResponse(true, "/{$content->type}/{$contentVanityURL}");
 	}
 }
