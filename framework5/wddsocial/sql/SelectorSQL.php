@@ -680,7 +680,7 @@ class SelectorSQL{
 			ORDER BY `datetime` DESC",
 		
 		'getProjectByVanityURL' => "
-			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`, DATE_FORMAT(completeDate,'%M, %Y') AS `completeDate`,
+			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`, DATE_FORMAT(completeDate,'%M, %Y') AS `completeDate`, DATE_FORMAT(completeDate, '%Y-%m-%d') AS `completeDateInput`,
 			IF(
 				TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 59,
 				IF(
@@ -864,7 +864,7 @@ class SelectorSQL{
 			LIMIT 0,10",
 		
 		'getEventByVanityURL' => "
-			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`
+			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`, DATE_FORMAT(startDateTime, '%Y-%m-%d') AS `startDateInput`, DATE_FORMAT(startDateTime,'%l:%i:%s') AS `startTimeInput`, TIMESTAMPDIFF(HOUR,startDateTime,endDateTime) AS duration
 			FROM events
 			WHERE vanityURL = :vanityURL
 			LIMIT 1",
@@ -1079,6 +1079,30 @@ class SelectorSQL{
 			
 			
 		/**
+		* Course queries
+		*/
+			
+		'getProjectCourses' => "
+			SELECT id, title
+			FROM courses AS c
+			LEFT JOIN projectCourses AS pc ON (c.id = pc.courseID)
+			WHERE pc.projectID = :id",
+		
+		'getArticleCourses' => "
+			SELECT id, title
+			FROM courses AS c
+			LEFT JOIN articleCourses AS ac ON (c.id = ac.courseID)
+			WHERE ac.articleID = :id",
+		
+		'getEventCourses' => "
+			SELECT id, title
+			FROM courses AS c
+			LEFT JOIN eventCourses AS ec ON (c.id = ec.courseID)
+			WHERE ec.eventID = :id",
+			
+			
+			
+		/**
 		* Comment queries
 		*/
 			
@@ -1283,17 +1307,15 @@ class SelectorSQL{
 			FROM categories
 			ORDER BY RAND()",
 		
-		'getThreeRandomUsers' => "
+		'getRandomUsers' => "
 			SELECT CONCAT_WS(' ',firstName,lastName) AS `name`
 			FROM users
-			ORDER BY RAND()
-			LIMIT 3",
+			ORDER BY RAND()",
 		
-		'getThreeRandomRoles' => "
+		'getRandomRoles' => "
 			SELECT title
 			FROM userProjects
-			ORDER BY RAND()
-			LIMIT 3",
+			ORDER BY RAND()",
 		
 		'getRandomCourses' => "
 			SELECT id
