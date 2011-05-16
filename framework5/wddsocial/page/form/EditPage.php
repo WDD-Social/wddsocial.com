@@ -75,6 +75,7 @@ class EditPage implements \Framework5\IExecutable {
 			redirect('/');
 		}
 		
+
 		echo "<pre>";
 		print_r($content);
 		echo "</pre>";
@@ -89,6 +90,65 @@ class EditPage implements \Framework5\IExecutable {
 				redirect("{$response->message}");
 			}
 		}
+		
+		$typeTitle = ucfirst($content->type);
+		
+		# display site header
+		echo render(':template', array('section' => 'top', 'title' => "Edit {$typeTitle} | {$content->title}"));
+		
+		# open content section
+		echo render(':section', array('section' => 'begin_content'));
+		
+		# display basic form header
+		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $content, 'error' => $response->message, 'process' => 'edit'));
+		
+		# display content type-specific options
+		if ($content->type == 'project' or $content->type == 'article' or $content->type == 'event' or $content->type == 'job') {
+			$typeCapitalized = ucfirst($content->type);
+			echo render("wddsocial.view.form.create.WDDSocial\\{$typeCapitalized}ExtraInputs", array('data' => $content));
+		}
+		
+		# display team member section for appropriate content types
+		if ($content->type == 'project' or $content->type == 'article') {
+			switch ($content->type) {
+				case 'project':
+					$teamTitle = 'Team Members';
+					break;
+				case 'article':
+					$teamTitle = 'Authors';
+					break;
+			}
+			echo render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
+		}
+		
+		# display image section
+		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs');
+		
+		# display video section
+		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos));
+		
+		# display category section
+		echo render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', array('categories' => $content->categories));
+		
+		# display link section
+		echo render('wddsocial.view.form.pieces.WDDSocial\LinkInputs', array('links' => $content->links));
+		
+		#display course section
+		if ($_POST['type'] != 'job') {
+			echo render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', array('courses' => $content->courses, 'header' => true));
+		}
+		
+		# display other options
+		echo render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', array('data' => $content));
+		
+		# display form footer
+		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'footer'));
+		
+		# end content section
+		echo render(':section', array('section' => 'end_content'));
+		
+		# display site footer
+		echo render(':template', array('section' => 'bottom'));
 	}
 	
 	

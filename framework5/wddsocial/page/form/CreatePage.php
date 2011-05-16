@@ -39,7 +39,7 @@ class CreatePage implements \Framework5\IExecutable {
 		echo render(':section', array('section' => 'begin_content'));
 		
 		# display basic form header
-		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $_POST, 'error' => $response->message));
+		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $_POST, 'error' => $response->message, 'process' => 'creation'));
 		
 		# display content type-specific options
 		if ($_POST['type'] == 'project' or $_POST['type'] == 'article' or $_POST['type'] == 'event' or $_POST['type'] == 'job') {
@@ -74,11 +74,11 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		#display course section
 		if ($_POST['type'] != 'job') {
-			echo render('wddsocial.view.form.pieces.WDDSocial\CourseInputs');
+			echo render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', array('header' => true));
 		}
 		
 		# display other options
-		echo render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', $_POST);
+		echo render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', array('data' => $_POST));
 		
 		# display form footer
 		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'footer'));
