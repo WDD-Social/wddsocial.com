@@ -13,7 +13,7 @@ class CategoryInputs implements \Framework5\IView {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		
-		$randomLimit = (isset($options['categories']))?count($options['categories']) + 2:2;
+		$randomLimit = (isset($options['categories']))?count($options['categories']) + 2:4;
 		$query = $db->query($sql->getRandomCategories . " LIMIT $randomLimit");
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$categories = $query->fetchAll();
