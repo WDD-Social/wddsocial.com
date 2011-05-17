@@ -358,6 +358,10 @@ class AdminSQL{
 			SET `file` = MD5(CONCAT('image',id))
 			WHERE id = @last_id;",
 		
+		'deleteImage' => "
+			DELETE FROM images
+			WHERE file = :file",
+		
 		/**
 		* Video Queries
 		*/
