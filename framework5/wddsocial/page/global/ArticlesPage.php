@@ -36,7 +36,7 @@ class ArticlesPage implements \Framework5\IExecutable {
 		echo render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'Articles', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/articles/1/', 'active' => $active));
+				'header' => 'Articles', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/articles/', 'active' => $active));
 		
 		$paginator = new Paginator(1,18);
 		
@@ -67,7 +67,6 @@ class ArticlesPage implements \Framework5\IExecutable {
 		}
 		
 		$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}"):$this->db->prepare($this->sql->getPublicArticles . " ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
-		$query = ;
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->fetch();
