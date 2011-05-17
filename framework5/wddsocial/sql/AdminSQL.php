@@ -90,13 +90,30 @@ class AdminSQL{
 			INSERT INTO userProjects (userID, projectID, title)
 			VALUES (:userID, :projectID, :title)",
 		
+		'deleteProjectTeamMember' => "
+			DELETE FROM userProjects
+			WHERE userID = :userID AND projectID = :projectID",
+		
+		'updateProjectTeamMemberRole' => "
+			UPDATE userProjects
+			SET title = :title
+			WHERE userID = :userID AND projectID = :projectID",
+		
 		'addProjectCategory' => "
 			INSERT INTO projectCategories (projectID, categoryID)
 			VALUES (:projectID, :categoryID)",
 		
+		'deleteProjectCategory' => "
+			DELETE FROM projectCategories
+			WHERE projectID = :projectID AND categoryID = :categoryID",
+		
 		'addProjectCourse' => "
 			INSERT INTO projectCourses (projectID, courseID)
 			VALUES (:projectID, :courseID)",
+		
+		'deleteProjectCourse' => "
+			DELETE FROM projectCourses
+			WHERE projectID = :projectID AND courseID = :courseID",
 		
 		'addProjectLink' => "
 			INSERT INTO projectLinks (projectID, linkID)
@@ -135,13 +152,25 @@ class AdminSQL{
 			INSERT INTO userArticles (userID, articleID)
 			VALUES (:userID, :articleID)",
 		
+		'deleteArticleAuthor' => "
+			DELETE FROM userArticles
+			WHERE userID = :userID AND articleID = :articleID)",
+		
 		'addArticleCategory' => "
 			INSERT INTO articleCategories (articleID, categoryID)
 			VALUES (:articleID, :categoryID)",
 		
+		'deleteArticleCategory' => "
+			DELETE FROM articleCategories
+			WHERE articleID = :articleID AND categoryID = :categoryID",
+		
 		'addArticleCourse' => "
 			INSERT INTO articleCourses (articleID, courseID)
 			VALUES (:articleID, :courseID)",
+		
+		'deleteArticleCourse' => "
+			DELETE FROM articleCourses
+			WHERE articleID = :articleID AND courseID = :courseID",
 		
 		'addArticleLink' => "
 			INSERT INTO articleLinks (articleID, linkID)
@@ -185,9 +214,17 @@ class AdminSQL{
 			INSERT INTO eventCategories (eventID, categoryID)
 			VALUES (:eventID, :categoryID)",
 		
+		'deleteEventCategory' => "
+			DELETE FROM eventCategories
+			WHERE eventID = :eventID AND categoryID = :categoryID",
+		
 		'addEventCourse' => "
 			INSERT INTO eventCourses (eventID, courseID)
 			VALUES (:eventID, :courseID)",
+		
+		'deleteEventCourse' => "
+			DELETE FROM eventCourses
+			WHERE eventID = :eventID AND courseID = :courseID",
 		
 		'addEventLink' => "
 			INSERT INTO eventLinks (eventID, linkID)
@@ -231,9 +268,17 @@ class AdminSQL{
 			INSERT INTO jobCategories (jobID, categoryID)
 			VALUES (:jobID, :categoryID)",
 		
+		'deleteJobCategory' => "
+			DELETE FROM jobCategories
+			WHERE jobID = :jobID AND categoryID = :categoryID",
+		
 		'addJobCourse' => "
 			INSERT INTO jobCourses (jobID, courseID)
 			VALUES (:jobID, :courseID)",
+		
+		'deleteJobCourse' => "
+			DELETE FROM jobCourses
+			WHERE jobID = :jobID AND courseID = :courseID",
 		
 		'addJobLink' => "
 			INSERT INTO jobLinks (jobID, linkID)
