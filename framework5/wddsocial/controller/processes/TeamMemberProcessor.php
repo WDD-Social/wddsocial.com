@@ -21,7 +21,7 @@ class TeamMemberProcessor {
 			$i = array_search($member, $members);
 			$userID = static::get_userID($member);
 			
-			if ($query->rowCount() > 0) {
+			if ($userID) {
 				switch ($contentType) {
 					case 'project':
 						$data = array('userID' => $userID, 'projectID' => $contentID);
@@ -142,6 +142,9 @@ class TeamMemberProcessor {
 		$query->execute($data);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$result = $query->fetch();
-		return $result->id;
+		if ($query->rowCount() > 0)
+			return $result->id;
+		else
+			return false;
 	}
 }
