@@ -172,6 +172,9 @@ class EditPage implements \Framework5\IExecutable {
 	private function _process_form() {
 		import('wddsocial.model.WDDSocial\ContentVO');
 		import('wddsocial.model.WDDSocial\FormResponse');
+		import('wddsocial.controller.processes.WDDSocial\CategoryProcessor');
+		import('wddsocial.controller.processes.WDDSocial\CourseProcessor');
+		import('wddsocial.controller.processes.WDDSocial\TeamMemberProcessor');
 		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
 		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		
@@ -287,6 +290,60 @@ class EditPage implements \Framework5\IExecutable {
 				} */
 			}
 		}
+		
+		$currentMembers = array();
+		$newMembers = array();
+		$currentRoles = array();
+		$newRoles = array();
+		foreach ($content->team as $currentMember) {
+			array_push($currentMembers, "{$currentMember->firstName} {$currentMember->lastName}");
+			if ($content->type == 'project')
+				array_push($currentRoles, $currentMember->role);
+		}
+		$i = 0;
+		foreach ($_POST['team'] as $newMember) {
+			$i++;
+			if ($newMember != '')
+				array_push($newMembers, $newMember);
+		}
+		if ($content->type == 'project')
+			$newRoles = $_POST['roles'];
+		
+		/*
+echo "<pre>";
+		print_r($currentMembers);
+		print_r($currentRoles);
+		echo "</pre>";
+		
+		echo "<pre>";
+		print_r($newMembers);
+		print_r($newRoles);
+		echo "</pre>";
+*/
+		
+		TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
+		
+		$currentCategories = array();
+		$newCategories = array();
+		foreach ($content->categories as $currentCategory) {
+			array_push($currentCategories, $currentCategory->title);
+		}
+		foreach ($_POST['categories'] as $newCategory) {
+			if ($newCategory != '')
+				array_push($newCategories, $newCategory);
+		}
+		CategoryProcessor::update_categories($currentCategories, $newCategories, $content->type, $content->id);
+		
+		$currentCourses = array();
+		$newCourses = array();
+		foreach ($content->courses as $currentCourse) {
+			array_push($currentCourses, $currentCourse->id);
+		}
+		foreach ($_POST['courses'] as $newCourse) {
+			if ($newCourse != '')
+				array_push($newCourses, $newCourse);
+		}
+		CourseProcessor::update_courses($currentCourses, $newCourses, $content->type, $content->id);
 		
 		$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
 		
