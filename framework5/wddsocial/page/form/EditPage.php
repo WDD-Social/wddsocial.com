@@ -124,11 +124,11 @@ class EditPage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
 		}
 		
-		/* # display image section
-		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
+		# display image section
+		# echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
 		
 		# display video section
-		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos)); */
+		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos));
 		
 		# display category section
 		echo render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', array('categories' => $content->categories));
@@ -310,7 +310,18 @@ class EditPage implements \Framework5\IExecutable {
 			$newRoles = $_POST['roles'];
 		TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
 		
-		//Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
+		//Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
+		
+		$postvideos = array();
+		foreach ($_POST['videos'] as $pvideo) {
+			if ($pvideo != '')
+				array_push($postvideos, htmlspecialchars("$pvideo"));
+		}
+		$contentvideos = array();
+		foreach ($content->videos as $cvideo) {
+			array_push($contentvideos, htmlspecialchars("{$cvideo->embedCode}"));
+		}
+		VideoProcessor::update_videos($contentvideos, $postvideos, $content->id, $content->type);
 		
 		$currentCategories = array();
 		$newCategories = array();
