@@ -4,13 +4,8 @@ namespace Framework5;
 
 class ExceptionView implements IView {
 	
-	public function render($options = null) {
-		$e = $options;
-		/*
-		echo "<pre>";
-		print_r($e);
-		echo "<pre>";
-		*/
+	public function render($e = null) {
+		
 		$html = <<<HTML
 		
 		<h2>You dun goofed</h2>
@@ -23,8 +18,8 @@ class ExceptionView implements IView {
 		<h2>We backtraced it</h2>
 HTML;
 		
-		$get_trace = $e->getTrace();
-		foreach($get_trace as $trace) {
+		$trace_array = $e->getTrace();
+		foreach ($trace_array as $trace) {
 		$html .= <<<HTML
 		<table>
 			<tr>
@@ -47,6 +42,7 @@ HTML;
 HTML;
 			if ($trace['args']) {
 				foreach ($trace['args'] as $arg) {
+					if (!is_string($arg)) $arg = gettype($arg);
 					$html .= <<<HTML
 			<tr>
 				<td>arg</td>

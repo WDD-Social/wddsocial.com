@@ -11,10 +11,17 @@ namespace WDDSocial;
 
 class ProjectPage implements \Framework5\IExecutable {
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.ProjectPageLang');
+	}
+	
+	
+	
 	public function execute() {
 		
 		# get project details
 		$project = $this->getProject(\Framework5\Request::segment(1));
+		
 		
 		# handle form submission
 		if (isset($_POST['submit'])){
@@ -26,61 +33,64 @@ class ProjectPage implements \Framework5\IExecutable {
 			}
 		}
 		
+		
 		# if the project does not exist
 		if ($project) {
+			
 			# display site header
-			echo render(':template', array('section' => 'top', 'title' => "{$project->title}"));
-			echo render(':section', array('section' => 'begin_content'));
+			$page_title = $project->title;
+			$content = render(':section', array('section' => 'begin_content'));
 			
 			# display project overview
-			echo render(':section', 
+			$content .= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'project', 
 					'classes' => array('large', 'with-secondary'), 'header' => $project->title));
-			echo render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $project);
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'project'));
+			$content .= render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $project);
+			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'project'));
 			
 			
 			# display prject team
-			echo render(':section', 
+			$content .= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'team', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => 'Team'));
-			echo render('wddsocial.view.content.WDDSocial\MembersDisplayView', $project);
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'team'));
+			$content .= render('wddsocial.view.content.WDDSocial\MembersDisplayView', $project);
+			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'team'));
 			
 			
 			# display project media
-			echo render(':section', 
+			$content .= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'media', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => 'Media', 'extra' => 'media_filters'));
-			echo render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
+			$content .= render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
 				array('content' => $project, 'active' => 'images'));
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'media'));
+			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'media'));
 			
 			
 			# display project comments
-			echo render(':section', 
+			$content .= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'comments', 
 					'classes' => array('medium', 'with-secondary'), 'header' => 'Comments'));
-			echo render('wddsocial.view.content.WDDSocial\CommentDisplayView', $project->comments);
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'comments'));
+			$content .= render('wddsocial.view.content.WDDSocial\CommentDisplayView', $project->comments);
+			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'comments'));
+			$content .= render(':section', array('section' => 'end_content'));
 			
 		}
-		
 		
 		else {
-			# display site header
-			echo render(':template', array('section' => 'top', 'title' => "Project Not Found"));
-			echo render(':section', array('section' => 'begin_content'));
 			
-			# display project not found view
-			echo "<h1>Project Not Found</h1>";
+			$page_title = $this->lang->text('not-found-page-title'); # set page title
+			
+			$content = render(':section', array('section' => 'begin_content'));
+			$content .= "<h1>Project Not Found</h1>";
+			$content .= render(':section', array('section' => 'end_content'));
 		}
 		
-		# display page footer
-		echo render(':section', array('section' => 'end_content'));
-		echo render(':template', array('section' => 'bottom'));
+		
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $page_title, 'content' => $content));
 	}
 	
 	

@@ -20,35 +20,33 @@ class IndexPage implements \Framework5\IExecutable {
 	
 	
 	public function execute() {
-		# site header
-		echo render(':template',
-			array('section' => 'top', 'title' => $this->lang->text('page_title')));
 		
 		# check which home page to create, based on authorization
 		if (UserSession::is_authorized()) {
 			# display user dashboard page
-			echo render(':section',
+			$content = render(':section',
 				array('section' => 'begin_content', 'classes' => array('dashboard')));
-			$this->_dashboard_share();
-			$this->_dashboard_latest();
-			$this->_public_events();
-			$this->_dashboard_jobs();
+			$content .= $this->_dashboard_share();
+			$content .= $this->_dashboard_latest();
+			$content .= $this->_public_events();
+			$content .= $this->_dashboard_jobs();
+			$content .= render(':section', array('section' => 'end_content'));
 		}
 		
 		# display public home page
 		else {
-			echo render(':section',
+			$content = render(':section',
 				array('section' => 'begin_content', 'classes' => array('start-page')));
-			$this->_public_projects();
-			$this->_public_sign_in();
-			$this->_public_people();
-			$this->_public_articles();
-			$this->_public_events();
+			$content .= $this->_public_projects();
+			$content .= $this->_public_sign_in();
+			$content .= $this->_public_people();
+			$content .= $this->_public_articles();
+			$content .= $this->_public_events();
+			$content .= render(':section', array('section' => 'end_content'));
 		}
 		
-		# display site footer
-		echo render(':section', array('section' => 'end_content'));
-		echo render(':template', array('section' => 'bottom'));
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $this->lang->text('page-title'), 'content' => $content));
 	}
 	
 	
@@ -60,16 +58,18 @@ class IndexPage implements \Framework5\IExecutable {
 	private function _dashboard_share(){
 				
 		# display section header
-		echo render(':section', 
+		$html = render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'share', 'classes' => 
-				array('small', 'no-margin', 'side-sticky'), 'header' => $this->lang->text('share_header')));
+				array('small', 'no-margin', 'side-sticky'), 'header' => $this->lang->text('share-header')));
 		
 		# display form
-		echo render('wddsocial.view.form.WDDSocial\ShareView');
+		$html .= render('wddsocial.view.form.WDDSocial\ShareView');
 		
 		# display section footer
-		echo render(':section', 
+		$html .= render(':section', 
 			array('section' => 'end_content_section', 'id' => 'share'));
+		
+		return $html;
 	}
 	
 	
@@ -81,40 +81,45 @@ class IndexPage implements \Framework5\IExecutable {
 	private function _dashboard_latest(){
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
-		# display section header
-		echo render(':section',
-			array('section' => 'begin_content_section', 'id' => 'latest',
-				'classes' => array('medium', 'with-secondary', 'filterable'),
-				'header' => $this->lang->text('latest_header'), 'extra' => 'latest_filters'));
-		
 		$paginator = new Paginator(1,20,10);
 		
-		# query
+		
+		# render section header
+		$html = render(':section',
+			array('section' => 'begin_content_section', 'id' => 'latest',
+				'classes' => array('medium', 'with-secondary', 'filterable'),
+				'header' => $this->lang->text('latest-header'), 'extra' => 'latest_filters'));
+		
+		# render section items
 		$query = $this->db->prepare($this->sql->getLatest . " LIMIT 0, {$paginator->limit}");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
-		# display section items
 		while($item = $query->fetch()){
-			echo render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
+			$html .= render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
 				array('type' => $item->type,'content' => $item));
 		}
 		
+		# render section end
 		$query = $this->db->prepare($this->sql->getLatest . " LIMIT {$paginator->limit}, {$paginator->per}");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->fetch();
 		
 		if ($query->rowCount() > 0) {
-			# display section footer
-			echo render(':section',
-				array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/home/{$paginator->next}"));	
-		}		
+			# display load more section footer
+			$html .= render(':section',
+				array('section' => 'end_content_section', 'id' => 'latest', 
+					'load_more' => 'posts', 'load_more_link' => "/home/{$paginator->next}"));	
+		}
+		
 		else {
 			# display section footer
-			echo render(':section',
+			$html .= render(':section',
 				array('section' => 'end_content_section', 'id' => 'latest'));	
 		}
+		
+		return $html;
 	}
 	
 	
@@ -126,16 +131,18 @@ class IndexPage implements \Framework5\IExecutable {
 	private function _public_sign_in(){
 				
 		# display section header
-		echo render(':section', 
+		$html = render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'sign-in', 
-				'classes' => array('small', 'no-margin'), 'header' => $this->lang->text('signin_header')));
+				'classes' => array('small', 'no-margin'), 'header' => $this->lang->text('signin-header')));
 		
 		# display form
-		echo render('wddsocial.view.form.WDDSocial\SigninView');
+		$html .= render('wddsocial.view.form.WDDSocial\SigninView');
 				
 		# display section footer
-		echo render(':section', 
+		$html .= render(':section', 
 			array('section' => 'end_content_section', 'id' => 'sign-in'));
+		
+		return $html;
 	}
 	
 	
@@ -165,22 +172,24 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		# query
 		
-		echo render(':section', 
+		$html = render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'projects', 
 				'classes' => array('large', 'slider'), 
-				'header' => $this->lang->text('projects_header'), 'extra' => 'slider_controls'));
+				'header' => $this->lang->text('projects-header'), 'extra' => 'slider_controls'));
 		
 		# Display 5 projects 
 		/* foreach ($projects as $project) {
-			echo render('wddsocial.view.content.WDDSocial\LargeDisplayView', array('type' => $project->type,'content' => $project));
+			$html .= render('wddsocial.view.content.WDDSocial\LargeDisplayView', array('type' => $project->type,'content' => $project));
 		} */
 		
 		# Display 1 project
-		echo render('wddsocial.view.content.WDDSocial\LargeDisplayView', array('type' => $projects[0]->type,'content' => $projects[0]));
+		$html .= render('wddsocial.view.content.WDDSocial\LargeDisplayView', array('type' => $projects[0]->type,'content' => $projects[0]));
 		
 		# Create section footer
-		echo render(':section', 
+		$html .= render(':section', 
 			array('section' => 'end_content_section', 'id' => 'projects'));
+		
+		return $html;
 	}
 	
 	
@@ -196,20 +205,22 @@ class IndexPage implements \Framework5\IExecutable {
 		$query = $this->db->query($this->sql->getRecentlyActivePeople);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\RecentPersonVO');
 		
-		echo render(':section', 
+		$html = render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'people', 
 				'classes' => array('small', 'image-grid'), 
-				'header' => $this->lang->text('people_header')));
+				'header' => $this->lang->text('people-header')));
 		
 		# Create section items
 		while($row = $query->fetch()){
-			echo render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
+			$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
 				array('type' => 'person_imagegrid','content' => $row));
 		}
 		
 		# Create section footer
-		echo render(':section', 
+		$html .= render(':section', 
 			array('section' => 'end_content_section', 'id' => 'people'));
+		
+		return $html;
 	}
 	
 	
@@ -225,9 +236,9 @@ class IndexPage implements \Framework5\IExecutable {
 		$query = $this->db->query($this->sql->getRecentArticles);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
-		echo render(':section', 
+		$html = render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'articles', 
-				'classes' => array('small', 'slider'), 'extra' => 'slider_controls', 'header' => $this->lang->text('articles_header')));
+				'classes' => array('small', 'slider'), 'extra' => 'slider_controls', 'header' => $this->lang->text('articles-header')));
 		
 		# Create section items ***GETS 10 ARTICLES***
 		/* while($row = $query->fetch()){
@@ -236,14 +247,16 @@ class IndexPage implements \Framework5\IExecutable {
 		$row = $query->fetchAll();
 		for($i = 0; $i<2; $i++){
 			if(isset($row[$i])){
-				echo render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
+				$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
 					array('type' => $row[$i]->type,'content' => $row[$i]));
 			}
 		}
 		
 		# Create section footer
-		echo render(':section', 
+		$html .= render(':section', 
 			array('section' => 'end_content_section', 'id' => 'articles'));
+		
+		return $html;
 	}
 	
 	
@@ -261,37 +274,39 @@ class IndexPage implements \Framework5\IExecutable {
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\EventVO');
 		
 		# 
-		if(UserSession::is_authorized()){
-			echo render(':section', 
+		if (UserSession::is_authorized()){
+			$html = render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'events', 
 					'classes' => array('small', 'no-margin', 'side-sticky'), 
-					'header' => $this->lang->text('events_header')));
+					'header' => $this->lang->text('events-header')));
 			# set limit of posts
 			$limit = 3;
 		}
 		
 		# 
-		else{
-			echo render(':section', 
+		else {
+			$html = render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'events', 
 					'classes' => array('small', 'no-margin', 'slider'), 
-					'header' => $this->lang->text('events_header'), 'extra' => 'slider_controls'));
+					'header' => $this->lang->text('events-header'), 'extra' => 'slider_controls'));
 			# set limit of posts
 			$limit = 2;
 		}		
 		
 		# create section items
 		$row = $query->fetchAll();
-		for($i = 0; $i<$limit; $i++){
-			if(isset($row[$i])){
-				echo render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
+		for ($i = 0; $i<$limit; $i++) {
+			if (isset($row[$i])) {
+				$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
 					array('type' => $row[$i]->type,'content' => $row[$i]));
 			}
 		}
 		
 		# create section footer
-		echo render(':section', 
+		$html .= render(':section', 
 			array('section' => 'end_content_section', 'id' => 'events'));
+		
+		return $html;
 	}
 	
 	
@@ -307,19 +322,21 @@ class IndexPage implements \Framework5\IExecutable {
 		$query = $this->db->query($this->sql->getRecentJobs);
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 		
-		echo render(':section', 
+		$html = render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'jobs', 
 				'classes' => array('small', 'no-margin', 'side-sticky'), 
-				'header' => $this->lang->text('jobs_header')));
+				'header' => $this->lang->text('jobs-header')));
 		
 		# Create section items
-		while($row = $query->fetch()){
-			echo render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
+		while ($row = $query->fetch()){
+			$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
 				array('type' => $row->type,'content' => $row));
 		}
 		
 		# Create section footer
-		echo render(':section', 
+		$html .= render(':section', 
 			array('section' => 'end_content_section', 'id' => 'jobs'));
+		
+		return $html;
 	}
 }

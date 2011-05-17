@@ -28,16 +28,15 @@ class UserPage implements \Framework5\IExecutable {
 		# if the user does not exist
 		if ($user) {
 			
-			# display site header
-			echo render(':template', 
-				array('section' => 'top', 'title' => "{$user->firstName} {$user->lastName}"));
-			echo render(':section', array('section' => 'begin_content'));
+			$page_title = $user->firstName . $user->lastName; # set page title
+			
+			$content .= render(':section', array('section' => 'begin_content'));
 			
 			# display user intro
-			echo render('wddsocial.view.profile.WDDSocial\UserIntroView', $user);
+			$content .= render('wddsocial.view.profile.WDDSocial\UserIntroView', $user);
 			
 			# display section header
-			echo render(':section',
+			$content .= render(':section',
 				array('section' => 'begin_content_section', 'id' => 'latest',
 					'classes' => array('medium', 'with-secondary', 'filterable'),
 					'header' => $this->lang->text('latest'), 'extra' => 'user_latest_filters'));
@@ -47,25 +46,28 @@ class UserPage implements \Framework5\IExecutable {
 			# display section items
 			$activity = $this->_get_user_latest($user->id, 0, $paginator->limit);
 			foreach ($activity as $item) {
-				echo render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
+				$content .= render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
 					array('type' => $item->type,'content' => $item));
 			}
-			
 			$next = $this->_get_user_latest($user->id, $paginator->limit, 20);
+			
 			
 			if (count($next) > 0) {
 				# display section footer
-				echo render(':section',
+				$content .= render(':section',
 					array('section' => 'end_content_section', 'id' => 'latest', 'load_more' => 'posts', 'load_more_link' => "/user/{$user->vanityURL}/{$paginator->next}"));	
-			}		
+			}
+			
 			else {
 				# display section footer
-				echo render(':section',
+				$content .= render(':section',
 					array('section' => 'end_content_section', 'id' => 'latest'));	
 			}
+			
 					
 			# display users' contact info
-			echo render('wddsocial.view.profile.WDDSocial\UserContactView', $user);
+			$content .= render('wddsocial.view.profile.WDDSocial\UserContactView', $user);
+			$content .= render(':section', array('section' => 'end_content'));
 		}
 		
 		
@@ -73,17 +75,18 @@ class UserPage implements \Framework5\IExecutable {
 		else {
 			
 			# display site header
-			echo render(':template', array('section' => 'top', 'title' => "User Not Found"));
-			echo render(':section', array('section' => 'begin_content'));
+			$page_title = $this->lang->text('not-found-page-title');
+			$content = render(':section', array('section' => 'begin_content'));
 			
 			# display user not found view
-			echo render('wddsocial.view.profile.WDDSocial\NotFoundView');
+			$content .= render('wddsocial.view.profile.WDDSocial\NotFoundView');
+			$content .= render(':section', array('section' => 'end_content'));
 		}
 		
 		
-		# display site footer
-		echo render(':section', array('section' => 'end_content'));
-		echo render(':template', array('section' => 'bottom'));
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $page_title, 'content' => $content));
 	}
 	
 	

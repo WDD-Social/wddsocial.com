@@ -9,6 +9,9 @@ class UserPageLang implements \Framework5\ILanguagePack {
 	public static function content($id, $var) {
 		switch ($id) {
 			
+			case 'not-found-page-title':
+				return 'User Not Found';
+			
 			case 'edit':
 				return 'Edit';
 			

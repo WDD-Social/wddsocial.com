@@ -11,54 +11,63 @@ namespace WDDSocial;
 
 class JobPage implements \Framework5\IExecutable {
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.JobPageLang');
+	}
+	
+	
+	
 	public function execute() {	
 		
 		$job = $this->getJob(\Framework5\Request::segment(1));
 			
 		if ($job) {
-			# display site header
-			echo render(':template', array('section' => 'top', 'title' => "{$job->title}"));
-			echo render(':section', array('section' => 'begin_content'));
+			
+			$page_title = $job->title; # set page title
+			$content = render(':section', array('section' => 'begin_content'));
 			
 			# display job overview
-			echo render(':section', 
+			$content .= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'job', 
 					'classes' => array('large', 'with-secondary'), 'header' => $job->title));
-			echo render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $job);
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'job'));
+			$content .= render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $job);
+			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'job'));
 			
 			
 			# display job details
-			echo render(':section', 
+			$content .= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'details', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => 'Details'));
-			echo render('wddsocial.view.content.WDDSocial\JobDetailsDisplayView', $job);
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'details'));
+			$content .= render('wddsocial.view.content.WDDSocial\JobDetailsDisplayView', $job);
+			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'details'));
 			
 			
 			# display job media
-			echo render(':section', 
+			$content .= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'media', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => 'Media', 'extra' => 'media_filters'));
-			echo render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
+			$content .= render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
 				array('content' => $job, 'active' => 'images'));
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'media'));
+			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'media'));
+			$content .= render(':section', array('section' => 'end_content'));
 			
 		}
 		
-		# the job listing does not exiost
+		# the job listing does not exist
 		else {
 			# display header
-			echo render(':template', array('section' => 'top', 'title' => "Job Not Found"));
-			echo render(':section', array('section' => 'begin_content'));
+			$page_title = $this->lang->text('not-found-page-title');
+			$content = render(':section', array('section' => 'begin_content'));
 			
-			echo "<h1>Job Not Found</h1>";
+			$content .= "<h1>Job Not Found</h1>";
+			$content .= render(':section', array('section' => 'end_content'));
 		}
 		
-		echo render(':section', array('section' => 'end_content'));
-		echo render(':template', array('section' => 'bottom'));
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $page_title, 'content' => $content));
 	}
 	
 	

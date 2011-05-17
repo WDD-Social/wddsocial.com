@@ -13,23 +13,21 @@ class JobsPage implements \Framework5\IExecutable {
 	public function __construct() {
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.JobsPageLang');
 	}
 	
 	
 	
 	public function execute() {
-		import('wddsocial.model.WDDSocial\DisplayVO');
 		
-		# display site header
-		echo render(':template', array('section' => 'top', 'title' => 'Jobs'));
-		
-		echo render(':section', array('section' => 'begin_content'));
+		$page_title = $this->lang->text('page-title'); # set page title
 		
 		
-		echo render(':section', array('section' => 'end_content'));
+		$content = render(':section', array('section' => 'begin_content'));
+		$content .= render(':section', array('section' => 'end_content'));
 		
-		# display site footer
-		echo render(':template', array('section' => 'bottom'));
-		
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $page_title, 'content' => $content));
 	}
 }

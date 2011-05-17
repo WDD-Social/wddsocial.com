@@ -78,6 +78,14 @@ if (!function_exists('package')) {
 	}
 }
 
+# determines if a variable is set and not empty
+if (!function_exists('set')) {
+	function set($var) {
+		if (!isset($var) or empty($var)) return false;
+		return true;
+	}
+}
+
 # redirect function
 if (!function_exists('redirect')) {
 	function redirect($location) {

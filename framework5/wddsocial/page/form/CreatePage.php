@@ -10,13 +10,24 @@ namespace WDDSocial;
 
 class CreatePage implements \Framework5\IExecutable {
 	
+	public function __construct() {
+		//$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.PageLang');
+	}
+	
 	public function execute() {
+		
+		# require user auth
 		UserSession::protect();
-		if(!isset($_POST['type'])){
+		
+		
+		# if content type was not specified in post data
+		if (!isset($_POST['type'])) {
 			$request = \Framework5\Request::segment(1);
-			if($request != '' AND ($request == 'project' or $request == 'article' or $request == 'event' or $request == 'job')){
+			if ($request != '' AND ($request == 'project' or $request == 'article' or 
+			$request == 'event' or $request == 'job')){
 				$_POST['type'] = $request;
-			}else{
+			}
+			else{
 				$_POST['type'] = 'project';	
 			}
 		}
@@ -32,19 +43,23 @@ class CreatePage implements \Framework5\IExecutable {
 			}
 		}
 			
-		# display site header
-		echo render(':template', array('section' => 'top', 'title' => "Create new {$_POST['type']}"));
+		
+		
+		$page_title = "Create new {$_POST['type']}";
 		
 		# open content section
-		echo render(':section', array('section' => 'begin_content'));
+		$content = render(':section', array('section' => 'begin_content'));
 		
 		# display basic form header
-		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $_POST, 'error' => $response->message, 'process' => 'creation'));
+		$content .= render('wddsocial.view.form.create.WDDSocial\BasicElements', 
+			array('section' => 'header', 'data' => $_POST, 
+				'error' => $response->message, 'process' => 'creation'));
 		
 		# display content type-specific options
-		if ($_POST['type'] == 'project' or $_POST['type'] == 'article' or $_POST['type'] == 'event' or $_POST['type'] == 'job') {
+		if ($_POST['type'] == 'project' or $_POST['type'] == 'article' or 
+		$_POST['type'] == 'event' or $_POST['type'] == 'job') {
 			$typeCapitalized = ucfirst($_POST['type']);
-			echo render("wddsocial.view.form.create.WDDSocial\\{$typeCapitalized}ExtraInputs");
+			$content .= render("wddsocial.view.form.create.WDDSocial\\{$typeCapitalized}ExtraInputs");
 		}
 		
 		# display team member section for appropriate content types
@@ -57,37 +72,44 @@ class CreatePage implements \Framework5\IExecutable {
 					$teamTitle = 'Authors';
 					break;
 			}
-			echo render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $_POST['type']));
+			
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
+				array('header' => $teamTitle, 'type' => $_POST['type']));
 		}
 		
 		# display image section
-		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs');
+		$content .= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs');
 		
 		# display video section
-		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs');
+		$content .= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs');
 		
 		# display category section
-		echo render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs');
+		$content .= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs');
 		
 		# display link section
-		echo render('wddsocial.view.form.pieces.WDDSocial\LinkInputs');
+		$content .= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs');
 		
 		#display course section
 		if ($_POST['type'] != 'job') {
-			echo render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', array('header' => true));
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
+				array('header' => true));
 		}
 		
 		# display other options
-		echo render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', array('data' => $_POST));
+		$content .= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', 
+			array('data' => $_POST));
 		
 		# display form footer
-		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'footer'));
+		$content .= render('wddsocial.view.form.create.WDDSocial\BasicElements', 
+			array('section' => 'footer'));
 		
 		# end content section
-		echo render(':section', array('section' => 'end_content'));
+		$content .= render(':section', array('section' => 'end_content'));
 		
-		# display site footer
-		echo render(':template', array('section' => 'bottom'));
+		
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $page_title, 'content' => $content));
 	}
 	
 	
@@ -97,6 +119,7 @@ class CreatePage implements \Framework5\IExecutable {
 	*/
 	
 	private function _process_form() {
+		
 		import('wddsocial.model.WDDSocial\FormResponse');
 		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
@@ -106,6 +129,7 @@ class CreatePage implements \Framework5\IExecutable {
 		import('wddsocial.controller.processes.WDDSocial\LinkProcessor');
 		import('wddsocial.controller.processes.WDDSocial\VideoProcessor');
 		
+		# get database resources
 		$db = instance(':db');
 		$sel_sql = instance(':sel-sql');
 		$admin_sql = instance(':admin-sql');
@@ -113,6 +137,7 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		# check for required form values
 		$required = array('title','description');
+		
 		switch ($_POST['type']) {
 			case 'article':
 				array_push($required,'content');
@@ -128,6 +153,7 @@ class CreatePage implements \Framework5\IExecutable {
 				array_push($required,'email');
 				break;
 		}
+		
 		$incomplete = false;
 		foreach ($required as $value) {
 			if ($_POST[$value] == null) $incomplete = true;

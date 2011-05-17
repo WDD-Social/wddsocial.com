@@ -19,6 +19,7 @@ class ArticlePage implements \Framework5\IExecutable {
 		# get article information
 		$article = $this->getArticle(\Framework5\Request::segment(1));
 		
+		
 		# handle form submission
 		if (isset($_POST['submit'])){
 			$response = $this->_process_form($article->id,$article->type);
@@ -29,8 +30,9 @@ class ArticlePage implements \Framework5\IExecutable {
 			}
 		}
 		
-		# if the article exists
+		
 		if ($article) {
+			
 			# display site header
 			echo render(':template', array('section' => 'top', 'title' => $article->title));
 			echo render(':section', array('section' => 'begin_content'));
@@ -45,7 +47,8 @@ class ArticlePage implements \Framework5\IExecutable {
 			
 			
 			# translate and natural language
-			if (count($article->team) > 1 || count($article->team) < 1) $author_header = $lang->text('authors');
+			if (count($article->team) > 1 || count($article->team) < 1)
+				$author_header = $lang->text('authors');
 			else $author_header = $lang->text('author');
 			
 			# display article authors
@@ -76,8 +79,6 @@ class ArticlePage implements \Framework5\IExecutable {
 			
 		}
 		
-		
-		# the article does not exist
 		else {
 			# display site header
 			echo render(':template', array('section' => 'top', 'title' => $lang->text('article_not_found')));

@@ -22,10 +22,13 @@ final class AjaxApplication extends ApplicationBase implements IApplication {
 		
 		# import packages in every request
 		$this->global_import();
-		
+				
 		# check user session
 		import('wddsocial.controller.WDDSocial\UserSession');
 		\WDDSocial\UserSession::init();
+		
+		# enable localization module
+		$this->localize();
 		
 		# resolve request to a page controller
 		import('ajax.config.Ajax\Router');
@@ -62,5 +65,14 @@ final class AjaxApplication extends ApplicationBase implements IApplication {
 		
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
+	}
+	
+	
+	
+	private function localize() {
+		import('core.module.i18n.Framework5\Lang');
+		if (\WDDSocial\UserSession::is_authorized()) {
+			Lang::language(\WDDSocial\UserSession::user_lang());
+		}
 	}
 }
