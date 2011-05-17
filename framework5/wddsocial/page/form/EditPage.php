@@ -176,6 +176,7 @@ class EditPage implements \Framework5\IExecutable {
 		import('wddsocial.controller.processes.WDDSocial\CourseProcessor');
 		import('wddsocial.controller.processes.WDDSocial\TeamMemberProcessor');
 		import('wddsocial.controller.processes.WDDSocial\LinkProcessor');
+		import('wddsocial.controller.processes.WDDSocial\VideoProcessor');
 		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
 		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		
@@ -309,6 +310,8 @@ class EditPage implements \Framework5\IExecutable {
 			$newRoles = $_POST['roles'];
 		TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
 		
+		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
+		
 		$currentCategories = array();
 		$newCategories = array();
 		foreach ($content->categories as $currentCategory) {
@@ -349,6 +352,6 @@ class EditPage implements \Framework5\IExecutable {
 		
 		$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
 		
-		return new FormResponse(true, "/{$content->type}/{$contentVanityURL}");
+		//return new FormResponse(true, "/{$content->type}/{$contentVanityURL}");
 	}
 }

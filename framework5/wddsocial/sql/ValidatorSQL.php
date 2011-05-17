@@ -171,7 +171,27 @@ class ValidatorSQL{
 		'checkIfJobCourseExists' => "
 			SELECT courseID
 			FROM jobCourses
-			WHERE jobID = :jobID AND courseID = :courseID"
+			WHERE jobID = :jobID AND courseID = :courseID",
+		
+		'checkIfProjectVideoExists' => "
+			SELECT videoID
+			FROM projectVideos
+			WHERE projectID = :projectID AND videoID = :videoID",
+		
+		'checkIfArticleVideoExists' => "
+			SELECT videoID
+			FROM articleVideos
+			WHERE articleID = :articleID AND videoID = :videoID",
+		
+		'checkIfEventVideoExists' => "
+			SELECT videoID
+			FROM eventVideos
+			WHERE eventID = :eventID AND videoID = :videoID",
+		
+		'checkIfJobVideoExists' => "
+			SELECT videoID
+			FROM jobVideos
+			WHERE jobID = :jobID AND videoID = :videoID"
 	);
 	
 	public function __get($id){

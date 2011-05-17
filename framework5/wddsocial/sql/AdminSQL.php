@@ -123,10 +123,6 @@ class AdminSQL{
 			DELETE FROM projectLinks
 			WHERE projectID = :projectID AND linkID = :linkID",
 		
-		'deleteProjectLink' => "
-			DELETE FROM projectLinks
-			WHERE projectID = :projectID AND linkID = :linkID",
-		
 		'addProjectImage' => "
 			INSERT INTO projectImages (projectID, imageID)
 			VALUES (:projectID,:imageID)",
@@ -134,6 +130,10 @@ class AdminSQL{
 		'addProjectVideo' => "
 			INSERT INTO projectVideos (projectID, videoID)
 			VALUES (:projectID,:videoID)",
+		
+		'deleteProjectVideo' => "
+			DELETE FROM projectVideos
+			WHERE projectID = :projectID AND videoID = :videoID",
 		
 		'addProjectComment' => "
 			INSERT INTO projectComments (projectID, commentID)
@@ -196,6 +196,10 @@ class AdminSQL{
 			INSERT INTO articleVideos (articleID, videoID)
 			VALUES (:articleID,:videoID)",
 		
+		'deleteArticleVideo' => "
+			DELETE FROM articleVideos
+			WHERE articleID = :articleID AND videoID = :videoID",
+		
 		'addArticleComment' => "
 			INSERT INTO articleComments (articleID, commentID)
 			VALUES (:articleID,:commentID)",
@@ -254,6 +258,10 @@ class AdminSQL{
 			INSERT INTO eventVideos (eventID, videoID)
 			VALUES (:eventID,:videoID)",
 		
+		'deleteEventVideo' => "
+			DELETE FROM eventVideos
+			WHERE eventID = :eventID AND videoID = :videoID",
+		
 		'addEventComment' => "
 			INSERT INTO eventComments (eventID, commentID)
 			VALUES (:eventID,:commentID)",
@@ -311,6 +319,10 @@ class AdminSQL{
 		'addJobVideo' => "
 			INSERT INTO jobVideos (jobID, videoID)
 			VALUES (:jobID,:videoID)",
+		
+		'deleteJobVideo' => "
+			DELETE FROM jobVideos
+			WHERE jobID = :jobID AND videoID = :videoID",
 		
 		'updateJob' => "
 			UPDATE jobs
