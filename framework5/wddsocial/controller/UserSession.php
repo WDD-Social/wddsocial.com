@@ -86,6 +86,23 @@ class UserSession {
 	
 	
 	/**
+	* Get the current users id
+	*/
+	
+	public static function user_avatar() {
+		static::session_started();
+		
+		$dir = 'images/avatars/';
+		$size = '_small.jpg';
+		$file = $dir . $_SESSION['user']->avatar . $size;
+		
+		if (file_exists($file)) return $file;	
+		else return "{$dir}user-default{$size}";
+	}
+	
+	
+	
+	/**
 	* Refreshes user's data (used when updating)
 	*/
 	
