@@ -119,6 +119,14 @@ class AdminSQL{
 			INSERT INTO projectLinks (projectID, linkID)
 			VALUES (:projectID, :linkID)",
 		
+		'deleteProjectLink' => "
+			DELETE FROM projectLinks
+			WHERE projectID = :projectID AND linkID = :linkID",
+		
+		'deleteProjectLink' => "
+			DELETE FROM projectLinks
+			WHERE projectID = :projectID AND linkID = :linkID",
+		
 		'addProjectImage' => "
 			INSERT INTO projectImages (projectID, imageID)
 			VALUES (:projectID,:imageID)",
@@ -176,6 +184,10 @@ class AdminSQL{
 			INSERT INTO articleLinks (articleID, linkID)
 			VALUES (:articleID, :linkID)",
 		
+		'deleteArticleLink' => "
+			DELETE FROM articleLinks
+			WHERE articleID = :articleID AND linkID = :linkID",
+		
 		'addArticleImage' => "
 			INSERT INTO articleImages (articleID, imageID)
 			VALUES (:articleID,:imageID)",
@@ -230,6 +242,10 @@ class AdminSQL{
 			INSERT INTO eventLinks (eventID, linkID)
 			VALUES (:eventID, :linkID)",
 		
+		'deleteEventLink' => "
+			DELETE FROM eventLinks
+			WHERE eventID = :eventID AND linkID = :linkID",
+		
 		'addEventImage' => "
 			INSERT INTO eventImages (eventID, imageID)
 			VALUES (:eventID,:imageID)",
@@ -283,6 +299,10 @@ class AdminSQL{
 		'addJobLink' => "
 			INSERT INTO jobLinks (jobID, linkID)
 			VALUES (:jobID, :linkID)",
+		
+		'deleteJobLink' => "
+			DELETE FROM jobLinks
+			WHERE jobID = :jobID AND linkID = :linkID",
 		
 		'addJobImage' => "
 			INSERT INTO jobImages (jobID, imageID)
