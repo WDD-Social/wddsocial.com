@@ -222,7 +222,7 @@ class AccountPage implements \Framework5\IExecutable {
 				if ($newCourse != '')
 					array_push($newCourses, $newCourse);
 			}
-			CourseProcessor::update_teacher_courses($this->user->id, $currentCourses, $newCourses);
+			CourseProcessor::update_courses($currentCourses, $newCourses, 'user', $this->user->id);
 		}
 		
 		
