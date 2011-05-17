@@ -56,7 +56,7 @@ class ArticlesPage implements \Framework5\IExecutable {
 		}
 		
 		# query
-		$query = $this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy LIMIT 0, {$paginator->limit}");
+		$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy LIMIT 0, {$paginator->limit}"):$this->db->prepare($this->sql->getPublicArticles . " ORDER BY $orderBy LIMIT 0, {$paginator->limit}");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
