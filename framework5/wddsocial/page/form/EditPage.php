@@ -352,6 +352,6 @@ class EditPage implements \Framework5\IExecutable {
 		
 		$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
 		
-		//return new FormResponse(true, "/{$content->type}/{$contentVanityURL}");
+		return new FormResponse(true, "/{$content->type}/{$contentVanityURL}");
 	}
 }
