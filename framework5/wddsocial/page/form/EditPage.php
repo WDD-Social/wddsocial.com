@@ -13,6 +13,11 @@ class EditPage implements \Framework5\IExecutable {
 	public function execute() {
 		UserSession::protect();
 		
+		$this->db = instance(':db');
+		$this->sel = instance(':sel-sql');
+		$this->val = instance(':val-sql');
+		$this->admin = instance(':admin-sql');
+		
 		# handle form submission
 		if (isset($_POST['submit'])){
 			$response = $this->_process_form();
@@ -24,7 +29,13 @@ class EditPage implements \Framework5\IExecutable {
 			}
 		}
 		
+		
+		
+		
 		else {
+		
+		
+		
 		
 		$types = array('project','article','event','job');
 		$type = \Framework5\Request::segment(1);
@@ -33,11 +44,6 @@ class EditPage implements \Framework5\IExecutable {
 			redirect('/');
 		
 		import('wddsocial.model.WDDSocial\ContentVO');
-		
-		$this->db = instance(':db');
-		$this->sel = instance(':sel-sql');
-		$this->val = instance(':val-sql');
-		$this->admin = instance(':admin-sql');
 		
 		switch ($type) {
 			case 'project':
@@ -118,11 +124,11 @@ class EditPage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
 		}
 		
-		# display image section
+		/* # display image section
 		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
 		
 		# display video section
-		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos));
+		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos)); */
 		
 		# display category section
 		echo render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', array('categories' => $content->categories));
@@ -146,7 +152,15 @@ class EditPage implements \Framework5\IExecutable {
 		
 		# display site footer
 		echo render(':template', array('section' => 'bottom'));
+		
+		
+		
+		
 		}
+		
+		
+		
+		
 	}
 	
 	
@@ -157,6 +171,14 @@ class EditPage implements \Framework5\IExecutable {
 	
 	private function _process_form() {
 		import('wddsocial.model.WDDSocial\ContentVO');
+		import('wddsocial.model.WDDSocial\FormResponse');
+		import('wddsocial.controller.processes.WDDSocial\CategoryProcessor');
+		import('wddsocial.controller.processes.WDDSocial\CourseProcessor');
+		import('wddsocial.controller.processes.WDDSocial\TeamMemberProcessor');
+		import('wddsocial.controller.processes.WDDSocial\LinkProcessor');
+		import('wddsocial.controller.processes.WDDSocial\VideoProcessor');
+		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
+		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		
 		$this->db = instance(':db');
 		$this->sel = instance(':sel-sql');
@@ -182,56 +204,154 @@ class EditPage implements \Framework5\IExecutable {
 		$fields = array();
 		
 		if ($_POST['title'] != $content->title)
-			$fields['title'] = $_POST['title'];
+			$fields['title'] = addslashes($_POST['title']);
 		
 		if ($_POST['description'] != $content->description)
-			$fields['description'] = $_POST['description'];
+			$fields['description'] = addslashes($_POST['description']);
 		
-		if ($_POST['content'] != $content->content )
-			$fields['content'] = $_POST['content'];
+		if ($_POST['content'] != $content->content)
+			$fields['content'] = addslashes($_POST['content']);
+		
+		if ($_POST['vanityURL'] != $content->vanityURL and $_POST['vanityURL'] != '')
+			$fields['vanityURL'] = addslashes($_POST['vanityURL']);
+		else if ($_POST['vanityURL'] == '')
+			VanityURLProcessor::generate($content->id, $content->type);
 		
 		switch ($content->type) {
 			case 'project':
-				if ($_POST['completed-date'] != $content->completeDateInput )
-					$fields['completedDate'] = $_POST['completed-date'];
+				if ($_POST['completed-date'] != $content->completeDateInput)
+					$fields['completeDate'] = addslashes($_POST['completed-date']);
 				break;
 			case 'event':
-				if ($_POST['location'] != $content->location )
-					$fields['location'] = $_POST['location'];
-				if ( ($_POST['date'] != $content->startDateInput) or ($_POST['start-time'] != $content->startTimeInput))
-					$fields['startDatetime'] = $_POST['date'] . ' ' . $_POST['start-time'];
+				if ($_POST['location'] != $content->location)
+					$fields['location'] = addslashes($_POST['location']);
 				if ($_POST['duration'] != $content->duration)
-					$fields['duration'] = $_POST['duration'];
+					$content->duration = addslashes($_POST['duration']);
+				if ($content->duration < 1)
+					$content->duration = 1;
+				$baseDatetime = addslashes($_POST['date']) . ' ' . addslashes($_POST['start-time']);
+				$fields['startDatetime'] = $baseDatetime;
+				$fields['endDatetime'] = "DATE_ADD('{$baseDatetime}', INTERVAL {$content->duration} HOUR)";
 				break;
 			case 'job':
-				if ($_POST['job-type'] != $content->jobTypeID)
-					$fields['typeID'] = $_POST['job-type'];
 				if ($_POST['company'] != $content->company)
-					$fields['company'] = $_POST['company'];
+					$fields['company'] = addslashes($_POST['company']);
 				if ($_POST['location'] != $content->location)
-					$fields['location'] = $_POST['location'];
+					$fields['location'] = addslashes($_POST['location']);
 				if ($_POST['compensation'] != $content->compensation)
-					$fields['compensation'] = $_POST['compensation'];
+					$fields['compensation'] = addslashes($_POST['compensation']);
 				if ($_POST['website'] != $content->website)
-					$fields['website'] = $_POST['website'];
+					$fields['website'] = addslashes($_POST['website']);
 				if ($_POST['email'] != $content->email)
-					$fields['email'] = $_POST['email'];
+					$fields['email'] = addslashes($_POST['email']);
 				break;
 		}
 		
-		echo "<h1>FIELDS</h1>";
-		echo "<pre>";
-		print_r($fields);
-		echo "</pre>";
 		
-		echo "<h1>POST</h1>";
-		echo "<pre>";
-		print_r($_POST);
-		echo "</pre>";
 		
-		echo "<h1>CONTENT</h1>";
-		echo "<pre>";
-		print_r($content);
-		echo "</pre>";
+		if (count($fields) > 0) {
+			$update = array();
+			foreach ($fields as $fieldName => $fieldContent) {
+				if ($fieldName == 'endDatetime') {
+					array_push($update,"endDatetime = $fieldContent");
+				}
+				else {
+					array_push($update,"$fieldName = '$fieldContent'");
+				}
+			}
+			$update = implode(', ',$update);
+			if (is_array($update)) {
+				$update = '';
+			}
+
+			if ($update != '') {
+				$update .= " WHERE id = :id";
+				$data = array('id' => $content->id);
+				switch ($content->type) {
+					case 'project':
+						$query = $this->db->prepare($this->admin->updateProject . $update);
+						break;
+					case 'article':
+						$query = $this->db->prepare($this->admin->updateArticle . $update);
+						break;
+					case 'event':
+						$query = $this->db->prepare($this->admin->updateEvent . $update);
+						break;
+					case 'job':
+						$query = $this->db->prepare($this->admin->updateJob . $update);
+						break;
+				}
+				$query->execute($data);
+				/* if ($content->type == 'event') {
+					$data = array('id' => $content->id);
+					$query = $this->db->prepare($this->sel->getEventICSValues);
+					$query->execute($data);
+					$query->setFetchMode(\PDO::FETCH_OBJ);
+					$event = $query->fetch();
+					Uploader::create_ics_file($event);
+				} */
+			}
+		}
+		
+		$currentMembers = array();
+		$newMembers = array();
+		$currentRoles = array();
+		$newRoles = array();
+		foreach ($content->team as $currentMember) {
+			array_push($currentMembers, "{$currentMember->firstName} {$currentMember->lastName}");
+			if ($content->type == 'project')
+				array_push($currentRoles, $currentMember->role);
+		}
+		foreach ($_POST['team'] as $newMember) {
+			if ($newMember != '')
+				array_push($newMembers, $newMember);
+		}
+		if ($content->type == 'project')
+			$newRoles = $_POST['roles'];
+		TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
+		
+		//Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
+		
+		$currentCategories = array();
+		$newCategories = array();
+		foreach ($content->categories as $currentCategory) {
+			array_push($currentCategories, $currentCategory->title);
+		}
+		foreach ($_POST['categories'] as $newCategory) {
+			if ($newCategory != '')
+				array_push($newCategories, $newCategory);
+		}
+		CategoryProcessor::update_categories($currentCategories, $newCategories, $content->type, $content->id);
+		
+		$currentLinks = array();
+		$newLinks = array();
+		$currentTitles = array();
+		$newTitles = array();
+		foreach ($content->links as $currentLink) {
+			array_push($currentLinks, $currentLink->link);
+			array_push($currentTitles, $currentLink->title);
+		}
+		foreach ($_POST['link-urls'] as $linkURL) {
+			array_push($newLinks, $linkURL);
+		}
+		foreach ($_POST['link-titles'] as $linkTitle) {
+			array_push($newTitles, $linkTitle);
+		}
+		LinkProcessor::update_links($currentLinks, $newLinks,  $currentTitles, $newTitles, $content->id, $content->type);
+		
+		$currentCourses = array();
+		$newCourses = array();
+		foreach ($content->courses as $currentCourse) {
+			array_push($currentCourses, $currentCourse->id);
+		}
+		foreach ($_POST['courses'] as $newCourse) {
+			if ($newCourse != '')
+				array_push($newCourses, $newCourse);
+		}
+		CourseProcessor::update_courses($currentCourses, $newCourses, $content->type, $content->id);
+		
+		$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
+		
+		return new FormResponse(true, "/{$content->type}/{$contentVanityURL}");
 	}
 }

@@ -27,8 +27,6 @@ class BasicElements implements \Framework5\IView {
 	private function header($options){
 		import('wddsocial.helper.WDDSocial\StringCleaner');
 		
-		$action = \Framework5\Request::segment(0);
-		
 		if (isset($options['data']) and is_array($options['data'])) {
 			$content->type = $options['data']['type'];
 			$content->title = $options['data']['title'];
@@ -62,16 +60,18 @@ class BasicElements implements \Framework5\IView {
 		switch (\Framework5\Request::segment(0)) {
 			case 'create':
 				$h1 = "Create a New {$capitalizedTitle}";
+				$action = '/create';
 				break;
 			case 'edit':
 				$h1 = "Edit {$capitalizedTitle}";
+				$action = "{$_SERVER['REQUEST_URI']}";
 				break;
 		}
 		
 		return <<<HTML
 
 					<h1 class="mega">$h1</h1>
-					<form action="/{$action}" method="post" enctype="multipart/form-data">
+					<form action="{$action}" method="post" enctype="multipart/form-data">
 						<h1>Details</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<input type="hidden" name="contentID" value="{$content->id}" />
@@ -100,9 +100,19 @@ HTML;
 	*/
 	
 	private function footer(){
+		
+		switch (\Framework5\Request::segment(0)) {
+			case 'create':
+				$buttonText = "Create";
+				break;
+			case 'edit':
+				$buttonText = "Save";
+				break;
+		}
+		
 		return <<<HTML
 
-						<input type="submit" name="submit" value="Create" />
+						<input type="submit" name="submit" value="$buttonText" />
 					</form>
 HTML;
 	}

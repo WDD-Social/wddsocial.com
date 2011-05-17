@@ -90,17 +90,38 @@ class AdminSQL{
 			INSERT INTO userProjects (userID, projectID, title)
 			VALUES (:userID, :projectID, :title)",
 		
+		'deleteProjectTeamMember' => "
+			DELETE FROM userProjects
+			WHERE userID = :userID AND projectID = :projectID",
+		
+		'updateProjectTeamMemberRole' => "
+			UPDATE userProjects
+			SET title = :title
+			WHERE userID = :userID AND projectID = :projectID",
+		
 		'addProjectCategory' => "
 			INSERT INTO projectCategories (projectID, categoryID)
 			VALUES (:projectID, :categoryID)",
+		
+		'deleteProjectCategory' => "
+			DELETE FROM projectCategories
+			WHERE projectID = :projectID AND categoryID = :categoryID",
 		
 		'addProjectCourse' => "
 			INSERT INTO projectCourses (projectID, courseID)
 			VALUES (:projectID, :courseID)",
 		
+		'deleteProjectCourse' => "
+			DELETE FROM projectCourses
+			WHERE projectID = :projectID AND courseID = :courseID",
+		
 		'addProjectLink' => "
 			INSERT INTO projectLinks (projectID, linkID)
 			VALUES (:projectID, :linkID)",
+		
+		'deleteProjectLink' => "
+			DELETE FROM projectLinks
+			WHERE projectID = :projectID AND linkID = :linkID",
 		
 		'addProjectImage' => "
 			INSERT INTO projectImages (projectID, imageID)
@@ -110,9 +131,17 @@ class AdminSQL{
 			INSERT INTO projectVideos (projectID, videoID)
 			VALUES (:projectID,:videoID)",
 		
+		'deleteProjectVideo' => "
+			DELETE FROM projectVideos
+			WHERE projectID = :projectID AND videoID = :videoID",
+		
 		'addProjectComment' => "
 			INSERT INTO projectComments (projectID, commentID)
 			VALUES (:projectID,:commentID)",
+		
+		'updateProject' => "
+			UPDATE projects
+			SET ",
 		
 		/**
 		* Article Queries
@@ -131,17 +160,33 @@ class AdminSQL{
 			INSERT INTO userArticles (userID, articleID)
 			VALUES (:userID, :articleID)",
 		
+		'deleteArticleAuthor' => "
+			DELETE FROM userArticles
+			WHERE userID = :userID AND articleID = :articleID",
+		
 		'addArticleCategory' => "
 			INSERT INTO articleCategories (articleID, categoryID)
 			VALUES (:articleID, :categoryID)",
+		
+		'deleteArticleCategory' => "
+			DELETE FROM articleCategories
+			WHERE articleID = :articleID AND categoryID = :categoryID",
 		
 		'addArticleCourse' => "
 			INSERT INTO articleCourses (articleID, courseID)
 			VALUES (:articleID, :courseID)",
 		
+		'deleteArticleCourse' => "
+			DELETE FROM articleCourses
+			WHERE articleID = :articleID AND courseID = :courseID",
+		
 		'addArticleLink' => "
 			INSERT INTO articleLinks (articleID, linkID)
 			VALUES (:articleID, :linkID)",
+		
+		'deleteArticleLink' => "
+			DELETE FROM articleLinks
+			WHERE articleID = :articleID AND linkID = :linkID",
 		
 		'addArticleImage' => "
 			INSERT INTO articleImages (articleID, imageID)
@@ -151,9 +196,17 @@ class AdminSQL{
 			INSERT INTO articleVideos (articleID, videoID)
 			VALUES (:articleID,:videoID)",
 		
+		'deleteArticleVideo' => "
+			DELETE FROM articleVideos
+			WHERE articleID = :articleID AND videoID = :videoID",
+		
 		'addArticleComment' => "
 			INSERT INTO articleComments (articleID, commentID)
 			VALUES (:articleID,:commentID)",
+		
+		'updateArticle' => "
+			UPDATE articles
+			SET ",
 		
 		/**
 		* Event Queries
@@ -177,13 +230,25 @@ class AdminSQL{
 			INSERT INTO eventCategories (eventID, categoryID)
 			VALUES (:eventID, :categoryID)",
 		
+		'deleteEventCategory' => "
+			DELETE FROM eventCategories
+			WHERE eventID = :eventID AND categoryID = :categoryID",
+		
 		'addEventCourse' => "
 			INSERT INTO eventCourses (eventID, courseID)
 			VALUES (:eventID, :courseID)",
 		
+		'deleteEventCourse' => "
+			DELETE FROM eventCourses
+			WHERE eventID = :eventID AND courseID = :courseID",
+		
 		'addEventLink' => "
 			INSERT INTO eventLinks (eventID, linkID)
 			VALUES (:eventID, :linkID)",
+		
+		'deleteEventLink' => "
+			DELETE FROM eventLinks
+			WHERE eventID = :eventID AND linkID = :linkID",
 		
 		'addEventImage' => "
 			INSERT INTO eventImages (eventID, imageID)
@@ -193,9 +258,17 @@ class AdminSQL{
 			INSERT INTO eventVideos (eventID, videoID)
 			VALUES (:eventID,:videoID)",
 		
+		'deleteEventVideo' => "
+			DELETE FROM eventVideos
+			WHERE eventID = :eventID AND videoID = :videoID",
+		
 		'addEventComment' => "
 			INSERT INTO eventComments (eventID, commentID)
 			VALUES (:eventID,:commentID)",
+		
+		'updateEvent' => "
+			UPDATE events
+			SET ",
 		
 		/**
 		* Job Queries
@@ -219,13 +292,25 @@ class AdminSQL{
 			INSERT INTO jobCategories (jobID, categoryID)
 			VALUES (:jobID, :categoryID)",
 		
+		'deleteJobCategory' => "
+			DELETE FROM jobCategories
+			WHERE jobID = :jobID AND categoryID = :categoryID",
+		
 		'addJobCourse' => "
 			INSERT INTO jobCourses (jobID, courseID)
 			VALUES (:jobID, :courseID)",
 		
+		'deleteJobCourse' => "
+			DELETE FROM jobCourses
+			WHERE jobID = :jobID AND courseID = :courseID",
+		
 		'addJobLink' => "
 			INSERT INTO jobLinks (jobID, linkID)
 			VALUES (:jobID, :linkID)",
+		
+		'deleteJobLink' => "
+			DELETE FROM jobLinks
+			WHERE jobID = :jobID AND linkID = :linkID",
 		
 		'addJobImage' => "
 			INSERT INTO jobImages (jobID, imageID)
@@ -234,6 +319,14 @@ class AdminSQL{
 		'addJobVideo' => "
 			INSERT INTO jobVideos (jobID, videoID)
 			VALUES (:jobID,:videoID)",
+		
+		'deleteJobVideo' => "
+			DELETE FROM jobVideos
+			WHERE jobID = :jobID AND videoID = :videoID",
+		
+		'updateJob' => "
+			UPDATE jobs
+			SET ",
 		
 		/**
 		* Category Queries

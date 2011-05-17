@@ -96,7 +96,8 @@ class CourseProcessor {
 	
 	
 	
-	public static function update_teacher_courses($userID, $currentCourses, $newCourses){
+	public static function update_courses($currentCourses, $newCourses, $type, $contentID){
+		
 		$db = instance(':db');
 		$sql = instance(':admin-sql');
 		
@@ -107,16 +108,72 @@ class CourseProcessor {
 			}
 		}
 		if (count($currentCourses) > 0) {
-			foreach ($currentCourses as $currentCourse) {
-				$query = $db->prepare($sql->deleteTeacherCourse);
-				$query->execute(array('userID' => $userID, 'courseID' => $currentCourse));
+			switch ($type) {
+				case 'user':
+					foreach ($currentCourses as $currentCourse) {
+						$query = $db->prepare($sql->deleteTeacherCourse);
+						$query->execute(array('userID' => $contentID, 'courseID' => $currentCourse));
+					}
+					break;
+				case 'project':
+					foreach ($currentCourses as $currentCourse) {
+						$query = $db->prepare($sql->deleteProjectCourse);
+						$query->execute(array('projectID' => $contentID, 'courseID' => $currentCourse));
+					}
+					break;
+				case 'article':
+					foreach ($currentCourses as $currentCourse) {
+						$query = $db->prepare($sql->deleteArticleCourse);
+						$query->execute(array('articleID' => $contentID, 'courseID' => $currentCourse));
+					}
+					break;
+				case 'event':
+					foreach ($currentCourses as $currentCourse) {
+						$query = $db->prepare($sql->deleteEventCourse);
+						$query->execute(array('eventID' => $contentID, 'courseID' => $currentCourse));
+					}
+					break;
+				case 'job':
+					foreach ($currentCourses as $currentCourse) {
+						$query = $db->prepare($sql->deleteJobCourse);
+						$query->execute(array('jobID' => $contentID, 'courseID' => $currentCourse));
+					}
+					break;
 			}
 		}
 		
 		if (count($newCourses) > 0) {
-			foreach ($newCourses as $newCourse) {
-				$query = $db->prepare($sql->addTeacherCourse);
-				$query->execute(array('userID' => $userID, 'courseID' => $newCourse));
+			switch ($type) {
+				case 'user':
+					foreach ($newCourses as $newCourse) {
+						$query = $db->prepare($sql->addTeacherCourse);
+						$query->execute(array('userID' => $contentID, 'courseID' => $newCourse));
+					}
+					break;
+				case 'project':
+					foreach ($newCourses as $newCourse) {
+						$query = $db->prepare($sql->addProjectCourse);
+						$query->execute(array('projectID' => $contentID, 'courseID' => $newCourse));
+					}
+					break;
+				case 'article':
+					foreach ($newCourses as $newCourse) {
+						$query = $db->prepare($sql->addArticleCourse);
+						$query->execute(array('articleID' => $contentID, 'courseID' => $newCourse));
+					}
+					break;
+				case 'event':
+					foreach ($newCourses as $newCourse) {
+						$query = $db->prepare($sql->addEventCourse);
+						$query->execute(array('eventID' => $contentID, 'courseID' => $newCourse));
+					}
+					break;
+				case 'job':
+					foreach ($newCourses as $newCourse) {
+						$query = $db->prepare($sql->addJobCourse);
+						$query->execute(array('jobID' => $contentID, 'courseID' => $newCourse));
+					}
+					break;
 			}
 		}
 	}
