@@ -154,7 +154,7 @@ class AdminSQL{
 		
 		'deleteArticleAuthor' => "
 			DELETE FROM userArticles
-			WHERE userID = :userID AND articleID = :articleID)",
+			WHERE userID = :userID AND articleID = :articleID",
 		
 		'addArticleCategory' => "
 			INSERT INTO articleCategories (articleID, categoryID)
