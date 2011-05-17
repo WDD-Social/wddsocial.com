@@ -125,7 +125,7 @@ class EditPage implements \Framework5\IExecutable {
 		}
 		
 		# display image section
-		# echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
+		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
 		
 		# display video section
 		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos));
@@ -312,7 +312,7 @@ class EditPage implements \Framework5\IExecutable {
 			TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
 		}
 		
-		//Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
+		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
 		
 		$postvideos = array();
 		foreach ($_POST['videos'] as $pvideo) {
