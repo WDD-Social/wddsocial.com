@@ -89,17 +89,15 @@ class Uploader {
 	}
 	
 	public static function create_ics_file($event){
-		$root = \Framework5\Request::root_path();
-		
 		$ics = render('wddsocial.view.file.WDDSocial\iCalView', array('section' => 'header'));
 		$ics .= render('wddsocial.view.file.WDDSocial\iCalView', array('section' => 'event', 'event' => $event));
 		$ics .= render('wddsocial.view.file.WDDSocial\iCalView', array('section' => 'footer'));
 		
 		if (file_exists("files/ics/wddsocial.{$event->uid}.ics")) {
-			unlink("{$root}files/ics/wddsocial.{$event->uid}.ics");
+			unlink("files/ics/wddsocial.{$event->uid}.ics");
 		}
 		
-		$handle = fopen("{$root}files/ics/wddsocial.{$event->uid}.ics",'x');
+		$handle = fopen("files/ics/wddsocial.{$event->uid}.ics",'x');
 		fwrite($handle,$ics);
 		fclose($handle);
 	}
