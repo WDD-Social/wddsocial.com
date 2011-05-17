@@ -13,9 +13,6 @@ class LoadMore implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
-		# check user auth
-		if (!\WDDSocial\UserSession::is_authorized()) redirect('/');
-		
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
 		
@@ -146,7 +143,7 @@ class LoadMore implements \Framework5\IExecutable {
 				$query = $this->db->prepare($this->sql->getProjects . " ORDER BY $orderBy LIMIT $start, $limit");
 				break;
 			case 'articles':
-				$query = $this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy LIMIT $start, $limit");
+				$query = (\WDDSocial\UserSession::is_authorized())?$this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy LIMIT $start, $limit"):$this->db->prepare($this->sql->getPublicArticles . " ORDER BY $orderBy LIMIT $start, $limit");
 				break;
 		}
 		
@@ -184,7 +181,7 @@ class LoadMore implements \Framework5\IExecutable {
 		}
 		
 		# query
-		$query = $this->db->prepare($this->sql->getEvents . " ORDER BY $orderBy LIMIT $start, $limit");
+		$query = (\WDDSocial\UserSession::is_authorized())?$this->db->prepare($this->sql->getEvents . " ORDER BY $orderBy LIMIT $start, $limit"):$this->db->prepare($this->sql->getPublicEvents . " ORDER BY $orderBy LIMIT $start, $limit");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
