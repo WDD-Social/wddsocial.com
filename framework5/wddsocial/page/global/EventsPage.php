@@ -59,7 +59,7 @@ class EventsPage implements \Framework5\IExecutable {
 		}
 		
 		# query
-		$query = $this->db->prepare($this->sql->getEvents . " ORDER BY $orderBy LIMIT 0, {$paginator->limit}");
+		$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->getEvents . " ORDER BY $orderBy LIMIT 0, {$paginator->limit}"):$this->db->prepare($this->sql->getPublicEvents . " ORDER BY $orderBy LIMIT 0, {$paginator->limit}");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
@@ -69,7 +69,7 @@ class EventsPage implements \Framework5\IExecutable {
 				array('type' => $item->type,'content' => $item));
 		}
 		
-		$query = $this->db->prepare($this->sql->getEvents . " ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
+		$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->getEvents . " ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}"):$this->db->prepare($this->sql->getPublicEvents . " ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->fetch();
