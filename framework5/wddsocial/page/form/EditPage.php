@@ -310,7 +310,7 @@ class EditPage implements \Framework5\IExecutable {
 			$newRoles = $_POST['roles'];
 		TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
 		
-		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
+		//Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
 		
 		$currentCategories = array();
 		$newCategories = array();
