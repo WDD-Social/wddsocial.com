@@ -43,8 +43,6 @@ class EditPage implements \Framework5\IExecutable {
 		if (!in_array($type, $types) or !isset($vanityURL))
 			redirect('/');
 		
-		import('wddsocial.model.WDDSocial\ContentVO');
-		
 		switch ($type) {
 			case 'project':
 				$query = $this->db->prepare($this->sel->getProjectByVanityURL);
@@ -63,6 +61,8 @@ class EditPage implements \Framework5\IExecutable {
 				break;
 		}
 		$query->execute(array('vanityURL' => $vanityURL));
+		
+		import('wddsocial.model.WDDSocial\ContentVO');
 		
 		if ($query->rowCount() > 0) {
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
