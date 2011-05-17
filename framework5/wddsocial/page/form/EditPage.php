@@ -331,6 +331,20 @@ class EditPage implements \Framework5\IExecutable {
 				Deleter::delete_content_image($imageFile);
 			}
 		}
+		if (isset($_POST['existing-image-files'])) {
+			foreach ($_POST['existing-image-files'] as $index => $file) {
+				$query = $this->db->prepare($this->val->checkIfImageExists);
+				$query->execute(array('file' => $file));
+				if ($query->rowCount() > 0) {
+					$query->setFetchMode(\PDO::FETCH_OBJ);
+					$result = $query->fetch();
+					$imageID = $result->id;
+					$imageTitle = ($_POST['existing-image-titles'][$index] != '')?$_POST['existing-image-titles'][$index]:$_POST['title'] . " | Image";
+					$query = $this->db->prepare($this->admin->updateImage);
+					$query->execute(array('id' => $imageID, 'title' => $imageTitle));
+				}
+			}
+		}
 		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
 		
 		
