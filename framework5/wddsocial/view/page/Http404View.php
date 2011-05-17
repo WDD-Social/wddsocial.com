@@ -3,6 +3,7 @@
 namespace WDDSocial;
 
 /*
+* Displays various 404 Pages
 * 
 * @author Anthony Colangelo (me@acolangelo.com)
 */
@@ -10,8 +11,9 @@ namespace WDDSocial;
 class Http404View implements \Framework5\IView {
 	
 	public function render($options = null) {
+		
 		/* You done goofed
-echo <<<HTML
+		return <<<HTML
 				
 				<h1 class="mega">You done goofed!</h1>
 				<div id="error">
@@ -22,6 +24,8 @@ echo <<<HTML
 				</div><!--END ERROR -->
 HTML;
 */
+
+		# OMG Somethings Broken
 		return <<<HTML
 				
 				<h1 class="mega">OMG! Something is broken!</h1>

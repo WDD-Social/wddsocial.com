@@ -11,16 +11,13 @@ class MessagesPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
+		# require authentication to access this page
 		UserSession::protect();
 		
 		# display site header
-		echo render(':template', 
-			array('section' => 'top', 'title' => 'Messages'));
-		
-		
-		# display site footer
-		echo render(':template', 
-			array('section' => 'bottom'));
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => 'Messages', 'content' => "HTMLC"));
+
 		
 	}
 }
