@@ -66,7 +66,8 @@ class ArticlesPage implements \Framework5\IExecutable {
 				array('type' => $item->type,'content' => $item));
 		}
 		
-		$query = $this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
+		$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->getArticles . " ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}"):$this->db->prepare($this->sql->getPublicArticles . " ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
+		$query = ;
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->fetch();
