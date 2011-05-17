@@ -19,12 +19,7 @@ class TeamMemberProcessor {
 		$errors = array();
 		foreach ($members as $member) {
 			$i = array_search($member, $members);
-			$data = array('name' => $member);
-			$query = $db->prepare($sel_sql->getUserByName);
-			$query->execute($data);
-			$query->setFetchMode(\PDO::FETCH_OBJ);
-			$result = $query->fetch();
-			$userID = $result->id;
+			$userID = static::get_userID($member);
 			
 			if ($query->rowCount() > 0) {
 				switch ($contentType) {
@@ -71,5 +66,82 @@ class TeamMemberProcessor {
 			$message .= (count($errors) > 1)?' They were':" {$errors[0]} was";
 			$message .= " not added to the {$contentType}.";
 		}
+	}
+	
+	
+	
+	public static function update_team_members($currentMembers, $newMembers, $contentID, $type, $currentTitles = array(), $newTitles = array()){
+		$db = instance(':db');
+		$sql = instance(':admin-sql');
+		
+		foreach ($newMembers as $newMember) {
+			if (in_array($newMember, $currentMembers)) {
+				$currentKey = array_search($newMember, $currentMembers);
+				$newKey = array_search($newMember, $newMembers);
+				unset($currentMembers[$currentKey]);
+				unset($newMembers[$newKey]);
+				if ($type == 'project')
+					$userID = static::get_userID($newMember);
+					if ($newTitles[$newKey] != $currentTitles[$currentKey]) {
+						$query = $db->prepare($sql->updateProjectTeamMemberRole);
+						$query->execute(array('projectID' => $contentID, 'userID' => $userID, 'title' => $newTitles[$newKey]));
+					}
+					unset($currentTitles[$currentKey]);
+					unset($newTitles[$newKey]);
+			}
+		}
+		
+		if (count($currentMembers) > 0) {
+			switch ($type) {
+				case 'project':
+					foreach ($currentMembers as $currentMember) {
+						$key = array_search($currentMember, $currentMembers);
+						$userID = static::get_userID($currentMember);
+						$query = $db->prepare($sql->deleteProjectTeamMember);
+						$query->execute(array('projectID' => $contentID, 'userID' => $userID));
+					}
+					break;
+				case 'article':
+					foreach ($currentMembers as $currentMember) {
+						$userID = static::get_userID($currentMember);
+						$query = $db->prepare($sql->deleteArticleAuthor);
+						$query->execute(array('articleID' => $contentID, 'userID' => $userID));
+					}
+					break;
+			}
+		}
+		
+		if (count($newMembers) > 0) {
+			switch ($type) {
+				case 'project':
+					foreach ($newMembers as $newMember) {
+						$key = array_search($newMember, $newMembers);
+						$userID = static::get_userID($newMember);
+						$query = $db->prepare($sql->addProjectTeamMember);
+						$query->execute(array('projectID' => $contentID, 'userID' => $userID, 'title' => $newTitles[$key]));
+					}
+					break;
+				case 'article':
+					foreach ($newMembers as $newMember) {
+						$userID = static::get_userID($newMember);
+						$query = $db->prepare($sql->addArticleAuthor);
+						$query->execute(array('articleID' => $contentID, 'userID' => $userID));
+					}
+					break;
+			}
+		}
+	}
+	
+	
+	
+	public static function get_userID($name){
+		$db = instance(':db');
+		$sql = instance(':sel-sql');
+		$data = array('name' => $name);
+		$query = $db->prepare($sql->getUserByName);
+		$query->execute($data);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$result = $query->fetch();
+		return $result->id;
 	}
 }
