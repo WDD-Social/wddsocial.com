@@ -282,33 +282,35 @@ class EditPage implements \Framework5\IExecutable {
 						break;
 				}
 				$query->execute($data);
-				/* if ($content->type == 'event') {
+				if ($content->type == 'event') {
 					$data = array('id' => $content->id);
 					$query = $this->db->prepare($this->sel->getEventICSValues);
 					$query->execute($data);
 					$query->setFetchMode(\PDO::FETCH_OBJ);
 					$event = $query->fetch();
 					Uploader::create_ics_file($event);
-				} */
+				}
 			}
 		}
 		
-		$currentMembers = array();
-		$newMembers = array();
-		$currentRoles = array();
-		$newRoles = array();
-		foreach ($content->team as $currentMember) {
-			array_push($currentMembers, "{$currentMember->firstName} {$currentMember->lastName}");
+		if (isset($_POST['team'])) {
+			$currentMembers = array();
+			$newMembers = array();
+			$currentRoles = array();
+			$newRoles = array();
+			foreach ($content->team as $currentMember) {
+				array_push($currentMembers, "{$currentMember->firstName} {$currentMember->lastName}");
+				if ($content->type == 'project')
+					array_push($currentRoles, $currentMember->role);
+			}
+			foreach ($_POST['team'] as $newMember) {
+				if ($newMember != '')
+					array_push($newMembers, $newMember);
+			}
 			if ($content->type == 'project')
-				array_push($currentRoles, $currentMember->role);
+				$newRoles = $_POST['roles'];
+			TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
 		}
-		foreach ($_POST['team'] as $newMember) {
-			if ($newMember != '')
-				array_push($newMembers, $newMember);
-		}
-		if ($content->type == 'project')
-			$newRoles = $_POST['roles'];
-		TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
 		
 		//Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
 		
