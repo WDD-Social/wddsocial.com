@@ -25,22 +25,12 @@ class VideoProcessor {
 		$sel_sql = instance(':sel-sql');
 		$admin_sql = instance(':admin-sql');
 		
-		echo "<pre>";
-		print_r($currentVideos);
-		print_r($newVideos);
-		echo "</pre>";
-		
 		foreach ($newVideos as $newVideo) {
 			if (in_array($newVideo, $currentVideos) or $newVideo == '') {
 				unset($currentVideos[array_search($newVideo, $currentVideos)]);
 				unset($newVideos[array_search($newVideo, $newVideos)]);
 			}
 		}
-		
-		echo "<pre>";
-		print_r($currentVideos);
-		print_r($newVideos);
-		echo "</pre>";
 		
 		if (count($newVideos) > 0) {
 			foreach ($newVideos as $nv) {
