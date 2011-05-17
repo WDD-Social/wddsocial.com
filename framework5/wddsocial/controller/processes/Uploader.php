@@ -80,8 +80,7 @@ class Uploader {
 	
 	public static function upload_image($image, $name){
 		import('wddsocial.helper.WDDSocial\Resizer');
-		$root = \Framework5\Request::root_path();
-		$dest = "{$root}images/uploads";
+		$dest = "images/uploads";
 		Resizer::image($image,$name,"_full",$dest,800,600);
 		Resizer::image($image,$name,"_large",$dest,300,250);
 		Resizer::image($image,$name,"_medium",$dest,60,60,true);
