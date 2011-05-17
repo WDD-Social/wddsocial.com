@@ -8,17 +8,20 @@ namespace WDDSocial;
 */
 
 class Http404 implements \Framework5\IExecutable {
-
+	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.error.Http404Lang');
+	}
+	
+	
+	
 	public function execute() {
 		
-		# page header
-		echo render(':template', array('section' => 'top', 'title' => '404: Page not found'));
-			
-		echo render(':section', array('section' => 'begin_content'));
-		echo render('wddsocial.view.page.WDDSocial\Http404View');
-		echo render(':section', array('section' => 'end_content'));
+		$content = render(':section', array('section' => 'begin_content'));
+		$content.= render('wddsocial.view.page.WDDSocial\Http404View');
+		$content.= render(':section', array('section' => 'end_content'));
 		
-		# page footer
-		echo render(':template', array('section' => 'bottom'));
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $this->lang->text('page-title'), 'content' => $content));
 	}
 }

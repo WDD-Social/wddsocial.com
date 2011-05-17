@@ -22,7 +22,7 @@ echo <<<HTML
 				</div><!--END ERROR -->
 HTML;
 */
-		echo <<<HTML
+		return <<<HTML
 				
 				<h1 class="mega">OMG! Something is broken!</h1>
 				<div id="error">
