@@ -12,7 +12,7 @@ class AccountPage implements \Framework5\IExecutable {
 	private $user;
 	
 	public function __construct() {
-		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.UserPageLang');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.user.AccountPageLang');
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
 		$this->admin = instance(':admin-sql');
@@ -23,10 +23,12 @@ class AccountPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
+		# require user auth
 		UserSession::protect();
 		
 		# get the request user
 		$this->user = $this->get_user(UserSession::userid());
+		
 		
 		if (isset($_POST['submit'])) {
 			$response = $this->process_form();
@@ -39,25 +41,27 @@ class AccountPage implements \Framework5\IExecutable {
 			}
 		}
 		
-		# display site header
-		echo render(':template', array('section' => 'top', 'title' => 'My Account'));
 			
 		# open content section
-		echo render(':section', array('section' => 'begin_content'));
+		$content = render(':section', array('section' => 'begin_content'));
 		
 		# display account form
-		echo render('wddsocial.view.form.WDDSocial\AccountView', array('user' => $this->user, 'error' => $errorMessage));
+		$content.= render('wddsocial.view.form.WDDSocial\AccountView', 
+			array('user' => $this->user, 'error' => $errorMessage));
 			
 		# end content section
-		echo render(':section', array('section' => 'end_content'));
+		$content.= render(':section', array('section' => 'end_content'));
 		
-		# display site footer
-		echo render(':template', array('section' => 'bottom'));
+		
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $this->lang->text('page-title'), 'content' => $content));
 	}
 	
 	
 	
 	private function process_form(){
+		
 		import('wddsocial.model.WDDSocial\FormResponse');
 		import('wddsocial.controller.processes.WDDSocial\CourseProcessor');
 		import('wddsocial.controller.processes.WDDSocial\LikesDislikesProcessor');

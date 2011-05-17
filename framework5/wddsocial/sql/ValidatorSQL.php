@@ -45,6 +45,12 @@ class ValidatorSQL{
 			WHERE title = :title AND link = :link
 			LIMIT 1",
 		
+		'checkIfImageExists' => "
+			SELECT id
+			FROM images
+			WHERE `file` = :file
+			LIMIT 1",
+		
 		'checkIfVideoExists' => "
 			SELECT id
 			FROM videos

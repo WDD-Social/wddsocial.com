@@ -125,7 +125,7 @@ class EditPage implements \Framework5\IExecutable {
 		}
 		
 		# display image section
-		# echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
+		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
 		
 		# display video section
 		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos));
@@ -179,10 +179,14 @@ class EditPage implements \Framework5\IExecutable {
 		import('wddsocial.controller.processes.WDDSocial\VideoProcessor');
 		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
 		import('wddsocial.controller.processes.WDDSocial\Uploader');
+		import('wddsocial.controller.processes.WDDSocial\Deleter');
 		
 		$this->db = instance(':db');
 		$this->sel = instance(':sel-sql');
 		
+		
+		
+		# Get basic content data
 		switch ($_POST['type']) {
 			case 'project':
 				$query = $this->db->prepare($this->sel->getProjectByID);
@@ -201,6 +205,9 @@ class EditPage implements \Framework5\IExecutable {
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 		$content = $query->fetch();
 		
+		
+		
+		# Get basic fields for update
 		$fields = array();
 		
 		if ($_POST['title'] != $content->title)
@@ -249,6 +256,7 @@ class EditPage implements \Framework5\IExecutable {
 		
 		
 		
+		# Update basic fields
 		if (count($fields) > 0) {
 			$update = array();
 			foreach ($fields as $fieldName => $fieldContent) {
@@ -293,6 +301,9 @@ class EditPage implements \Framework5\IExecutable {
 			}
 		}
 		
+		
+		
+		# Update team, if there is a team
 		if (isset($_POST['team'])) {
 			$currentMembers = array();
 			$newMembers = array();
@@ -312,8 +323,33 @@ class EditPage implements \Framework5\IExecutable {
 			TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
 		}
 		
-		//Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
 		
+		
+		# Add/Edit/Delete images
+		if (isset($_POST['existing-image-status'])) {
+			foreach ($_POST['existing-image-status'] as $imageFile) {
+				Deleter::delete_content_image($imageFile);
+			}
+		}
+		if (isset($_POST['existing-image-files'])) {
+			foreach ($_POST['existing-image-files'] as $index => $file) {
+				$query = $this->db->prepare($this->val->checkIfImageExists);
+				$query->execute(array('file' => $file));
+				if ($query->rowCount() > 0) {
+					$query->setFetchMode(\PDO::FETCH_OBJ);
+					$result = $query->fetch();
+					$imageID = $result->id;
+					$imageTitle = ($_POST['existing-image-titles'][$index] != '')?$_POST['existing-image-titles'][$index]:$_POST['title'] . " | Image";
+					$query = $this->db->prepare($this->admin->updateImage);
+					$query->execute(array('id' => $imageID, 'title' => $imageTitle));
+				}
+			}
+		}
+		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
+		
+		
+		
+		# Add/Edit/Delete videos
 		$postvideos = array();
 		foreach ($_POST['videos'] as $pvideo) {
 			if ($pvideo != '')
@@ -325,6 +361,9 @@ class EditPage implements \Framework5\IExecutable {
 		}
 		VideoProcessor::update_videos($contentvideos, $postvideos, $content->id, $content->type);
 		
+		
+		
+		# Add/Edit/Delete categories
 		$currentCategories = array();
 		$newCategories = array();
 		foreach ($content->categories as $currentCategory) {
@@ -336,6 +375,9 @@ class EditPage implements \Framework5\IExecutable {
 		}
 		CategoryProcessor::update_categories($currentCategories, $newCategories, $content->type, $content->id);
 		
+		
+		
+		# Add/Edit/Delete links
 		$currentLinks = array();
 		$newLinks = array();
 		$currentTitles = array();
@@ -352,6 +394,9 @@ class EditPage implements \Framework5\IExecutable {
 		}
 		LinkProcessor::update_links($currentLinks, $newLinks,  $currentTitles, $newTitles, $content->id, $content->type);
 		
+		
+		
+		# Add/Edit/Delete Courses
 		$currentCourses = array();
 		$newCourses = array();
 		foreach ($content->courses as $currentCourse) {
@@ -363,6 +408,9 @@ class EditPage implements \Framework5\IExecutable {
 		}
 		CourseProcessor::update_courses($currentCourses, $newCourses, $content->type, $content->id);
 		
+		
+		
+		# Redirect to content page
 		$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
 		
 		return new FormResponse(true, "/{$content->type}/{$contentVanityURL}");

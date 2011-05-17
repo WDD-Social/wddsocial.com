@@ -23,12 +23,12 @@ HTML;
 						<fieldset>
 							<label for="existing-image-titles$i">Image $i</label>
 							<img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}" />
+							<input type="hidden" name="existing-image-files[]" value="{$image->file}" />
 							<input type="text" name="existing-image-titles[]" id="existing-image-titles$i" placeholder="Enter Image $i Title" value="{$image->title}" />
 							<p>
 								<input type="checkbox" name="existing-image-status[]" id="existing-image-status$i" value="{$image->file}" />
 								<label for="existing-image-status$i" class="plain">Delete this image</label>
 							</p>
-							<input type="hidden" name="existing-image-files[]" value="{$image->file}" />
 						</fieldset>
 HTML;
 				$i++;
