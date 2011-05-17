@@ -10,51 +10,35 @@ class IndexPageLang implements \Framework5\ILanguagePack {
 	
 	public static function content($id, $var) {
 		switch ($id) {
-			# 
-			case 'page_title':
+			
+			# page info
+			case 'page-title':
 				return 'Connecting the Full Sail University Web Community';
 			
 			# headers
-			case 'projects_header':
+			case 'projects-header':
 				return 'Projects';
-			case 'signin_header':
+			
+			case 'signin-header':
 				return 'Sign In';
-			case 'people_header':
+			
+			case 'people-header':
 				return 'People';
-			case 'articles_header':
+			
+			case 'articles-header':
 				return 'Articles';
-			case 'events_header':
+			
+			case 'events-header':
 				return 'Events';
 			
-			case 'share_header':
+			case 'share-header':
 				return 'Share';
-			case 'jobs_header':
-				return 'Jobs';
-			case 'latest_header':
-				return 'Latest';
 			
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
+			case 'jobs-header':
+				return 'Jobs';
+			
+			case 'latest-header':
+				return 'Latest';
 		}		
 	}
 }
