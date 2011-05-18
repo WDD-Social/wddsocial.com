@@ -27,6 +27,10 @@ class AdminSQL{
 			INSERT INTO userDetail (userID)
 			VALUES (@last_id);",
 		
+		'deleteUser' => "
+			DELETE FROM users
+			WHERE id = :id",
+		
 		'changePassword' => "
 			UPDATE users
 			SET `password` = MD5(:new)
@@ -48,6 +52,14 @@ class AdminSQL{
 		'updateUserDetail' => "
 			UPDATE userDetail
 			SET ",
+		
+		'deleteUserFromProjectTeams' => "
+			DELETE FROM userProjects
+			WHERE userID = :userID",
+		
+		'deleteUserFromArticleAuthors' => "
+			DELETE FROM userArticles
+			WHERE userID = :userID",
 		
 		'addTeacherCourse' => "
 			INSERT INTO teacherCourses (userID, courseID)
@@ -143,6 +155,14 @@ class AdminSQL{
 			UPDATE projects
 			SET ",
 		
+		'changeProjectOwner' => "
+			UPDATE projects AS p
+			SET userID = (SELECT up.userID
+				FROM userProjects AS up
+				WHERE up.projectID = :projectID
+				GROUP BY p.id)
+			WHERE p.id = :projectID",
+		
 		/**
 		* Article Queries
 		*/
@@ -207,6 +227,14 @@ class AdminSQL{
 		'updateArticle' => "
 			UPDATE articles
 			SET ",
+		
+		'changeArticleOwner' => "
+			UPDATE articles AS a
+			SET userID = (SELECT ua.userID
+				FROM userArticles AS ua
+				WHERE ua.articleID = :articleID
+				GROUP BY a.id)
+			WHERE a.id = :articleID",
 		
 		/**
 		* Event Queries

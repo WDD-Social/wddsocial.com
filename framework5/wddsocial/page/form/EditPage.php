@@ -29,14 +29,6 @@ class EditPage implements \Framework5\IExecutable {
 			}
 		}
 		
-		
-		
-		
-		else {
-		
-		
-		
-		
 		$types = array('project','article','event','job');
 		$type = \Framework5\Request::segment(1);
 		$vanityURL = \Framework5\Request::segment(2);
@@ -168,15 +160,6 @@ class EditPage implements \Framework5\IExecutable {
 		
 		# display site footer
 		echo render(':template', array('section' => 'bottom'));
-		
-		
-		
-		
-		}
-		
-		
-		
-		
 	}
 	
 	
@@ -196,9 +179,6 @@ class EditPage implements \Framework5\IExecutable {
 		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
 		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		import('wddsocial.controller.processes.WDDSocial\Deleter');
-		
-		$this->db = instance(':db');
-		$this->sel = instance(':sel-sql');
 		
 		
 		

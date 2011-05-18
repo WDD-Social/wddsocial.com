@@ -119,13 +119,15 @@ HTML;
 		# if the user is logged in
 		if (UserSession::is_authorized()) {
 			
-			$userAvatar = UserSession::user_avatar(); # get the users avatar
+			$userAvatar = UserSession::user_avatar('small'); # get the users avatar
+			$userName = UserSession::user_name();
+			$userProfile = UserSession::user_profile();
 			
 			# output
 			return <<<HTML
 				
 				<section id="user-area" class="signed-in">
-					<p><strong><a href="/user/{$_SESSION['user']->vanityURL}" title="{$this->lang->text('user_profile_title')}"><img src="/$userAvatar" alt="{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}"/>{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}</a></strong></p>
+					<p><strong><a href="{$userProfile}" title="{$this->lang->text('user_profile_title')}"><img src="{$userAvatar}" alt="{$userName}"/>{$userName}</a></strong></p>
 				 	<p><a href="/messages" title="{$this->lang->text('messages_title')}">{$this->lang->text('messages')} <!--<span class="badge">0</span>--></a></p>
 				 	<p><a href="/account" title="{$this->lang->text('account_title')}">{$this->lang->text('account')}</a></p>
 				 	<p><a href="/signout" title="{$this->lang->text('signout_title')}">{$this->lang->text('signout')}</a></p>

@@ -51,7 +51,7 @@ class CreatePage implements \Framework5\IExecutable {
 		$content = render(':section', array('section' => 'begin_content'));
 		
 		# display basic form header
-		$content .= render('wddsocial.view.form.create.WDDSocial\BasicElements', 
+		$content .= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
 			array('section' => 'header', 'data' => $_POST, 
 				'error' => $response->message, 'process' => 'creation'));
 		
@@ -59,7 +59,7 @@ class CreatePage implements \Framework5\IExecutable {
 		if ($_POST['type'] == 'project' or $_POST['type'] == 'article' or 
 		$_POST['type'] == 'event' or $_POST['type'] == 'job') {
 			$typeCapitalized = ucfirst($_POST['type']);
-			$content .= render("wddsocial.view.form.create.WDDSocial\\{$typeCapitalized}ExtraInputs");
+			$content .= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs");
 		}
 		
 		# display team member section for appropriate content types
@@ -100,7 +100,7 @@ class CreatePage implements \Framework5\IExecutable {
 			array('data' => $_POST));
 		
 		# display form footer
-		$content .= render('wddsocial.view.form.create.WDDSocial\BasicElements', 
+		$content .= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
 			array('section' => 'footer'));
 		
 		# end content section

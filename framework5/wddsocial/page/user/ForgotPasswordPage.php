@@ -10,7 +10,7 @@ namespace WDDSocial;
 class ForgotPasswordPage implements \Framework5\IExecutable {
 	
 	public function __construct() {
-		//$this->lang = new \Framework5\Lang('wddsocial.lang');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.user.ForgotPasswordPageLang');
 		$this->db = instance(':db');
 	}
 	
@@ -23,42 +23,43 @@ class ForgotPasswordPage implements \Framework5\IExecutable {
 			
 			# form success
 			if ($this->_process_form()) {
-				$intro = "A link has been sent to your email address to reset your password.";
-				$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', array('intro' => $intro));
+				$intro = "";
+				$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', 
+					array('intro' => $this->lang->text('success-message')));
 			}
 			
 			# form failure
 			else {
-				$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', array('error' => $this->errorMsg));
+				$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', 
+					array('error' => $this->errorMsg));
 			}
 		}
 		
 		# form was not submitted
 		else {
-			$intro = "Have you forgotten your password? Enter one of the email addresses you entered during signup and we&rsquo;ll email you a link to reset your password.";
-			$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView', array('intro' => $intro));
+			$form = render('wddsocial.view.form.WDDSocial\ForgotPasswordView',
+				array('intro' => $this->lang->text('intro-message')));
 
 		}
 		
 		
-		
-		# display site header
-		echo render(':template', array('section' => 'top', 'title' => 'Forgot Password'));
-		
 		# open content section
-		echo render(':section', array('section' => 'begin_content'));
+		$content = render(':section', array('section' => 'begin_content'));
 		
 		# display form header
-		echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'forgot_pass_intro'));
+		$content.= render('wddsocial.view.form.WDDSocial\ExtraView', 
+			array('type' => 'forgot_pass_intro'));
 		
-		# 
-		echo $form;
+		# display form
+		$content.= $form;
 		
 		# end content section
-		echo render(':section', array('section' => 'end_content'));
+		$content.= render(':section', array('section' => 'end_content'));
 		
-		# display site footer
-		echo render(':template', array('section' => 'bottom'));
+		
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $this->lang->text('page-title'), 'content' => $content));
 	}
 	
 	
@@ -101,7 +102,7 @@ class ForgotPasswordPage implements \Framework5\IExecutable {
 		
 		# generate password reset code
 		$pass_code = substr(md5(time() + 'h5so3hdj8h'), 0, 16);
-		$link = "http://wddsocial.com/new-password/{$pass_code}";
+		$link = "http://dev.wddsocial.com/new-password/{$pass_code}";
 		
 		# add code to database
 		$query = $this->db->prepare("

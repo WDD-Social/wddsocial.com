@@ -338,7 +338,7 @@ class SelectorSQL{
 		*/
 		
 		'getUserByID' => "
-			SELECT u.id, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, birthday, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, ut.id as typeID, website, twitter, facebook, github, dribbble, forrst
+			SELECT u.id, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, ut.id as typeID, website, twitter, facebook, github, dribbble, forrst
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE u.id = :id
@@ -788,6 +788,13 @@ class SelectorSQL{
 			) AS `date`
 			FROM projects AS p
 			LEFT JOIN users AS u ON (p.userID = u.id)",
+		
+		'getProjectsOwnedByUser' => "
+			SELECT id, COUNT(DISTINCT up.userID) AS memberCount
+			FROM projects AS p
+			LEFT JOIN userProjects AS up ON (p.id = up.projectID)
+			WHERE p.userID = :userID
+			GROUP BY p.id",
 			
 			
 		/**
@@ -948,6 +955,13 @@ class SelectorSQL{
 			LEFT JOIN users AS u ON (a.userID = u.id)
 			LEFT JOIN privacyLevels AS pl ON (a.privacyLevelID = pl.id)
 			WHERE pl.title = 'public'",
+		
+		'getArticlesOwnedByUser' => "
+			SELECT id, COUNT(DISTINCT ua.userID) AS authorCount
+			FROM articles AS a
+			LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
+			WHERE a.userID = :userID
+			GROUP BY a.id",
 		
 			
 		/**
