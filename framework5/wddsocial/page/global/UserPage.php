@@ -28,7 +28,7 @@ class UserPage implements \Framework5\IExecutable {
 		# if the user does not exist
 		if ($user) {
 			
-			$page_title = $user->firstName . $user->lastName; # set page title
+			$page_title = "{$user->firstName} {$user->lastName}"; # set page title
 			
 			$content .= render(':section', array('section' => 'begin_content'));
 			
