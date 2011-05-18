@@ -9,11 +9,27 @@ namespace Framework5\Dev;
 
 class BugTrackerPage implements \Framework5\IExecutable {
 	
+	public function __construct() {
+		$this->db = instance('core.controller.Framework5\Database');
+	}
+	
+	
 	public function execute() {
 		echo render('dev.view.Framework5\Dev\TemplateView');
 		echo render('dev.view.Framework5\Dev\PageHeader');
-		echo render('dev.view.Framework5\Dev\BugListDisplayView', $this->get_bugs());
+		
+		$bug_id = \Framework5\Request::segment(2);
+		
+		if ($bug_id) {
+			echo render('dev.view.Framework5\Dev\BugInfoView', $this->bug_info($bug_id));
+		}
+		
+		else {
+			echo render('dev.view.Framework5\Dev\BugListView', $this->get_bugs());
+		}
+		
 	}
+	
 	
 	
 	public function get_bugs($limit = 0, $page = 0) {
@@ -24,9 +40,24 @@ class BugTrackerPage implements \Framework5\IExecutable {
 			FROM fw5_bugs 
 			ORDER BY id DESC";
 		
-		$db = instance('core.controller.Framework5\Database');
-		$query = $db->query($sql);
+		$query = $this->db->query($sql);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		return $query->fetchAll();
+	}
+	
+	
+	
+	public function bug_info($id) {
+		
+		# get the db object
+		$sql = "
+			SELECT id, request_id, user_id, message 
+			FROM fw5_bugs
+			WHERE id = :id";
+		
+		$query = $this->db->prepare($sql);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$query->execute(array('id' => $id));
+		return $query->fetch();
 	}
 }
