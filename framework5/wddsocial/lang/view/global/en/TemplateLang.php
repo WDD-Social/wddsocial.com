@@ -38,6 +38,12 @@ class TemplateLang implements \Framework5\ILanguagePack {
 			case 'user_profile_title':
 				return 'View My Profile';
 			
+			case 'create':
+				return 'Create';
+			
+			case 'create_title':
+				return 'Create';
+			
 			case 'messages':
 				return 'Messages';
 			
