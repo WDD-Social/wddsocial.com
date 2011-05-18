@@ -81,9 +81,10 @@ HTML;
 							<a href="/edit/{$content->type}/{$content->vanityURL}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
 HTML;
 		}else if(UserSession::is_authorized()){
+			$flagClass = (UserSession::has_flagged($content->id,$content->type))?' current':'';
 			$html .= <<<HTML
 
-							<a href="/flag/{$content->type}/{$content->vanityURL}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag">Flag</a>
+							<a href="/flag/{$content->type}/{$content->vanityURL}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag$flagClass">Flag</a>
 HTML;
 		}	
 		$html .= <<<HTML
@@ -131,9 +132,10 @@ HTML;
 HTML;
 		}
 		else if (UserSession::is_authorized()) {
+			$flagClass = (UserSession::has_flagged($event->id,$event->type))?' current':'';
 			$html .= <<<HTML
 
-							<a href="/flag/event/{$event->vanityURL}" title="Flag &ldquo;{$event->title}&rdquo;" class="flag">Flag</a>
+							<a href="/flag/event/{$event->vanityURL}" title="Flag &ldquo;{$event->title}&rdquo;" class="flag$flagClass">Flag</a>
 HTML;
 		}
 		$html .= <<<HTML

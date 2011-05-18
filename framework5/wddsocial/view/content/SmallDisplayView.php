@@ -98,9 +98,10 @@ HTML;
 			}
 			
 			else if (UserSession::is_authorized()) {
+				$flagClass = (UserSession::has_flagged($event->id,$event->type))?' current':'';
 				$html .= <<<HTML
 
-							<a href="/flag/event/{$event->vanityURL}" title="{$this->lang->text('flag_title', $event->title)}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/event/{$event->vanityURL}" title="{$this->lang->text('flag_title', $event->title)}" class="flag$flagClass">{$this->lang->text('flag')}</a>
 HTML;
 			}
 			
@@ -174,9 +175,10 @@ HTML;
 			}
 			
 			else if (UserSession::is_authorized()) {
+				$flagClass = (UserSession::has_flagged($job->id,$job->type))?' current':'';
 				$html .= <<<HTML
 
-							<a href="/flag/job/{$job->vanityURL}" title="{$this->lang->text('flag_title', "{$job->title} | {$job->company}")}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/job/{$job->vanityURL}" title="{$this->lang->text('flag_title', "{$job->title} | {$job->company}")}" class="flag$flagClass">{$this->lang->text('flag')}</a>
 HTML;
 			}
 			$html .=<<<HTML

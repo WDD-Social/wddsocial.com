@@ -39,10 +39,11 @@ HTML;
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
+						$flagClass = (UserSession::has_flagged($content->id,$content->type))?' current':'';
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
+						<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$lang->text('flag_title', $content->title)}" class="flag$flagClass">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
@@ -56,19 +57,21 @@ HTML;
 					</div><!-- END SECONDARY -->
 HTML;
 					}else if(UserSession::is_authorized()){
+						$flagClass = (UserSession::has_flagged($content->id,$content->type))?' current':'';
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
+						<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$lang->text('flag_title', $content->title)}" class="flag$flagClass">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
 				default :
 					if(\WDDSocial\UserSession::is_authorized()){
+						$flagClass = (UserSession::has_flagged($content->id,$content->type))?' current':'';
 						$html .= <<<HTML
 
 					<div class="secondary icons">
-						<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$lang->text('flag_title', $content->title)}" class="flag">{$lang->text('flag')}</a>
+						<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$lang->text('flag_title', $content->title)}" class="flag$flagClass">{$lang->text('flag')}</a>
 					</div><!-- END SECONDARY -->
 HTML;
 					}
