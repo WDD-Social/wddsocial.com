@@ -10,13 +10,19 @@ namespace WDDSocial;
 
 class EditPage implements \Framework5\IExecutable {
 	
-	public function execute() {
-		UserSession::protect();
-		
+	public function __construct() {
 		$this->db = instance(':db');
 		$this->sel = instance(':sel-sql');
 		$this->val = instance(':val-sql');
 		$this->admin = instance(':admin-sql');
+	}
+	
+	
+	
+	public function execute() {
+		
+		# require user auth
+		UserSession::protect();
 		
 		# handle form submission
 		if (isset($_POST['submit'])){
@@ -29,12 +35,17 @@ class EditPage implements \Framework5\IExecutable {
 			}
 		}
 		
-		$types = array('project','article','event','job');
+		
+		else {
+		
+		$types = array('project', 'article', 'event', 'job');
 		$type = \Framework5\Request::segment(1);
 		$vanityURL = \Framework5\Request::segment(2);
-		if (!in_array($type, $types) or !isset($vanityURL))
-			redirect('/');
 		
+		# if type is not valid, redirect
+		if (!in_array($type, $types) or !isset($vanityURL)) redirect('/');
+		
+		# set query based on content type
 		switch ($type) {
 			case 'project':
 				$query = $this->db->prepare($this->sel->getProjectByVanityURL);
@@ -52,59 +63,65 @@ class EditPage implements \Framework5\IExecutable {
 				redirect('/');
 				break;
 		}
+		
+		# get current item data
 		$query->execute(array('vanityURL' => $vanityURL));
 		
-		import('wddsocial.model.WDDSocial\ContentVO');
-		
+		# if content exists
 		if ($query->rowCount() > 0) {
+			import('wddsocial.model.WDDSocial\ContentVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 			$content = $query->fetch();
+			
+			# check if user is content owner
 			switch ($type) {
 				case 'project':
-					if (!UserValidator::is_project_owner($content->id)) {
-						redirect('/');
-					}
+					if (!UserValidator::is_project_owner($content->id)) redirect('/');
 					break;
+				
 				case 'article':
-					if (!UserValidator::is_article_owner($content->id)) {
-						redirect('/');
-					}
+					if (!UserValidator::is_article_owner($content->id)) redirect('/');
 					break;
+				
 				case 'event':
-					if (!UserValidator::is_event_owner($content->id)) {
-						redirect('/');
-					}
+					if (!UserValidator::is_event_owner($content->id)) redirect('/');
 					break;
+				
 				case 'job':
-					if (!UserValidator::is_job_owner($content->id)) {
-						redirect('/');
-					}
+					if (!UserValidator::is_job_owner($content->id)) redirect('/');
 					break;
 			}
 		}
+		
+		# invalid content
 		else {
 			redirect('/');
 		}
 		
-		$typeTitle = ucfirst($content->type);
 		
-		# display site header
-		echo render(':template', array('section' => 'top', 'title' => "Edit {$typeTitle} | {$content->title}"));
+		# page title
+		$typeTitle = ucfirst($content->type);
+		$page_title = "Edit {$typeTitle} | {$content->title}";
 		
 		# open content section
-		echo render(':section', array('section' => 'begin_content'));
+		$html = render(':section', array('section' => 'begin_content'));
 		
 		# display basic form header
-		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'header', 'data' => $content, 'error' => $response->message, 'process' => 'edit'));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+			array('section' => 'header', 'data' => $content, 
+				'error' => $response->message, 'process' => 'edit'));
 		
 		# display content type-specific options
-		if ($content->type == 'project' or $content->type == 'article' or $content->type == 'event' or $content->type == 'job') {
+		if ($content->type == 'project' or $content->type == 'article' or 
+		$content->type == 'event' or $content->type == 'job') {
 			$typeCapitalized = ucfirst($content->type);
-			echo render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs", array('data' => $content));
+			$html.= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs", 
+				array('data' => $content));
 		}
 		
 		# Save button
-		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+			array('section' => 'save'));
 		
 		# display team member section for appropriate content types
 		if ($content->type == 'project' or $content->type == 'article') {
@@ -112,54 +129,71 @@ class EditPage implements \Framework5\IExecutable {
 				case 'project':
 					$teamTitle = 'Team Members';
 					break;
+				
 				case 'article':
 					$teamTitle = 'Authors';
 					break;
 			}
-			echo render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
-					
-			# Save button
-			echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
+			
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
+				array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
 		}
 		
+		# Save button
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+			array('section' => 'save'));
+		
 		# display image section
-		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', 
+			array('images' => $content->images));
 		
 		# Save button
-		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+			array('section' => 'save'));
 		
 		# display video section
-		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', 
+			array('videos' => $content->videos));
 		
 		
 		# display category section
-		echo render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', array('categories' => $content->categories));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', 
+			array('categories' => $content->categories));
 		
 		# Save button
-		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+			array('section' => 'save'));
 		
 		# display link section
-		echo render('wddsocial.view.form.pieces.WDDSocial\LinkInputs', array('links' => $content->links));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs', 
+			array('links' => $content->links));
 		
 		# Save button
-		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+			array('section' => 'save'));
 		
 		#display course section
 		if ($_POST['type'] != 'job') {
-			echo render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', array('courses' => $content->courses, 'header' => true));
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
+				array('courses' => $content->courses, 'header' => true));
 		}
 		
 		# display other options
-		echo render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', array('data' => $content));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', 
+			array('data' => $content));
 		
 		# display form footer
-		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'footer'));
+		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+			array('section' => 'footer'));
 		
 		# end content section
-		echo render(':section', array('section' => 'end_content'));
+		$html.= render(':section', array('section' => 'end_content'));
 		
-		# display site footer
-		echo render(':template', array('section' => 'bottom'));
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $page_title, 'content' => $html));
+		
+		}
 	}
 	
 	
@@ -169,6 +203,8 @@ class EditPage implements \Framework5\IExecutable {
 	*/
 	
 	private function _process_form() {
+		
+		# import dependencies
 		import('wddsocial.model.WDDSocial\ContentVO');
 		import('wddsocial.model.WDDSocial\FormResponse');
 		import('wddsocial.controller.processes.WDDSocial\CategoryProcessor');
@@ -179,7 +215,6 @@ class EditPage implements \Framework5\IExecutable {
 		import('wddsocial.controller.processes.WDDSocial\VanityURLProcessor');
 		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		import('wddsocial.controller.processes.WDDSocial\Deleter');
-		
 		
 		
 		# Get basic content data
