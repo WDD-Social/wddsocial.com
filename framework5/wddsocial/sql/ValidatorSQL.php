@@ -37,7 +37,8 @@ class ValidatorSQL{
 		
 		'checkUserExpiration' => "
 			SELECT TIMESTAMPDIFF(DAY,`datetime`,NOW()) AS difference
-			FROM users",
+			FROM users
+			WHERE id = :id",
 		
 		'checkIfLinkExists' => "
 			SELECT id
