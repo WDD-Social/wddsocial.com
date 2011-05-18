@@ -52,8 +52,10 @@ class MessagesPage implements \Framework5\IExecutable {
 				'classes' => array('small', 'with-secondary', 'filterable'),
 				'header' => $this->lang->text('conversations-header')));
 		
-		$content.= render('wddsocial.view.messages.WDDSocial\ConversationsView',
+		/*
+$content.= render('wddsocial.view.messages.WDDSocial\ConversationsView',
 			array('conversations' => $convs));
+*/
 		
 		$content.= render(':section', array('section' => 'end_content_section'));
 		
@@ -65,8 +67,10 @@ class MessagesPage implements \Framework5\IExecutable {
 				'classes' => array('medium', 'no-margin'),
 				'header' => $this->lang->text('conversation-header')));
 		
-		$content.= render('wddsocial.view.messages.WDDSocial\ConversationView',
+		/*
+$content.= render('wddsocial.view.messages.WDDSocial\ConversationView',
 			array('user' => 'Alicia', 'messages' => $messages));
+*/
 		
 		$content.= render(':section', array('section' => 'end_content_section'));
 		
