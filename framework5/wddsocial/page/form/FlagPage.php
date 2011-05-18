@@ -120,7 +120,7 @@ class FlagPage implements \Framework5\IExecutable {
 					}
 					$query->execute($data);
 				}
-				redirect('/');
+				redirect("/{$_SESSION['last_request']}");
 			}
 		}
 		else {
