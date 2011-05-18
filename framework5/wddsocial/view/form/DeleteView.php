@@ -12,7 +12,46 @@ class DeleteView implements \Framework5\IView {
 		$content = $options['content'];
 		$capitalizedType = ucfirst($options['type']);
 		$contentTitle = ($options['type'] == 'user')?'My Profile':"View $capitalizedType";
-		$viewLink = ($options['type'] == 'comment')?"/{$options['source']}#comments":"/{$options['type']}/{$content->vanityURL}";
+		$viewLink = "/{$options['type']}/{$content->vanityURL}";
+		
+		if ($options['type'] == 'comment') {
+			$db = instance(':db');
+			$sql = instance(':sel-sql');
+			
+			$data = array('id' => $content->id);
+			$query = $db->prepare($sql->getCommentProject);
+			$query->execute($data);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$result = $query->fetch();
+			if ($result->contentID != NULL) {
+				$final = $result;
+			}
+			else {
+				$query = $db->prepare($sql->getCommentArticle);
+				$query->execute($data);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				$result = $query->fetch();
+				if ($result->contentID != NULL) {
+					$final = $result;
+				}
+				else {
+					$query = $db->prepare($sql->getCommentEvent);
+					$query->execute($data);
+					$query->setFetchMode(\PDO::FETCH_OBJ);
+					$result = $query->fetch();
+					if ($result->contentID != NULL) {
+						$final = $result;
+					}
+				}
+			}
+			
+			if (isset($final)) {
+				$viewLink = "/{$final->type}/{$final->vanityURL}#comments";
+			}
+			else {
+				$viewLink = "/{$options['source']}#comments";
+			}
+		}
 		
 		switch ($options['type']) {
 			case 'user':
