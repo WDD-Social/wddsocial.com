@@ -17,6 +17,9 @@ class BasicElements implements \Framework5\IView {
 			case 'footer':
 				return $this->footer($options);
 				break;
+			case 'save':
+				return $this->save($options);
+				break;
 		}
 	}
 	
@@ -114,6 +117,26 @@ HTML;
 
 						<input type="submit" name="submit" value="$buttonText" />
 					</form>
+HTML;
+	}
+	
+	
+	
+	/**
+	* Displays save button
+	*/
+	
+	private function save(){
+		
+		switch (\Framework5\Request::segment(0)) {
+			case 'edit':
+				$buttonText = "Save";
+				break;
+		}
+		
+		return <<<HTML
+
+						<input type="submit" name="submit" value="$buttonText" />
 HTML;
 	}
 }
