@@ -1084,18 +1084,26 @@ class SelectorSQL{
 		*/
 		
 		'getUpcomingEvents' => "
-			SELECT id, userID, icsUID, title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
-			FROM events
+			SELECT *
+			FROM (SELECT id, e.userID, icsUID, title, description, vanityURL, location, e.datetime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+			FROM events AS e
+			LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
 			WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
-			ORDER BY startDateTime ASC
+			GROUP BY e.id
+			ORDER BY startDateTime ASC) AS events
+			WHERE events.flagCount < 3
 			LIMIT 0,3",
 			
 		'getUpcomingPublicEvents' => "
-			SELECT e.id, userID, icsUID, e.title, description, vanityURL, location, `datetime`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
-			FROM events AS e
-			LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
-			WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
-			ORDER BY startDateTime ASC
+			SELECT *
+			FROM (SELECT e.id, e.userID, icsUID, e.title, description, vanityURL, location, e.datetime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+				FROM events AS e
+				LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
+				GROUP BY e.id
+				ORDER BY startDateTime ASC) AS events
+			WHERE events.flagCount < 3
 			LIMIT 0,10",
 		
 		'getEventByVanityURL' => "
@@ -1128,15 +1136,23 @@ class SelectorSQL{
 			LIMIT 1",
 		
 		'getEvents' => "
-			SELECT e.id, userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
-			FROM events AS e
-			WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1",
+			SELECT *
+			FROM(SELECT e.id, e.userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+				FROM events AS e
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
+				GROUP BY e.id) AS events
+			WHERE events.flagCount < 3",
 		
 		'getPublicEvents' => "
-			SELECT e.id, userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`
-			FROM events AS e
-			LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
-			WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1",
+			SELECT *
+			FROM(SELECT e.id, e.userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+				FROM events AS e
+				LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
+				GROUP BY e.id) AS events
+			WHERE events.flagCount < 3",
 			
 			
 			
@@ -1145,10 +1161,14 @@ class SelectorSQL{
 		*/
 			
 		'getRecentJobs' => "
-			SELECT j.id, userID, j.title, vanityURL, company, jt.title AS jobType, avatar, location, compensation, description, website
-			FROM jobs AS j
-			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
-			ORDER BY `datetime` DESC
+			SELECT *
+			FROM (SELECT j.id, j.userID, j.title, vanityURL, company, jt.title AS jobType, avatar, location, compensation, description, website, COUNT(DISTINCT jf.userID) AS flagCount
+				FROM jobs AS j
+				LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
+				LEFT JOIN jobFlags AS jf ON (j.id = jf.jobID)
+				GROUP BY j.id
+				ORDER BY j.datetime DESC) AS jobs
+			WHERE jobs.flagCount < 3
 			LIMIT 0,3",
 		
 		'getJobByVanityURL' => "
