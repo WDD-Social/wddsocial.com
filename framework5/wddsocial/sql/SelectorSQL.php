@@ -158,7 +158,7 @@ class SelectorSQL{
 				ORDER BY DATETIME DESC) AS latest
 			WHERE latest.flagCount < 3",
 		
-		'getUserLatest' => "
+		'getUserLatestWithComments' => "
 			SELECT *
 			FROM (SELECT p.id, p.title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
 				IF(
@@ -348,6 +348,83 @@ class SelectorSQL{
 				WHERE u.id = :id
 				GROUP BY c.id
 				ORDER BY DATETIME DESC) AS userLatest
+			WHERE userLatest.flagCount < 3",
+		
+		'getUserLatest' => "
+			SELECT *
+			FROM (SELECT p.id, p.title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 30,
+							DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM projects AS p
+				LEFT JOIN users AS u ON (p.userID = u.id)
+				LEFT JOIN userProjects AS up ON (p.id = up.projectID)
+				LEFT JOIN projectFlags AS pf ON (p.id = pf.projectID)
+				WHERE u.id = :id OR up.userID = :id
+				GROUP BY p.id
+				UNION
+				SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT af.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 30,
+							DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM articles AS a
+				LEFT JOIN users AS u ON (a.userID = u.id)
+				LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
+				LEFT JOIN articleFlags AS af ON (a.id = af.articleID)
+				WHERE u.id = :id OR ua.userID = :id
+				GROUP BY a.id) AS userLatest
 			WHERE userLatest.flagCount < 3",
 			
 			
