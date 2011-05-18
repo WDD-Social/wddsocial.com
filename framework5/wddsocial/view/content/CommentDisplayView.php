@@ -54,11 +54,12 @@ HTML;
 				}
 				
 				else if (UserSession::is_authorized()) {
+					$flagClass = (UserSession::has_flagged($comment->id,'comment'))?' current':'';
 					$possessive = NaturalLanguage::possessive("{$comment->firstName} {$comment->lastName}");
 					$html .= <<<HTML
 
 						<div class="secondary">
-							<a href="/flag/comment/{$comment->id}" title="{$lang->text('flag_user_comment', $possessive)}" class="flag">{$lang->text('flag')}</a>
+							<a href="/flag/comment/{$comment->id}" title="{$lang->text('flag_user_comment', $possessive)}" class="flag$flagClass">{$lang->text('flag')}</a>
 						</div><!-- END SECONDARY -->
 HTML;
 				}
