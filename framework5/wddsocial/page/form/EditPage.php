@@ -103,13 +103,16 @@ class EditPage implements \Framework5\IExecutable {
 		echo render(':section', array('section' => 'begin_content'));
 		
 		# display basic form header
-		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'header', 'data' => $content, 'error' => $response->message, 'process' => 'edit'));
+		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'header', 'data' => $content, 'error' => $response->message, 'process' => 'edit'));
 		
 		# display content type-specific options
 		if ($content->type == 'project' or $content->type == 'article' or $content->type == 'event' or $content->type == 'job') {
 			$typeCapitalized = ucfirst($content->type);
-			echo render("wddsocial.view.form.create.WDDSocial\\{$typeCapitalized}ExtraInputs", array('data' => $content));
+			echo render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs", array('data' => $content));
 		}
+		
+		# Save button
+		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
 		
 		# display team member section for appropriate content types
 		if ($content->type == 'project' or $content->type == 'article') {
@@ -124,17 +127,30 @@ class EditPage implements \Framework5\IExecutable {
 			echo render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
 		}
 		
+		# Save button
+		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
+		
 		# display image section
 		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
+		
+		# Save button
+		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
 		
 		# display video section
 		echo render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', array('videos' => $content->videos));
 		
+		
 		# display category section
 		echo render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', array('categories' => $content->categories));
 		
+		# Save button
+		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
+		
 		# display link section
 		echo render('wddsocial.view.form.pieces.WDDSocial\LinkInputs', array('links' => $content->links));
+		
+		# Save button
+		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
 		
 		#display course section
 		if ($_POST['type'] != 'job') {
@@ -145,7 +161,7 @@ class EditPage implements \Framework5\IExecutable {
 		echo render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', array('data' => $content));
 		
 		# display form footer
-		echo render('wddsocial.view.form.create.WDDSocial\BasicElements', array('section' => 'footer'));
+		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'footer'));
 		
 		# end content section
 		echo render(':section', array('section' => 'end_content'));
