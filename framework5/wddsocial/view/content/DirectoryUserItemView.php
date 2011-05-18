@@ -30,22 +30,24 @@ HTML;
 	
 	
 	
-	
 	/**
 	* Creates user intro sentence
 	*/
 	
 	private function getUserIntro($user){
-		$sentence = 'A';
+			$sentence = 'A';
 		
-		if(isset($user->age)){
-			$sentence .= " <strong>{$user->age}-year-old</strong>";
+		if($user->age != ''){
+			$aan = ($user->age == 18)?'an':'a';
+			$sentence .= " $aan <strong>{$user->age}-year-old</strong>";
 		}
 		if($user->type == 'Student'){
-			if(isset($user->extra['location'])){
+			if(isset($user->extra['location']) and $user->extra['location'] != '' and isset($user->age) and $user->age != ''){
 				$sentence .= ",";
 			}
-			if(isset($user->extra['location'])){
+			if(isset($user->extra['location']) and $user->extra['location'] != ''){
+				if ($user->age == '')
+					$sentence .= " an";
 				$sentence .= " <strong>{$user->extra['location']}</strong>";
 			}
 		}
@@ -62,13 +64,17 @@ HTML;
 				break;
 			case 'Teacher':
 				if(isset($user->extra['courses']) and count($user->extra['courses']) > 0){
-					$sentence .= " who teaches";
-					for($i =0; $i < count($user->extra['courses']); $i++){
-						if($i == count($user->extra['courses'])-1){
-							$sentence .= " and <strong><a href=\"/course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>";
-						}else{
-							$sentence .= " <strong><a href=\"/course/{$user->extra['courses'][$i][id]}\" title=\"{$user->extra['courses'][$i][title]}\">{$user->extra['courses'][$i][id]}</a></strong>,";
+					$sentence .= " who teaches ";
+					if (count($user->extra['courses']) == 1) {
+						$course = $user->extra['courses'][0];
+						$sentence .= "<strong><a href=\"/course/{$course->id}\" title=\"{$course->title}\">{$course->id}</a></strong>";
+					}
+					else {
+						$courses = array();
+						foreach ($user->extra['courses'] as $course) {
+							array_push($courses,"<strong><a href=\"/course/{$course->id}\" title=\"{$course->title}\">{$course->id}</a></strong>");
 						}
+						$sentence .= NaturalLanguage::comma_list($courses);	
 					}
 				}
 				break;

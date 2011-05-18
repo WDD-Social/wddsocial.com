@@ -636,14 +636,14 @@ class SelectorSQL{
 			LIMIT 0,16",
 		
 		'getPeople' => "
-			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`,
+			SELECT u.id, firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, ut.id as typeID,
 			IF(
 				TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 59,
 				IF(
 					TIMESTAMPDIFF(HOUR, `datetime`, NOW()) > 23,
 					IF(
 						TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 30,
-						DATE_FORMAT(`datetime`,'%M %D, %Y at %l:%i %p'),
+						DATE_FORMAT(`datetime`,'%M %D, %Y'),
 						IF(
 							TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 1,
 							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, NOW()), 'days ago'),
