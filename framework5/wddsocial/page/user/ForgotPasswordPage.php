@@ -102,7 +102,7 @@ class ForgotPasswordPage implements \Framework5\IExecutable {
 		
 		# generate password reset code
 		$pass_code = substr(md5(time() + 'h5so3hdj8h'), 0, 16);
-		$link = "http://wddsocial.com/new-password/{$pass_code}";
+		$link = "http://dev.wddsocial.com/new-password/{$pass_code}";
 		
 		# add code to database
 		$query = $this->db->prepare("
