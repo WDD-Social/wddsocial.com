@@ -171,7 +171,7 @@ class DeletePage implements \Framework5\IExecutable {
 		if ($query->rowCount() > 0) {
 			$content = $query->fetch();
 			
-			if ($content->type == 'user') {
+			if ($_POST['type'] == 'user') {
 				# delete user from teams
 				$query = $this->db->prepare($this->admin->deleteUserFromProjectTeams);
 				$query->execute(array('userID' => $content->id));
@@ -234,7 +234,7 @@ class DeletePage implements \Framework5\IExecutable {
 				}
 				
 				$data = array('id' => $content->id);
-				switch ($content->type) {
+				switch ($_POST['type']) {
 					case 'project':
 						$query = $this->db->prepare($this->admin->deleteProject);
 						$query->execute($data);
