@@ -48,45 +48,13 @@ class FlagPage implements \Framework5\IExecutable {
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 			$content = $query->fetch();
 			
-			$data = array('id' => $content->id, 'userID' => UserSession::userid());
-			
-			switch ($type) {
-				case 'project':
-					$query = $this->db->prepare($this->val->isUserProjectCreator);
-					break;
-				case 'article':
-					$query = $this->db->prepare($this->val->isUserArticleCreator);
-					break;
-				case 'event':
-					$query = $this->db->prepare($this->val->isUserEventCreator);
-					break;
-				case 'job':
-					$query = $this->db->prepare($this->val->isUserJobCreator);
-					break;
-			}
-			$query->execute($data);
-			
-			if ($query->rowCount() > 0) {
+			if (UserValidator::is_creator($content->id,$type)) {
 				redirect('/');
 			}
 			else {
-				switch ($type) {
-					case 'project':
-						$query = $this->db->prepare($this->val->checkIfProjectHasBeenFlagged);
-						break;
-					case 'article':
-						$query = $this->db->prepare($this->val->checkIfArticleHasBeenFlagged);
-						break;
-					case 'event':
-						$query = $this->db->prepare($this->val->checkIfEventHasBeenFlagged);
-						break;
-					case 'job':
-						$query = $this->db->prepare($this->val->checkIfJobHasBeenFlagged);
-						break;
-				}
-				$query->execute($data);
+				$data = array('id' => $content->id, 'userID' => UserSession::userid());
 				
-				if ($query->rowCount() > 0) {
+				if (UserSession::has_flagged($content->id,$type)) {
 					switch ($type) {
 						case 'project':
 							$query = $this->db->prepare($this->admin->unflagProject);
