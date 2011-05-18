@@ -1967,18 +1967,46 @@ input[type="submit"], button, a.button{
 	outline: none;
 	.box-shadow-inset(0, 1px, 3px, rgba(0,0,0,.1));
 	}
-
-a.button{
-	margin-top: 20px;
-	}
 	
-input[type="submit"]:hover, input[type="submit"]:focus, button:hover, button:focus, a.button:hover, a.button:focus{
+input[type="submit"]:hover, input[type="submit"]:focus, a.button:hover, a.button:focus{
 	.linear-gradient(@green-light-40,@green);
 	}
 	
-input[type="submit"]:active, button:active, a.button:active{
+input[type="submit"]:active, a.button:active{
 	.linear-gradient(@green-light-15,@green-dark-13);
 	.box-shadow-inset(0, 1px, 4px, rgba(0,0,0,.4));
+	}
+
+input[type="submit"].alert, a.button.alert{
+	.linear-gradient(@red-light-25,@red);
+	}
+
+input[type="submit"].alert:hover, input[type="submit"].alert:focus, a.button.alert:hover, a.button.alert:focus{
+	.linear-gradient(@red-light-40,@red);
+	}
+
+input[type="submit"].alert:active, a.button.alert:active{
+	.linear-gradient(@red-light-15,@red-dark-13);
+	}
+
+.buttongroup{
+	width: 100%;
+	overflow: hidden;
+	float: right;
+	
+	input[type="submit"].inline, a.button.inline{
+		clear: none;
+		float: right;
+		margin-left: 5%;
+		}
+	
+	input[type="submit"]:last-child, a.button:last-child{
+		margin-left: 0;
+		}
+	}
+
+a.button{
+	margin-top: 20px;
 	}
 
 .helper-link{
