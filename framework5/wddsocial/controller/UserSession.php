@@ -207,6 +207,9 @@ class UserSession {
 			case 'job':
 				$query = $db->prepare($sql->checkIfJobHasBeenFlagged);
 				break;
+			case 'comment':
+				$query = $db->prepare($sql->checkIfCommentHasBeenFlagged);
+				break;
 		}
 		$query->execute($data);
 		if ($query->rowCount() > 0)

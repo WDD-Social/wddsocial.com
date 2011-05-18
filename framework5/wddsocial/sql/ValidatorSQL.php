@@ -99,6 +99,11 @@ class ValidatorSQL{
 			SELECT id
 			FROM jobs
 			WHERE id = :jobID AND userID = :userID",
+		
+		'isUserCommentOwner' => "
+			SELECT id
+			FROM comments
+			WHERE id = :commentID AND userID = :userID",
 					
 		'getProjectOwners' => "
 			SELECT userID
@@ -238,7 +243,12 @@ class ValidatorSQL{
 		'checkIfJobHasBeenFlagged' => "
 			SELECT userID
 			FROM jobFlags
-			WHERE jobID = :id AND userID = :userID"
+			WHERE jobID = :id AND userID = :userID",
+		
+		'checkIfCommentHasBeenFlagged' => "
+			SELECT userID
+			FROM commentFlags
+			WHERE commentID = :id AND userID = :userID"
 	);
 	
 	public function __get($id){

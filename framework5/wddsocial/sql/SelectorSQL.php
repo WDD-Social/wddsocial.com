@@ -1198,26 +1198,6 @@ class SelectorSQL{
 			
 			
 		/**
-		* Comment count queries
-		*/
-		
-		'getProjectCommentsCount' => "
-			SELECT COUNT(*) as comments
-			FROM projectComments
-			WHERE projectID = :id",
-			
-		'getArticleCommentsCount' => "
-			SELECT COUNT(*) as comments
-			FROM articleComments
-			WHERE articleID = :id",
-			
-		'getEventCommentsCount' => "
-			SELECT COUNT(*) as comments
-			FROM eventComments
-			WHERE eventID = :id",
-			
-			
-		/**
 		* Category queries
 		*/
 		
@@ -1385,116 +1365,165 @@ class SelectorSQL{
 		* Comment queries
 		*/
 			
+		'getCommentByID' => "
+			SELECT id, content, userID
+			FROM comments
+			WHERE id = :id",
+		
 		'getProjectComments' => "
-			SELECT c.id, content, u.id AS userID, firstName, lastName, avatar, vanityURL,
-			IF(
-				TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
+			SELECT *
+			FROM (SELECT c.id, content, u.id AS userID, firstName, lastName, avatar, vanityURL, COUNT(DISTINCT cf.userID) AS flagCount,
 				IF(
-					TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
+					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
 					IF(
-						TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
-						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
 						IF(
-							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
-							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
-							'Yesterday'
+							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
+							DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
 						)
 					),
 					IF(
-						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
+						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
+						)
 					)
-				),
-				IF(
-					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
-					'Just now',
-					IF(
-						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
-					)
-				)
-			) AS `date`
-			FROM comments AS c
-			LEFT JOIN projectComments AS pc ON (c.id = pc.commentID)
-			LEFT JOIN users AS u ON (u.id = c.userID)
-			WHERE pc.projectID = :id
-			ORDER BY c.datetime ASC",
+				) AS `date`
+				FROM comments AS c
+				LEFT JOIN projectComments AS pc ON (c.id = pc.commentID)
+				LEFT JOIN users AS u ON (u.id = c.userID)
+				LEFT JOIN commentFlags AS cf ON (c.id = cf.commentID)
+				WHERE pc.projectID = :id
+				GROUP BY c.id
+				ORDER BY c.datetime ASC) AS comments
+			WHERE comments.flagCount < 3",
 			
 		'getArticleComments' => "
-			SELECT c.id, content, u.id AS userID, firstName, lastName, avatar, vanityURL,
-			IF(
-				TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
+			SELECT *
+			FROM (SELECT c.id, content, u.id AS userID, firstName, lastName, avatar, vanityURL, COUNT(DISTINCT cf.userID) AS flagCount,
 				IF(
-					TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
+					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
 					IF(
-						TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
-						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
 						IF(
-							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
-							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
-							'Yesterday'
+							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
+							DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
 						)
 					),
 					IF(
-						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
+						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
+						)
 					)
-				),
-				IF(
-					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
-					'Just now',
-					IF(
-						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
-					)
-				)
-			) AS `date`
-			FROM comments AS c
-			LEFT JOIN articleComments AS ac ON (c.id = ac.commentID)
-			LEFT JOIN users AS u ON (u.id = c.userID)
-			WHERE ac.articleID = :id
-			ORDER BY c.datetime ASC",
+				) AS `date`
+				FROM comments AS c
+				LEFT JOIN articleComments AS ac ON (c.id = ac.commentID)
+				LEFT JOIN users AS u ON (u.id = c.userID)
+				LEFT JOIN commentFlags AS cf ON (c.id = cf.commentID)
+				WHERE ac.articleID = :id
+				GROUP BY c.id
+				ORDER BY c.datetime ASC) AS comments
+			WHERE comments.flagCount < 3",
 		
 		'getEventComments' => "
-			SELECT c.id, content, u.id AS userID, firstName, lastName, avatar, vanityURL,
-			IF(
-				TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
+			SELECT *
+			FROM (SELECT c.id, content, u.id AS userID, firstName, lastName, avatar, vanityURL, COUNT(DISTINCT cf.userID) AS flagCount,
 				IF(
-					TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
+					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 59,
 					IF(
-						TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
-						DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 23,
 						IF(
-							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
-							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
-							'Yesterday'
+							TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 30,
+							DATE_FORMAT(c.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, c.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, c.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
 						)
 					),
 					IF(
-						TIMESTAMPDIFF(HOUR, c.datetime, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hours ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, c.datetime, NOW()), 'hour ago')
+						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
+						)
 					)
-				),
-				IF(
-					TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) = 0,
-					'Just now',
-					IF(
-						TIMESTAMPDIFF(MINUTE, c.datetime, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minutes ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, c.datetime, NOW()), 'minute ago')
-					)
-				)
-			) AS `date`
-			FROM comments AS c
-			LEFT JOIN eventComments AS ec ON (c.id = ec.commentID)
-			LEFT JOIN users AS u ON (u.id = c.userID)
-			WHERE ec.eventID = :id
-			ORDER BY c.datetime ASC",
+				) AS `date`
+				FROM comments AS c
+				LEFT JOIN eventComments AS ec ON (c.id = ec.commentID)
+				LEFT JOIN users AS u ON (u.id = c.userID)
+				LEFT JOIN commentFlags AS cf ON (c.id = cf.commentID)
+				WHERE ec.eventID = :id
+				GROUP BY c.id
+				ORDER BY c.datetime ASC) AS comments
+			WHERE comments.flagCount < 3",
+			
+			
+		/**
+		* Comment count queries
+		*/
+		
+		'getProjectCommentsCount' => "
+			SELECT COUNT(*) as comments
+			FROM (SELECT pc.projectID, COUNT(DISTINCT cf.userID) AS flagCount
+				FROM projectComments AS pc
+				LEFT JOIN commentFlags AS cf ON (pc.commentID = cf.commentID)
+				WHERE pc.projectID = :id
+				GROUP BY pc.commentID) AS c
+			WHERE c.flagCount < 3",
+		
+		'getArticleCommentsCount' => "
+			SELECT COUNT(*) as comments
+			FROM (SELECT ac.articleID, COUNT(DISTINCT cf.userID) AS flagCount
+				FROM articleComments AS ac
+				LEFT JOIN commentFlags AS cf ON (ac.commentID = cf.commentID)
+				WHERE ac.articleID = :id
+				GROUP BY ac.commentID) AS c
+			WHERE c.flagCount < 3",
+		
+		'getEventCommentsCount' => "
+			SELECT COUNT(*) as comments
+			FROM (SELECT ec.eventID, COUNT(DISTINCT cf.userID) AS flagCount
+				FROM eventComments AS ec
+				LEFT JOIN commentFlags AS cf ON (ec.commentID = cf.commentID)
+				WHERE ec.eventID = :id
+				GROUP BY ec.commentID) AS c
+			WHERE c.flagCount < 3",
 			
 			
 		/**

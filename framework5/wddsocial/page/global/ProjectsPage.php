@@ -21,19 +21,17 @@ class ProjectsPage implements \Framework5\IExecutable {
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
 		# display site header
-		echo render(':template', array('section' => 'top', 'title' => 'Projects'));
+		$page_title = 'Projects';
 		
-		echo render(':section', array('section' => 'begin_content'));
+		$content = render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(2);
 		$sorters = array('alphabetically', 'newest', 'oldest');
 		
-		if (isset($sorter) and in_array($sorter, $sorters))
-			$active = $sorter;
-		else 
-			$active = $sorters[0];
+		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
+		else $active = $sorters[0];
 		
-		echo render(':section', 
+		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
 				'header' => 'Projects', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/projects/1/', 'active' => $active));
@@ -44,12 +42,15 @@ class ProjectsPage implements \Framework5\IExecutable {
 			case 'alphabetically':
 				$orderBy = 'title ASC';
 				break;
+			
 			case 'newest':
 				$orderBy = '`datetime` DESC';
 				break;
+			
 			case 'oldest':
 				$orderBy = '`datetime` ASC';
 				break;
+			
 			default:
 				$orderBy = 'title ASC';
 				break;
@@ -62,7 +63,7 @@ class ProjectsPage implements \Framework5\IExecutable {
 		
 		# display section items
 		while($item = $query->fetch()){
-			echo render('wddsocial.view.content.WDDSocial\DirectoryItemView', 
+			$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', 
 				array('type' => $item->type,'content' => $item));
 		}
 		
@@ -73,19 +74,21 @@ class ProjectsPage implements \Framework5\IExecutable {
 		
 		if ($query->rowCount() > 0) {
 			# display section footer
-			echo render(':section',
+			$content.= render(':section',
 				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/projects/{$paginator->next}/$active"));	
 		}		
 		else {
 			# display section footer
-			echo render(':section',
+			$content.= render(':section',
 				array('section' => 'end_content_section', 'id' => 'directory'));	
 		}
 		
-		echo render(':section', array('section' => 'end_content'));
+		$content.= render(':section', array('section' => 'end_content'));
 		
-		# display site footer
-		echo render(':template', array('section' => 'bottom'));
+		
+		# display page
+		echo render(':template', 
+			array('title' => $page_title, 'content' => $content));
 		
 	}
 }

@@ -447,6 +447,10 @@ class AdminSQL{
 			INSERT INTO jobFlags (jobID, userID, `datetime`)
 			VALUES (:id, :userID, NOW())",
 		
+		'flagComment' => "
+			INSERT INTO commentFlags (commentID, userID, `datetime`)
+			VALUES (:id, :userID, NOW())",
+		
 		'unflagProject' => "
 			DELETE FROM projectFlags
 			WHERE projectID = :id AND userID = :userID",
@@ -461,7 +465,11 @@ class AdminSQL{
 		
 		'unflagJob' => "
 			DELETE FROM jobFlags
-			WHERE jobID = :id AND userID = :userID"
+			WHERE jobID = :id AND userID = :userID",
+		
+		'unflagComment' => "
+			DELETE FROM commentFlags
+			WHERE commentID = :id AND userID = :userID"
 		
 	);
 	
