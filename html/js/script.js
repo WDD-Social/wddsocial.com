@@ -28,17 +28,24 @@ $(function() {
 		}
 	}); */
 	
+	var filter = function(type, parent, duration){
+		if(typeof duration == 'undefined'){
+			duration = 500;
+		}
+		if(type === 'All'){
+			$(parent).find('article').slideDown(duration,'easeInOutQuad');
+		}else{
+			var lowerType = type.toLowerCase();
+			$(parent)
+				.find('article.'+lowerType).slideDown(duration,'easeInOutQuad').parent()
+				.find('article:not(article.'+lowerType+')').slideUp(duration,'easeInOutQuad');
+		}
+	}
+	
 	$('.filters a').live('click',function(){
 		$(this).parent().find('a.current').removeClass('current');
 		$(this).addClass('current');
-		if($(this).html() === 'All'){
-			$(this).parent().parent().find('article').slideDown(500,'easeInOutQuad');
-		}else{
-			var type = $(this).text().toLowerCase();
-			$(this).parent().parent()
-				.find('article.'+type).slideDown(500,'easeInOutQuad').parent()
-				.find('article:not(article.'+type+')').slideUp(500,'easeInOutQuad');
-		}
+		filter($(this).html(),$(this).parent().parent());
 		return false;
 	});
 	
@@ -125,6 +132,8 @@ $(function() {
 			success: function(response){
 				$(response).insertBefore(parent);
 				pageNumber++;
+				selectedSection = $(parent).parent();
+				filter($(selectedSection).find('div.filters a.current').html(),selectedSection,0)
 				$.ajax({
 					url: '/ajax/more',
 					dataType: 'html',
