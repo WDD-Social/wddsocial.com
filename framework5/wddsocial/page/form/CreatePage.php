@@ -108,7 +108,7 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		
 		# display page
-		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+		echo render(':template', 
 			array('title' => $page_title, 'content' => $content));
 	}
 	

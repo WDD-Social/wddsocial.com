@@ -21,7 +21,7 @@ class Http404 implements \Framework5\IExecutable {
 		$content.= render('wddsocial.view.page.WDDSocial\Http404View');
 		$content.= render(':section', array('section' => 'end_content'));
 		
-		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+		echo render(':template', 
 			array('title' => $this->lang->text('page-title'), 'content' => $content));
 	}
 }

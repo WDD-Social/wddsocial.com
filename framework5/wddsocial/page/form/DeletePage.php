@@ -9,13 +9,22 @@ namespace WDDSocial;
 
 class DeletePage implements \Framework5\IExecutable {
 	
-	public function execute() {
-		UserSession::protect();
-		
+	public function __construct() {
 		$this->db = instance(':db');
 		$this->sel = instance(':sel-sql');
 		$this->val = instance(':val-sql');
 		$this->admin = instance(':admin-sql');
+	}
+	
+	
+	public function execute() {
+		
+		# require user auth
+		UserSession::protect();
+		
+		# uri vars
+		$type = \Framework5\Request::segment(1);
+		$vanityURL = \Framework5\Request::segment(2);
 		
 		# handle form submission
 		if (isset($_POST['submit']) and $_POST['submit'] == 'Delete'){
@@ -28,12 +37,13 @@ class DeletePage implements \Framework5\IExecutable {
 			}
 		}
 		
-		$types = array('project','article','event','job','user');
-		$type = \Framework5\Request::segment(1);
-		$vanityURL = \Framework5\Request::segment(2);
-		if (!in_array($type, $types) or !isset($vanityURL))
-			redirect('/');
+		# set valid types
+		$types = array('project', 'article', 'event', 'job', 'user');
 		
+		# redirect invalid types
+		if (!in_array($type, $types) or !isset($vanityURL)) redirect('/');
+		
+		# set query based on type
 		switch ($type) {
 			case 'project':
 				$query = $this->db->prepare($this->sel->getProjectByVanityURL);
@@ -55,6 +65,7 @@ class DeletePage implements \Framework5\IExecutable {
 				break;
 		}
 		
+		
 		if ($type != 'user') {
 			import('wddsocial.model.WDDSocial\ContentVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
@@ -68,8 +79,10 @@ class DeletePage implements \Framework5\IExecutable {
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
 		}
 		
+		# get the content
 		$query->execute(array('vanityURL' => $vanityURL));
 		
+		# check if user is content owner
 		if ($query->rowCount() > 0) {
 			$content = $query->fetch();
 			switch ($type) {
@@ -99,27 +112,32 @@ class DeletePage implements \Framework5\IExecutable {
 					break;
 			}
 		}
+		
+		# user not content owner
 		else {
 			redirect('/');
 		}
-			
-		if ($type == 'user') $content->title = $content->firstName . ' ' . $content->lastName;
+		
+		if ($type == 'user') $content->title = "{$content->firstName} {$content->lastName}";
 		$typeTitle = ucfirst($type);
 		
-		# display site header
-		echo render(':template', array('section' => 'top', 'title' => "Delete {$typeTitle} | {$content->title}"));
+		
+		# page title
+		$page_title = "Delete {$typeTitle} | {$content->title}";
 		
 		# open content section
-		echo render(':section', array('section' => 'begin_content'));
+		$html.= render(':section', array('section' => 'begin_content'));
 		
 		# display delete form
-		echo render('wddsocial.view.form.WDDSocial\DeleteView', array('content' => $content, 'type' => $type, 'error' => $response->message));
+		$html.= render('wddsocial.view.form.WDDSocial\DeleteView', 
+			array('content' => $content, 'type' => $type, 'error' => $response->message));
 		
 		# end content section
-		echo render(':section', array('section' => 'end_content'));
+		$html.= render(':section', array('section' => 'end_content'));
 		
-		# display site footer
-		echo render(':template', array('section' => 'bottom'));
+		# display page
+		echo render(':template', 
+			array('title' => $page_title, 'content' => $html));
 	}
 	
 	
@@ -129,6 +147,7 @@ class DeletePage implements \Framework5\IExecutable {
 	*/
 	
 	private function _process_form() {
+		
 		import('wddsocial.model.WDDSocial\FormResponse');
 		import('wddsocial.controller.processes.WDDSocial\Deleter');
 		
@@ -136,22 +155,28 @@ class DeletePage implements \Framework5\IExecutable {
 			case 'project':
 				$query = $this->db->prepare($this->sel->getProjectByID);
 				break;
+			
 			case 'article':
 				$query = $this->db->prepare($this->sel->getArticleByID);
 				break;
+			
 			case 'event':
 				$query = $this->db->prepare($this->sel->getEventByID);
 				break;
+			
 			case 'job':
 				$query = $this->db->prepare($this->sel->getJobByID);
 				break;
+			
 			case 'user':
 				$query = $this->db->prepare($this->sel->getUserByID);
 				break;
+			
 			default:
 				redirect('/');
 				break;
 		}
+		
 		
 		if ($_POST['type'] != 'user') {
 			import('wddsocial.model.WDDSocial\ContentVO');
@@ -165,6 +190,7 @@ class DeletePage implements \Framework5\IExecutable {
 			import('wddsocial.model.WDDSocial\UserVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
 		}
+		
 		
 		$query->execute(array('id' => $_POST['id']));
 		
@@ -212,22 +238,17 @@ class DeletePage implements \Framework5\IExecutable {
 					}
 				}
 				
-				
-				
-				# Delete user avatar
+				# delete user avatar
 				Deleter::delete_user_avatar($content->avatar);
-				
-				
 				
 				# delete user
 				$query = $this->db->prepare($this->admin->deleteUser);
 				$query->execute(array('id' => $content->id));
 				
-				
-				
 				# sign user out
 				UserSession::signout();
 			}
+			
 			else {
 				foreach ($content->images as $image) {
 					Deleter::delete_content_image($image->file);
@@ -239,14 +260,17 @@ class DeletePage implements \Framework5\IExecutable {
 						$query = $this->db->prepare($this->admin->deleteProject);
 						$query->execute($data);
 						break;
+					
 					case 'article':
 						$query = $this->db->prepare($this->admin->deleteArticle);
 						$query->execute($data);
 						break;
+					
 					case 'event':
 						$query = $this->db->prepare($this->admin->deleteEvent);
 						$query->execute($data);
 						break;
+					
 					case 'job':
 						Deleter::delete_job_avatar($content->avatar);
 						$query = $this->db->prepare($this->admin->deleteJob);
@@ -255,9 +279,11 @@ class DeletePage implements \Framework5\IExecutable {
 				}
 			}	
 		}
+		
 		else {
 			return new FormResponse(false,'Uh oh, looks like there was an error. Please try again.');
 		}
+		
 		return new FormResponse(true,'/');
 	}
 }

@@ -23,19 +23,24 @@ class NewPasswordPage implements \Framework5\IExecutable {
 		$valid = $this->_verify_code($this->code);
 		
 		# display site header
-		echo render(':template', array('section' => 'top', 'title' => 'Create New Password'));
-		echo render(':section', array('section' => 'begin_content'));
+		$page_title = 'Create New Password';
+		
+		$content = render(':section', array('section' => 'begin_content'));
 		
 		# display page header
-		echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'new_pass_intro'));
+		$content.= render('wddsocial.view.form.WDDSocial\ExtraView', 
+			array('type' => 'new_pass_intro'));
 		
 		# display page content
-		if ($valid) echo $this->_display_form_content();
-		else echo $this->_display_invalid_message();
+		if ($valid) $content.= $this->_display_form_content();
+		else $content.= $this->_display_invalid_message();
 		
 		# display site footer
-		echo render(':section', array('section' => 'end_content'));
-		echo render(':template', array('section' => 'bottom'));
+		$content.= render(':section', array('section' => 'end_content'));
+		
+		# display page
+		echo render(':template', 
+			array('title' => $page_title, 'content' => $content));
 	}
 	
 	

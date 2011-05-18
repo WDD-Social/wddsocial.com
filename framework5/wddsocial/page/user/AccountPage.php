@@ -54,7 +54,7 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		
 		# display page
-		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+		echo render(':template', 
 			array('title' => $this->lang->text('page-title'), 'content' => $content));
 	}
 	

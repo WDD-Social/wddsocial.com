@@ -10,15 +10,10 @@ namespace WDDSocial;
 class DeveloperPage implements \Framework5\IExecutable {
 	
 	public function execute() {
+		$content = " ";
 		
-		# display site header
+		# display page
 		echo render(':template', 
-			array('section' => 'top', 'title' => 'Developer'));
-		
-		
-		# display site footer
-		echo render(':template', 
-			array('section' => 'bottom'));
-		
+			array('title' => 'Developer', 'content' => $content));
 	}
 }

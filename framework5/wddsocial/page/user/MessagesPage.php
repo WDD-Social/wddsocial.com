@@ -83,7 +83,7 @@ $content.= render('wddsocial.view.messages.WDDSocial\ConversationView',
 		
 		
 		# display page
-		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+		echo render(':template', 
 			array('title' => $this->lang->text('page-title'), 'content' => $content));
 
 		

@@ -33,17 +33,18 @@ class ArticlePage implements \Framework5\IExecutable {
 		
 		if ($article) {
 			
-			# display site header
-			echo render(':template', array('section' => 'top', 'title' => $article->title));
-			echo render(':section', array('section' => 'begin_content'));
+			# page title
+			$page_title = $article->title;
 			
+			
+			$content = render(':section', array('section' => 'begin_content'));
 			
 			# display article overview
-			echo render(':section', 
+			$content.= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'Article', 
 					'classes' => array('large', 'with-secondary'), 'header' => $article->title));
-			echo render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $article);
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'Article'));
+			$content.= render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $article);
+			$content.= render(':section', array('section' => 'end_content_section', 'id' => 'Article'));
 			
 			
 			# translate and natural language
@@ -52,45 +53,45 @@ class ArticlePage implements \Framework5\IExecutable {
 			else $author_header = $lang->text('author');
 			
 			# display article authors
-			echo render(':section', 
+			$content.= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'authors', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => $author_header));
-			echo render('wddsocial.view.content.WDDSocial\MembersDisplayView', $article);
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'authors'));
+			$content.= render('wddsocial.view.content.WDDSocial\MembersDisplayView', $article);
+			$content.= render(':section', array('section' => 'end_content_section', 'id' => 'authors'));
 			
 			
 			# display article media
-			echo render(':section', 
+			$content.= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'media', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => $lang->text('media'), 'extra' => 'media_filters'));
-			echo render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
+			$content.= render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
 				array('content' => $article, 'active' => 'images'));
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'media'));
+			$content.= render(':section', array('section' => 'end_content_section', 'id' => 'media'));
 			
 			
 			# display article comments
-			echo render(':section', 
+			$content.= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'comments', 
 					'classes' => array('medium', 'with-secondary'), 'header' => $lang->text('comments')));
-			echo render('wddsocial.view.content.WDDSocial\CommentDisplayView', $article->comments);
-			echo render(':section', array('section' => 'end_content_section', 'id' => 'comments'));
+			$content.= render('wddsocial.view.content.WDDSocial\CommentDisplayView', $article->comments);
+			$content.= render(':section', array('section' => 'end_content_section', 'id' => 'comments'));
 			
 		}
 		
 		else {
 			# display site header
-			echo render(':template', array('section' => 'top', 'title' => $lang->text('article_not_found')));
-			echo render(':section', array('section' => 'begin_content'));
-			echo "<h1>{$lang->text('article_not_found')}</h1>";
-			
+			$page_title = $lang->text('article_not_found');
+			$content = render(':section', array('section' => 'begin_content'));
+			$content.= "<h1>{$lang->text('article_not_found')}</h1>";
+			$content.= render(':section', array('section' => 'end_content'));
 		}
 		
 		
-		# display page footer
-		echo render(':section', array('section' => 'end_content'));
-		echo render(':template', array('section' => 'bottom'));
+		# display page
+		echo render(':template', 
+			array('title' => $page_title, 'content' => $content));
 	}
 	
 	
