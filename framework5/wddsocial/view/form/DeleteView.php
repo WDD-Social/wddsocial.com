@@ -12,10 +12,22 @@ class DeleteView implements \Framework5\IView {
 		$content = $options['content'];
 		$capitalizedType = ucfirst($options['type']);
 		$contentTitle = ($options['type'] == 'user')?'My Profile':"View $capitalizedType";
-		$deleteTitle = ($options['type'] == 'user')?'your account':"the {$content->type} &ldquo;{$content->title}&rdquo;";
-		$disclaimerText = ($options['type'] == 'user')?
-			' All of your projects, articles, events, job postings, comments, and related images, videos, and comments will be erased.':
-			' All related images, videos, and comments will be erased.';
+		
+		switch ($options['type']) {
+			case 'user':
+				$deleteTitle = 'your account';
+				$disclaimerText = ' All of your projects, articles, events, job postings, comments, and related images, videos, and comments will be erased.';
+				break;
+			case 'comment':
+				$deleteTitle = 'your comment';
+				$disclaimerText = '';
+				break;
+			default:
+				$deleteTitle = "the {$content->type} &ldquo;{$content->title}&rdquo;";
+				$disclaimerText = ' All related images, videos, and comments will be erased.';
+				break;
+		}
+		
 		$html .= <<<HTML
 
 					<h1 class="mega form">Are you sure you want to delete $deleteTitle?</h1>

@@ -143,8 +143,12 @@ class UserValidator {
 					break;
 				case 'job':
 					return static::is_job_owner($id);
+					break;
 				case 'comment':
 					return static::is_comment_owner($id);
+					break;
+				case 'user':
+					return UserSession::is_current($id);
 					break;
 			}
 		}

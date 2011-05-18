@@ -18,9 +18,12 @@ class ExecutionInfoView implements \Framework5\IView {
 		echo "<h2>Execution Info</h2>";
 		$lb = "<br/>";
 		
+		import('dev.controller.Framework5\Dev\BytesConverter');
+		$memory = BytesConverter::format($options->memory_peak);
+		
 		echo "start time: {$options->start_time} $lb";
 		echo "execution time: {$options->exec_time} $lb";
-		echo "memory peak: {$options->memory_peak} $lb";
+		echo "memory peak: {$memory} $lb";
 		
 	}
 }
