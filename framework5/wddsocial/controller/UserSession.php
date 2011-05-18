@@ -196,16 +196,16 @@ class UserSession {
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->execute(array('id' => $_SESSION['user']->id));
 		$row = $query->fetch();
-		if ($row->verified) return true;
+		if ($row->verified == 1) return true;
 		
 		# check if time limit has expired
 		$query = $db->prepare($val_sql->checkUserExpiration);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->execute(array('id' => $_SESSION['user']->id));
 		$row = $query->fetch();
-		if ($row->difference >= 2) return false;
+		if ($row->difference < 2) return true;
 		
-		return true;
+		return false;
 	}
 	
 	
