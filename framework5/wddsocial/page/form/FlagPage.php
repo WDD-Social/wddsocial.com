@@ -48,7 +48,7 @@ class FlagPage implements \Framework5\IExecutable {
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 			$content = $query->fetch();
 			
-			if (UserValidator::is_creator($content->id,$type)) {
+			if (UserValidator::is_owner($content->id,$type)) {
 				redirect('/');
 			}
 			else {
