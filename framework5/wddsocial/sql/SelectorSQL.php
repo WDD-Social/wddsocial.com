@@ -693,9 +693,13 @@ class SelectorSQL{
 		*/
 		
 		'getRecentProjects' => "
-			SELECT id, title, description, vanityURL, `datetime`, 'project' AS `type`
-			FROM projects
-			ORDER BY `datetime` DESC",
+			SELECT *
+			FROM (SELECT p.id, title, description, vanityURL, p.datetime, 'project' AS `type`, COUNT(DISTINCT pf.userID) AS flagCount
+				FROM projects AS p
+				LEFT JOIN projectFlags AS pf ON (p.id = pf.projectID)
+				GROUP BY p.id
+				ORDER BY `datetime` DESC) AS projects
+			WHERE projects.flagCount < 3",
 		
 		'getProjectByVanityURL' => "
 			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`, DATE_FORMAT(completeDate,'%M, %Y') AS `completeDate`, DATE_FORMAT(completeDate, '%Y-%m-%d') AS `completeDateInput`,
@@ -774,38 +778,42 @@ class SelectorSQL{
 			LIMIT 1",
 		
 		'getProjects' => "
-			SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, 
-			IF(
-				TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 59,
+			SELECT *
+			FROM (SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
 				IF(
-					TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 23,
+					TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 59,
 					IF(
-						TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 30,
-						DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+						TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 23,
 						IF(
-							TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 1,
-							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, NOW()), 'days ago'),
-							'Yesterday'
+							TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 30,
+							DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hour ago')
 						)
 					),
 					IF(
-						TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hours ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hour ago')
+						TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minute ago')
+						)
 					)
-				),
-				IF(
-					TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) = 0,
-					'Just now',
-					IF(
-						TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 1,
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minutes ago'),
-						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minute ago')
-					)
-				)
-			) AS `date`
-			FROM projects AS p
-			LEFT JOIN users AS u ON (p.userID = u.id)",
+				) AS `date`
+				FROM projects AS p
+				LEFT JOIN users AS u ON (p.userID = u.id)
+				LEFT JOIN projectFlags AS pf ON (p.id = pf.projectID)
+				GROUP BY p.id) AS projects
+			WHERE projects.flagCount < 3",
 		
 		'getProjectsOwnedByUser' => "
 			SELECT id, COUNT(DISTINCT up.userID) AS memberCount
@@ -820,13 +828,17 @@ class SelectorSQL{
 		*/
 		
 		'getRecentArticles' => "
-			SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL
-			FROM articles AS a
-			LEFT JOIN users AS u ON (a.userID = u.id)
-			LEFT JOIN privacyLevels AS p ON (a.privacyLevelID = p.id)
-			WHERE p.title = 'Public'
-			ORDER BY `datetime` DESC
-			LIMIT 0,10",
+			SELECT *
+			FROM (SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT af.userID) AS flagCount
+				FROM articles AS a
+				LEFT JOIN users AS u ON (a.userID = u.id)
+				LEFT JOIN privacyLevels AS p ON (a.privacyLevelID = p.id)
+				LEFT JOIN articleFlags AS af ON (a.id = af.articleID)
+				WHERE p.title = 'Public'
+				GROUP BY a.id
+				ORDER BY a.datetime DESC) AS recentArticles
+			WHERE recentArticles.flagCount < 3
+			LIMIT 0, 10",
 		
 		'getArticleByVanityURL' => "
 			SELECT id, userID, title, description, content, vanityURL, 'article' AS `type`,
