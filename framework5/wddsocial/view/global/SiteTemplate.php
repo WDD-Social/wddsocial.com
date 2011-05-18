@@ -128,6 +128,7 @@ HTML;
 				
 				<section id="user-area" class="signed-in">
 					<p><strong><a href="{$userProfile}" title="{$this->lang->text('user_profile_title')}"><img src="{$userAvatar}" alt="{$userName}"/>{$userName}</a></strong></p>
+					<p><a href="/create" title="{$this->lang->text('create_title')}">{$this->lang->text('create')}</a></p>
 				 	<p><a href="/messages" title="{$this->lang->text('messages_title')}">{$this->lang->text('messages')} <!--<span class="badge">0</span>--></a></p>
 				 	<p><a href="/account" title="{$this->lang->text('account_title')}">{$this->lang->text('account')}</a></p>
 				 	<p><a href="/signout" title="{$this->lang->text('signout_title')}">{$this->lang->text('signout')}</a></p>
