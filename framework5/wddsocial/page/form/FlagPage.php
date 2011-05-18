@@ -17,7 +17,7 @@ class FlagPage implements \Framework5\IExecutable {
 		$this->val = instance(':val-sql');
 		$this->admin = instance(':admin-sql');
 		
-		$types = array('project','article','event','job');
+		$types = array('project','article','event','job','comment');
 		$type = \Framework5\Request::segment(1);
 		$vanityURL = \Framework5\Request::segment(2);
 		if (!in_array($type, $types) or !isset($vanityURL))
@@ -36,16 +36,25 @@ class FlagPage implements \Framework5\IExecutable {
 			case 'job':
 				$query = $this->db->prepare($this->sel->getJobByVanityURL);
 				break;
+			case 'comment':
+				$query = $this->db->prepare($this->sel->getCommentByID);
+				break;
 			default:
 				redirect('/');
 				break;
 		}
-		$query->execute(array('vanityURL' => $vanityURL));
 		
-		import('wddsocial.model.WDDSocial\ContentVO');
+		if ($type != 'comment') {
+			import('wddsocial.model.WDDSocial\ContentVO');
+			$query->execute(array('vanityURL' => $vanityURL));
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+		}
+		else {
+			$query->execute(array('id' => $vanityURL));
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+		}
 		
 		if ($query->rowCount() > 0) {
-			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 			$content = $query->fetch();
 			
 			if (UserValidator::is_owner($content->id,$type)) {
@@ -68,6 +77,9 @@ class FlagPage implements \Framework5\IExecutable {
 						case 'job':
 							$query = $this->db->prepare($this->admin->unflagJob);
 							break;
+						case 'comment':
+							$query = $this->db->prepare($this->admin->unflagComment);
+							break;
 					}
 					$query->execute($data);
 				}
@@ -84,6 +96,9 @@ class FlagPage implements \Framework5\IExecutable {
 							break;
 						case 'job':
 							$query = $this->db->prepare($this->admin->flagJob);
+							break;
+						case 'comment':
+							$query = $this->db->prepare($this->admin->flagComment);
 							break;
 					}
 					$query->execute($data);
