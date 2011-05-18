@@ -39,7 +39,7 @@ class NewPasswordPage implements \Framework5\IExecutable {
 		$content.= render(':section', array('section' => 'end_content'));
 		
 		# display page
-		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+		echo render(':template', 
 			array('title' => $page_title, 'content' => $content));
 	}
 	

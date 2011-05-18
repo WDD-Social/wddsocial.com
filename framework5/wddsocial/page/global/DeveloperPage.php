@@ -13,7 +13,7 @@ class DeveloperPage implements \Framework5\IExecutable {
 		$content = " ";
 		
 		# display page
-		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+		echo render(':template', 
 			array('title' => 'Developer', 'content' => $content));
 	}
 }

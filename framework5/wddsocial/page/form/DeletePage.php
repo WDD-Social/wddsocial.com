@@ -136,7 +136,7 @@ class DeletePage implements \Framework5\IExecutable {
 		$html.= render(':section', array('section' => 'end_content'));
 		
 		# display page
-		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+		echo render(':template', 
 			array('title' => $page_title, 'content' => $html));
 	}
 	
