@@ -38,7 +38,7 @@ class EditPage implements \Framework5\IExecutable {
 		
 		else {
 		
-		$types = array('project', 'article', 'event', 'job');
+		$types = array('project', 'article', 'event', 'job', 'comment');
 		$type = \Framework5\Request::segment(1);
 		$vanityURL = \Framework5\Request::segment(2);
 		
@@ -59,37 +59,38 @@ class EditPage implements \Framework5\IExecutable {
 			case 'job':
 				$query = $this->db->prepare($this->sel->getJobByVanityURL);
 				break;
+			case 'comment':
+				$query = $this->db->prepare($this->sel->getCommentByID);
+				break;
 			default:
 				redirect('/');
 				break;
 		}
 		
-		# get current item data
-		$query->execute(array('vanityURL' => $vanityURL));
+		if ($type == 'job') {
+			import('wddsocial.model.WDDSocial\JobVO');
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
+		}
+		else if ($type == 'comment') {
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+		}
+		else {
+			import('wddsocial.model.WDDSocial\ContentVO');
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+		}
+		
+		if ($type == 'comment') {
+			$query->execute(array('id' => $vanityURL));
+		}
+		else {
+			$query->execute(array('vanityURL' => $vanityURL));
+		}
 		
 		# if content exists
 		if ($query->rowCount() > 0) {
-			import('wddsocial.model.WDDSocial\ContentVO');
-			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 			$content = $query->fetch();
-			
-			# check if user is content owner
-			switch ($type) {
-				case 'project':
-					if (!UserValidator::is_project_owner($content->id)) redirect('/');
-					break;
-				
-				case 'article':
-					if (!UserValidator::is_article_owner($content->id)) redirect('/');
-					break;
-				
-				case 'event':
-					if (!UserValidator::is_event_owner($content->id)) redirect('/');
-					break;
-				
-				case 'job':
-					if (!UserValidator::is_job_owner($content->id)) redirect('/');
-					break;
+			if (!UserValidator::is_owner($content->id,$type)) {
+				redirect('/');
 			}
 		}
 		
@@ -101,90 +102,99 @@ class EditPage implements \Framework5\IExecutable {
 		
 		# page title
 		$typeTitle = ucfirst($content->type);
-		$page_title = "Edit {$typeTitle} | {$content->title}";
+		$contentTitle = ($type == 'comment')?"Comment":$content->title;
+		$page_title = "Edit {$typeTitle} | {$contentTitle}";
 		
 		# open content section
 		$html = render(':section', array('section' => 'begin_content'));
 		
-		# display basic form header
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-			array('section' => 'header', 'data' => $content, 
-				'error' => $response->message, 'process' => 'edit'));
-		
-		# display content type-specific options
-		if ($content->type == 'project' or $content->type == 'article' or 
-		$content->type == 'event' or $content->type == 'job') {
-			$typeCapitalized = ucfirst($content->type);
-			$html.= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs", 
-				array('data' => $content));
+		if ($type == 'comment') {
+			$html.= render('wddsocial.view.form.WDDSocial\CommentEditView', 
+				array('data' => $content, 'error' => $response->message));
 		}
 		
-		# Save button
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-			array('section' => 'save'));
+		else {
 		
-		# display team member section for appropriate content types
-		if ($content->type == 'project' or $content->type == 'article') {
-			switch ($content->type) {
-				case 'project':
-					$teamTitle = 'Team Members';
-					break;
-				
-				case 'article':
-					$teamTitle = 'Authors';
-					break;
+			# display basic form header
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'header', 'data' => $content, 
+					'error' => $response->message, 'process' => 'edit'));
+			
+			# display content type-specific options
+			if ($content->type == 'project' or $content->type == 'article' or 
+			$content->type == 'event' or $content->type == 'job') {
+				$typeCapitalized = ucfirst($content->type);
+				$html.= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs", 
+					array('data' => $content));
 			}
 			
-			$html.= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
-				array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
+			# Save button
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'save'));
+			
+			# display team member section for appropriate content types
+			if ($content->type == 'project' or $content->type == 'article') {
+				switch ($content->type) {
+					case 'project':
+						$teamTitle = 'Team Members';
+						break;
+					
+					case 'article':
+						$teamTitle = 'Authors';
+						break;
+				}
+				
+				$html.= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
+					array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
+			}
+			
+			# Save button
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'save'));
+			
+			# display image section
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', 
+				array('images' => $content->images));
+			
+			# Save button
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'save'));
+			
+			# display video section
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', 
+				array('videos' => $content->videos));
+			
+			
+			# display category section
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', 
+				array('categories' => $content->categories));
+			
+			# Save button
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'save'));
+			
+			# display link section
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs', 
+				array('links' => $content->links));
+			
+			# Save button
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'save'));
+			
+			#display course section
+			if ($_POST['type'] != 'job') {
+				$html.= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
+					array('courses' => $content->courses, 'header' => true));
+			}
+			
+			# display other options
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', 
+				array('data' => $content));
+			
+			# display form footer
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'footer'));
 		}
-		
-		# Save button
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-			array('section' => 'save'));
-		
-		# display image section
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', 
-			array('images' => $content->images));
-		
-		# Save button
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-			array('section' => 'save'));
-		
-		# display video section
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', 
-			array('videos' => $content->videos));
-		
-		
-		# display category section
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', 
-			array('categories' => $content->categories));
-		
-		# Save button
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-			array('section' => 'save'));
-		
-		# display link section
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs', 
-			array('links' => $content->links));
-		
-		# Save button
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-			array('section' => 'save'));
-		
-		#display course section
-		if ($_POST['type'] != 'job') {
-			$html.= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
-				array('courses' => $content->courses, 'header' => true));
-		}
-		
-		# display other options
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', 
-			array('data' => $content));
-		
-		# display form footer
-		$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-			array('section' => 'footer'));
 		
 		# end content section
 		$html.= render(':section', array('section' => 'end_content'));
@@ -231,219 +241,239 @@ class EditPage implements \Framework5\IExecutable {
 			case 'job':
 				$query = $this->db->prepare($this->sel->getJobByID);
 				break;
+			case 'comment':
+				$query = $this->db->prepare($this->sel->getCommentByID);
+				break;
 		}
 		$query->execute(array('id' => $_POST['contentID']));
-		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+		
+		if ($_POST['type'] == 'comment') {
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+		}
+		else {
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+		}
+		
 		$content = $query->fetch();
 		
-		
-		
-		# Get basic fields for update
-		$fields = array();
-		
-		if ($_POST['title'] != $content->title)
-			$fields['title'] = addslashes($_POST['title']);
-		
-		if ($_POST['description'] != $content->description)
-			$fields['description'] = addslashes($_POST['description']);
-		
-		if ($_POST['content'] != $content->content)
-			$fields['content'] = addslashes($_POST['content']);
-		
-		if ($_POST['vanityURL'] != $content->vanityURL and $_POST['vanityURL'] != '')
-			$fields['vanityURL'] = addslashes($_POST['vanityURL']);
-		else if ($_POST['vanityURL'] == '')
-			VanityURLProcessor::generate($content->id, $content->type);
-		
-		switch ($content->type) {
-			case 'project':
-				if ($_POST['completed-date'] != $content->completeDateInput)
-					$fields['completeDate'] = addslashes($_POST['completed-date']);
-				break;
-			case 'event':
-				if ($_POST['location'] != $content->location)
-					$fields['location'] = addslashes($_POST['location']);
-				if ($_POST['duration'] != $content->duration)
-					$content->duration = addslashes($_POST['duration']);
-				if ($content->duration < 1)
-					$content->duration = 1;
-				$baseDatetime = addslashes($_POST['date']) . ' ' . addslashes($_POST['start-time']);
-				$fields['startDatetime'] = $baseDatetime;
-				$fields['endDatetime'] = "DATE_ADD('{$baseDatetime}', INTERVAL {$content->duration} HOUR)";
-				break;
-			case 'job':
-				if ($_POST['company'] != $content->company)
-					$fields['company'] = addslashes($_POST['company']);
-				if ($_POST['location'] != $content->location)
-					$fields['location'] = addslashes($_POST['location']);
-				if ($_POST['compensation'] != $content->compensation)
-					$fields['compensation'] = addslashes($_POST['compensation']);
-				if ($_POST['website'] != $content->website)
-					$fields['website'] = addslashes($_POST['website']);
-				if ($_POST['email'] != $content->email)
-					$fields['email'] = addslashes($_POST['email']);
-				break;
+		if ($_POST['type'] == 'comment') {
+			if (isset($_POST['content']) and $_POST['content'] != '') {
+				$query = $this->db->prepare($this->admin->updateComment);
+				$query->execute(array('id' => $_POST['contentID'], 'content' => $_POST['content']));
+			}
+			
+			# redirect to page
+			$redirectLocation = "{$_POST['redirect']}";
 		}
-		
-		
-		
-		# Update basic fields
-		if (count($fields) > 0) {
-			$update = array();
-			foreach ($fields as $fieldName => $fieldContent) {
-				if ($fieldName == 'endDatetime') {
-					array_push($update,"endDatetime = $fieldContent");
-				}
-				else {
-					array_push($update,"$fieldName = '$fieldContent'");
-				}
+		else {
+			# Get basic fields for update
+			$fields = array();
+			
+			if ($_POST['title'] != $content->title)
+				$fields['title'] = addslashes($_POST['title']);
+			
+			if ($_POST['description'] != $content->description)
+				$fields['description'] = addslashes($_POST['description']);
+			
+			if ($_POST['content'] != $content->content)
+				$fields['content'] = addslashes($_POST['content']);
+			
+			if ($_POST['vanityURL'] != $content->vanityURL and $_POST['vanityURL'] != '')
+				$fields['vanityURL'] = addslashes($_POST['vanityURL']);
+			else if ($_POST['vanityURL'] == '')
+				VanityURLProcessor::generate($content->id, $content->type);
+			
+			switch ($content->type) {
+				case 'project':
+					if ($_POST['completed-date'] != $content->completeDateInput)
+						$fields['completeDate'] = addslashes($_POST['completed-date']);
+					break;
+				case 'event':
+					if ($_POST['location'] != $content->location)
+						$fields['location'] = addslashes($_POST['location']);
+					if ($_POST['duration'] != $content->duration)
+						$content->duration = addslashes($_POST['duration']);
+					if ($content->duration < 1)
+						$content->duration = 1;
+					$baseDatetime = addslashes($_POST['date']) . ' ' . addslashes($_POST['start-time']);
+					$fields['startDatetime'] = $baseDatetime;
+					$fields['endDatetime'] = "DATE_ADD('{$baseDatetime}', INTERVAL {$content->duration} HOUR)";
+					break;
+				case 'job':
+					if ($_POST['company'] != $content->company)
+						$fields['company'] = addslashes($_POST['company']);
+					if ($_POST['location'] != $content->location)
+						$fields['location'] = addslashes($_POST['location']);
+					if ($_POST['compensation'] != $content->compensation)
+						$fields['compensation'] = addslashes($_POST['compensation']);
+					if ($_POST['website'] != $content->website)
+						$fields['website'] = addslashes($_POST['website']);
+					if ($_POST['email'] != $content->email)
+						$fields['email'] = addslashes($_POST['email']);
+					break;
 			}
-			$update = implode(', ',$update);
-			if (is_array($update)) {
-				$update = '';
-			}
-
-			if ($update != '') {
-				$update .= " WHERE id = :id";
-				$data = array('id' => $content->id);
-				switch ($content->type) {
-					case 'project':
-						$query = $this->db->prepare($this->admin->updateProject . $update);
-						break;
-					case 'article':
-						$query = $this->db->prepare($this->admin->updateArticle . $update);
-						break;
-					case 'event':
-						$query = $this->db->prepare($this->admin->updateEvent . $update);
-						break;
-					case 'job':
-						$query = $this->db->prepare($this->admin->updateJob . $update);
-						break;
+			
+			
+			
+			# Update basic fields
+			if (count($fields) > 0) {
+				$update = array();
+				foreach ($fields as $fieldName => $fieldContent) {
+					if ($fieldName == 'endDatetime') {
+						array_push($update,"endDatetime = $fieldContent");
+					}
+					else {
+						array_push($update,"$fieldName = '$fieldContent'");
+					}
 				}
-				$query->execute($data);
-				if ($content->type == 'event') {
+				$update = implode(', ',$update);
+				if (is_array($update)) {
+					$update = '';
+				}
+	
+				if ($update != '') {
+					$update .= " WHERE id = :id";
 					$data = array('id' => $content->id);
-					$query = $this->db->prepare($this->sel->getEventICSValues);
+					switch ($content->type) {
+						case 'project':
+							$query = $this->db->prepare($this->admin->updateProject . $update);
+							break;
+						case 'article':
+							$query = $this->db->prepare($this->admin->updateArticle . $update);
+							break;
+						case 'event':
+							$query = $this->db->prepare($this->admin->updateEvent . $update);
+							break;
+						case 'job':
+							$query = $this->db->prepare($this->admin->updateJob . $update);
+							break;
+					}
 					$query->execute($data);
-					$query->setFetchMode(\PDO::FETCH_OBJ);
-					$event = $query->fetch();
-					Uploader::create_ics_file($event);
+					if ($content->type == 'event') {
+						$data = array('id' => $content->id);
+						$query = $this->db->prepare($this->sel->getEventICSValues);
+						$query->execute($data);
+						$query->setFetchMode(\PDO::FETCH_OBJ);
+						$event = $query->fetch();
+						Uploader::create_ics_file($event);
+					}
 				}
 			}
-		}
-		
-		
-		
-		# Update team, if there is a team
-		if (isset($_POST['team'])) {
-			$currentMembers = array();
-			$newMembers = array();
-			$currentRoles = array();
-			$newRoles = array();
-			foreach ($content->team as $currentMember) {
-				array_push($currentMembers, "{$currentMember->firstName} {$currentMember->lastName}");
+			
+			
+			
+			# Update team, if there is a team
+			if (isset($_POST['team'])) {
+				$currentMembers = array();
+				$newMembers = array();
+				$currentRoles = array();
+				$newRoles = array();
+				foreach ($content->team as $currentMember) {
+					array_push($currentMembers, "{$currentMember->firstName} {$currentMember->lastName}");
+					if ($content->type == 'project')
+						array_push($currentRoles, $currentMember->role);
+				}
+				foreach ($_POST['team'] as $newMember) {
+					if ($newMember != '')
+						array_push($newMembers, $newMember);
+				}
 				if ($content->type == 'project')
-					array_push($currentRoles, $currentMember->role);
+					$newRoles = $_POST['roles'];
+				TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
 			}
-			foreach ($_POST['team'] as $newMember) {
-				if ($newMember != '')
-					array_push($newMembers, $newMember);
-			}
-			if ($content->type == 'project')
-				$newRoles = $_POST['roles'];
-			TeamMemberProcessor::update_team_members($currentMembers, $newMembers, $content->id, $content->type, $currentRoles, $newRoles);
-		}
-		
-		
-		
-		# Add/Edit/Delete images
-		if (isset($_POST['existing-image-status'])) {
-			foreach ($_POST['existing-image-status'] as $imageFile) {
-				Deleter::delete_content_image($imageFile);
-			}
-		}
-		if (isset($_POST['existing-image-files'])) {
-			foreach ($_POST['existing-image-files'] as $index => $file) {
-				$query = $this->db->prepare($this->val->checkIfImageExists);
-				$query->execute(array('file' => $file));
-				if ($query->rowCount() > 0) {
-					$query->setFetchMode(\PDO::FETCH_OBJ);
-					$result = $query->fetch();
-					$imageID = $result->id;
-					$imageTitle = ($_POST['existing-image-titles'][$index] != '')?$_POST['existing-image-titles'][$index]:$_POST['title'] . " | Image";
-					$query = $this->db->prepare($this->admin->updateImage);
-					$query->execute(array('id' => $imageID, 'title' => $imageTitle));
+			
+			
+			
+			# Add/Edit/Delete images
+			if (isset($_POST['existing-image-status'])) {
+				foreach ($_POST['existing-image-status'] as $imageFile) {
+					Deleter::delete_content_image($imageFile);
 				}
 			}
+			if (isset($_POST['existing-image-files'])) {
+				foreach ($_POST['existing-image-files'] as $index => $file) {
+					$query = $this->db->prepare($this->val->checkIfImageExists);
+					$query->execute(array('file' => $file));
+					if ($query->rowCount() > 0) {
+						$query->setFetchMode(\PDO::FETCH_OBJ);
+						$result = $query->fetch();
+						$imageID = $result->id;
+						$imageTitle = ($_POST['existing-image-titles'][$index] != '')?$_POST['existing-image-titles'][$index]:$_POST['title'] . " | Image";
+						$query = $this->db->prepare($this->admin->updateImage);
+						$query->execute(array('id' => $imageID, 'title' => $imageTitle));
+					}
+				}
+			}
+			Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
+			
+			
+			
+			# Add/Edit/Delete videos
+			$postvideos = array();
+			foreach ($_POST['videos'] as $pvideo) {
+				if ($pvideo != '')
+					array_push($postvideos, htmlspecialchars("$pvideo"));
+			}
+			$contentvideos = array();
+			foreach ($content->videos as $cvideo) {
+				array_push($contentvideos, htmlspecialchars("{$cvideo->embedCode}"));
+			}
+			VideoProcessor::update_videos($contentvideos, $postvideos, $content->id, $content->type);
+			
+			
+			
+			# Add/Edit/Delete categories
+			$currentCategories = array();
+			$newCategories = array();
+			foreach ($content->categories as $currentCategory) {
+				array_push($currentCategories, $currentCategory->title);
+			}
+			foreach ($_POST['categories'] as $newCategory) {
+				if ($newCategory != '')
+					array_push($newCategories, $newCategory);
+			}
+			CategoryProcessor::update_categories($currentCategories, $newCategories, $content->type, $content->id);
+			
+			
+			
+			# Add/Edit/Delete links
+			$currentLinks = array();
+			$newLinks = array();
+			$currentTitles = array();
+			$newTitles = array();
+			foreach ($content->links as $currentLink) {
+				array_push($currentLinks, $currentLink->link);
+				array_push($currentTitles, $currentLink->title);
+			}
+			foreach ($_POST['link-urls'] as $linkURL) {
+				array_push($newLinks, $linkURL);
+			}
+			foreach ($_POST['link-titles'] as $linkTitle) {
+				array_push($newTitles, $linkTitle);
+			}
+			LinkProcessor::update_links($currentLinks, $newLinks,  $currentTitles, $newTitles, $content->id, $content->type);
+			
+			
+			
+			# Add/Edit/Delete Courses
+			$currentCourses = array();
+			$newCourses = array();
+			foreach ($content->courses as $currentCourse) {
+				array_push($currentCourses, $currentCourse->id);
+			}
+			foreach ($_POST['courses'] as $newCourse) {
+				if ($newCourse != '')
+					array_push($newCourses, $newCourse);
+			}
+			CourseProcessor::update_courses($currentCourses, $newCourses, $content->type, $content->id);
+			
+			
+			
+			# Redirect to content page
+			$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
+			$redirectLocation = "/{$content->type}/{$contentVanityURL}";
 		}
-		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
 		
-		
-		
-		# Add/Edit/Delete videos
-		$postvideos = array();
-		foreach ($_POST['videos'] as $pvideo) {
-			if ($pvideo != '')
-				array_push($postvideos, htmlspecialchars("$pvideo"));
-		}
-		$contentvideos = array();
-		foreach ($content->videos as $cvideo) {
-			array_push($contentvideos, htmlspecialchars("{$cvideo->embedCode}"));
-		}
-		VideoProcessor::update_videos($contentvideos, $postvideos, $content->id, $content->type);
-		
-		
-		
-		# Add/Edit/Delete categories
-		$currentCategories = array();
-		$newCategories = array();
-		foreach ($content->categories as $currentCategory) {
-			array_push($currentCategories, $currentCategory->title);
-		}
-		foreach ($_POST['categories'] as $newCategory) {
-			if ($newCategory != '')
-				array_push($newCategories, $newCategory);
-		}
-		CategoryProcessor::update_categories($currentCategories, $newCategories, $content->type, $content->id);
-		
-		
-		
-		# Add/Edit/Delete links
-		$currentLinks = array();
-		$newLinks = array();
-		$currentTitles = array();
-		$newTitles = array();
-		foreach ($content->links as $currentLink) {
-			array_push($currentLinks, $currentLink->link);
-			array_push($currentTitles, $currentLink->title);
-		}
-		foreach ($_POST['link-urls'] as $linkURL) {
-			array_push($newLinks, $linkURL);
-		}
-		foreach ($_POST['link-titles'] as $linkTitle) {
-			array_push($newTitles, $linkTitle);
-		}
-		LinkProcessor::update_links($currentLinks, $newLinks,  $currentTitles, $newTitles, $content->id, $content->type);
-		
-		
-		
-		# Add/Edit/Delete Courses
-		$currentCourses = array();
-		$newCourses = array();
-		foreach ($content->courses as $currentCourse) {
-			array_push($currentCourses, $currentCourse->id);
-		}
-		foreach ($_POST['courses'] as $newCourse) {
-			if ($newCourse != '')
-				array_push($newCourses, $newCourse);
-		}
-		CourseProcessor::update_courses($currentCourses, $newCourses, $content->type, $content->id);
-		
-		
-		
-		# Redirect to content page
-		$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
-		
-		return new FormResponse(true, "/{$content->type}/{$contentVanityURL}");
+		return new FormResponse(true, "{$redirectLocation}");
 	}
 }
