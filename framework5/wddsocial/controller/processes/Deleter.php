@@ -44,4 +44,19 @@ class Deleter {
 			}
 		}
 	}
+	
+	
+	
+	public static function delete_job_avatar($file){
+		$images = array(
+			"images/jobs/{$file}_full.jpg",
+			"images/jobs/{$file}_medium.jpg"
+		);
+		
+		foreach ($images as $image) {
+			if (file_exists("$image")) {
+				unlink("$image");
+			}
+		}
+	}
 }

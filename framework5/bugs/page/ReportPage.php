@@ -14,23 +14,29 @@ class ReportPage implements \Framework5\IExecutable {
 		$reportBugView = 'bugs.view.page.Framework5\Bugs\ReportBugView';
 		$bugReportedView = 'bugs.view.page.Framework5\Bugs\BugReportedView';
 		
+		# begin content section
+		$content = render(':section', array('section' => 'begin_content'));
+		
 		# form submitted
 		if (isset($_POST['submit'])) {
 			if ($this->_process_form()) {
-				$page = render($bugReportedView);
+				$content.= render($bugReportedView);
 			}
 			else {
-				$page = render($reportBugView, $this->errorMsg);
+				$content.= render($reportBugView, $this->errorMsg);
 			}
 		}
 		
 		# form not submitted
 		else {
-			$page = render($reportBugView);
+			$content.= render($reportBugView);
 		}
 		
+		$content.= render(':section', array('section' => 'begin_content'));
+		
 		# display page
-		echo render(':template', $page);
+		echo render(':template', array('title' => "Report an issue", 'content' => $content));
+		
 	}
 	
 	

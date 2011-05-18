@@ -93,6 +93,10 @@ class AdminSQL{
 			INSERT INTO projects (userID, title, description, content, vanityURL, completeDate, `datetime`)
 			VALUES (:userID, :title, :description, :content, :vanityURL, :completeDate, NOW())",
 		
+		'deleteProject' => "
+			DELETE FROM projects
+			WHERE id = :id",
+		
 		'generateProjectVanityURL' => "
 			UPDATE projects
 			SET vanityURL = SUBSTRING(MD5(CONCAT(:extra,'project',id)),1,6)
@@ -171,6 +175,10 @@ class AdminSQL{
 			INSERT INTO articles (userID, privacyLevelID, title, description, content, vanityURL, `datetime`)
 			VALUES (:userID, :privacyLevelID, :title, :description, :content, :vanityURL, NOW())",
 		
+		'deleteArticle' => "
+			DELETE FROM articles
+			WHERE id = :id",
+		
 		'generateArticleVanityURL' => "
 			UPDATE articles
 			SET vanityURL = SUBSTRING(MD5(CONCAT(:extra,'article',id)),1,6)
@@ -244,6 +252,10 @@ class AdminSQL{
 			INSERT INTO events (userID, privacyLevelID, title, description, content, vanityURL, location, startDatetime, endDatetime, `datetime`)
 			VALUES (:userID, :privacyLevelID, :title, :description, :content, :vanityURL, :location, :startDatetime, DATE_ADD(:startDatetime, INTERVAL :duration HOUR), NOW())",
 		
+		'deleteEvent' => "
+			DELETE FROM events
+			WHERE id = :id",
+		
 		'generateEventICSUID' => "
 			UPDATE events
 			SET icsUID = MD5(CONCAT(id,title,DATE_FORMAT(`datetime`, '%Y%m%dT%H%i%SZ'),'@wddsocial.com'))
@@ -305,6 +317,10 @@ class AdminSQL{
 		'addJob' => "
 			INSERT INTO jobs (userID, typeID, title, description, content, vanityURL, company, email, location, website, compensation, `datetime`)
 			VALUES (:userID, :typeID, :title, :description, :content, :vanityURL, :company, :email, :location, :website, :compensation, NOW())",
+		
+		'deleteJob' => "
+			DELETE FROM jobs
+			WHERE id = :id",
 		
 		'generateJobVanityURL' => "
 			UPDATE jobs

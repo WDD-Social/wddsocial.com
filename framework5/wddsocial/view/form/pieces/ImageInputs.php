@@ -11,7 +11,7 @@ class ImageInputs implements \Framework5\IView {
 	
 	public function render($options = null) {
 		
-		if (isset($options['images'])) {
+		if (isset($options['images']) and count($options['images']) > 0) {
 			$html .= <<<HTML
 
 						<h1 id="existing-images">Edit Existing Images</h1>
