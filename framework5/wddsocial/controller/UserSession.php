@@ -86,18 +86,44 @@ class UserSession {
 	
 	
 	/**
-	* Get the current users id
+	* Get the current users avatar location
 	*/
 	
-	public static function user_avatar() {
+	public static function user_avatar($size) {
 		static::session_started();
 		
+		$valid = array('small', 'medium', 'large');
+		if (!in_array($size, $valid))
+			throw new Exception("Invalid user avatar size '{$size}'");
+		
 		$dir = 'images/avatars/';
-		$size = '_small.jpg';
+		$size = "_{$size}.jpg";
 		$file = $dir . $_SESSION['user']->avatar . $size;
 		
-		if (file_exists($file)) return $file;	
-		else return "{$dir}user-default{$size}";
+		if (file_exists($file)) return "/$file";	
+		else return "/{$dir}user-default{$size}";
+	}
+	
+	
+
+	/**
+	* Get the current users full name
+	*/
+	
+	public static function user_name() {
+		static::session_started();
+		return "{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}";
+	}
+	
+	
+	
+	/**
+	* Get the current users profile url
+	*/
+	
+	public static function user_profile() {
+		static::session_started();
+		return "/user/{$_SESSION['user']->vanityURL}";
 	}
 	
 	
