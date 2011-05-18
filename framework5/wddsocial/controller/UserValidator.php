@@ -103,6 +103,34 @@ class UserValidator {
 	
 	
 	/**
+	* Checks if the current user is an owner of content
+	*/
+	
+	public static function is_owner($id, $type){
+		if(UserSession::is_authorized()){
+			switch ($type) {
+				case 'project':
+					return static::is_project_owner($id);
+					break;
+				case 'article':
+					return static::is_article_owner($id);
+					break;
+				case 'event':
+					return static::is_event_owner($id);
+					break;
+				case 'job':
+					return static::is_job_owner($id);
+					break;
+			}
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
+	
+	/**
 	* Checks if the current user is the creator of content
 	*/
 	
