@@ -114,7 +114,7 @@ class UserSession {
 		$file = $dir . $_SESSION['user']->avatar . $size;
 		
 		if (file_exists($file)) return "/$file";	
-		else return "/{$dir}user-default{$size}";
+		else return "/images/site/user-default{$size}";
 	}
 	
 	
