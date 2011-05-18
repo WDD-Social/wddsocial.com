@@ -60,6 +60,10 @@ class DeletePage implements \Framework5\IExecutable {
 			import('wddsocial.model.WDDSocial\ContentVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 		}
+		else if ($type == 'job') {
+			import('wddsocial.model.WDDSocial\JobVO');
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
+		}
 		else {
 			import('wddsocial.model.WDDSocial\UserVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
@@ -109,12 +113,6 @@ class DeletePage implements \Framework5\IExecutable {
 		# open content section
 		echo render(':section', array('section' => 'begin_content'));
 		
-		/*
-echo "<pre>";
-		print_r($content);
-		echo "</pre>";
-*/
-		
 		# display delete form
 		echo render('wddsocial.view.form.WDDSocial\DeleteView', array('content' => $content, 'type' => $type, 'error' => $response->message));
 		
@@ -160,6 +158,10 @@ echo "<pre>";
 			import('wddsocial.model.WDDSocial\ContentVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 		}
+		else if ($_POST['type'] == 'job') {
+			import('wddsocial.model.WDDSocial\JobVO');
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
+		}
 		else {
 			import('wddsocial.model.WDDSocial\UserVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
@@ -170,7 +172,7 @@ echo "<pre>";
 		if ($query->rowCount() > 0) {
 			$content = $query->fetch();
 			
-			if ($_POST['type'] == 'user') {
+			if ($content->type == 'user') {
 				# delete user from teams
 				$query = $this->db->prepare($this->admin->deleteUserFromProjectTeams);
 				$query->execute(array('userID' => $content->id));
@@ -221,14 +223,42 @@ echo "<pre>";
 				# delete user
 				$query = $this->db->prepare($this->admin->deleteUser);
 				$query->execute(array('id' => $content->id));
+				
+				
+				
+				# sign user out
+				UserSession::signout();
 			}
-			
+			else {
+				foreach ($content->images as $image) {
+					Deleter::delete_content_image($image->file);
+				}
+				
+				$data = array('id' => $content->id);
+				switch ($content->type) {
+					case 'project':
+						$query = $this->db->prepare($this->admin->deleteProject);
+						$query->execute($data);
+						break;
+					case 'article':
+						$query = $this->db->prepare($this->admin->deleteArticle);
+						$query->execute($data);
+						break;
+					case 'event':
+						$query = $this->db->prepare($this->admin->deleteEvent);
+						$query->execute($data);
+						break;
+					case 'job':
+						Deleter::delete_job_avatar($content->avatar);
+						$query = $this->db->prepare($this->admin->deleteJob);
+						$query->execute($data);
+						break;
+				}
+			}	
 		}
 		else {
 			return new FormResponse(false,'Uh oh, looks like there was an error. Please try again.');
 		}
-		
-		UserSession::signout();
 		return new FormResponse(true,'/');
 	}
 }
