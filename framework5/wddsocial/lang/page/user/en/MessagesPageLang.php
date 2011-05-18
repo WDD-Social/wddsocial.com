@@ -40,6 +40,30 @@ class MessagesPageLang implements \Framework5\ILanguagePack {
 			case 'no-messages':
 				return 'No messages to display';
 			
+			
+			# ConversationsView
+			case 'all-filter':
+				return 'All';
+			
+			case 'all-conversations-filter':
+				return 'All Conversations';
+			
+			case 'unread-filter':
+				return 'Unread';
+			
+			case 'unread-conversations-filter';
+				return 'Unread Conversations';
+			
+			case 'view-convo-with':
+				return "View Conversation with {$var}";
+			
+			case 'start-a-convo':
+				return 'Start a Conversation';
+			
+			case 'convo-with':
+				return 'With...';
+			
+			
 			default:
 				throw new Exception("Invalid content '$id'");
 		}

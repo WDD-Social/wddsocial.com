@@ -21,6 +21,15 @@ class MessagesPage implements \Framework5\IExecutable {
 		UserSession::protect();
 		
 		
+		# conversations example data
+		$conv = new \stdClass();
+		$conv->name = "Tyler Matthews";
+		$conv->avatar = "/images/avatars/7e58d63b60197ceb55a1c487989a3720_medium.jpg";
+		$conv->total = "3";
+		$conv->content = "Holisticly engage multimedia based metrics with robust partnerships.";
+		$convs = array($conv, $conv);
+		
+		# current message example data
 		$msg = new \stdClass();
 		$msg->sender_id = 5;
 		$msg->sender = 'Alicia Brooks';
@@ -43,7 +52,8 @@ class MessagesPage implements \Framework5\IExecutable {
 				'classes' => array('small', 'with-secondary', 'filterable'),
 				'header' => $this->lang->text('conversations-header')));
 		
-		$content.= render('wddsocial.view.messages.WDDSocial\ConversationsView');
+		$content.= render('wddsocial.view.messages.WDDSocial\ConversationsView',
+			array('conversations' => $convs));
 		
 		$content.= render(':section', array('section' => 'end_content_section'));
 		
