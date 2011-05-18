@@ -22,10 +22,6 @@ class DeletePage implements \Framework5\IExecutable {
 		# require user auth
 		UserSession::protect();
 		
-		# uri vars
-		$type = \Framework5\Request::segment(1);
-		$vanityURL = \Framework5\Request::segment(2);
-		
 		# handle form submission
 		if (isset($_POST['submit']) and $_POST['submit'] == 'Delete'){
 			$response = $this->_process_form();
@@ -37,8 +33,12 @@ class DeletePage implements \Framework5\IExecutable {
 			}
 		}
 		
+		# uri vars
+		$type = \Framework5\Request::segment(1);
+		$vanityURL = \Framework5\Request::segment(2);
+		
 		# set valid types
-		$types = array('project', 'article', 'event', 'job', 'user');
+		$types = array('project', 'article', 'event', 'job', 'comment', 'user');
 		
 		# redirect invalid types
 		if (!in_array($type, $types) or !isset($vanityURL)) redirect('/');
@@ -57,6 +57,9 @@ class DeletePage implements \Framework5\IExecutable {
 			case 'job':
 				$query = $this->db->prepare($this->sel->getJobByVanityURL);
 				break;
+			case 'comment':
+				$query = $this->db->prepare($this->sel->getCommentByID);
+				break;
 			case 'user':
 				$query = $this->db->prepare($this->sel->getUserByVanityURL);
 				break;
@@ -66,50 +69,34 @@ class DeletePage implements \Framework5\IExecutable {
 		}
 		
 		
-		if ($type != 'user') {
-			import('wddsocial.model.WDDSocial\ContentVO');
-			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
-		}
-		else if ($type == 'job') {
+		if ($type == 'job') {
 			import('wddsocial.model.WDDSocial\JobVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 		}
-		else {
+		else if ($type == 'comment') {
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+		}
+		else if ($type == 'user') {
 			import('wddsocial.model.WDDSocial\UserVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
 		}
+		else {
+			import('wddsocial.model.WDDSocial\ContentVO');
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+		}
 		
-		# get the content
-		$query->execute(array('vanityURL' => $vanityURL));
+		if ($type == 'comment') {
+			$query->execute(array('id' => $vanityURL));
+		}
+		else {
+			$query->execute(array('vanityURL' => $vanityURL));
+		}
 		
 		# check if user is content owner
 		if ($query->rowCount() > 0) {
 			$content = $query->fetch();
-			switch ($type) {
-				case 'project':
-					if (!UserValidator::is_project_owner($content->id)) {
-						redirect('/');
-					}
-					break;
-				case 'article':
-					if (!UserValidator::is_article_owner($content->id)) {
-						redirect('/');
-					}
-					break;
-				case 'event':
-					if (!UserValidator::is_event_owner($content->id)) {
-						redirect('/');
-					}
-					break;
-				case 'job':
-					if (!UserValidator::is_job_owner($content->id)) {
-						redirect('/');
-					}
-				case 'user':
-					if (UserSession::userid() != ($content->id)) {
-						redirect('/');
-					}
-					break;
+			if (!UserValidator::is_owner($content->id,$type)) {
+				redirect('/');
 			}
 		}
 		
@@ -121,9 +108,11 @@ class DeletePage implements \Framework5\IExecutable {
 		if ($type == 'user') $content->title = "{$content->firstName} {$content->lastName}";
 		$typeTitle = ucfirst($type);
 		
-		
 		# page title
-		$page_title = "Delete {$typeTitle} | {$content->title}";
+		$page_title = "Delete {$typeTitle}";
+		if ($content->title != '') {
+			$page_title .= " | {$content->title}";
+		}
 		
 		# open content section
 		$html.= render(':section', array('section' => 'begin_content'));
@@ -168,6 +157,10 @@ class DeletePage implements \Framework5\IExecutable {
 				$query = $this->db->prepare($this->sel->getJobByID);
 				break;
 			
+			case 'comment':
+				$query = $this->db->prepare($this->sel->getCommentByID);
+				break;
+			
 			case 'user':
 				$query = $this->db->prepare($this->sel->getUserByID);
 				break;
@@ -178,17 +171,20 @@ class DeletePage implements \Framework5\IExecutable {
 		}
 		
 		
-		if ($_POST['type'] != 'user') {
-			import('wddsocial.model.WDDSocial\ContentVO');
-			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+		if ($_POST['type'] == 'user') {
+			import('wddsocial.model.WDDSocial\UserVO');
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
 		}
 		else if ($_POST['type'] == 'job') {
 			import('wddsocial.model.WDDSocial\JobVO');
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 		}
+		else if ($_POST['type'] == 'comment') {
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+		}
 		else {
-			import('wddsocial.model.WDDSocial\UserVO');
-			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+			import('wddsocial.model.WDDSocial\ContentVO');
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
 		}
 		
 		
@@ -250,8 +246,10 @@ class DeletePage implements \Framework5\IExecutable {
 			}
 			
 			else {
-				foreach ($content->images as $image) {
-					Deleter::delete_content_image($image->file);
+				if (isset($content->images)) {
+					foreach ($content->images as $image) {
+						Deleter::delete_content_image($image->file);
+					}
 				}
 				
 				$data = array('id' => $content->id);
@@ -274,6 +272,11 @@ class DeletePage implements \Framework5\IExecutable {
 					case 'job':
 						Deleter::delete_job_avatar($content->avatar);
 						$query = $this->db->prepare($this->admin->deleteJob);
+						$query->execute($data);
+						break;
+					
+					case 'comment':
+						$query = $this->db->prepare($this->admin->deleteComment);
 						$query->execute($data);
 						break;
 				}
