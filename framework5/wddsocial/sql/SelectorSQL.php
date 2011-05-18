@@ -1492,6 +1492,27 @@ class SelectorSQL{
 				GROUP BY c.id
 				ORDER BY c.datetime ASC) AS comments
 			WHERE comments.flagCount < 3",
+		
+		'getCommentProject' => "
+			SELECT c.id, c.userID, c.content, p.id AS contentID, p.vanityURL, 'project' AS `type`
+			FROM comments AS c
+			LEFT JOIN projectComments AS pc ON (c.id = pc.commentID)
+			LEFT JOIN projects AS p ON (p.id = pc.projectID)
+			WHERE c.id = :id",
+		
+		'getCommentArticle' => "
+			SELECT c.id, c.userID, c.content, a.id AS contentID, a.vanityURL, 'article' AS `type`
+			FROM comments AS c
+			LEFT JOIN articleComments AS ac ON (c.id = ac.commentID)
+			LEFT JOIN articles AS a ON (a.id = ac.articleID)
+			WHERE c.id = :id",
+		
+		'getCommentEvent' => "
+			SELECT c.id, c.userID, c.content, e.id AS contentID, e.vanityURL, 'event' AS `type`
+			FROM comments AS c
+			LEFT JOIN eventComments AS ec ON (c.id = ec.commentID)
+			LEFT JOIN events AS e ON (e.id = ec.eventID)
+			WHERE c.id = :id",
 			
 			
 		/**

@@ -119,7 +119,7 @@ class DeletePage implements \Framework5\IExecutable {
 		
 		# display delete form
 		$html.= render('wddsocial.view.form.WDDSocial\DeleteView', 
-			array('content' => $content, 'type' => $type, 'error' => $response->message));
+			array('content' => $content, 'type' => $type, 'source' => $_SESSION['last_request'], 'error' => $response->message));
 		
 		# end content section
 		$html.= render(':section', array('section' => 'end_content'));
