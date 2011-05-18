@@ -27,6 +27,6 @@ class BugTrackerPage implements \Framework5\IExecutable {
 		$db = instance('core.controller.Framework5\Database');
 		$query = $db->query($sql);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
-		return $query->fetch();
+		return $query->fetchAll();
 	}
 }
