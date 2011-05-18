@@ -34,25 +34,24 @@ class SigninPage implements \Framework5\IExecutable {
 		}
 		
 		# display site header
-		echo render(':template', 
-			array('section' => 'top', 'title' => 'Sign In to WDD Social'));
+		$page_title = 'Sign In to WDD Social';
 		
 		# open content section
-		echo render(':section', array('section' => 'begin_content'));
+		$content = render(':section', array('section' => 'begin_content'));
 		
 		# display sign in form header
-		echo render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_in_intro'));
+		$content.= render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'sign_in_intro'));
 		
 		# display signin form
-		echo render('wddsocial.view.form.WDDSocial\SigninView', 
+		$content.= render('wddsocial.view.form.WDDSocial\SigninView', 
 			array('error' => $response->message));
 		
 		# end content section
-		echo render(':section', 
-			array('section' => 'end_content'));
+		$content.= render(':section', array('section' => 'end_content'));
 		
-		# display site footer
-		echo render(':template', array('section' => 'bottom'));
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $page_title, 'content' => $content));
 	}
 	
 	

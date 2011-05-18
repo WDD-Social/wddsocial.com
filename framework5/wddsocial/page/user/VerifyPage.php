@@ -15,35 +15,36 @@ class VerifyPage implements \Framework5\IExecutable {
 		$response = $this->verify_user($verificationCode);
 		
 		# display site header
-		echo render(':template', array('section' => 'top', 'title' => 'Verify your account'));
+		$page_title = 'Verify your account';
 		
 		# open content section
-		echo render(':section', array('section' => 'begin_content'));
+		$content.= render(':section', array('section' => 'begin_content'));
 		
 		# success
 		if ($response->status) {
 			# display header
-			echo render('wddsocial.view.page.WDDSocial\VerifyView',
+			$content.= render('wddsocial.view.page.WDDSocial\VerifyView',
 				array('type' => 'success'));
 			
 			# display signin form
-			echo render('wddsocial.view.form.WDDSocial\SigninView', 
+			$content.= render('wddsocial.view.form.WDDSocial\SigninView', 
 				array('error' => $response->message));
 		}
 		
 		# error
 		else {
 			# display header
-			echo render('wddsocial.view.page.WDDSocial\VerifyView',
+			$content.= render('wddsocial.view.page.WDDSocial\VerifyView',
 				array('type' => 'error'));
 		}
 		
 		
 		# end content section
-		echo render(':section', array('section' => 'end_content'));
+		$content.= render(':section', array('section' => 'end_content'));
 		
-		# display site footer
-		echo render(':template', array('section' => 'bottom'));
+		# display page
+		echo render('wddsocial.view.global.WDDSocial\SiteTemplate', 
+			array('title' => $page_title, 'content' => $content));
 	}
 	
 	
