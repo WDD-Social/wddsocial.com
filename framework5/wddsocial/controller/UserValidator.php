@@ -103,6 +103,29 @@ class UserValidator {
 	
 	
 	/**
+	* Checks if the current user is an owner of a comment
+	*/
+	
+	public static function is_comment_owner($comment){
+		$db = instance(':db');
+		$val = instance(':val-sql');
+		
+		if(UserSession::is_authorized()){
+			$query = $db->prepare($val->isUserCommentOwner);
+			$query->execute(array('userID' => UserSession::userid(), 'commentID' => $comment));
+			if ($query->rowCount() > 0)
+				return true;
+			else
+				return false;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	
+	
+	/**
 	* Checks if the current user is an owner of content
 	*/
 	
@@ -120,6 +143,8 @@ class UserValidator {
 					break;
 				case 'job':
 					return static::is_job_owner($id);
+				case 'comment':
+					return static::is_comment_owner($id);
 					break;
 			}
 		}
