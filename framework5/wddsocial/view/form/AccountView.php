@@ -153,7 +153,7 @@ HTML;
 							<small>forrst.com/people/username</small>
 						</fieldset>
 						
-						<p class="helper-link"><a href="/remove/user/{$user->vanityURL}" title="Delete your WDD Social Account">Delete Account</a></p>
+						<p class="helper-link"><a href="/delete/user/{$user->vanityURL}" title="Delete your WDD Social Account">Delete Account</a></p>
 						<input type="submit" name="submit" value="Save" />
 					</form>
 HTML;
