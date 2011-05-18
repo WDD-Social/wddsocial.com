@@ -12,6 +12,7 @@ class DeleteView implements \Framework5\IView {
 		$content = $options['content'];
 		$capitalizedType = ucfirst($options['type']);
 		$contentTitle = ($options['type'] == 'user')?'My Profile':"View $capitalizedType";
+		$viewLink = ($options['type'] == 'comment')?"/{$options['source']}#comments":"/{$options['type']}/{$content->vanityURL}";
 		
 		switch ($options['type']) {
 			case 'user':
@@ -41,7 +42,7 @@ class DeleteView implements \Framework5\IView {
 							<input type="hidden" name="type" value="{$options['type']}" />
 							<input type="hidden" name="id" value="{$content->id}" />
 							<input type="submit" name="submit" value="Delete" class="alert inline" />
-							<a href="/{$options['type']}/{$content->vanityURL}" title="{$content->title}" class="button inline">{$contentTitle}</a>
+							<a href="$viewLink" title="{$content->title}" class="button inline">{$contentTitle}</a>
 						</div><!-- END BUTTON GROUP -->
 					</form>
 HTML;
