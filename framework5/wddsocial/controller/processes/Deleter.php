@@ -28,4 +28,20 @@ class Deleter {
 		$query = $db->prepare($admin->deleteImage);
 		$query->execute(array('file' => $file));
 	}
+	
+	
+	
+	public static function delete_user_avatar($file){
+		$images = array(
+			"images/avatars/{$file}_full.jpg",
+			"images/avatars/{$file}_medium.jpg",
+			"images/avatars/{$file}_small.jpg"
+		);
+		
+		foreach ($images as $image) {
+			if (file_exists("$image")) {
+				unlink("$image");
+			}
+		}
+	}
 }
