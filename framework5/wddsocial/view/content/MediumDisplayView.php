@@ -81,9 +81,10 @@ HTML;
 		}
 		
 		else if(UserSession::is_authorized()){
+			$flagClass = (UserSession::has_flagged($project->id,$project->type))?' current':'';
 			$html .= <<<HTML
 
-							<a href="/flag/project/{$project->vanityURL}" title="{$this->lang->text('flag_title', $project->title)}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/project/{$project->vanityURL}" title="{$this->lang->text('flag_title', $project->title)}" class="flag$flagClass">{$this->lang->text('flag')}</a>
 HTML;
 		}
 		
@@ -241,9 +242,10 @@ HTML;
 		
 		# authorized users can flag
 		else if (UserSession::is_authorized()) {
+			$flagClass = (UserSession::has_flagged($article->id,$article->type))?' current':'';
 			$html .= <<<HTML
 
-							<a href="/flag/article/{$article->vanityURL}" title="{$this->lang->text('flag_title', $article->title)}" class="flag">{$this->lang->text('flag')}</a>
+							<a href="/flag/article/{$article->vanityURL}" title="{$this->lang->text('flag_title', $article->title)}" class="flag$flagClass">{$this->lang->text('flag')}</a>
 HTML;
 		}
 		
