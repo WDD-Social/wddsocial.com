@@ -19,10 +19,11 @@ final class BugTrackerApplication extends ApplicationBase implements IApplicatio
 		
 		$this->init();
 		
-		# disable logging
-		Settings::$log_debug = false;
-		Settings::$log_execution = false;
-		Settings::$log_exception = false;
+		# check user session
+		import('wddsocial.controller.WDDSocial\UserSession');
+		\WDDSocial\UserSession::init();
+		
+		$this->localize();
 		
 		# resolve request to a page controller
 		import('bugs.config.Framework5\Bugs\Router');
@@ -41,11 +42,25 @@ final class BugTrackerApplication extends ApplicationBase implements IApplicatio
 	
 	private function init() {
 		
+		# disable logging
+		Settings::$log_debug = false;
+		Settings::$log_execution = false;
+		Settings::$log_exception = false;
+		
 		# import application settings
 		import('bugs.config.Framework5\Bugs\AppSettings');
 		
 		# load package aliases
 		PackageManager::define_alias_array(\Framework5\Bugs\AppSettings::$package_aliases);
 		
+	}
+	
+	
+	
+	private function localize() {
+		import('core.module.i18n.Framework5\Lang');
+		if (\WDDSocial\UserSession::is_authorized()) {
+			Lang::language(\WDDSocial\UserSession::user_lang());
+		}
 	}
 }
