@@ -427,6 +427,10 @@ class AdminSQL{
 			INSERT INTO comments (userID, content, `datetime`)
 			VALUES (:userID, :content, NOW())",
 		
+		'deleteComment' => "
+			DELETE FROM comments
+			WHERE id = :id",
+		
 		/**
 		* Flag Queries
 		*/
