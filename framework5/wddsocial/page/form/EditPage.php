@@ -117,10 +117,10 @@ class EditPage implements \Framework5\IExecutable {
 					break;
 			}
 			echo render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
+					
+			# Save button
+			echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
 		}
-		
-		# Save button
-		echo render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'save'));
 		
 		# display image section
 		echo render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', array('images' => $content->images));
