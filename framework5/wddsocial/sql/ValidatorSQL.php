@@ -37,7 +37,8 @@ class ValidatorSQL{
 		
 		'checkUserExpiration' => "
 			SELECT TIMESTAMPDIFF(DAY,`datetime`,NOW()) AS difference
-			FROM users",
+			FROM users
+			WHERE id = :id",
 		
 		'checkIfLinkExists' => "
 			SELECT id
@@ -56,6 +57,26 @@ class ValidatorSQL{
 			FROM videos
 			WHERE embedCode = :embedCode
 			LIMIT 1",
+		
+		'isUserProjectCreator' => "
+			SELECT id
+			FROM projects
+			WHERE id = :id AND userID = :userID",
+		
+		'isUserArticleCreator' => "
+			SELECT id
+			FROM articles
+			WHERE id = :id AND userID = :userID",
+		
+		'isUserEventCreator' => "
+			SELECT id
+			FROM events
+			WHERE id = :id AND userID = :userID",
+		
+		'isUserJobCreator' => "
+			SELECT id
+			FROM jobs
+			WHERE id = :id AND userID = :userID",
 		
 		'isUserProjectOwner' => "
 			SELECT p.id
@@ -197,7 +218,27 @@ class ValidatorSQL{
 		'checkIfJobVideoExists' => "
 			SELECT videoID
 			FROM jobVideos
-			WHERE jobID = :jobID AND videoID = :videoID"
+			WHERE jobID = :jobID AND videoID = :videoID",
+		
+		'checkIfProjectHasBeenFlagged' => "
+			SELECT userID
+			FROM projectFlags
+			WHERE projectID = :id AND userID = :userID",
+		
+		'checkIfArticleHasBeenFlagged' => "
+			SELECT userID
+			FROM articleFlags
+			WHERE articleID = :id AND userID = :userID",
+		
+		'checkIfEventHasBeenFlagged' => "
+			SELECT userID
+			FROM eventFlags
+			WHERE eventID = :id AND userID = :userID",
+		
+		'checkIfJobHasBeenFlagged' => "
+			SELECT userID
+			FROM jobFlags
+			WHERE jobID = :id AND userID = :userID"
 	);
 	
 	public function __get($id){

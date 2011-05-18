@@ -425,7 +425,43 @@ class AdminSQL{
 		
 		'addComment' => "
 			INSERT INTO comments (userID, content, `datetime`)
-			VALUES (:userID, :content, NOW())"
+			VALUES (:userID, :content, NOW())",
+		
+		/**
+		* Flag Queries
+		*/
+		
+		'flagProject' => "
+			INSERT INTO projectFlags (projectID, userID, `datetime`)
+			VALUES (:id, :userID, NOW())",
+		
+		'flagArticle' => "
+			INSERT INTO articleFlags (articleID, userID, `datetime`)
+			VALUES (:id, :userID, NOW())",
+		
+		'flagEvent' => "
+			INSERT INTO eventFlags (eventID, userID, `datetime`)
+			VALUES (:id, :userID, NOW())",
+		
+		'flagJob' => "
+			INSERT INTO jobFlags (jobID, userID, `datetime`)
+			VALUES (:id, :userID, NOW())",
+		
+		'unflagProject' => "
+			DELETE FROM projectFlags
+			WHERE projectID = :id AND userID = :userID",
+		
+		'unflagArticle' => "
+			DELETE FROM articleFlags
+			WHERE articleID = :id AND userID = :userID",
+		
+		'unflagEvent' => "
+			DELETE FROM eventFlags
+			WHERE eventID = :id AND userID = :userID",
+		
+		'unflagJob' => "
+			DELETE FROM jobFlags
+			WHERE jobID = :id AND userID = :userID"
 		
 	);
 	

@@ -99,4 +99,42 @@ class UserValidator {
 			return false;
 		}
 	}
+	
+	
+	
+	/**
+	* Checks if the current user is the creator of content
+	*/
+	
+	public static function is_creator($id, $type){
+		$db = instance(':db');
+		$sql = instance(':val-sql');
+		
+		if(UserSession::is_authorized()){
+			$data = array('id' => $id, 'userID' => UserSession::userid());
+			switch ($type) {
+				case 'project':
+					$query = $db->prepare($sql->isUserProjectCreator);
+					break;
+				case 'article':
+					$query = $db->prepare($sql->isUserArticleCreator);
+					break;
+				case 'event':
+					$query = $db->prepare($sql->isUserEventCreator);
+					break;
+				case 'job':
+					$query = $db->prepare($sql->isUserJobCreator);
+					break;
+			}
+			$query->execute($data);
+			if ($query->rowCount() > 0)
+				return true;
+			else
+				return false;
+		}
+		else {
+			return false;
+		}
+		
+	}
 }

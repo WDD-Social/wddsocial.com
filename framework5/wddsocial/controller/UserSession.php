@@ -26,6 +26,19 @@ class UserSession {
 	
 	
 	/**
+	* Protects a page from an unauthorized user
+	*/
+	
+	public static function protect() {
+		if (!static::is_authorized()) {
+			$_SESSION['last_page'] = \Framework5\Request::uri();
+			redirect('/signin');
+		}
+	}
+	
+	
+	
+	/**
 	* Process user signin
 	*/
 	
@@ -173,14 +186,33 @@ class UserSession {
 	
 	
 	/**
-	* Protects a page from an unauthorized user
+	* Checks if the current user has flagged a piece of content
 	*/
 	
-	public static function protect() {
-		if (!static::is_authorized()) {
-			$_SESSION['last_page'] = \Framework5\Request::uri();
-			redirect('/signin');
+	public static function has_flagged($id, $type) {
+		$db = instance(':db');
+		$sql = instance(':val-sql');
+		
+		$data = array('id' => $id, 'userID' => static::userid());
+		switch ($type) {
+			case 'project':
+				$query = $db->prepare($sql->checkIfProjectHasBeenFlagged);
+				break;
+			case 'article':
+				$query = $db->prepare($sql->checkIfArticleHasBeenFlagged);
+				break;
+			case 'event':
+				$query = $db->prepare($sql->checkIfEventHasBeenFlagged);
+				break;
+			case 'job':
+				$query = $db->prepare($sql->checkIfJobHasBeenFlagged);
+				break;
 		}
+		$query->execute($data);
+		if ($query->rowCount() > 0)
+			return true;
+		else
+			return false;
 	}
 	
 	
@@ -196,16 +228,16 @@ class UserSession {
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->execute(array('id' => $_SESSION['user']->id));
 		$row = $query->fetch();
-		if ($row->verified) return true;
+		if ($row->verified == 1) return true;
 		
 		# check if time limit has expired
 		$query = $db->prepare($val_sql->checkUserExpiration);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->execute(array('id' => $_SESSION['user']->id));
 		$row = $query->fetch();
-		if ($row->difference >= 2) return false;
+		if ($row->difference < 2) return true;
 		
-		return true;
+		return false;
 	}
 	
 	

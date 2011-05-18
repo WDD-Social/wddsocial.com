@@ -5,7 +5,6 @@ namespace WDDSocial;
 /*
 * 
 * Author: Anthony Colangelo (me@acolangelo.com)
-* @author tmatthews (tmatthewsdev@gmail.com)
 */
 
 class DeletePage implements \Framework5\IExecutable {

@@ -36,6 +36,9 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		
 		# execute the controller
 		execute($package);
+		
+		$_SESSION['last_request'] = Request::uri();
+		
 		return true;
 	}
 	
