@@ -1363,7 +1363,7 @@ class SelectorSQL{
 		*/
 		
 		'getCourseByID' => "
-			SELECT id, title, `month`
+			SELECT id, title, description, `month`
 			FROM courses
 			WHERE id = :id",
 			

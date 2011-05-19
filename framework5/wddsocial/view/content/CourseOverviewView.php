@@ -15,10 +15,14 @@ class CourseOverviewView implements \Framework5\IView {
 
 		$lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
 		
+		
 		$html .= <<<HTML
 
 					<div class="large">
+						<h2>{$lang->text('description')}</h2>
+						<p>{$content->description}</p>
 					</div>
 HTML;
+		return $html;
 	}
 }

@@ -26,6 +26,8 @@ class CoursePage implements \Framework5\IExecutable {
 		if ($course) {
 			$content .= render(':section', array('section' => 'begin_content_section', 'id' => 'course', 'classes' => array('large'), 'header' => $course->title));
 			
+			$content .= render('wddsocial.view.content.WDDSocial\CourseOverviewView', $course);
+			
 			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'course'));	
 		}
 		else {
