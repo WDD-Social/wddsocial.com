@@ -434,7 +434,7 @@ class SelectorSQL{
 		*/
 		
 		'getUserByID' => "
-			SELECT u.id, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, ut.id as typeID, website, twitter, facebook, github, dribbble, forrst
+			SELECT u.id, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, DATE_FORMAT(birthday,'%M %e, %Y') AS birthday, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, ut.id as typeID, website, twitter, facebook, github, dribbble, forrst
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE u.id = :id
