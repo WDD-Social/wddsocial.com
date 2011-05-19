@@ -10,12 +10,13 @@ namespace WDDSocial;
 class AlumDetailInputs implements \Framework5\IView {		
 	
 	public function render($options = null) {
+		$now = date('F, Y');
 		return <<<HTML
 
 						<fieldset>
 							<label for="graduation-date">Graduation Date</label>
-							<input type="date" name="graduation-date" id="graduation-date" value="{$options['graduationDateInput']}" />
-							<small>YYYY-MM-DD</small>
+							<input type="text" name="graduation-date" id="graduation-date" value="{$options['graduationDate']}" />
+							<small>Example: <strong>$now</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="employer">Employer</label>

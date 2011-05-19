@@ -10,18 +10,14 @@ namespace WDDSocial;
 class TeacherDetailInputs implements \Framework5\IView {		
 	
 	public function render($options = null) {
-		$db = instance(':db');
-		$sql = instance(':sel-sql');
-		
-		$graduationDateValue = ($options['graduationDateInput'] == '0000-00-00')?'':$options['graduationDateInput'];
+		$now = date('F, Y');
 		
 		$html .= <<<HTML
 
 						<fieldset>
-							<label for="graduation-date">Full Sail Graduation Date</label>
-							<p>Are you also an alum? When did you graduate?</p>
-							<input type="text" name="graduation-date" id="graduation-date" value="{$graduationDateValue}" />
-							<small>YYYY-MM-DD</small>
+							<label for="graduation-date">Did you graduate from Full Sail? If so, when?</label>
+							<input type="text" name="graduation-date" id="graduation-date" value="{$options['graduationDate']}" />
+							<small>Example: <strong>$now</strong></small>
 						</fieldset>
 HTML;
 		
