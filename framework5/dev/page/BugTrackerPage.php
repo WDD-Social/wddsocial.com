@@ -15,19 +15,19 @@ class BugTrackerPage implements \Framework5\IExecutable {
 	
 	
 	public function execute() {
-		echo render('dev.view.Framework5\Dev\TemplateView');
-		echo render('dev.view.Framework5\Dev\PageHeader');
 		
 		$bug_id = \Framework5\Request::segment(2);
 		
 		if ($bug_id) {
-			echo render('dev.view.Framework5\Dev\BugInfoView', $this->bug_info($bug_id));
+			$content = render('dev.view.Framework5\Dev\BugInfoView', $this->bug_info($bug_id));
 		}
 		
 		else {
-			echo render('dev.view.Framework5\Dev\BugListView', $this->get_bugs());
+			$content = render('dev.view.Framework5\Dev\BugListView', $this->get_bugs());
 		}
 		
+		echo render('dev.view.Framework5\Dev\TemplateView',
+			array('title' => 'Bug Tracker', 'content' => $content));
 	}
 	
 	
