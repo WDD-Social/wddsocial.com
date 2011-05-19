@@ -137,12 +137,6 @@ HTML
 			,'slider_controls' => <<<HTML
 <div class="slider-controls"><a href="{$_SERVER['REQUEST_URI']}" title="Featured 1" class="current">1</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 2">2</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 3">3</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 4">4</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 5">5</a></div>
 HTML
-			,'media_filters' => <<<HTML
-<div class="secondary filters">
-						<a href="{$_SERVER['REQUEST_URI']}#images" title="{$this->lang->text('related_images')}" class="current">{$this->lang->text('images')}</a> 
-						<a href="{$_SERVER['REQUEST_URI']}#videos" title="{$this->lang->text('related_videos')}">{$this->lang->text('videos')}</a>
-					</div><!-- END SECONDARY -->
-HTML
 		);
 		
 		return $extras[$id];
