@@ -158,11 +158,25 @@ class DisplayViewLang implements \Framework5\ILanguagePack {
 			
 			
 			# Media
+			case 'images':
+				return 'Images';
+			
+			case 'related-images';
+				return 'Related Images';
+			
+			case 'videos':
+				return 'Videos';
+			
+			case 'related-videos':
+				return 'Related Videos';
+			
 			case 'no_images':
 				return 'Welp! No images have been added, so this page will look a little plain...';
 			
 			case 'no_videos':
 				return 'Uh oh, no videos have been added.';
+			
+			
 			
 			
 			# Job
