@@ -158,7 +158,7 @@ class IndexPage implements \Framework5\IExecutable {
 		$projects = array();
 		for ($i = 0; $i < 100; $i++) {
 			$j = $i + 1;
-			$query = $this->db->query($this->sql->getRecentProjects . " LIMIT $i, $j");
+			$query = $this->db->query($this->sql->getRecentProjects);
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 			$project = $query->fetch();
 			if (file_exists("images/uploads/{$project->images[0]->file}_large.jpg")) {
@@ -174,15 +174,9 @@ class IndexPage implements \Framework5\IExecutable {
 		
 		$html = render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'projects', 
-				'classes' => array('large', 'slider'), 
-				'header' => $this->lang->text('projects-header'), 'extra' => 'slider_controls'));
+				'classes' => array('large'), 
+				'header' => $this->lang->text('projects-header')));
 		
-		# Display 5 projects 
-		/* foreach ($projects as $project) {
-			$html .= render('wddsocial.view.content.WDDSocial\LargeDisplayView', array('type' => $project->type,'content' => $project));
-		} */
-		
-		# Display 1 project
 		$html .= render('wddsocial.view.content.WDDSocial\LargeDisplayView', array('type' => $projects[0]->type,'content' => $projects[0]));
 		
 		# Create section footer
@@ -233,23 +227,16 @@ class IndexPage implements \Framework5\IExecutable {
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
 		# query
-		$query = $this->db->query($this->sql->getRecentArticles);
+		$query = $this->db->query($this->sql->getRecentArticles . " LIMIT 0, 2");
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		
 		$html = render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'articles', 
-				'classes' => array('small', 'slider'), 'extra' => 'slider_controls', 'header' => $this->lang->text('articles-header')));
+				'classes' => array('small'), 'header' => $this->lang->text('articles-header')));
 		
-		# Create section items ***GETS 10 ARTICLES***
-		/* while($row = $query->fetch()){
-			echo render('wddsocial.view.SmallDisplayView', array('type' => $row->type,'content' => $row));
-		}*/
-		$row = $query->fetchAll();
-		for($i = 0; $i<2; $i++){
-			if(isset($row[$i])){
-				$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
-					array('type' => $row[$i]->type,'content' => $row[$i]));
-			}
+		while ($row = $query->fetch()) {
+			$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
+					array('type' => $row->type,'content' => $row));
 		}
 		
 		# Create section footer
@@ -287,8 +274,8 @@ class IndexPage implements \Framework5\IExecutable {
 		else {
 			$html = render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'events', 
-					'classes' => array('small', 'no-margin', 'slider'), 
-					'header' => $this->lang->text('events-header'), 'extra' => 'slider_controls'));
+					'classes' => array('small', 'no-margin'), 
+					'header' => $this->lang->text('events-header')));
 			# set limit of posts
 			$limit = 2;
 		}		
