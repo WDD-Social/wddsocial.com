@@ -10,18 +10,16 @@ namespace Framework5\Dev;
 class RequestsPage implements \Framework5\IExecutable {
 	
 	public function execute() {
-		echo render('dev.view.Framework5\Dev\TemplateView');
-		
-		echo render('dev.view.Framework5\Dev\PageHeader');
 		
 		$requests = $this->get_requests();
-		
-		# showing the results
 		while($row = $requests->fetch()) {
 			$time = date("F j, Y, g:i a", $row->time);
 			
-		    echo "<a href=\"/dev/request/{$row->id}\">{$row->id}</a> at $time [<a href=\"/{$row->uri}\">/{$row->uri}</a>] <br/>";
+		    $content.= "<a href=\"/dev/request/{$row->id}\">{$row->id}</a> at $time [<a href=\"/{$row->uri}\">/{$row->uri}</a>] <br/>";
 		}
+		
+		echo render('dev.view.Framework5\Dev\TemplateView',
+			array('title' => 'Requests', 'content' => $content));
 	}
 	
 	
