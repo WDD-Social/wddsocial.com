@@ -12,6 +12,7 @@ namespace Framework5;
 */
 
 try {
+	
 	# load Framework5
 	require_once '../framework5/autoload.php';
 	

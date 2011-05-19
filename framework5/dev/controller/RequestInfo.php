@@ -18,7 +18,7 @@ class RequestInfo {
 	
 	
 	
-	public function get_details() {
+	public function get_request() {
 		
 		import('dev.model.request.Framework5\Dev\ExecutionDetails');
 		

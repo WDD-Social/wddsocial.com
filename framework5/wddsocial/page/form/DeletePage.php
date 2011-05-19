@@ -33,100 +33,103 @@ class DeletePage implements \Framework5\IExecutable {
 			}
 		}
 		
-		# uri vars
-		$type = \Framework5\Request::segment(1);
-		$vanityURL = \Framework5\Request::segment(2);
-		
-		# set valid types
-		$types = array('project', 'article', 'event', 'job', 'comment', 'user');
-		
-		# redirect invalid types
-		if (!in_array($type, $types) or !isset($vanityURL)) redirect('/');
-		
-		# set query based on type
-		switch ($type) {
-			case 'project':
-				$query = $this->db->prepare($this->sel->getProjectByVanityURL);
-				break;
-			case 'article':
-				$query = $this->db->prepare($this->sel->getArticleByVanityURL);
-				break;
-			case 'event':
-				$query = $this->db->prepare($this->sel->getEventByVanityURL);
-				break;
-			case 'job':
-				$query = $this->db->prepare($this->sel->getJobByVanityURL);
-				break;
-			case 'comment':
-				$query = $this->db->prepare($this->sel->getCommentByID);
-				break;
-			case 'user':
-				$query = $this->db->prepare($this->sel->getUserByVanityURL);
-				break;
-			default:
-				redirect('/');
-				break;
-		}
-		
-		
-		if ($type == 'job') {
-			import('wddsocial.model.WDDSocial\JobVO');
-			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
-		}
-		else if ($type == 'comment') {
-			$query->setFetchMode(\PDO::FETCH_OBJ);
-		}
-		else if ($type == 'user') {
-			import('wddsocial.model.WDDSocial\UserVO');
-			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
-		}
 		else {
-			import('wddsocial.model.WDDSocial\ContentVO');
-			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
-		}
-		
-		if ($type == 'comment') {
-			$query->execute(array('id' => $vanityURL));
-		}
-		else {
-			$query->execute(array('vanityURL' => $vanityURL));
-		}
-		
-		# check if user is content owner
-		if ($query->rowCount() > 0) {
-			$content = $query->fetch();
-			if (!UserValidator::is_owner($content->id,$type)) {
+		 	
+			# uri vars
+			$type = \Framework5\Request::segment(1);
+			$vanityURL = \Framework5\Request::segment(2);
+			
+			# set valid types
+			$types = array('project', 'article', 'event', 'job', 'comment', 'user');
+			
+			# redirect invalid types
+			if (!in_array($type, $types) or !isset($vanityURL)) redirect('/');
+			
+			# set query based on type
+			switch ($type) {
+				case 'project':
+					$query = $this->db->prepare($this->sel->getProjectByVanityURL);
+					break;
+				case 'article':
+					$query = $this->db->prepare($this->sel->getArticleByVanityURL);
+					break;
+				case 'event':
+					$query = $this->db->prepare($this->sel->getEventByVanityURL);
+					break;
+				case 'job':
+					$query = $this->db->prepare($this->sel->getJobByVanityURL);
+					break;
+				case 'comment':
+					$query = $this->db->prepare($this->sel->getCommentByID);
+					break;
+				case 'user':
+					$query = $this->db->prepare($this->sel->getUserByVanityURL);
+					break;
+				default:
+					redirect('/');
+					break;
+			}
+			
+			
+			if ($type == 'job') {
+				import('wddsocial.model.WDDSocial\JobVO');
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
+			}
+			else if ($type == 'comment') {
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+			}
+			else if ($type == 'user') {
+				import('wddsocial.model.WDDSocial\UserVO');
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+			}
+			else {
+				import('wddsocial.model.WDDSocial\ContentVO');
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+			}
+			
+			if ($type == 'comment') {
+				$query->execute(array('id' => $vanityURL));
+			}
+			else {
+				$query->execute(array('vanityURL' => $vanityURL));
+			}
+			
+			# check if user is content owner
+			if ($query->rowCount() > 0) {
+				$content = $query->fetch();
+				if (!UserValidator::is_owner($content->id,$type)) {
+					redirect('/');
+				}
+			}
+			
+			# user not content owner
+			else {
 				redirect('/');
 			}
+			
+			if ($type == 'user') $content->title = "{$content->firstName} {$content->lastName}";
+			$typeTitle = ucfirst($type);
+			
+			# page title
+			$page_title = "Delete {$typeTitle}";
+			if ($content->title != '') {
+				$page_title .= " | {$content->title}";
+			}
+			
+			# open content section
+			$html.= render(':section', array('section' => 'begin_content'));
+			
+			# display delete form
+			$html.= render('wddsocial.view.form.WDDSocial\DeleteView', 
+				array('content' => $content, 'type' => $type, 'source' => $_SESSION['last_request'], 'error' => $response->message));
+			
+			# end content section
+			$html.= render(':section', array('section' => 'end_content'));
+			
+			# display page
+			echo render(':template', 
+				array('title' => $page_title, 'content' => $html));
 		}
-		
-		# user not content owner
-		else {
-			redirect('/');
-		}
-		
-		if ($type == 'user') $content->title = "{$content->firstName} {$content->lastName}";
-		$typeTitle = ucfirst($type);
-		
-		# page title
-		$page_title = "Delete {$typeTitle}";
-		if ($content->title != '') {
-			$page_title .= " | {$content->title}";
-		}
-		
-		# open content section
-		$html.= render(':section', array('section' => 'begin_content'));
-		
-		# display delete form
-		$html.= render('wddsocial.view.form.WDDSocial\DeleteView', 
-			array('content' => $content, 'type' => $type, 'source' => $_SESSION['last_request'], 'error' => $response->message));
-		
-		# end content section
-		$html.= render(':section', array('section' => 'end_content'));
-		
-		# display page
-		echo render(':template', 
-			array('title' => $page_title, 'content' => $html));
 	}
 	
 	
@@ -287,6 +290,6 @@ class DeletePage implements \Framework5\IExecutable {
 			return new FormResponse(false,'Uh oh, looks like there was an error. Please try again.');
 		}
 		
-		return new FormResponse(true,'/');
+		return new FormResponse(true,"{$_POST['redirect']}");
 	}
 }
