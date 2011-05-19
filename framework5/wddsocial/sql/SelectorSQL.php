@@ -347,7 +347,7 @@ class SelectorSQL{
 				LEFT JOIN commentFlags AS cf ON (c.id = cf.commentID)
 				WHERE u.id = :id
 				GROUP BY c.id
-				ORDER BY DATETIME DESC) AS userLatest
+				ORDER BY `datetime` DESC) AS userLatest
 			WHERE userLatest.flagCount < 3",
 		
 		'getUserLatest' => "
@@ -424,7 +424,8 @@ class SelectorSQL{
 				LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
 				LEFT JOIN articleFlags AS af ON (a.id = af.articleID)
 				WHERE u.id = :id OR ua.userID = :id
-				GROUP BY a.id) AS userLatest
+				GROUP BY a.id
+				ORDER BY `datetime` DESC) AS userLatest
 			WHERE userLatest.flagCount < 3",
 			
 			
