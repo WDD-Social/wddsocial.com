@@ -45,11 +45,17 @@ class UserPage implements \Framework5\IExecutable {
 			
 			# display section items
 			$activity = $this->_get_user_latest($user->id, 0, $paginator->limit);
-			foreach ($activity as $item) {
-				$content .= render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
-					array('type' => $item->type,'content' => $item));
+			if (count($activity) > 0) {
+				foreach ($activity as $item) {
+					$content .= render('wddsocial.view.content.WDDSocial\MediumDisplayView', 
+						array('type' => $item->type,'content' => $item));
+				}
+				$next = $this->_get_user_latest($user->id, $paginator->limit, 20);
 			}
-			$next = $this->_get_user_latest($user->id, $paginator->limit, 20);
+			else {
+				$content .= render('wddsocial.view.content.WDDSocial\NoPosts');
+				$next = array();
+			}
 			
 			
 			if (count($next) > 0) {

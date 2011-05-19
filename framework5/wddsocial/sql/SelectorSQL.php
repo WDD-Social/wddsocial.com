@@ -796,7 +796,9 @@ class SelectorSQL{
 				LEFT JOIN projectFlags AS pf ON (p.id = pf.projectID)
 				GROUP BY p.id
 				ORDER BY `datetime` DESC) AS projects
-			WHERE projects.flagCount < 3",
+			WHERE projects.flagCount < 3
+			ORDER BY RAND()
+			LIMIT 0, 10",
 		
 		'getProjectByVanityURL' => "
 			SELECT id, userID, title, description, content, vanityURL, 'project' AS `type`, DATE_FORMAT(completeDate,'%M, %Y') AS `completeDate`, DATE_FORMAT(completeDate, '%Y-%m-%d') AS `completeDateInput`,
@@ -934,8 +936,7 @@ class SelectorSQL{
 				WHERE p.title = 'Public'
 				GROUP BY a.id
 				ORDER BY a.datetime DESC) AS articles
-			WHERE articles.flagCount < 3
-			LIMIT 0, 10",
+			WHERE articles.flagCount < 3",
 		
 		'getArticleByVanityURL' => "
 			SELECT id, userID, title, description, content, vanityURL, 'article' AS `type`,
@@ -1124,7 +1125,7 @@ class SelectorSQL{
 				GROUP BY e.id
 				ORDER BY startDateTime ASC) AS events
 			WHERE events.flagCount < 3
-			LIMIT 0,10",
+			LIMIT 0,3",
 		
 		'getEventByVanityURL' => "
 			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%M %e, %Y') AS `startDate`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`, DATE_FORMAT(startDateTime, '%Y-%m-%d') AS `startDateInput`, DATE_FORMAT(startDateTime,'%k:%i:%s') AS `startTimeInput`, TIMESTAMPDIFF(HOUR,startDateTime,endDateTime) AS duration
