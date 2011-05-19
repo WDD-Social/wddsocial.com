@@ -163,14 +163,19 @@ class CreatePage implements \Framework5\IExecutable {
 			return new FormResponse(false, "Please complete all required fields.");
 		}
 		
+		$postTitle = strip_tags($_POST['title']);
+		$postDescription = strip_tags($_POST['description']);
+		$postContent = strip_tags($_POST['content']);
+		$postVanityURL = strtolower(preg_replace("[^A-Za-z0-9]", "", $_POST['vanityURL']));
+		
 		# Basic insert of content
 		switch ($_POST['type']) {
 			case 'project':
 				$data = array(	'userID' => $_SESSION['user']->id,
-								'title' => $_POST['title'],
-								'description' => $_POST['description'],
-								'content' => ($_POST['content'] == '')?null:$_POST['content'],
-								'vanityURL' => ($_POST['vanityURL'] == '')?null:$_POST['vanityURL'],
+								'title' => $postTitle,
+								'description' => $postDescription,
+								'content' => ($postContent == '')?null:$postContent,
+								'vanityURL' => ($postVanityURL == '')?null:$postVanityURL,
 								'completeDate' => ($_POST['completed-date'] == '')?null:$_POST['completed-date']
 				);
 				$query = $db->prepare($admin_sql->addProject);
@@ -178,10 +183,10 @@ class CreatePage implements \Framework5\IExecutable {
 			case 'article':
 				$data = array(	'userID' => $_SESSION['user']->id,
 								'privacyLevelID' => $_POST['privacy-level'],
-								'title' => $_POST['title'],
-								'description' => $_POST['description'],
-								'content' => $_POST['content'],
-								'vanityURL' => ($_POST['vanityURL'] == '')?null:$_POST['vanityURL']
+								'title' => $postTitle,
+								'description' => $postDescription,
+								'content' => $postContent,
+								'vanityURL' => ($postVanityURL == '')?null:$postVanityURL
 				);
 				$query = $db->prepare($admin_sql->addArticle);
 				break;
