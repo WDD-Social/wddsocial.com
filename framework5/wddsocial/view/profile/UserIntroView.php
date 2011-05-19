@@ -41,22 +41,42 @@ HTML;
 HTML;
 		}
 		$userIntro = $this->getUserIntro($user);
+		if (!isset($user->bio) or $user->bio == '') {
+			if (UserSession::is_current($user->id)) {
+				$bioText = 'You don&rsquo;t like talking about yourself very much do you? How about you <a href="/account" title="Edit your account information">add a bio</a> so people can get to know you?';
+			}
+			else {
+				$bioText = 'Clearly, ' . $user->firstName . ' doesn&rsquo;t like talking about himself very much. I guess we&rsquo;ll never really know him...';
+			}
+		}
+		else {
+			$bioText = $user->bio;
+		}
 		$html .= <<<HTML
 					
 					<img src="$userAvatar" alt="{$user->firstName} {$user->lastName}" />
 					<p>$userIntro</p>
 					<div class="large">
 						<h2>{$lang->text('bio')}</h2>
-						<p>{$user->bio}</p>
+						<p>{$bioText}</p>
 					</div><!-- END BIO -->
 					<div class="small">
 						<h2>{$lang->text('likes')}</h2>
 						<ul>
 HTML;
-		foreach ($user->extra['likes'] as $like) {
+		if (count($user->extra['likes']) > 0) {
+			foreach ($user->extra['likes'] as $like) {
+				$html .= <<<HTML
+	
+								<li><a href="/search/$like" title="$like">$like</a></li>
+HTML;
+			}
+		}
+		else {
+			$displayNameText = (UserSession::is_current($user->id))?'you aren&rsquo;t':$user->firstName . ' isn&rsquo;t';
 			$html .= <<<HTML
 
-							<li><a href="/search/$like" title="$like">$like</a></li>
+						<p class="empty">Apparently, $displayNameText a fanboy of anything.</p>
 HTML;
 		}
 		$html .= <<<HTML
@@ -67,10 +87,19 @@ HTML;
 						<h2>{$lang->text('dislikes')}</h2>
 						<ul>
 HTML;
-		foreach ($user->extra['dislikes'] as $dislike) {
+		if (count($user->extra['dislikes']) > 0) {
+			foreach ($user->extra['dislikes'] as $dislike) {
+				$html .= <<<HTML
+	
+								<li><a href="/search/$dislike" title="$dislike">$dislike</a></li>
+HTML;
+			}
+		}
+		else {
+			$displayNameText = (UserSession::is_current($user->id))?'you don&rsquo;t':$user->firstName . ' doesn&rsquo;t';
 			$html .= <<<HTML
 
-							<li><a href="/search/$dislike" title="$dislike">$dislike</a></li>
+						<p class="empty">Well, the good news is that $displayNameText hate anything...</p>
 HTML;
 		}
 		$html .= <<<HTML
