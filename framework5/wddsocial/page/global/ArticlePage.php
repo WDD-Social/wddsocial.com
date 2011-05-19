@@ -60,14 +60,31 @@ class ArticlePage implements \Framework5\IExecutable {
 			$content.= render('wddsocial.view.content.WDDSocial\MembersDisplayView', $article);
 			$content.= render(':section', array('section' => 'end_content_section', 'id' => 'authors'));
 			
+			$media = \Framework5\Request::segment(2);
+			if (isset($media) and $media != '') {
+				switch ($media) {
+					case 'images':
+						$activeMedia = 'images';
+						break;
+					case 'videos':
+						$activeMedia = 'videos';
+						break;
+					default:
+						$activeMedia = 'images';
+						break;
+				}
+			}
+			else {
+				$activeMedia = 'images';
+			}
 			
 			# display article media
 			$content.= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'media', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
-					'header' => $lang->text('media'), 'extra' => 'media_filters'));
+					'header' => $lang->text('media')));
 			$content.= render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
-				array('content' => $article, 'active' => 'images'));
+				array('content' => $article, 'active' => $activeMedia, 'base_link' => "/article/{$article->vanityURL}"));
 			$content.= render(':section', array('section' => 'end_content_section', 'id' => 'media'));
 			
 			

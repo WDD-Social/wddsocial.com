@@ -57,14 +57,31 @@ class ProjectPage implements \Framework5\IExecutable {
 			$content .= render('wddsocial.view.content.WDDSocial\MembersDisplayView', $project);
 			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'team'));
 			
+			$media = \Framework5\Request::segment(2);
+			if (isset($media) and $media != '') {
+				switch ($media) {
+					case 'images':
+						$activeMedia = 'images';
+						break;
+					case 'videos':
+						$activeMedia = 'videos';
+						break;
+					default:
+						$activeMedia = 'images';
+						break;
+				}
+			}
+			else {
+				$activeMedia = 'images';
+			}
 			
 			# display project media
 			$content .= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'media', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
-					'header' => 'Media', 'extra' => 'media_filters'));
+					'header' => 'Media'));
 			$content .= render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
-				array('content' => $project, 'active' => 'images'));
+				array('content' => $project, 'active' => $activeMedia, 'base_link' => "/project/{$project->vanityURL}"));
 			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'media'));
 			
 			

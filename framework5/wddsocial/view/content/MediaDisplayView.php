@@ -14,8 +14,16 @@ class MediaDisplayView implements \Framework5\IView {
 	public function render($options = null) {
 	
 		$lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
+		
+		$imagesClass = ($options['active'] == 'images')?' class="current"':'';
+		$videosClass = ($options['active'] == 'videos')?' class="current"':'';
+		
 		$html = <<<HTML
 
+					<div class="secondary cardstack">
+						<a href="{$options['base_link']}" title="Related Images"$imagesClass>Images</a> 
+						<a href="{$options['base_link']}/videos" title="Related Videos"$videosClass>Videos</a>
+					</div><!-- END SECONDARY -->
 					<div class="{$options['active']}">
 HTML;
 		
