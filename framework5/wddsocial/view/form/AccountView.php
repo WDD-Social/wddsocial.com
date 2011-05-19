@@ -33,6 +33,7 @@ class AccountView implements \Framework5\IView {
 			$user->extra['employerTitle'] = $_POST['employer'];
 			$user->extra['employerLink'] = $_POST['employer-link'];
 		}
+		$exampleBirthday = date('F j, Y',time() - (25*365.25*24*60*60));
 		$html .= <<<HTML
 
 					<form action="/account" method="post" enctype="multipart/form-data">
@@ -75,9 +76,6 @@ class AccountView implements \Framework5\IView {
 						<input type="submit" name="submit" value="Save" />
 						
 						<h1>More Information</h1>
-HTML;
-		$html .= <<<HTML
-
 						<fieldset>
 							<label for="avatar">New Avatar</label>
 							<input type="file" name="avatar" id="avatar" />
@@ -89,6 +87,7 @@ HTML;
 						<fieldset>
 							<label for="birthday">Birthday</label>
 							<input type="text" name="birthday" id="birthday" value="{$user->birthday}" />
+							<small>Example: <strong>$exampleBirthday</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="bio">Bio</label>
