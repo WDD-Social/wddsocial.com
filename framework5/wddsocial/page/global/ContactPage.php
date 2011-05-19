@@ -16,9 +16,19 @@ class ContactPage implements \Framework5\IExecutable {
 	
 	
 	public function execute() {
-		$content = " ";
 		
+		# begin content section
+		$html = render(':section', array('section' => 'begin_content'));
+		
+		# display contact form
+		$html .= render('wddsocial.view.form.WDDSocial\ContactView');
+		
+		# end content section
+		$html.= render(':section', array('section' => 'end_content'));
+		
+		# display page
 		echo render(':template', 
-			array('title' => $this->lang->text('page-title'), 'content' => $content));
+			array('title' => 'Contact Us', 'content' => $html));
+		
 	}
 }
