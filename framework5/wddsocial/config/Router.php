@@ -62,6 +62,12 @@ class Router implements \Framework5\IRouter {
 			case 'new-password':
 				return 'wddsocial.page.user.WDDSocial\NewPasswordPage';
 			
+			case 'resend-verification':
+				return 'wddsocial.page.user.WDDSocial\ResendVerification';
+			
+			case 'change-fullsail-email':
+				return 'wddsocial.page.user.WDDSocial\ChangeFullsailEmail';
+			
 			case 'account':
 				return 'wddsocial.page.user.WDDSocial\AccountPage';
 			
