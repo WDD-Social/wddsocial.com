@@ -51,11 +51,34 @@ class ContactView implements \Framework5\IView {
 			$nameAutofocus = ' autofocus';
 		}
 		
-		return <<<HTML
+		
+		
+		
+		
+		if ($options['success']) {
+			$html.= <<<HTML
+
+						<p class="success"><strong>{$options['success']}</strong></p>
+HTML;
+		}
+		
+		
+		else {
+			$html = <<<HTML
 
 					<h1 class="mega">Hey, what&rsquo;s up? We&rsquo;d love to talk!</h1>
 					<form action="/contact" method="post">
+HTML;
+		
+			# if error
+			if ($options['error']) {
+				$html.= <<<HTML
+
 						<p class="error"><strong>{$options['error']}</strong></p>
+HTML;
+			}
+		
+			$html.= <<<HTML
 						<fieldset>
 							<label for="name">Name</label>
 							<input type="text" name="name" id="name" value="{$name}"$nameAutofocus />
@@ -71,5 +94,8 @@ class ContactView implements \Framework5\IView {
 						<input type="submit" name="submit" value="Send" />
 					</form>
 HTML;
+		}
+		
+		return $html;
 	}
 }
