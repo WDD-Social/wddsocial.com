@@ -141,10 +141,10 @@ HTML;
 				}
 				break;
 			case 'Alum':
-				if(isset($user->extra['graduationDate'])){
+				if(isset($user->extra['graduationDate']) and $user->extra['graduationDate'] != ''){
 					$sentence .= " who graduated in <strong>{$user->extra['graduationDate']}</strong>";
 				}
-				if(isset($user->extra['employerTitle'])){
+				if(isset($user->extra['employerTitle']) and $user->extra['employerTitle'] != ''){
 					$employerLink = (isset($user->extra['employerLink']))?'http://'.$user->extra['employerLink']:"http://www.google.com/search?q={$user->extra['employerTitle']}";
 					if(isset($user->extra['graduationDate'])){
 						$sentence .= ", and";
