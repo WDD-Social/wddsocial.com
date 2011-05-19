@@ -122,34 +122,36 @@ HTML;
 		$html .= <<<HTML
 
 						<h1 id="contact">Contact</h1>
+						<p>Just provide your usernames for the social networks that you wish to show on your profile, we&rsquo;ll do the rest of the work!</p>
 						<fieldset>
 							<label for="website">Website</label>
 							<input type="text" name="website" id="website" placeholder="example.com" value="{$user->contact['website']}" />
+							<small><strong>example.com</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="twitter">Twitter</label>
 							<input type="text" name="twitter" id="twitter" placeholder="username" value="{$user->contact['twitter']}" />
-							<small>@username</small>
+							<small>twitter.com/<strong>username</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="facebook">Facebook</label>
 							<input type="text" name="facebook" id="facebook" placeholder="username" value="{$user->contact['facebook']}" />
-							<small>facebook.com/username</small>
+							<small>facebook.com/<strong>username</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="github">Github</label>
 							<input type="text" name="github" id="github" placeholder="username" value="{$user->contact['github']}" />
-							<small>github.com/username</small>
+							<small>github.com/<strong>username</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="dribbble">Dribbble</label>
 							<input type="text" name="dribbble" id="dribbble" placeholder="username" value="{$user->contact['dribbble']}" />
-							<small>dribbble.com/username</small>
+							<small>dribbble.com/<strong>username</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="forrst">Forrst</label>
 							<input type="text" name="forrst" id="forrst" placeholder="username" value="{$user->contact['forrst']}" />
-							<small>forrst.com/people/username</small>
+							<small>forrst.com/people/<strong>username</strong></small>
 						</fieldset>
 						
 						<p class="helper-link"><a href="/delete/user/{$user->vanityURL}" title="Delete your WDD Social Account">Delete Account</a></p>

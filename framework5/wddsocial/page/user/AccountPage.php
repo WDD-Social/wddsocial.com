@@ -131,11 +131,13 @@ class AccountPage implements \Framework5\IExecutable {
 			}
 		}
 		
-		if ($_POST['bio'] != $this->user->bio)
-			$fields['bio'] = $_POST['bio'];
+		$postBio = strip_tags($_POST['bio']);
+		if ($postBio != $this->user->bio)
+			$fields['bio'] = $postBio;
 				
-		if ($_POST['hometown'] != $this->user->hometown)
-			$fields['hometown'] = $_POST['hometown'];
+		$postHometown = strip_tags($_POST['hometown']);
+		if ($postHometown != $this->user->hometown)
+			$fields['hometown'] = $postHometown;
 		
 		if (isset($_POST['birthday'])) {
 			$birthday = date_parse_from_format('F j, Y',$_POST['birthday']);
@@ -153,23 +155,29 @@ class AccountPage implements \Framework5\IExecutable {
 		if ($birthdayDate != $this->user->birthday)
 			$fields['birthday'] = $birthdayDate;
 		
-		if ($_POST['website'] != $this->user->contact['website'])
-			$fields['website'] = $_POST['website'];
+		$postWebsite = strip_tags($_POST['website']);
+		if ($postWebsite != $this->user->contact['website'])
+			$fields['website'] = $postWebsite;
 				
-		if ($_POST['twitter'] != $this->user->contact['twitter'])
-			$fields['twitter'] = $_POST['twitter'];
+		$postTwitter = strip_tags($_POST['twitter']);
+		if ($postTwitter != $this->user->contact['twitter'])
+			$fields['twitter'] = $postTwitter;
 		
-		if ($_POST['facebook'] != $this->user->contact['facebook'])
-			$fields['facebook'] = $_POST['facebook'];
+		$postFacebook = strip_tags($_POST['facebook']);
+		if ($postFacebook != $this->user->contact['facebook'])
+			$fields['facebook'] = $postFacebook;
 				
-		if ($_POST['github'] != $this->user->contact['github'])
-			$fields['github'] = $_POST['github'];
+		$postGithub = strip_tags($_POST['github']);
+		if ($postGithub != $this->user->contact['github'])
+			$fields['github'] = $postGithub;
 		
-		if ($_POST['dribbble'] != $this->user->contact['dribbble'])
-			$fields['dribbble'] = $_POST['dribbble'];
-				
-		if ($_POST['forrst'] != $this->user->contact['forrst'])
-			$fields['forrst'] = $_POST['forrst'];
+		$postDribbble = strip_tags($_POST['dribbble']);
+		if ($postDribbble != $this->user->contact['dribbble'])
+			$fields['dribbble'] = $postDribbble;
+		
+		$postForrst = strip_tags($_POST['forrst']);
+		if ($postForrst != $this->user->contact['forrst'])
+			$fields['forrst'] = $postForrst;
 		
 		if (count($errors) > 0) {
 			$errorMessage = "The ";
@@ -233,15 +241,17 @@ class AccountPage implements \Framework5\IExecutable {
 		}
 		
 		if (isset($_POST['degree-location']) and $_POST['degree-location'] != $this->user->extra['location']) {
-			$fields['location'] = ($_POST['degree-location'] == '')?NULL:addslashes($_POST['degree-location']);
+			$fields['location'] = ($_POST['degree-location'] == '')?NULL:$_POST['degree-location'];
 		}
 		
-		if (isset($_POST['employer']) and $_POST['employer'] != $this->user->extra['employerTitle']) {
-			$fields['employerTitle'] = ($_POST['employer'] === '')?NULL:addslashes($_POST['employer']);
+		$postEmployer = strip_tags($_POST['employer']);
+		if (isset($postEmployer) and $postEmployer != $this->user->extra['employerTitle']) {
+			$fields['employerTitle'] = ($postEmployer === '')?NULL:$postEmployer;
 		}
 		
-		if (isset($_POST['employer-link']) and $_POST['employer-link'] != $this->user->extra['employerLink']) {
-			$fields['employerLink'] = ($_POST['employer-link'] === '')?NULL:addslashes($_POST['employer-link']);
+		$postEmployerLink = strip_tags($_POST['employer-link']);
+		if (isset($postEmployerLink) and $postEmployerLink != $this->user->extra['employerLink']) {
+			$fields['employerLink'] = ($postEmployerLink === '')?NULL:$postEmployerLink;
 		}
 		
 		$update = array();
