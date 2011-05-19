@@ -10,6 +10,12 @@ namespace Framework5\Dev;
 class IndexPage implements \Framework5\IExecutable {
 	
 	public function execute() {
-		echo render('dev.view.Framework5\Dev\PageHeader');
+		
+		
+		$content = " ";
+		
+		# display output
+		echo render('dev.view.Framework5\Dev\TemplateView',
+			array('title' => 'Execute Command', 'content' => $content));
 	}
 }
