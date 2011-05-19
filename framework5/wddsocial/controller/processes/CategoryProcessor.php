@@ -17,6 +17,7 @@ class CategoryProcessor {
 		
 		foreach ($categories as $category) {
 			if ($category != '') {
+				$category = strip_tags($category);
 				$categoryID = static::get_categoryID($category);
 				
 				switch ($contentType) {

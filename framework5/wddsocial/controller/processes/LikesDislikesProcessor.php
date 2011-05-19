@@ -22,6 +22,7 @@ class LikesDislikesProcessor {
 		if (count($currentLikes) > 0) {
 			foreach ($currentLikes as $currentLike) {
 				$query = $db->prepare($sql->deleteUserLike);
+				$currentLink = strip_tags($currentLike);
 				$categoryID = static::get_categoryID($currentLike);
 				$query->execute(array('userID' => $userID, 'categoryID' => $categoryID));
 			}
@@ -30,6 +31,7 @@ class LikesDislikesProcessor {
 		if (count($newLikes) > 0) {
 			foreach ($newLikes as $newLike) {
 				$query = $db->prepare($sql->addUserLike);
+				$newLike = strip_tags($newLike);
 				$categoryID = static::get_categoryID($newLike);
 				$query->execute(array('userID' => $userID, 'categoryID' => $categoryID));
 			}
@@ -51,6 +53,7 @@ class LikesDislikesProcessor {
 		if (count($currentDislikes) > 0) {
 			foreach ($currentDislikes as $currentDislike) {
 				$query = $db->prepare($sql->deleteUserDislike);
+				$currentDislike = strip_tags($currentDislike);
 				$categoryID = static::get_categoryID($currentDislike);
 				$query->execute(array('userID' => $userID, 'categoryID' => $categoryID));
 			}
@@ -59,6 +62,7 @@ class LikesDislikesProcessor {
 		if (count($newDislikes) > 0) {
 			foreach ($newDislikes as $newDislike) {
 				$query = $db->prepare($sql->addUserDislike);
+				$newDislike = strip_tags($newDislike);
 				$categoryID = static::get_categoryID($newDislike);
 				$query->execute(array('userID' => $userID, 'categoryID' => $categoryID));
 			}
