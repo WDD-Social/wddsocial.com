@@ -14,6 +14,14 @@ class DeleteView implements \Framework5\IView {
 		$contentTitle = ($options['type'] == 'user')?'My Profile':"View $capitalizedType";
 		$viewLink = "/{$options['type']}/{$content->vanityURL}";
 		
+		$sourceArray = explode('/',$options['source']);
+		if ( ($options['source'] == $_SERVER['REQUEST_URI']) or ($sourceArray[0] == $options['type'] and $sourceArray[1] == $content->vanityURL) ) {
+			$redirect = '';
+		}
+		else {
+			$redirect = $options['source'];
+		}
+		
 		if ($options['type'] == 'comment') {
 			$db = instance(':db');
 			$sql = instance(':sel-sql');
@@ -72,14 +80,15 @@ class DeleteView implements \Framework5\IView {
 
 					<h1 class="mega form">Are you sure you want to delete $deleteTitle?</h1>
 					<form action="{$_SERVER['REQUEST_URI']}" method="post">
-						<h1>Attention</h1>
+						<h1>Attention $redirect</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<p><strong>This action is final and cannot be undone</strong>.</p>
 						<p><strong>Related content can not be retrieved</strong>.</p>
 						<p>$disclaimerText</p>
+						<input type="hidden" name="type" value="{$options['type']}" />
+						<input type="hidden" name="id" value="{$content->id}" />
+						<input type="hidden" name="redirect" value="/{$redirect}" />
 						<div class="buttongroup">
-							<input type="hidden" name="type" value="{$options['type']}" />
-							<input type="hidden" name="id" value="{$content->id}" />
 							<input type="submit" name="submit" value="Delete" class="alert inline" />
 							<a href="$viewLink" title="{$content->title}" class="button inline">{$contentTitle}</a>
 						</div><!-- END BUTTON GROUP -->
