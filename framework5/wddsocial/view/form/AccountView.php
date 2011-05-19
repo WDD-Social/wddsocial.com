@@ -33,7 +33,6 @@ class AccountView implements \Framework5\IView {
 			$user->extra['employerTitle'] = $_POST['employer'];
 			$user->extra['employerLink'] = $_POST['employer-link'];
 		}
-		$user->birthday = ($user->birthday == '0000-00-00')?'':$user->birthday;
 		$html .= <<<HTML
 
 					<form action="/account" method="post" enctype="multipart/form-data">

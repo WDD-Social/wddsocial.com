@@ -71,86 +71,105 @@ class AccountPage implements \Framework5\IExecutable {
 		$fields = array();
 		$errors = array();
 		
+		$postFirstName = strip_tags($_POST['first-name']);
+		$postLastName = strip_tags($_POST['last-name']);
+		$postEmail = strip_tags($_POST['email']);
+		$postFullSailEmail = strip_tags($_POST['full-sail-email']);
+		$postVanityURL = strtolower(preg_replace("#\W#", "", $_POST['vanityURL']));
+		
 		if ($_POST['user-type'] != $this->user->typeID)
 			$fields['typeID'] = $_POST['user-type'];
 		
-		if ($_POST['first-name'] != $this->user->firstName)
-			$fields['firstName'] = addslashes($_POST['first-name']);
+		if ($postFirstName != $this->user->firstName)
+			$fields['firstName'] = $postFirstName;
 		
-		if ($_POST['last-name'] != $this->user->lastName)
-			$fields['lastName'] = addslashes($_POST['last-name']);
+		if ($postLastName != $this->user->lastName)
+			$fields['lastName'] = $postLastName;
 		
-		if ($_POST['email'] != $this->user->email) {
+		if ($postEmail != $this->user->email) {
 			# Check if email is unique
 			$query = $this->db->prepare($this->val->checkIfUserEmailExists);
 			$query->setFetchMode(\PDO::FETCH_OBJ);
-			$data = array('email' => $_POST['email']);
+			$data = array('email' => $postEmail);
 			$query->execute($data);
 			$row = $query->fetch();
 			if ($row->count > 0) {
 				array_push($errors, 'email');
 			}
 			else {
-				$fields['email'] = addslashes($_POST['email']);
+				$fields['email'] = $postEmail;
 			}
 		}
 		
-		if ($_POST['full-sail-email'] != $this->user->fullsailEmail) {
+		if ($postFullSailEmail != $this->user->fullsailEmail) {
 			# Check if Full Sail email is unique
 			$query = $this->db->prepare($this->val->checkIfUserFullSailEmailExists);
 			$query->setFetchMode(\PDO::FETCH_OBJ);
-			$data = array('fullsailEmail' => $_POST['full-sail-email']);
+			$data = array('fullsailEmail' => $postFullSailEmail);
 			$query->execute($data);
 			$row = $query->fetch();
 			if ($row->count > 0) {
 				array_push($errors, 'Full Sail email');
 			}
 			else {
-				$fields['fullsailEmail'] = addslashes($_POST['full-sail-email']);
+				$fields['fullsailEmail'] = $postFullSailEmail;
 			}
 		}
 		
-		if ($_POST['vanityURL'] != $this->user->vanityURL) {
+		if ($postVanityURL != $this->user->vanityURL) {
 			# Check if vanityURL is unique
 			$query = $this->db->prepare($this->val->checkIfUserVanityURLExists);
 			$query->setFetchMode(\PDO::FETCH_OBJ);
-			$data = array('vanityURL' => $_POST['vanityURL']);
+			$data = array('vanityURL' => $postVanityURL);
 			$query->execute($data);
 			$row = $query->fetch();
 			if ($row->count > 0) {
 				array_push($errors, 'vanity URL');
 			}
 			else {
-				$fields['vanityURL'] = addslashes($_POST['vanityURL']);
+				$fields['vanityURL'] = $postVanityURL;
 			}
 		}
 		
 		if ($_POST['bio'] != $this->user->bio)
-			$fields['bio'] = addslashes($_POST['bio']);
+			$fields['bio'] = $_POST['bio'];
 				
 		if ($_POST['hometown'] != $this->user->hometown)
-			$fields['hometown'] = addslashes($_POST['hometown']);
+			$fields['hometown'] = $_POST['hometown'];
 		
-		if ($_POST['birthday'] != $this->user->birthday)
-			$fields['birthday'] = addslashes($_POST['birthday']);
+		if (isset($_POST['birthday'])) {
+			$birthday = date_parse_from_format('F j, Y',$_POST['birthday']);
+			if ($birthday['error_count'] > 0) {
+				return new FormResponse(false, implode('. ', $birthday['errors']));
+			}
+			$month = (strlen($birthday['month']) == 1)?'0'.$birthday['month']:$birthday['month'];
+			$day = (strlen($birthday['day']) == 1)?'0'.$birthday['day']:$birthday['day'];
+			$birthdayDate = $birthday['year'] . '-' . $month . '-' . $day;
+		}
+		else {
+			$birthdayDate = '';
+		}
+		
+		if ($birthdayDate != $this->user->birthday)
+			$fields['birthday'] = $birthdayDate;
 		
 		if ($_POST['website'] != $this->user->contact['website'])
-			$fields['website'] = addslashes($_POST['website']);
+			$fields['website'] = $_POST['website'];
 				
 		if ($_POST['twitter'] != $this->user->contact['twitter'])
-			$fields['twitter'] = addslashes($_POST['twitter']);
+			$fields['twitter'] = $_POST['twitter'];
 		
 		if ($_POST['facebook'] != $this->user->contact['facebook'])
-			$fields['facebook'] = addslashes($_POST['facebook']);
+			$fields['facebook'] = $_POST['facebook'];
 				
 		if ($_POST['github'] != $this->user->contact['github'])
-			$fields['github'] = addslashes($_POST['github']);
+			$fields['github'] = $_POST['github'];
 		
 		if ($_POST['dribbble'] != $this->user->contact['dribbble'])
-			$fields['dribbble'] = addslashes($_POST['dribbble']);
+			$fields['dribbble'] = $_POST['dribbble'];
 				
 		if ($_POST['forrst'] != $this->user->contact['forrst'])
-			$fields['forrst'] = addslashes($_POST['forrst']);
+			$fields['forrst'] = $_POST['forrst'];
 		
 		if (count($errors) > 0) {
 			$errorMessage = "The ";
@@ -181,12 +200,36 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		$fields = array();
 		
-		if (isset($_POST['start-date']) and $_POST['start-date'] != $this->user->extra['startDateInput']) {
-			$fields['startDate'] = ($_POST['start-date'] == '')?NULL:addslashes($_POST['start-date']);
+		if (isset($_POST['start-date']) and $_POST['start-date'] != '') {
+			$startDate = date_parse_from_format('F, Y',$_POST['start-date']);
+			if ($startDate['error_count'] > 0) {
+				return new FormResponse(false, implode('. ', $startDate['errors']));
+			}
+			$month = (strlen($startDate['month']) == 1)?'0'.$startDate['month']:$startDate['month'];
+			$startDate = $startDate['year'] . '-' . $month . '-01';
+		}
+		else {
+			$startDate = '';
 		}
 		
-		if (isset($_POST['graduation-date']) and $_POST['graduation-date'] != $this->user->extra['graduationDateInput']) {
-			$fields['graduationDate'] = ($_POST['graduation-date'] == '')?NULL:addslashes($_POST['graduation-date']);
+		if ($startDate != $this->user->extra['startDate']) {
+			$fields['startDate'] = ($startDate == '')?NULL:$startDate;
+		}
+		
+		if (isset($_POST['graduation-date']) and $_POST['graduation-date'] != '') {
+			$graduationDate = date_parse_from_format('F, Y',$_POST['graduation-date']);
+			if ($graduationDate['error_count'] > 0) {
+				return new FormResponse(false, implode('. ', $graduationDate['errors']));
+			}
+			$month = (strlen($graduationDate['month']) == 1)?'0'.$graduationDate['month']:$graduationDate['month'];
+			$graduationDate = $graduationDate['year'] . '-' . $month . '-01';
+		}
+		else {
+			$graduationDate = '';
+		}
+		
+		if ($graduationDate != $this->user->extra['graduationDate']) {
+			$fields['graduationDate'] = ($graduationDate == '')?NULL:$graduationDate;
 		}
 		
 		if (isset($_POST['degree-location']) and $_POST['degree-location'] != $this->user->extra['location']) {
