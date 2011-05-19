@@ -235,7 +235,7 @@ class CreatePage implements \Framework5\IExecutable {
 								'vanityURL' => ($postVanityURL == '')?null:$postVanityURL,
 								'location' => $postLocation,
 								'startDatetime' => $startDatetime,
-								'duration' => ($postDuration == '' or $postDuration <= 0)?1:$postDuration
+								'duration' => ($postDuration == '' or $postDuration < 0)?1:$postDuration
 				);
 				$query = $db->prepare($admin_sql->addEvent);
 				break;
