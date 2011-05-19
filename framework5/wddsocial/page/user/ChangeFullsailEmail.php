@@ -118,9 +118,10 @@ class ChangeFullsailEmail implements \Framework5\IExecutable {
 		
 		# resend verification email
 		import('wddsocial.controller.WDDSocial\Mailer');
-		$name = $_POST['first-name'] . $_POST['last-name'];
+		
 		$mailer = new Mailer();
-		$mailer->add_recipient($user->firstName, $fs_email);
+		$name = "{$user->firstName} {$user->lastName}";
+		$mailer->add_recipient($name, $fs_email);
 		$mailer->subject = "WDD Social Email Verification";
 		$mailer->message = render("wddsocial.view.email.WDDSocial\VerificationEmail", 
 			array('firstName' => $user->firstName, 'verificationCode' => $user->verificationCode));
