@@ -8,6 +8,6 @@ namespace WDDSocial;
 */
 class CourseVO{
 	
-	public $id, $title, $month;
+	public $id, $title, $description, $month;
 
 }

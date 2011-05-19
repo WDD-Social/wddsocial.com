@@ -19,14 +19,31 @@ class ContactPage implements \Framework5\IExecutable {
 		
 		# handle form submit
 		if (isset($_POST['submit'])) {
-			$this->_process_form();
+			
+			# handle form submit
+			$response = $this->_process_form();
+			
+			# if success
+			if ($response) {
+				$page = render('wddsocial.view.form.WDDSocial\ContactView', 
+					array('success' => $this->successMessage));
+			}
+			
+			else {
+				$page = render('wddsocial.view.form.WDDSocial\ContactView', 
+					array('error' => $this->errorMessage));
+			}
+		}
+		
+		else {
+			$page = render('wddsocial.view.form.WDDSocial\ContactView');
 		}
 		
 		# begin content section
 		$html = render(':section', array('section' => 'begin_content'));
 		
 		# display contact form
-		$html .= render('wddsocial.view.form.WDDSocial\ContactView');
+		$html .= $page;
 		
 		# end content section
 		$html.= render(':section', array('section' => 'end_content'));
@@ -68,7 +85,7 @@ class ContactPage implements \Framework5\IExecutable {
 			array('name' => $name, 'email' => $email, 'message' => $message));
 		$mailer->send();
 		
-		
+		$this->successMessage = "Your message has been sent!";
 		return true;
 	}
 }
