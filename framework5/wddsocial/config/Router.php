@@ -116,6 +116,9 @@ class Router implements \Framework5\IRouter {
 			case 'job':
 				return 'wddsocial.page.global.WDDSocial\JobPage';
 			
+			case 'course':
+				return 'wddsocial.page.global.WDDSocial\CoursePage';
+			
 			
 			# Form and process pages
 			

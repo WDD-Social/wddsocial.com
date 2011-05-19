@@ -1361,6 +1361,11 @@ class SelectorSQL{
 		/**
 		* Course queries
 		*/
+		
+		'getCourseByID' => "
+			SELECT id, title, `month`
+			FROM courses
+			WHERE id = :id",
 			
 		'getProjectCourses' => "
 			SELECT id, title
