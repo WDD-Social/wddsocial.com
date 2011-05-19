@@ -53,6 +53,12 @@ class AdminSQL{
 			UPDATE userDetail
 			SET ",
 		
+		'updateUserFullsailEmail' => "
+			UPDATE users
+			SET fullsailEmail = :fullsailEmail
+			WHERE id = :id
+		",
+		
 		'deleteUserFromProjectTeams' => "
 			DELETE FROM userProjects
 			WHERE userID = :userID",

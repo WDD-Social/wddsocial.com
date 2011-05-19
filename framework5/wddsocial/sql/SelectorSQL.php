@@ -465,6 +465,13 @@ class SelectorSQL{
 			WHERE (email = :email OR fullsailEmail = :email) AND `password` = MD5(:password)
 			LIMIT 1",
 		
+		'changeFullsailEmailInfo' => "
+			SELECT id, firstName, verified, verificationCode
+			FROM users
+			WHERE (email = :email) AND `password` = MD5(:password)
+			LIMIT 1
+		",
+		
 		'getUserSessionDataByID' => "
 			SELECT u.id, firstName, lastName, avatar, vanityURL, ut.title AS `type`
 			FROM users AS u
@@ -495,6 +502,12 @@ class SelectorSQL{
 			SELECT id
 			FROM users
 			WHERE verificationCode = :verificationCode
+			LIMIT 1",
+		
+		'getUserByFullsailEmail' => "
+			SELECT id, firstName
+			FROM users
+			WHERE fullsailEmail = :email
 			LIMIT 1",
 		
 		'getUserVerificationCode' => "
