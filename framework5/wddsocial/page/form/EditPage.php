@@ -146,11 +146,11 @@ class EditPage implements \Framework5\IExecutable {
 				
 				$html.= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
 					array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
+				
+				# Save button
+				$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+					array('section' => 'save'));
 			}
-			
-			# Save button
-			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-				array('section' => 'save'));
 			
 			# display image section
 			$html.= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', 
@@ -269,47 +269,95 @@ class EditPage implements \Framework5\IExecutable {
 			# Get basic fields for update
 			$fields = array();
 			
-			if ($_POST['title'] != $content->title)
-				$fields['title'] = addslashes($_POST['title']);
+			$postTitle = strip_tags($_POST['title']);
+			$postDescription = strip_tags($_POST['description']);
+			$postContent = strip_tags($_POST['content'],'<link><header>');
+			$postVanityURL = strtolower(preg_replace("#\W#", "", $_POST['vanityURL']));
 			
-			if ($_POST['description'] != $content->description)
-				$fields['description'] = addslashes($_POST['description']);
+			if ($postTitle != $content->title)
+				$fields['title'] = $postTitle;
 			
-			if ($_POST['content'] != $content->content)
-				$fields['content'] = addslashes($_POST['content']);
+			if ($postDescription != $content->description)
+				$fields['description'] = $postDescription;
 			
-			if ($_POST['vanityURL'] != $content->vanityURL and $_POST['vanityURL'] != '')
-				$fields['vanityURL'] = addslashes($_POST['vanityURL']);
-			else if ($_POST['vanityURL'] == '')
+			if ($postContent != $content->content)
+				$fields['content'] = $postContent;
+			
+			if ($postVanityURL != $content->vanityURL and $postVanityURL != '')
+				$fields['vanityURL'] = $postVanityURL;
+			else if ($postVanityURL == '')
 				VanityURLProcessor::generate($content->id, $content->type);
 			
 			switch ($content->type) {
 				case 'project':
-					if ($_POST['completed-date'] != $content->completeDateInput)
-						$fields['completeDate'] = addslashes($_POST['completed-date']);
+			
+					if (isset($_POST['completed-date'])) {
+						$completeDate = date_parse_from_format('F, Y',$_POST['completed-date']);
+						if ($completeDate['error_count'] > 0) {
+							return new FormResponse(false, implode('. ', $completedate['errors']));
+						}
+						$month = (strlen($completeDate['month']) == 1)?'0'.$completeDate['month']:$completeDate['month'];
+						$postCompleteDate = $completeDate['year'] . '-' . $month . '-01';
+					}
+					else {
+						$postCompleteDate = null;
+					}
+					
+					if ($postCompleteDate != $content->completeDate)
+						$fields['completeDate'] = $postCompleteDate;
 					break;
 				case 'event':
-					if ($_POST['location'] != $content->location)
-						$fields['location'] = addslashes($_POST['location']);
-					if ($_POST['duration'] != $content->duration)
-						$content->duration = addslashes($_POST['duration']);
+				
+					if (isset($_POST['date'])) {
+						$date = date_parse_from_format('F j, Y',$_POST['date']);
+						if ($date['error_count'] > 0) {
+							return new FormResponse(false, implode('. ', $date['errors']));
+						}
+						$month = (strlen($date['month']) == 1)?'0'.$date['month']:$date['month'];
+						$day = (strlen($date['day']) == 1)?'0'.$date['day']:$date['day'];
+						$startDate = $date['year'] . '-' . $month . '-' . $day;
+					}
+					
+					if (isset($_POST['start-time'])) {
+						$time = date_parse_from_format('g:i A',$_POST['start-time']);
+						if ($time['error_count'] > 0) {
+							return new FormResponse(false, implode('. ', $time['errors']));
+						}
+						$hour = (strlen($time['hour']) == 1)?'0'.$time['hour']:$time['hour'];
+						$minute = (strlen($time['minute']) == 1)?'0'.$time['minute']:$time['minute'];
+						$startTime = $hour . ':' . $minute . ':00';
+					}
+					
+					$baseDatetime = $startDate . ' ' . $startTime;
+					$postLocation = strip_tags($_POST['location']);
+					$postDuration = (is_numeric($_POST['duration']))?$_POST['duration']:2;
+					
+					if ($postLocation != $content->location)
+						$fields['location'] = $postLocation;
+					if ($postDuration != $content->duration)
+						$content->duration = $postDuration;
 					if ($content->duration < 1)
 						$content->duration = 1;
-					$baseDatetime = addslashes($_POST['date']) . ' ' . addslashes($_POST['start-time']);
 					$fields['startDatetime'] = $baseDatetime;
 					$fields['endDatetime'] = "DATE_ADD('{$baseDatetime}', INTERVAL {$content->duration} HOUR)";
 					break;
 				case 'job':
-					if ($_POST['company'] != $content->company)
-						$fields['company'] = addslashes($_POST['company']);
-					if ($_POST['location'] != $content->location)
-						$fields['location'] = addslashes($_POST['location']);
-					if ($_POST['compensation'] != $content->compensation)
-						$fields['compensation'] = addslashes($_POST['compensation']);
-					if ($_POST['website'] != $content->website)
-						$fields['website'] = addslashes($_POST['website']);
-					if ($_POST['email'] != $content->email)
-						$fields['email'] = addslashes($_POST['email']);
+					$postCompany = strip_tags($_POST['company']);
+					$postEmail = strip_tags($_POST['email']);
+					$postLocation = strip_tags($_POST['location']);
+					$postWebsite = strip_tags($_POST['website']);
+					$postCompensation = strip_tags($_POST['compensation']);
+					
+					if ($postCompany != $content->company)
+						$fields['company'] = $postCompany;
+					if ($postEmail != $content->email)
+						$fields['email'] = $postEmail;
+					if ($postLocation != $content->location)
+						$fields['location'] = $postLocation;
+					if ($postWebsite != $content->website)
+						$fields['website'] = $postWebsite;
+					if ($postCompensation != $content->compensation)
+						$fields['compensation'] = $postCompensation;
 					break;
 			}
 			

@@ -106,7 +106,6 @@ class CreatePage implements \Framework5\IExecutable {
 		# end content section
 		$content .= render(':section', array('section' => 'end_content'));
 		
-		
 		# display page
 		echo render(':template', 
 			array('title' => $page_title, 'content' => $content));
@@ -165,23 +164,36 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		$postTitle = strip_tags($_POST['title']);
 		$postDescription = strip_tags($_POST['description']);
-		$postContent = strip_tags($_POST['content']);
-		$postVanityURL = strtolower(preg_replace("[^A-Za-z0-9]", "", $_POST['vanityURL']));
+		$postContent = strip_tags($_POST['content'],'<link><header>');
+		$postVanityURL = strtolower(preg_replace("#\W#", "", $_POST['vanityURL']));
 		
 		# Basic insert of content
 		switch ($_POST['type']) {
 			case 'project':
-				$data = array(	'userID' => $_SESSION['user']->id,
+			
+				if (isset($_POST['completed-date'])) {
+					$completeDate = date_parse_from_format('F, Y',$_POST['completed-date']);
+					if ($completeDate['error_count'] > 0) {
+						return new FormResponse(false, implode('. ', $completedate['errors']));
+					}
+					$month = (strlen($completeDate['month']) == 1)?'0'.$completeDate['month']:$completeDate['month'];
+					$postCompleteDate = $completeDate['year'] . '-' . $month . '-01';
+				}
+				else {
+					$postCompleteDate = null;
+				}
+				
+				$data = array(	'userID' => UserSession::userid(),
 								'title' => $postTitle,
 								'description' => $postDescription,
 								'content' => ($postContent == '')?null:$postContent,
 								'vanityURL' => ($postVanityURL == '')?null:$postVanityURL,
-								'completeDate' => ($_POST['completed-date'] == '')?null:$_POST['completed-date']
+								'completeDate' => $postCompleteDate
 				);
 				$query = $db->prepare($admin_sql->addProject);
 				break;
 			case 'article':
-				$data = array(	'userID' => $_SESSION['user']->id,
+				$data = array(	'userID' => UserSession::userid(),
 								'privacyLevelID' => $_POST['privacy-level'],
 								'title' => $postTitle,
 								'description' => $postDescription,
@@ -191,31 +203,59 @@ class CreatePage implements \Framework5\IExecutable {
 				$query = $db->prepare($admin_sql->addArticle);
 				break;
 			case 'event':
-				$startDatetime = $_POST['date'] . ' ' . $_POST['start-time'];
-				$data = array(	'userID' => $_SESSION['user']->id,
+			
+				if (isset($_POST['date'])) {
+					$date = date_parse_from_format('F j, Y',$_POST['date']);
+					if ($date['error_count'] > 0) {
+						return new FormResponse(false, implode('. ', $date['errors']));
+					}
+					$month = (strlen($date['month']) == 1)?'0'.$date['month']:$date['month'];
+					$day = (strlen($date['day']) == 1)?'0'.$date['day']:$date['day'];
+					$startDate = $date['year'] . '-' . $month . '-' . $day;
+				}
+				
+				if (isset($_POST['start-time'])) {
+					$time = date_parse_from_format('g:i A',$_POST['start-time']);
+					if ($time['error_count'] > 0) {
+						return new FormResponse(false, implode('. ', $time['errors']));
+					}
+					$hour = (strlen($time['hour']) == 1)?'0'.$time['hour']:$time['hour'];
+					$minute = (strlen($time['minute']) == 1)?'0'.$time['minute']:$time['minute'];
+					$startTime = $hour . ':' . $minute . ':00';
+				}
+				
+				$startDatetime = $startDate . ' ' . $startTime;
+				$postLocation = strip_tags($_POST['location']);
+				$postDuration = preg_replace('[\D]',"",$_POST['duraton']);
+				$data = array(	'userID' => UserSession::userid(),
 								'privacyLevelID' => $_POST['privacy-level'],
-								'title' => $_POST['title'],
-								'description' => $_POST['description'],
-								'content' => ($_POST['content'] == '')?null:$_POST['content'],
-								'vanityURL' => $_POST['vanityURL'],
-								'location' => $_POST['location'],
+								'title' => $postTitle,
+								'description' => $postDescription,
+								'content' => ($postContent == '')?null:$postContent,
+								'vanityURL' => ($postVanityURL == '')?null:$postVanityURL,
+								'location' => $postLocation,
 								'startDatetime' => $startDatetime,
-								'duration' => ($_POST['duration'] == '')?1:$_POST['duration'],
+								'duration' => ($postDuration == '' or $postDuration <= 0)?1:$postDuration
 				);
 				$query = $db->prepare($admin_sql->addEvent);
 				break;
 			case 'job':
-				$data = array(	'userID' => $_SESSION['user']->id,
+				$postCompany = strip_tags($_POST['company']);
+				$postEmail = strip_tags($_POST['email']);
+				$postLocation = strip_tags($_POST['location']);
+				$postWebsite = strip_tags($_POST['website']);
+				$postCompensation = strip_tags($_POST['compensation']);
+				$data = array(	'userID' => UserSession::userid(),
 								'typeID' => $_POST['job-type'],
-								'title' => $_POST['title'],
-								'description' => $_POST['description'],
-								'content' => ($_POST['content'] == '')?null:$_POST['content'],
-								'vanityURL' => ($_POST['vanityURL'] == '')?null:$_POST['vanityURL'],
-								'company' => $_POST['company'],
-								'email' => $_POST['email'],
-								'location' => $_POST['location'],
-								'website' => ($_POST['website'] == '')?null:$_POST['website'],
-								'compensation' => ($_POST['compensation'] == '')?null:$_POST['compensation']
+								'title' => $postTitle,
+								'description' => $postDescription,
+								'content' => ($postContent == '')?null:$postContent,
+								'vanityURL' => ($postVanityURL == '')?null:$postVanityURL,
+								'company' => $postCompany,
+								'email' => $postEmail,
+								'location' => $postLocation,
+								'website' => ($postWebsite == '')?null:$postWebsite,
+								'compensation' => ($postCompensation == '')?null:$postCompensation
 				);
 				$query = $db->prepare($admin_sql->addJob);
 				break;
