@@ -466,7 +466,7 @@ class SelectorSQL{
 			LIMIT 1",
 		
 		'changeFullsailEmailInfo' => "
-			SELECT id, firstName, verified, verificationCode
+			SELECT id, firstName, lastName, verified, verificationCode
 			FROM users
 			WHERE (email = :email) AND `password` = MD5(:password)
 			LIMIT 1
