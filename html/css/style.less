@@ -331,6 +331,7 @@ body{
 	width: 100%;
 	padding: 0;
 	margin: 0;
+	min-width: 980px;
 	}
 	
 #wrap, footer{
@@ -1037,6 +1038,9 @@ input, textarea, button{
 			}
 		
 		article{
+			overflow: hidden;
+			min-height: 165px;
+			
 			h2, p{
 				width: 61.290322580645161%;
 				padding-left: 38.609677419354838%;
@@ -1053,6 +1057,7 @@ input, textarea, button{
 				position: absolute;
 				bottom: 0;
 				width: auto;
+				margin-top: 5%;
 				padding: 0;
 				}
 			
@@ -1503,54 +1508,6 @@ input, textarea, button{
 			}
 		}
 	}
-
-.slider{
-	position: relative;
-	overflow: hidden;
-	
-	.slider-controls{
-		position: absolute;
-		top: 8px;
-		right: 10px;
-	
-		a, a:visited{
-			display: block;
-			float: left;
-			width: 5px;
-			height: 5px;
-			margin-right: 10px;
-			.border-radius(1px);
-			background-color: @text-light-color;
-			text-indent: -13000px;
-			}
-		
-		a:last-child{
-			margin-right: 0;
-			}
-		
-		a:hover, a:focus{
-			background-color: darken(@text-light-color, 20%);
-			}
-		
-		a:active{
-			background-color: darken(@text-light-color, 30%);
-			}
-		
-		a.current, a.current:visited{
-			background-color: @text-color;
-			}
-		}
-	
-	.slider-item{
-		}	
-	}
-
-#projects.slider{
-	article{
-		overflow: hidden;
-		height: 165px;
-		}
-	}
 	
 #conversations{
 	form{
@@ -1761,6 +1718,10 @@ section.location-and-time{
 	margin-bottom: 50px;
 	padding: 0 3%;
 	text-align: center;
+	}
+
+ul .empty{
+	text-align: left;
 	}
 
 .minor{
@@ -2016,7 +1977,6 @@ a.button{
 	max-width: 140px;
 	margin-top: 4.25%;
 	text-align: center;
-	line-height: 39px;
 	}
 
 .terms{
@@ -2101,6 +2061,7 @@ footer{
 /* MEDIA QUERIES
 ====================================================================================================*/
 
+/*
 
 @media screen and (max-width: 950px) {
 	#content{
@@ -2223,9 +2184,9 @@ footer{
 	}
 
 @media screen and (max-device-width: 480px) {
-	/* Uncomment if you don't want iOS and WinMobile to mobile-optimize the text for you
+	Uncomment if you don't want iOS and WinMobile to mobile-optimize the text for you
 	j.mp/textsizeadjust 
-	html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; } */
+	html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
 	}
 
 @media screen and (max-width: 480px) {
@@ -2257,6 +2218,8 @@ footer{
 			}
 		}
 	}
+
+*/
 
 @media print {
 	* { background: transparent !important; color: @text-color !important; text-shadow: none !important; }
