@@ -23,7 +23,7 @@ class ExecPage implements \Framework5\IExecutable {
 			$command = $_POST['cmd'];
 			$cmd = explode(' ', $command);
 			
-			switch ($cmds[0]) {
+			switch ($cmd[0]) {
 				case 'requests':
 					redirect('/dev/requests');
 					break;
@@ -39,9 +39,11 @@ class ExecPage implements \Framework5\IExecutable {
 				
 				case 'phpinfo':
 					redirect('/dev/phpinfo');
+					break;
 				
 				default:
 					$error = "invalid command '{$cmd[0]}'";
+					
 			}
 			
 			
