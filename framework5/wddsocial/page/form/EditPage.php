@@ -258,8 +258,9 @@ class EditPage implements \Framework5\IExecutable {
 		
 		if ($_POST['type'] == 'comment') {
 			if (isset($_POST['content']) and $_POST['content'] != '') {
+				$postContent = strip_tags($_POST['content']);
 				$query = $this->db->prepare($this->admin->updateComment);
-				$query->execute(array('id' => $_POST['contentID'], 'content' => $_POST['content']));
+				$query->execute(array('id' => $_POST['contentID'], 'content' => $postContent));
 			}
 			
 			# redirect to page

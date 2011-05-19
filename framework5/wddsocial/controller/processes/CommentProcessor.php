@@ -13,6 +13,8 @@ class CommentProcessor {
 		$db = instance(':db');
 		$sql = instance(':admin-sql');
 		
+		$comment = strip_tags($comment);
+		
 		$data = array('userID' => $_SESSION['user']->id, 'content' => $comment);
 		$query = $db->prepare($sql->addComment);
 		$query->execute($data);

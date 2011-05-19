@@ -144,6 +144,8 @@ class LinkProcessor {
 		$val_sql = instance(':val-sql');
 		$admin_sql = instance(':admin-sql');
 		
+		$link = strip_tags($link);
+		$linkTitle = strip_tags($linkTitle);
 		$data = array('link' => $link, 'title' => $linkTitle);
 		$query = $db->prepare($val_sql->checkIfLinkExists);
 		$query->execute($data);
