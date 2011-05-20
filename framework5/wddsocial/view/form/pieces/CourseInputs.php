@@ -30,7 +30,7 @@ HTML;
 			$html .= <<<HTML
 
 						<fieldset>
-							<label for="course1">Courses</label>
+							<label>Courses</label>
 HTML;
 		}
 		$i = 1;
@@ -38,7 +38,7 @@ HTML;
 			foreach ($options['courses'] as $course) {
 				$html .= <<<HTML
 
-							<input type="text" name="courses[]" id="course$i" placeholder="{$courses[$i-1]->id}" value="{$course->id}" />
+							<input type="text" name="courses[]" placeholder="{$courses[$i-1]->id}" value="{$course->id}" />
 HTML;
 				$i++;
 			}
@@ -46,13 +46,13 @@ HTML;
 		for ($i; $i < $randomLimit; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="courses[]" id="course$i" placeholder="{$courses[$i-1]->id}" />
+							<input type="text" name="courses[]" placeholder="{$courses[$i-1]->id}" />
 HTML;
 		}
 		$html .= <<<HTML
 
 						</fieldset>
-						<a href="#" title="Add Another Course" class="add-more">Add Another Course</a>
+						<a href="" title="Add Another Course" class="add-more">Add Another Course</a>
 HTML;
 		return $html;
 	}

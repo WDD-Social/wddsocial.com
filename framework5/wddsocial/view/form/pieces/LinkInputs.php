@@ -19,30 +19,28 @@ HTML;
 		$i = 1;
 		if (isset($options['links'])) {
 			foreach ($options['links'] as $link) {
-				$linkNumber = ($i == 1)?'':" $i";
 				$html .= <<<HTML
 
 						<fieldset>
-							<label for="link-title$i">Link$linkNumber Title</label>
-							<input type="text" name="link-titles[]" id="link-title$i" value="{$link->title}" />
+							<label for="link-title">Link Title</label>
+							<input type="text" name="link-titles[]" id="link-title" value="{$link->title}" />
 							
-							<label for="link-url$i">Link$linkNumber URL</label>
-							<input type="text" name="link-urls[]" id="link-url$i" placeholder="example.com" value="{$link->link}" />
+							<label for="link-url">Link URL</label>
+							<input type="text" name="link-urls[]" id="link-url" placeholder="example.com" value="{$link->link}" />
 						</fieldset>
 HTML;
 				$i++;
 			}
 		}
 		for ($i; $i < $limit; $i++) {
-			$linkNumber = ($i == 1)?'':" $i";
 			$html .= <<<HTML
 
 						<fieldset>
-							<label for="link-title$i">Link$linkNumber Title</label>
-							<input type="text" name="link-titles[]" id="link-title$i" />
+							<label for="link-title">Link Title</label>
+							<input type="text" name="link-titles[]" id="link-title" />
 							
-							<label for="link-url$i">Link$linkNumber URL</label>
-							<input type="text" name="link-urls[]" id="link-url$i" placeholder="example.com" />
+							<label for="link-url">Link URL</label>
+							<input type="text" name="link-urls[]" id="link-url" placeholder="example.com" />
 						</fieldset>
 HTML;
 		}
@@ -50,7 +48,7 @@ HTML;
 		
 		$html .= <<<HTML
 
-						<a href="#" title="Add Another Link" class="add-more">Add Another Link</a>
+						<a href="" title="Add Another Link" class="add-more">Add Another Link</a>
 HTML;
 		return $html;
 	}

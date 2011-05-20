@@ -46,15 +46,15 @@ HTML;
 			$html .= <<<HTML
 
 						<fieldset>
-							<label for="image-titles$i">Image $i</label>
-							<input type="text" name="image-titles[]" id="image-titles$i" placeholder="Enter Image $i Title" />
-							<input type="file" name="image-files[]" id="image-files$i" />
+							<label for="image-titles">Image</label>
+							<input type="text" name="image-titles[]" placeholder="Enter Image Title" />
+							<input type="file" name="image-files[]" />
 						</fieldset>
 HTML;
 		}
 		$html .= <<<HTML
 
-						<a href="#" title="Add Another Image" class="add-more">Add Another Image</a>
+						<a href="" title="Add Another Image" class="add-more">Add Another Image</a>
 HTML;
 		return $html;
 	}

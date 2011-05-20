@@ -37,10 +37,10 @@ HTML;
 						$html .= <<<HTML
 
 						<fieldset>
-							<label for="team$i">$singular $i</label>
-							<input type="text" name="team[]" id="team$i" placeholder="{$users[$i-1]->name}" value="{$team->firstName} {$team->lastName}" />
-							<label for="role$i">Project Role</label>
-							<input type="text" name="roles[]" id="role$i" placeholder="{$roles[$i-1]->title}" value="{$team->role}" />
+							<label for="team">$singular</label>
+							<input type="text" name="team[]" id="team" placeholder="{$users[$i-1]->name}" value="{$team->firstName} {$team->lastName}" />
+							<label for="role">Project Role</label>
+							<input type="text" name="roles[]" id="role" placeholder="{$roles[$i-1]->title}" value="{$team->role}" />
 						</fieldset>
 HTML;
 						$i++;
@@ -51,10 +51,10 @@ HTML;
 					$html .= <<<HTML
 
 						<fieldset>
-							<label for="team$i">$singular $i</label>
-							<input type="text" name="team[]" id="team$i" placeholder="{$users[$i-1]->name}" value="{$nameValue}" />
-							<label for="role$i">Project Role</label>
-							<input type="text" name="roles[]" id="role$i" placeholder="{$roles[$i-1]->title}" />
+							<label for="team">$singular</label>
+							<input type="text" name="team[]" id="team" placeholder="{$users[$i-1]->name}" value="{$nameValue}" />
+							<label for="role">Project Role</label>
+							<input type="text" name="roles[]" id="role" placeholder="{$roles[$i-1]->title}" />
 						</fieldset>
 HTML;
 				}
@@ -69,7 +69,7 @@ HTML;
 					foreach ($options['team'] as $team) {
 						$html .= <<<HTML
 
-							<input type="text" name="team[]" id="team$i" placeholder="{$users[$i-1]->name}" value="{$team->firstName} {$team->lastName}" />
+							<input type="text" name="team[]" id="team" placeholder="{$users[$i-1]->name}" value="{$team->firstName} {$team->lastName}" />
 HTML;
 						$i++;
 					}
@@ -78,7 +78,7 @@ HTML;
 					$nameValue = ($i == 1)?"{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}":'';
 					$html .= <<<HTML
 
-						<input type="text" name="team[]" id="team$i" placeholder="{$users[$i-1]->name}" value="{$nameValue}" />
+						<input type="text" name="team[]" id="team" placeholder="{$users[$i-1]->name}" value="{$nameValue}" />
 HTML;
 				}
 				$html .= <<<HTML
@@ -90,7 +90,7 @@ HTML;
 		
 		$html .= <<<HTML
 
-						<a href="#" title="Add Another $singular" class="add-more">Add Another $singular</a>
+						<a href="" title="Add Another $singular" class="add-more">Add Another $singular</a>
 HTML;
 		return $html;
 	}

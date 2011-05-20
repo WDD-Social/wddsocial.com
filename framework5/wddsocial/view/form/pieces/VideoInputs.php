@@ -20,31 +20,27 @@ HTML;
 		$i = 1;
 		if (isset($options['videos'])) {
 			foreach ($options['videos'] as $video) {
-				$videoNumber = ($i == 1)?'':" $i";
 				$embedCode = htmlspecialchars($video->embedCode);
 				$html .= <<<HTML
 
 						<fieldset>
-							<label for="video$i">Video$videoNumber</label>
-							<input type="text" name="videos[]" id="video$i" value="{$embedCode}" />
+							<input type="text" name="videos[]" id="video" value="{$embedCode}" />
 						</fieldset>
 HTML;
 				$i++;
 			}
 		}
 		for ($i; $i < $limit; $i++) {
-			$videoNumber = ($i == 1)?'':" $i";
 			$html .= <<<HTML
 
 						<fieldset>
-							<label for="video$i">Video$videoNumber</label>
-							<input type="text" name="videos[]" id="video$i" />
+							<input type="text" name="videos[]" id="video" />
 						</fieldset>
 HTML;
 		}
 		$html .= <<<HTML
 
-						<a href="#" title="Add Another Video" class="add-more">Add Another Video</a>
+						<a href="" title="Add Another Video" class="add-more">Add Another Video</a>
 HTML;
 		return $html;
 	}

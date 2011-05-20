@@ -29,20 +29,20 @@ HTML;
 		foreach ($options['likes'] as $like) {
 			$html .= <<<HTML
 
-							<input type="text" name="likes[]" id="like$i" placeholder="{$categories[$i-1]->title}" value="{$like}" />
+							<input type="text" name="likes[]" id="like" placeholder="{$categories[$i-1]->title}" value="{$like}" />
 HTML;
 			$i++;
 		}
 		for ($i; $i < $randomLimit; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="likes[]" id="like$i" placeholder="{$categories[$i-1]->title}" />
+							<input type="text" name="likes[]" id="like" placeholder="{$categories[$i-1]->title}" />
 HTML;
 		}
 		$html .= <<<HTML
 
+							<a href="" title="Add Another Like" class="add-more">Add Another Like</a>
 						</fieldset>
-						<a href="#" title="Add Another Like" class="add-more">Add Another Like</a>
 						<input type="submit" name="submit" value="Save" />
 HTML;
 		
@@ -62,20 +62,20 @@ HTML;
 		foreach ($options['dislikes'] as $dislike) {
 			$html .= <<<HTML
 
-							<input type="text" name="dislikes[]" id="dislike$i" placeholder="{$categories[$i-1]->title}" value="{$dislike}" />
+							<input type="text" name="dislikes[]" id="dislike" placeholder="{$categories[$i-1]->title}" value="{$dislike}" />
 HTML;
 			$i++;
 		}
 		for ($i; $i < $randomLimit; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="dislikes[]" id="dislike$i" placeholder="{$categories[$i-1]->title}" />
+							<input type="text" name="dislikes[]" id="dislike" placeholder="{$categories[$i-1]->title}" />
 HTML;
 		}
 		$html .= <<<HTML
 
+							<a href="" title="Add Another Dislike" class="add-more">Add Another Dislike</a>
 						</fieldset>
-						<a href="#" title="Add Another Dislike" class="add-more">Add Another Dislike</a>
 						<input type="submit" name="submit" value="Save" />
 HTML;
 		return $html;
