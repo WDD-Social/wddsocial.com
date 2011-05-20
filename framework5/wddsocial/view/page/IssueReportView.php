@@ -11,7 +11,7 @@ class IssueReportView implements \Framework5\IView {
 	
 	public function render($error = null) {
 		return <<<HTML
-			<h1>What seems to be the problem?</h1>
+			<h1 class="mega">What seems to be the problem?</h1>
 			<p>Providing us with a detailed description of any problem you encounter is a step towards a user friendly community. Thank you for your support.</p>
 			<h2>{$error}</h2>
 			<form method="post">
