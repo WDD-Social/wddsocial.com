@@ -28,7 +28,7 @@ HTML;
 			foreach ($options['categories'] as $category) {
 				$html .= <<<HTML
 
-							<input type="text" name="categories[]" id="category$i" placeholder="{$categories[$i-1]->title}" value="{$category->title}" />
+							<input type="text" name="categories[]" placeholder="{$categories[$i-1]->title}" value="{$category->title}" />
 HTML;
 				$i++;
 			}
@@ -36,12 +36,12 @@ HTML;
 		for ($i; $i < $randomLimit; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="categories[]" id="category$i" placeholder="{$categories[$i-1]->title}" />
+							<input type="text" name="categories[]" placeholder="{$categories[$i-1]->title}" />
 HTML;
 		}
 		$html .= <<<HTML
 
-							<a href="#" title="Add Another Category" class="add-more">Add Another Category</a>
+							<a href="" title="Add Another Category" class="add-more">Add Another Category</a>
 						</fieldset>
 HTML;
 		return $html;

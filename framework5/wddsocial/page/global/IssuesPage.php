@@ -70,13 +70,31 @@ class IssuesPage implements \Framework5\IExecutable {
 		$sql = "
 			INSERT INTO fw5_bugs (request_id, message, user_id)
 			VALUES (:request_id, :message, :user_id)";
-		
-		$db = instance('core.controller.Framework5\Database');
-		$query = $db->prepare($sql);
+		$core_db = instance('core.controller.Framework5\Database');
+		$query = $core_db->prepare($sql);
 		$query->execute(array(
 			'request_id' => $request_id,
 			'message' => $_POST['message'],
 			'user_id' => $user_id));
+		
+		# get user info
+		$site_db = instance(':db');
+		$sel_sql = instance(':sel-sql');
+		$query = $site_db->prepare($sel_sql->getUserByID);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$query->execute(array('id' => $user_id));
+		$user = $query->fetch();
+		
+		# send notification email
+		import('wddsocial.controller.WDDSocial\Mailer');
+		$mailer = new Mailer();
+		$mailer->add_recipient('Social Feedback', 'feedback@wddsocial.com');
+		$mailer->subject = "WDD Social Issue Reported";
+		$mailer->message = render("wddsocial.view.email.WDDSocial\FeedbackEmail", 
+			array('name' => "{$user->firstname} {$user->lastName}", 
+				  'email' => $user->email, 
+				  'message' => $_POST['message']));
+		$mailer->send();
 		
 		return true;
 	}
