@@ -78,6 +78,7 @@ HTML;
 					$member->id,"{$member->firstName} {$member->lastName}");
 				$userDisplayName = NaturalLanguage::display_name(
 					$member->id,"{$member->firstName} {$member->lastName}");
+				$userAvatar = (file_exists("images/avatars/{$member->avatar}_medium.jpg"))?"/images/avatars/{$member->avatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 				
 				$userDetail = '';
 				switch ($content->type) {
@@ -93,7 +94,7 @@ HTML;
 
 						<li>
 							<a href="/user/{$member->vanityURL}" title="{$userVerbage}">
-							<img src="/images/avatars/{$member->avatar}_medium.jpg" alt="{$userDisplayName}" />
+							<img src="{$userAvatar}" alt="{$userDisplayName}" />
 							<p><strong>{$userDisplayName}</strong> {$userDetail}</p>
 							</a>
 						</li>
@@ -104,7 +105,7 @@ HTML;
 					$html .= <<<HTML
 
 					<article>
-						<p class="item-image"><a href="/user/{$member->vanityURL}" title="{$userVerbage}"><img src="/images/avatars/{$member->avatar}_medium.jpg" alt="{$userDisplayName}" /></a></p>
+						<p class="item-image"><a href="/user/{$member->vanityURL}" title="{$userVerbage}"><img src="{$userAvatar}" alt="{$userDisplayName}" /></a></p>
 						<h2><a href="/user/{$member->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
 						<p>$userDetail</p>
 					</article>

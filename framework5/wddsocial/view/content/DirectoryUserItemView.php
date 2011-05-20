@@ -18,7 +18,7 @@ class DirectoryUserItemView implements \Framework5\IView {
 		$userIntro = $this->getUserIntro($person);
 		$html = <<<HTML
 
-					<article>
+					<article class="people">
 						<p class="item-image"><a href="/user/{$person->vanityURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
 						<h2><a href="/user/{$person->vanityURL}" title="{$userVerbage}">$userDisplayName</a></h2>
 						<p>{$userIntro}</p>
