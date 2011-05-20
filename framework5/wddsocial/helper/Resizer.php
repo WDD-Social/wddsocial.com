@@ -78,7 +78,7 @@ class Resizer {
 				}
 				imagecopyresampled($final_image,$original_image,0,0,0,0,$resize_width,$resize_height,$width,$height);
 			}
-			imagejpeg($final_image,"$image"."$extra.jpg");
+			imagejpeg($final_image,"$image"."$extra.jpg",90);
 			imagedestroy($final_image);
 			imagedestroy($original_image);
 		}else{
