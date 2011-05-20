@@ -82,7 +82,8 @@ HTML;
 		<footer>
 			<nav>
 				<ul>
-					<li><a href="/about" title="About Framework 5 Developer">About</a></li>
+					<li><a href="/dev/about" title="About Framework 5 Developer">About</a></li>
+					<li><a href="/dev/phpinfo" title="PHP Info">PHP Info</a></li>
 				</ul>
 			</nav>
 		</footer>
@@ -160,10 +161,7 @@ HTML;
 		
 		$navItems = array(
 			'dev/requests' => 'Requests',
-			'dev/bugs' => 'Bugs',
-			'dev/phpinfo' => 'PHP Info'
-			
-		);
+			'dev/issues' => 'Issues');
 		
 		foreach ($navItems as $key => $value) {
 			$key = strtolower($key);

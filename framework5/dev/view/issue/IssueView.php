@@ -7,7 +7,7 @@ namespace Framework5\Dev;
 * 
 */
 
-class BugInfoView implements \Framework5\IView {	
+class IssueView implements \Framework5\IView {	
 	
 	public function render($bug = null) {
 		

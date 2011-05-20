@@ -67,7 +67,7 @@ HTML;
 			lineNumbers: true,
 			matchBrackets: true,
 			mode: "application/x-httpd-php",
-			indentUnit: 8,
+			indentUnit: 4,
 			indentWithTabs: true,
 			enterMode: "keep",
 			tabMode: "shift"

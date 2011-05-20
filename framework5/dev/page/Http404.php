@@ -9,7 +9,8 @@ namespace Framework5\Dev;
 
 class Http404 implements \Framework5\IExecutable {
 
-	public static function execute() {
-		echo "{developer 404 page}<br/>";
+	public function execute() {
+		echo render(':template', 
+			array('title' => "404: page not found", 'content' => "developer 404 page"));
 	}
 }

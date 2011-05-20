@@ -7,14 +7,14 @@ namespace Framework5\Dev;
 * 
 */
 
-class BugListView implements \Framework5\IView {	
+class IssuesView implements \Framework5\IView {	
 	
 	public function render($bugs = null) {
 		
 		foreach ($bugs as $bug) {
 			
 			$html .= <<<HTML
-			<a href="/dev/bugs/{$bug->id}">{$bug->request_id}</a><br/>
+			<a href="/dev/issues/{$bug->id}">{$bug->request_id}</a><br/>
 
 HTML;
 		}

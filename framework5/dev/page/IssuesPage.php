@@ -7,7 +7,7 @@ namespace Framework5\Dev;
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class BugTrackerPage implements \Framework5\IExecutable {
+class IssuesPage implements \Framework5\IExecutable {
 	
 	public function __construct() {
 		$this->db = instance('core.controller.Framework5\Database');
@@ -19,15 +19,15 @@ class BugTrackerPage implements \Framework5\IExecutable {
 		$bug_id = \Framework5\Request::segment(2);
 		
 		if ($bug_id) {
-			$content = render('dev.view.Framework5\Dev\BugInfoView', $this->bug_info($bug_id));
+			$content = render('dev.view.issue.Framework5\Dev\IssueView', $this->bug_info($bug_id));
 		}
 		
 		else {
-			$content = render('dev.view.Framework5\Dev\BugListView', $this->get_bugs());
+			$content = render('dev.view.issue.Framework5\Dev\IssuesView', $this->get_bugs());
 		}
 		
-		echo render('dev.view.Framework5\Dev\TemplateView',
-			array('title' => 'Bug Tracker', 'content' => $content));
+		# display output
+		echo render(':template', array('title' => 'Bug Tracker', 'content' => $content));
 	}
 	
 	

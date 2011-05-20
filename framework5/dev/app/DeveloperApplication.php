@@ -3,7 +3,7 @@
 namespace Framework5;
 
 /*
-* WDDSocialApplication controller
+* DeveloperApplication controller
 * 
 * 
 * @author tmatthews (tmatthewsdev@gmail.com)
@@ -17,10 +17,7 @@ final class DeveloperApplication extends ApplicationBase implements IApplication
 	
 	public function execute() {
 		
-		# disable logging
-		Settings::$log_debug = false;
-		Settings::$log_execution = false;
-		Settings::$log_exception = false;
+		$this->init();
 		
 		# import global app dependencies
 		$this->global_import();
@@ -40,11 +37,32 @@ final class DeveloperApplication extends ApplicationBase implements IApplication
 	
 	
 	/**
+	* Initialize the application
+	*/
+	
+	private function init() {
+		
+		# disable logging
+		Settings::$log_debug = false;
+		Settings::$log_execution = false;
+		Settings::$log_exception = false;
+		
+		# import application settings
+		import('dev.config.Framework5\Dev\AppSettings');
+		
+		# load package aliases
+		PackageManager::define_alias_array(\Framework5\Dev\AppSettings::$package_aliases);
+		
+	}
+	
+	
+	
+	/**
 	* Import global files
 	*/
 	
 	private function global_import() {
-		import('wddsocial.controller.WDDSocial\Exception');
+		import('dev.controller.Framework5\Dev\Exception');
 	}
 	
 	
