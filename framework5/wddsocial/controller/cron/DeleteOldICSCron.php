@@ -1,7 +1,4 @@
 <?php
-$db = instance(':db');
-$sql = instance(':sel-sql');
-
 $pdo = new PDO("mysql:host=internal-db.s112587.gridserver.com;dbname=db112587_wddsocial", "db112587_social", "G*Uoj9F|S0i4f+tD");
 
 $query = $pdo->query("SELECT icsUID FROM events AS e WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) < 0");
