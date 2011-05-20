@@ -19,7 +19,7 @@ class DebugView implements \Framework5\IView {
 		$html = <<<HTML
 
 			<h2>Debug Data</h2>
-			<table style="border-spacing:5px">
+			<table class="dev">
 			<tr>
 				<td>Messsage</td>
 				<td>File</td>
