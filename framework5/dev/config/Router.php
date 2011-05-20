@@ -23,6 +23,9 @@ class Router implements \Framework5\IRouter {
 			case 'source':
 				return 'dev.page.Framework5\Dev\SourcePage';
 			
+			case 'database':
+				return 'dev.page.Framework5\Dev\DatabasePage';
+			
 			case 'requests':
 				return 'dev.page.Framework5\Dev\RequestsPage';
 			

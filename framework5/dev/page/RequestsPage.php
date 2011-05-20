@@ -12,10 +12,8 @@ class RequestsPage implements \Framework5\IExecutable {
 	public function execute() {
 		
 		$requests = $this->get_requests();
-		while($row = $requests->fetch()) {
-			$time = date("F j, Y, g:i a", $row->time);
-			
-		    $content.= "<a href=\"/dev/request/{$row->id}\">{$row->id}</a> at $time [<a href=\"/{$row->uri}\">/{$row->uri}</a>] <br/>";
+		if ($requests) {
+		    $content.= render('dev.view.request.Framework5\Dev\RequestsView', $requests);
 		}
 		
 		echo render(':template',
@@ -34,6 +32,6 @@ class RequestsPage implements \Framework5\IExecutable {
 		# setting the fetch mode
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		
-		return $query;
+		return $query->fetchAll();
 	}
 }
