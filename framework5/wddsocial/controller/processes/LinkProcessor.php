@@ -17,7 +17,7 @@ class LinkProcessor {
 		
 		$errors = array();
 		foreach ($links as $link) {
-			if ($link != '') {
+			if (isset($link) and $link != '') {
 				$i = array_search($link, $links);
 				$linkTitle = ($titles[$i] != '')?$titles[$i]:$link;
 				$linkID = static::get_linkID($link, $linkTitle);
@@ -146,6 +146,7 @@ class LinkProcessor {
 		
 		$link = strip_tags($link);
 		$linkTitle = strip_tags($linkTitle);
+		$link = StringCleaner::clean_link($link);
 		$data = array('link' => $link, 'title' => $linkTitle);
 		$query = $db->prepare($val_sql->checkIfLinkExists);
 		$query->execute($data);
@@ -155,7 +156,7 @@ class LinkProcessor {
 		if ($query->rowCount() > 0) {
 			return $result->id;
 		}
-		else if($link != '') {
+		else if(isset($link) and $link != '') {
 			$query = $db->prepare($admin_sql->addLink);
 			$query->execute($data);
 			return $db->lastInsertID();	
