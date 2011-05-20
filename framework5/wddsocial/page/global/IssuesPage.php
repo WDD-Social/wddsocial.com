@@ -91,7 +91,7 @@ class IssuesPage implements \Framework5\IExecutable {
 		$mailer->add_recipient('Social Feedback', 'feedback@wddsocial.com');
 		$mailer->subject = "WDD Social Issue Reported";
 		$mailer->message = render("wddsocial.view.email.WDDSocial\FeedbackEmail", 
-			array('name' => "{$user->firstname} {$user->lastName}", 
+			array('name' => "{$user->firstName} {$user->lastName}", 
 				  'email' => $user->email, 
 				  'message' => $_POST['message']));
 		$mailer->send();
