@@ -29,12 +29,12 @@ class ArticlesPage implements \Framework5\IExecutable {
 		$sorters = array('alphabetically', 'newest', 'oldest');
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
-		else $active = $sorters[0];
+		else $active = $sorters[1];
 		
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'Articles', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/articles/', 'active' => $active));
+				'header' => 'Articles', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/articles/1/', 'active' => $active));
 		
 		$paginator = new Paginator(1,18);
 		
@@ -49,7 +49,7 @@ class ArticlesPage implements \Framework5\IExecutable {
 				$orderBy = '`datetime` ASC';
 				break;
 			default:
-				$orderBy = 'title ASC';
+				$orderBy = '`datetime` DESC';
 				break;
 		}
 		
