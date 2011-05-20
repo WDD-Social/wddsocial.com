@@ -103,13 +103,13 @@ HTML;
 		if (count($project->images) > 0) {
 			$html .= <<<HTML
 
-						<p class="images">			
+						<p class="images">
 HTML;
 			foreach ($project->images as $image) {
 				if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
 					$html .= <<<HTML
 
-							<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+							<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}" class="fancybox" rel="fancybox-project{$project->vanityURL}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 				}
 			}
@@ -271,7 +271,7 @@ HTML;
 				if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
 					$html .= <<<HTML
 
-							<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+							<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}" class="fancybox" rel="fancybox-article{$article->vanityURL}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 				}
 			}
