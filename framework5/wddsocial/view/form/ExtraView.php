@@ -17,6 +17,9 @@ class ExtraView implements \Framework5\IView {
 			case 'sign_up_intro':
 				return $this->sign_up_intro();
 			
+			case 'create':
+				return $this->create();
+			
 			case 'forgot_pass_intro':
 				return $this->forgot_pass_intro();
 			
@@ -52,6 +55,19 @@ HTML;
 
 					<h1 class="mega form">Join the community. Socialize.</h1>
 					<h2 class="form">All Fields Required</h2>
+HTML;
+	}
+	
+	
+	
+	/**
+	* 
+	*/
+	
+	private function create(){
+		return <<<HTML
+
+					<h1 class="mega">What would you like to create?</h1>
 HTML;
 	}
 	
