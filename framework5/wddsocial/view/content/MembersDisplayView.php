@@ -18,45 +18,46 @@ class MembersDisplayView implements \Framework5\IView {
 		$possessiveTitle = NaturalLanguage::possessive($content->title);
 		
 		$html = "";
-		# display edit controls, if user is author
-		switch ($content->type) {
-			case 'project':
-				if(UserValidator::is_project_owner($content->id)){
-					$html .= <<<HTML
-
-					<div class="secondary icons">
-						<a href="/edit/{$content->type}/{$content->vanityURL}#team" title="{$lang->text('edit_team', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
-					</div><!-- END SECONDARY -->
-HTML;
-				}
-				break;
-			case 'article':
-				if (UserValidator::is_article_owner($content->id)) {
-					$html .= <<<HTML
-
-					<div class="secondary icons">
-						<a href="/edit/{$content->type}/{$content->vanityURL}#authors" title="{$lang->text('edit_authors', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
-					</div><!-- END SECONDARY -->
-HTML;
-				}
-				break;
-			default :
-				if (UserSession::is_current($content->userID)) {
-					$html .= <<<HTML
-
-					<div class="secondary icons">
-						<a href="/edit/{$content->type}/{$content->vanityURL}" title="{$lang->text('edit_members', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
-					</div><!-- END SECONDARY -->
-HTML;
-				}
-				break;
-		}
 		
-		
+		if ($content->type != 'course') {
+			# display edit controls, if user is author
+			switch ($content->type) {
+				case 'project':
+					if(UserValidator::is_project_owner($content->id)){
+						$html .= <<<HTML
+	
+						<div class="secondary icons">
+							<a href="/edit/{$content->type}/{$content->vanityURL}#team" title="{$lang->text('edit_team', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
+						</div><!-- END SECONDARY -->
+HTML;
+					}
+					break;
+				case 'article':
+					if (UserValidator::is_article_owner($content->id)) {
+						$html .= <<<HTML
+	
+						<div class="secondary icons">
+							<a href="/edit/{$content->type}/{$content->vanityURL}#authors" title="{$lang->text('edit_authors', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
+						</div><!-- END SECONDARY -->
+HTML;
+					}
+					break;
+				default :
+					if (UserSession::is_current($content->userID)) {
+						$html .= <<<HTML
+	
+						<div class="secondary icons">
+							<a href="/edit/{$content->type}/{$content->vanityURL}" title="{$lang->text('edit_members', $possessiveTitle)}" class="edit">{$lang->text('edit')}</a>
+						</div><!-- END SECONDARY -->
+HTML;
+					}
+					break;
+			}
+		}		
 		
 		# if team members were provided, display them
 		if (count($content->team) > 0) {
-			if($content->type != 'article'){
+			if($content->type == 'project'){
 				$html .= <<<HTML
 
 					<ul>
@@ -87,7 +88,7 @@ HTML;
 						$userDetail = $member->bio;
 						break;
 				}
-				if ($content->type != 'article') {
+				if ($content->type == 'project') {
 					$html .= <<<HTML
 
 						<li>
@@ -111,7 +112,7 @@ HTML;
 				}
 				
 			}
-			if ($content->type != 'article') {
+			if ($content->type == 'project') {
 				$html .= <<<HTML
 
 					</ul>
