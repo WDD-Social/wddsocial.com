@@ -22,6 +22,9 @@ final class DeveloperApplication extends ApplicationBase implements IApplication
 		Settings::$log_execution = false;
 		Settings::$log_exception = false;
 		
+		# import global app dependencies
+		$this->global_import();
+		
 		# restrict access
 		$this->restrict_access();
 		
@@ -34,6 +37,21 @@ final class DeveloperApplication extends ApplicationBase implements IApplication
 		return true;
 	}
 	
+	
+	
+	/**
+	* Import global files
+	*/
+	
+	private function global_import() {
+		import('wddsocial.controller.WDDSocial\Exception');
+	}
+	
+	
+	
+	/**
+	* Restrict access to Tyler or Anthony
+	*/
 	
 	private function restrict_access() {
 		
