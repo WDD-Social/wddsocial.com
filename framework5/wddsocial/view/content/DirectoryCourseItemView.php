@@ -13,12 +13,11 @@ class DirectoryCourseItemView implements \Framework5\IView {
 	public function render($course = null) {
 		if (count($course->team) > 0) {
 			$teacher = $course->team[array_rand($course->team)];
-			$avatar = (file_exists("/images/avatars/{$teacher->avatar}_medium.jpg"))?"/images/avatars/{$teacher->avatar}_medium.jpg":'/images/site/job-default_medium.jpg';
+			$avatar = (file_exists("images/avatars/{$teacher->avatar}_medium.jpg"))?"/images/avatars/{$teacher->avatar}_medium.jpg":'/images/site/job-default_medium.jpg';
 		}
 		else {
 			$avatar = '/images/site/job-default_medium.jpg';
 		}
-		$courseAvatar = (file_exists("images/avatars/{$person->avatar}_medium.jpg"))?"/images/avatars/{$person->avatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		$html = <<<HTML
 
 					<article>
