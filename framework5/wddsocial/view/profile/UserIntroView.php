@@ -66,9 +66,10 @@ HTML;
 HTML;
 		if (count($user->extra['likes']) > 0) {
 			foreach ($user->extra['likes'] as $like) {
+				$searchTerm = urlencode($like);
 				$html .= <<<HTML
 	
-								<li><a href="/search/$like" title="$like">$like</a></li>
+								<li><a href="/search/$searchTerm" title="$like">$like</a></li>
 HTML;
 			}
 		}
@@ -89,9 +90,10 @@ HTML;
 HTML;
 		if (count($user->extra['dislikes']) > 0) {
 			foreach ($user->extra['dislikes'] as $dislike) {
+				$searchTerm = urlencode($dislike);
 				$html .= <<<HTML
 	
-								<li><a href="/search/$dislike" title="$dislike">$dislike</a></li>
+								<li><a href="/search/$searchTerm" title="$dislike">$dislike</a></li>
 HTML;
 			}
 		}

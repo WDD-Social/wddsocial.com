@@ -163,9 +163,10 @@ HTML;
 						<ul>
 HTML;
 			foreach ($content->categories as $category) {
+				$searchTerm = urlencode($category->title);
 				$html .= <<<HTML
 
-							<li><a href="/search/{$category->title}" title="{$lang->text('categories')} | {$category->title}">{$category->title}</a></li>
+							<li><a href="/search/{$searchTerm}" title="{$lang->text('category_title',$category->title)}">{$category->title}</a></li>
 HTML;
 			}
 			$html .= <<<HTML

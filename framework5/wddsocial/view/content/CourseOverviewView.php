@@ -28,9 +28,10 @@ class CourseOverviewView implements \Framework5\IView {
 HTML;
 		if (count($content->categories) > 0) {
 			foreach ($content->categories as $category) {
+				$searchTerm = urlencode($category->title);
 				$html .= <<<HTML
 
-							<li><a href="/search/{$category->title}" title="{$lang->text('categories')} | {$category->title}">{$category->title}</a></li>
+							<li><a href="/search/{$searchTerm}" title="{$lang->text('categories')} | {$category->title}">{$category->title}</a></li>
 HTML;
 			}
 		}
