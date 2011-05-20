@@ -25,7 +25,7 @@ class CoursesPage implements \Framework5\IExecutable {
 		$content.= render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(2);
-		$sorters = array('by month', 'alphabetically');
+		$sorters = array('month', 'alphabetically');
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
 		else $active = $sorters[0];
@@ -39,7 +39,7 @@ class CoursesPage implements \Framework5\IExecutable {
 		$paginator = new Paginator(1,18);
 		
 		switch ($active) {
-			case 'by month':
+			case 'month':
 				$orderBy = '`month` ASC';
 				break;
 			
