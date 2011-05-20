@@ -10,15 +10,64 @@ namespace WDDSocial;
 class CoursesPage implements \Framework5\IExecutable {
 	
 	public function __construct() {
-		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.CoursePageLang');
+		$this->db = instance(':db');
+		$this->sql = instance(':sel-sql');
 	}
 	
 	
 	
 	public function execute() {
-		$content = " ";
+		import('wddsocial.model.WDDSocial\CourseVO');
 		
+		# display site header
+		$page_title = 'Courses';
+		
+		$content.= render(':section', array('section' => 'begin_content'));
+		
+		$sorter = \Framework5\Request::segment(2);
+		$sorters = array('by month', 'alphabetically');
+		
+		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
+		else $active = $sorters[0];
+		
+		$content.= render(':section', 
+			array('section' => 'begin_content_section', 'id' => 'directory', 
+				'classes' => array('mega', 'with-secondary'), 
+				'header' => 'Courses', 'sort' => true, 'sorters' => $sorters, 
+				'base_link' => '/courses/1/', 'active' => $active));
+		
+		$paginator = new Paginator(1,18);
+		
+		switch ($active) {
+			case 'by month':
+				$orderBy = '`month` ASC';
+				break;
+			
+			case 'alphabetically':
+				$orderBy = 'title ASC';
+				break;
+			
+			default:
+				$orderBy = '`month` ASC';
+				break;
+		}
+		
+		
+		# query
+		$query = $this->db->prepare($this->sql->getCourses . " ORDER BY $orderBy");
+		$query->execute();
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\CourseVO');
+		
+		# display section items
+		while($item = $query->fetch()){
+			$content.= render('wddsocial.view.content.WDDSocial\DirectoryCourseItemView', $item);
+		}
+		
+		
+		$content.= render(':section', array('section' => 'end_content'));
+		
+		# display page
 		echo render(':template', 
-			array('title' => $this->lang->text('page-title'), 'content' => $content));
+			array('title' => $page_title, 'content' => $content));
 	}
 }
