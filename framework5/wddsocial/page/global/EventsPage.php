@@ -34,7 +34,7 @@ class EventsPage implements \Framework5\IExecutable {
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'Articles', 'sort' => true, 'sorters' => $sorters, 
+				'header' => 'Events', 'sort' => true, 'sorters' => $sorters, 
 				'base_link' => '/events/1/', 'active' => $active));
 		
 		$paginator = new Paginator(1,18);

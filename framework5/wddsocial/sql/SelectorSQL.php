@@ -1446,6 +1446,10 @@ class SelectorSQL{
 		* Course queries
 		*/
 		
+		'getCourses' => "
+			SELECT id, title, description, `month`
+			FROM courses",
+		
 		'getCourseByID' => "
 			SELECT id, title, description, `month`
 			FROM courses
