@@ -13,7 +13,11 @@ class IssuesView implements \Framework5\IView {
 		
 		$html = <<<HTML
 
-			<table id="issues">
+			<table id="issues" class="dev">
+				<tr>
+					<td>Issue</td>
+					<td>Message</td>
+				</tr>
 HTML;
 		
 		foreach ($bugs as $bug) {

@@ -161,7 +161,8 @@ HTML;
 		
 		$navItems = array(
 			'dev/requests' => 'Requests',
-			'dev/issues' => 'Issues');
+			'dev/issues' => 'Issues',
+			'dev/database' => 'Database');
 		
 		foreach ($navItems as $key => $value) {
 			$key = strtolower($key);
