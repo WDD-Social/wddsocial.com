@@ -1,13 +1,13 @@
 <?php
 
-namespace Framework5\Bugs;
+namespace WDDSocial;
 
 /*
 * 
 * @author 
 */
 
-class ReportBugView implements \Framework5\IView {
+class IssueReportView implements \Framework5\IView {
 	
 	public function render($error = null) {
 		return <<<HTML
