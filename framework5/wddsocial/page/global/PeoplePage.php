@@ -29,7 +29,7 @@ class PeoplePage implements \Framework5\IExecutable {
 		$sorters = array('alphabetically', 'newest', 'oldest');
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
-		else $active = $sorters[0];
+		else $active = $sorters[1];
 		
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
@@ -52,7 +52,7 @@ class PeoplePage implements \Framework5\IExecutable {
 				break;
 			
 			default:
-				$orderBy = 'lastName ASC';
+				$orderBy = '`datetime` DESC';
 				break;
 		}
 		
