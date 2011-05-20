@@ -67,7 +67,7 @@ class SiteTemplate implements \Framework5\IView {
 				<h1><a href="/" title="WDD Social Home">WDD Social</a></h1>
 HTML;
 			$html .= $this->_renderUserArea();
-			$html .= $this->_renderNavigation();
+			$html .= $this->_renderNavigation($options['searchTerm']);
 			$html .=<<<HTML
 
 			</header>
@@ -157,7 +157,7 @@ HTML;
 	* The site Navigation and Search area
 	*/
 	
-	private function _renderNavigation() {
+	private function _renderNavigation($searchTerm) {
 		$current = \Framework5\Request::segment(0);
 		
 		$html = <<<HTML
@@ -190,7 +190,7 @@ HTML;
 
 					</ul>
 					<form action="/search" method="post">
-						<input type="text" name="term" placeholder="{$this->lang->text('search_placeholder')}" />
+						<input type="text" name="term" placeholder="{$this->lang->text('search_placeholder')}" value="{$searchTerm}" />
 						<input type="submit" value="{$this->lang->text('search')}" />
 					</form>
 				</nav>

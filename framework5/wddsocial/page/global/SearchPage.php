@@ -17,9 +17,10 @@ class SearchPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		if (isset($_POST['term']) and $_POST['term'] != '') {
-			redirect("/search/{$_POST['term']}");
+			$term = urlencode($_POST['term']);
+			redirect("/search/{$term}");
 		}
-		$term = \Framework5\Request::segment(1);
+		$term = urldecode(\Framework5\Request::segment(1));
 		
 		$content .= render(':section', array('section' => 'begin_content'));
 		
@@ -29,6 +30,6 @@ class SearchPage implements \Framework5\IExecutable {
 		
 		# display page
 		echo render(':template', 
-			array('title' => $this->lang->text('page-title'), 'content' => $content));
+			array('title' => $this->lang->text('page-title'), 'searchTerm' => $term, 'content' => $content));
 	}
 }
