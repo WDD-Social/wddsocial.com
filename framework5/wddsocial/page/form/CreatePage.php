@@ -28,7 +28,7 @@ class CreatePage implements \Framework5\IExecutable {
 				$_POST['type'] = $request;
 			}
 			else{
-				$_POST['type'] = 'project';	
+				$_POST['type'] = '';
 			}
 		}
 		
@@ -42,66 +42,74 @@ class CreatePage implements \Framework5\IExecutable {
 				redirect("{$response->message}");
 			}
 		}
-			
-		
-		
-		$page_title = "Create new {$_POST['type']}";
 		
 		# open content section
 		$content = render(':section', array('section' => 'begin_content'));
-		
-		# display basic form header
-		$content .= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-			array('section' => 'header', 'data' => $_POST, 
-				'error' => $response->message, 'process' => 'creation'));
-		
-		# display content type-specific options
-		if ($_POST['type'] == 'project' or $_POST['type'] == 'article' or 
-		$_POST['type'] == 'event' or $_POST['type'] == 'job') {
-			$typeCapitalized = ucfirst($_POST['type']);
-			$content .= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs");
+			
+		if ($_POST['type'] == '') {
+			$page_title = "Create Something.";
+			
+			$content .= render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'create'));
+			
+			$content .= render('wddsocial.view.form.WDDSocial\ShareView', array('class' => 'small','error' => $response->message));
 		}
-		
-		# display team member section for appropriate content types
-		if ($_POST['type'] == 'project' or $_POST['type'] == 'article') {
-			switch ($_POST['type']) {
-				case 'project':
-					$teamTitle = 'Team Members';
-					break;
-				case 'article':
-					$teamTitle = 'Authors';
-					break;
+		else {
+			$page_title = "Create new {$_POST['type']}";
+			
+			# display basic form header
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'header', 'data' => $_POST, 
+					'error' => $response->message, 'process' => 'creation'));
+			
+			# display content type-specific options
+			if ($_POST['type'] == 'project' or $_POST['type'] == 'article' or 
+			$_POST['type'] == 'event' or $_POST['type'] == 'job') {
+				$typeCapitalized = ucfirst($_POST['type']);
+				$content .= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs");
 			}
 			
-			$content .= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
-				array('header' => $teamTitle, 'type' => $_POST['type']));
+			# display team member section for appropriate content types
+			if ($_POST['type'] == 'project' or $_POST['type'] == 'article') {
+				switch ($_POST['type']) {
+					case 'project':
+						$teamTitle = 'Team Members';
+						break;
+					case 'article':
+						$teamTitle = 'Authors';
+						break;
+				}
+				
+				$content .= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
+					array('header' => $teamTitle, 'type' => $_POST['type']));
+			}
+			
+			# display image section
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs');
+			
+			# display video section
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs');
+			
+			# display category section
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs');
+			
+			# display link section
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs');
+			
+			#display course section
+			if ($_POST['type'] != 'job') {
+				$content .= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
+					array('header' => true));
+			}
+			
+			# display other options
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', 
+				array('data' => $_POST));
+			
+			# display form footer
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'footer'));
 		}
 		
-		# display image section
-		$content .= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs');
-		
-		# display video section
-		$content .= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs');
-		
-		# display category section
-		$content .= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs');
-		
-		# display link section
-		$content .= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs');
-		
-		#display course section
-		if ($_POST['type'] != 'job') {
-			$content .= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
-				array('header' => true));
-		}
-		
-		# display other options
-		$content .= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', 
-			array('data' => $_POST));
-		
-		# display form footer
-		$content .= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-			array('section' => 'footer'));
 		
 		# end content section
 		$content .= render(':section', array('section' => 'end_content'));

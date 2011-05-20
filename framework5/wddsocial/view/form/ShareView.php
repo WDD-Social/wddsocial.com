@@ -15,7 +15,7 @@ class ShareView implements \Framework5\IView {
 		
 		return <<<HTML
 
-					<form action="/create" method="post">
+					<form action="/create" method="post" class="{$options['class']}">
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="title">{$lang->text('title')}</label>
