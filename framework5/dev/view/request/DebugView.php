@@ -52,7 +52,7 @@ HTML;
 				$html.= <<<HTML
 			<tr>
 				<td>{$data->message}</td>
-				<td><a href="#" title="{$data->path}">{$data->file}</a></td>
+				<td><a href="/dev/source/?file={$data->path}" title="{$data->path}">{$data->file}</a></td>
 				<td>{$data->line}</td>
 				<td>{$data->timeDiff}</td>
 				<td>{$data->memoryDiff}</td>
