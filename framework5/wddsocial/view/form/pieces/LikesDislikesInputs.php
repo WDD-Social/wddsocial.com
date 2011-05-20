@@ -13,7 +13,7 @@ class LikesDislikesInputs implements \Framework5\IView {
 		$db = instance(':db');
 		$sql = instance(':sel-sql');
 		
-		$randomLimit = count($options['likes']) + 3;
+		$randomLimit = count($options['likes']) + 2;
 		$query = $db->query($sql->getRandomCategories . " LIMIT $randomLimit");
 		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_OBJ);
