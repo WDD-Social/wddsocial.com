@@ -101,7 +101,8 @@ HTML;
 		# Build categories
 		$categoryLinks = array();
 		foreach($content->categories as $category){
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+			$searchTerm = urlencode($category);
+			array_push($categoryLinks,"<a href=\"/search/$searchTerm\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -157,7 +158,8 @@ HTML;
 		# Build categories
 		$categoryLinks = array();
 		foreach($event->categories as $category){
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+			$searchTerm = urlencode($category);
+			array_push($categoryLinks,"<a href=\"/search/$searchTerm\" title=\"Categories | $category\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML

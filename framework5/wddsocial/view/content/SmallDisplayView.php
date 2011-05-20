@@ -57,7 +57,8 @@ HTML;
 		# Build categories
 		$categoryLinks = array();
 		foreach ($article->categories as $category) {
-			array_push($categoryLinks, "<a href=\"/search/$category\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+			$searchTerm = urlencode($category);
+			array_push($categoryLinks,"<a href=\"/search/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
 		
 		$categoryLinks = implode(' ', $categoryLinks);
@@ -128,7 +129,8 @@ HTML;
 		# Build categories
 		$categoryLinks = array();
 		foreach ($event->categories as $category) {
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+			$searchTerm = urlencode($category);
+			array_push($categoryLinks,"<a href=\"/search/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
 		
 		$categoryLinks = implode(' ',$categoryLinks);
@@ -200,7 +202,8 @@ HTML;
 		# Build categories
 		$categoryLinks = array();
 		foreach($job->categories as $category){
-			array_push($categoryLinks,"<a href=\"/search/$category\" title=\"Categories | $category\">$category</a>");
+			$searchTerm = urlencode($category);
+			array_push($categoryLinks,"<a href=\"/search/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
