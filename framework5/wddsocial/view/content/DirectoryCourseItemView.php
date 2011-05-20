@@ -21,7 +21,7 @@ class DirectoryCourseItemView implements \Framework5\IView {
 		$courseAvatar = (file_exists("images/avatars/{$person->avatar}_medium.jpg"))?"/images/avatars/{$person->avatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		$html = <<<HTML
 
-					<article class="course">
+					<article>
 						<p class="item-image"><a href="/course/{$course->id}" title="{$course->title}"><img src="$avatar" alt="{$course->title}"/></a></p>
 						<h2><a href="/course/{$course->id}" title="{$course->title}">{$course->title}</a></h2>
 						<p>{$course->description}</p>
