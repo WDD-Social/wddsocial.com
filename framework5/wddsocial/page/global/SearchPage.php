@@ -16,7 +16,16 @@ class SearchPage implements \Framework5\IExecutable {
 	
 	
 	public function execute() {
-		$content = " ";
+		if (isset($_POST['term']) and $_POST['term'] != '') {
+			redirect("/search/{$_POST['term']}");
+		}
+		$term = \Framework5\Request::segment(1);
+		
+		$content .= render(':section', array('section' => 'begin_content'));
+		
+		$content .= "<h1 class=\"mega\">Search results for &ldquo;$term&rdquo;</h1>";
+		
+		$content .= render(':section', array('section' => 'end_content'));
 		
 		# display page
 		echo render(':template', 

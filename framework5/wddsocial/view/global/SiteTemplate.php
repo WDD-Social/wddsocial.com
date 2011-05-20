@@ -189,7 +189,7 @@ HTML;
 		$html .= <<<HTML
 
 					</ul>
-					<form action="/search" method="get">
+					<form action="/search" method="post">
 						<input type="text" name="term" placeholder="{$this->lang->text('search_placeholder')}" />
 						<input type="submit" value="{$this->lang->text('search')}" />
 					</form>
