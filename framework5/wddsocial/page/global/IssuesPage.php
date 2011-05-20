@@ -1,18 +1,19 @@
 <?php
 
-namespace Framework5\Bugs;
+namespace WDDSocial;
 
 /*
 * 
 * @author tmatthews (tmatthewsdev@gmail.com)
 */
 
-class ReportPage implements \Framework5\IExecutable {
+class IssuesPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
-		$reportBugView = 'bugs.view.page.Framework5\Bugs\ReportBugView';
-		$bugReportedView = 'bugs.view.page.Framework5\Bugs\BugReportedView';
+		# view package locations
+		$reportBugView = 'wddsocial.view.page.WDDSocial\IssueReportView';
+		$bugReportedView = 'wddsocial.view.page.WDDSocial\IssueReportedView';
 		
 		# begin content section
 		$content = render(':section', array('section' => 'begin_content'));
@@ -48,7 +49,7 @@ class ReportPage implements \Framework5\IExecutable {
 	private function _process_form() {
 		
 		# get the request id of the page the error was reported on
-		$request_id = \Framework5\Request::segment(2);
+		$request_id = \Framework5\Request::segment(1);
 		
 		# start wddsocial user session
 		import('wddsocial.controller.WDDSocial\UserSession');
@@ -70,7 +71,7 @@ class ReportPage implements \Framework5\IExecutable {
 			INSERT INTO fw5_bugs (request_id, message, user_id)
 			VALUES (:request_id, :message, :user_id)";
 		
-		$db = instance(':db');
+		$db = instance('core.controller.Framework5\Database');
 		$query = $db->prepare($sql);
 		$query->execute(array(
 			'request_id' => $request_id,

@@ -80,6 +80,9 @@ class Router implements \Framework5\IRouter {
 			
 			# footer navigation
 			
+			case 'issues':
+				return 'wddsocial.page.global.WDDSocial\IssuesPage';
+			
 			case 'developer':
 				return 'wddsocial.page.global.WDDSocial\DeveloperPage';
 			
