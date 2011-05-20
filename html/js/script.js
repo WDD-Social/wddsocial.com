@@ -13,20 +13,27 @@ $(function() {
 	
 	
 	
-	/* FILTERS, CARDSTACKS, SLIDERS
+	/* FILTERS, CARDSTACKS, ADD MORE
 	****************************************************************** */
 	
-	/* $('#projects.slider').jslide({
-		width: 620,
-		height: 165,
-		items: 2,
-		loop: true,
-		slideshow: {
-			direction: 'next',
-			duration: 100,
-			delay: 500
+	$('.add-more').live('click',function(){
+		console.log("ADD ANOTHER");
+		var addMoreLink = $(this);
+		var newHTML = $(this).prev().clone(true);
+		if($(newHTML).is('input')){
+			$(newHTML).attr('placeholder','');
+			$(newHTML).attr('value','');
 		}
-	}); */
+		if($(newHTML).is('fieldset')){
+			var inputs = $(newHTML).find('input');
+			$(inputs).each(function(){
+				$(this).attr('placeholder','');
+				$(this).attr('value','');
+			});
+		}
+		$(newHTML).insertBefore($(addMoreLink));
+		return false;
+	});
 	
 	var filter = function(type, parent, duration){
 		if(typeof duration == 'undefined'){
