@@ -38,13 +38,12 @@ HTML;
 			foreach ($debug_data as $data) {
 				
 				# format data
+				$data->formattedMemory = BytesConverter::format($data->memory);
 				if ($row > 0) {
-					$data->formattedMemory = BytesConverter::format($data->memory);
 					$data->memoryDiff = "+".BytesConverter::format($data->memory - $lastMemory);
 					$data->timeDiff = "+".number_format($data->time - $lastTime, 9);
 				}
 				else {
-					$data->formattedMemory = '-';
 					$data->memoryDiff = '-';
 					$data->timeDiff = '-';
 				}
