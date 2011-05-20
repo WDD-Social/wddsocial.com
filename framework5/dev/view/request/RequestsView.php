@@ -27,9 +27,9 @@ HTML;
 			$html.= <<<HTML
 
 		<tr>
-			<td><a href=\"/dev/request/{$request->id}\">{$request->id}</a></td>
+			<td><a href="/dev/request/{$request->id}">{$request->id}</a></td>
 			<td>{$request->time}</td>
-			<td><a href=\"/{$request->uri}\">/{$request->uri}</a></td>
+			<td><a href="/{$request->uri}">/{$request->uri}</a></td>
 		</tr>
 HTML;
 		}
