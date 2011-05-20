@@ -27,7 +27,7 @@ class DatabasePage implements \Framework5\IExecutable {
 	
 	private function db_connect() {
 		# site db connection
-		$this->db = new \PDO("mysql:host=localhost;dbname=wddsocial", "root", "root");
+		$this->db = new \PDO("mysql:host=internal-db.s112587.gridserver.com;dbname=db112587_wddsocial", "db112587_social", "G*Uoj9F|S0i4f+tD");
 		$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 	}
 	
