@@ -60,17 +60,6 @@ class CourseProcessor {
 								$query->execute($data);
 							}
 							break;
-						case 'job':
-							$data = array("jobID" => $contentID, 'courseID' => $courseID);
-							$query = $db->prepare($val_sql->checkIfJobCourseExists);
-							$query->execute($data);
-							$query->setFetchMode(\PDO::FETCH_OBJ);
-							$result = $query->fetch();
-							if ($query->rowCount() == 0) {
-								$query = $db->prepare($admin_sql->addJobCourse);
-								$query->execute($data);
-							}
-							break;
 					}
 				}
 				else if ($course != '') {
@@ -99,6 +88,7 @@ class CourseProcessor {
 	public static function update_courses($currentCourses, $newCourses, $type, $contentID){
 		
 		$db = instance(':db');
+		$sel_sql = instance(':sel-sql');
 		$sql = instance(':admin-sql');
 		
 		foreach ($newCourses as $newCourse) {
@@ -133,47 +123,38 @@ class CourseProcessor {
 						$query->execute(array('eventID' => $contentID, 'courseID' => $currentCourse));
 					}
 					break;
-				case 'job':
-					foreach ($currentCourses as $currentCourse) {
-						$query = $db->prepare($sql->deleteJobCourse);
-						$query->execute(array('jobID' => $contentID, 'courseID' => $currentCourse));
-					}
-					break;
 			}
 		}
 		
 		if (count($newCourses) > 0) {
-			switch ($type) {
-				case 'user':
-					foreach ($newCourses as $newCourse) {
-						$query = $db->prepare($sql->addTeacherCourse);
-						$query->execute(array('userID' => $contentID, 'courseID' => $newCourse));
+			foreach ($newCourses as $newCourse) {
+				$data = array('id' => $newCourse, 'title' => $newCourse);
+				$query = $db->prepare($sel_sql->getCourse);
+				$query->execute($data);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				$result = $query->fetch();
+				
+				if ($query->rowCount() > 0) {
+					$courseID = $result->id;
+					switch ($type) {
+						case 'user':
+							$query = $db->prepare($sql->addTeacherCourse);
+							$query->execute(array('userID' => $contentID, 'courseID' => $newCourse));
+							break;
+						case 'project':
+							$query = $db->prepare($sql->addProjectCourse);
+							$query->execute(array('projectID' => $contentID, 'courseID' => $newCourse));
+							break;
+						case 'article':
+							$query = $db->prepare($sql->addArticleCourse);
+							$query->execute(array('articleID' => $contentID, 'courseID' => $newCourse));
+							break;
+						case 'event':
+							$query = $db->prepare($sql->addEventCourse);
+							$query->execute(array('eventID' => $contentID, 'courseID' => $newCourse));
+							break;
 					}
-					break;
-				case 'project':
-					foreach ($newCourses as $newCourse) {
-						$query = $db->prepare($sql->addProjectCourse);
-						$query->execute(array('projectID' => $contentID, 'courseID' => $newCourse));
-					}
-					break;
-				case 'article':
-					foreach ($newCourses as $newCourse) {
-						$query = $db->prepare($sql->addArticleCourse);
-						$query->execute(array('articleID' => $contentID, 'courseID' => $newCourse));
-					}
-					break;
-				case 'event':
-					foreach ($newCourses as $newCourse) {
-						$query = $db->prepare($sql->addEventCourse);
-						$query->execute(array('eventID' => $contentID, 'courseID' => $newCourse));
-					}
-					break;
-				case 'job':
-					foreach ($newCourses as $newCourse) {
-						$query = $db->prepare($sql->addJobCourse);
-						$query->execute(array('jobID' => $contentID, 'courseID' => $newCourse));
-					}
-					break;
+				}
 			}
 		}
 	}
