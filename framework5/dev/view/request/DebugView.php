@@ -19,13 +19,14 @@ class DebugView implements \Framework5\IView {
 		$html = <<<HTML
 
 			<h2>Debug Data</h2>
-			<table>
+			<table style="border-spacing:5px">
 			<tr>
 				<td>Messsage</td>
 				<td>File</td>
 				<td>Line</td>
-				<td>Time</td>
-				<td>Memory</td>
+				<td>Time Difference</td>
+				<td>Memory Difference</td>
+				<td>Total Memory</td>
 			</tr>
 			
 HTML;
@@ -33,17 +34,37 @@ HTML;
 		# render table data
 		$debug_data = unserialize($options->data);
 		if ($debug_data) {
+			$row = 0;
 			foreach ($debug_data as $data) {
-				$data->memory = BytesConverter::format($data->memory);
+				
+				# format data
+				if ($row > 0) {
+					$data->formattedMemory = BytesConverter::format($data->memory);
+					$data->memoryDiff = "+".BytesConverter::format($data->memory - $lastMemory);
+					$data->timeDiff = "+".number_format($data->time - $lastTime, 9);
+				}
+				else {
+					$data->formattedMemory = '-';
+					$data->memoryDiff = '-';
+					$data->timeDiff = '-';
+				}
+				
+				# render content
 				$html.= <<<HTML
 			<tr>
 				<td>{$data->message}</td>
 				<td><a href="#" title="{$data->path}">{$data->file}</a></td>
 				<td>{$data->line}</td>
-				<td>{$data->time}</td>
-				<td>{$data->memory}</td>
+				<td>{$data->timeDiff}</td>
+				<td>{$data->memoryDiff}</td>
+				<td>{$data->formattedMemory}</td>
 			</tr>
 HTML;
+				# save result to calculate difference
+				$lastMemory = $data->memory;
+				$lastTime = $data->time;
+				$row++;
+				
 			}
 		}
 		
