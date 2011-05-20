@@ -30,11 +30,13 @@ HTML;
 		# display an image or video
 		switch ($options['active']) {
 			case 'images':
+				# Remove first image in array
+				array_shift($options['content']->images);
 				if (count($options['content']->images) > 0) {
 					foreach ($options['content']->images as $image) {
 						$html .= <<<HTML
 
-						<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+						<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}" class="fancybox" rel="fancybox-media"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
 					}
 				}

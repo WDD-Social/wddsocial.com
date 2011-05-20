@@ -3,18 +3,24 @@ $(function() {
 	/* VISUAL TWEAKS, ENHANCEMENTS, AND SETUP
 	****************************************************************** */
 	
-	$('.dashboard #latest').css({
-		minHeight: $('.dashboard #share').outerHeight(true) + $('.dashboard #events').outerHeight(true) + $('.dashboard #jobs').outerHeight(true)
-	});
-	
 	$.ajaxSetup({
 		type: "POST"
 	});
 	
+	$('.dashboard #latest').css({
+		minHeight: $('.dashboard #share').outerHeight(true) + $('.dashboard #events').outerHeight(true) + $('.dashboard #jobs').outerHeight(true)
+	});
 	
 	
-	/* FILTERS, CARDSTACKS, ADD MORE
+	
+	/* FILTERS, CARDSTACKS, ADD MORE, FANCYBOX
 	****************************************************************** */
+	
+	$('a.fancybox').fancybox({
+		titleShow: false,
+		cyclic: true,
+		showCloseButton: false
+	});
 	
 	$('.add-more').live('click',function(){
 		console.log("ADD ANOTHER");
