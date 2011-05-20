@@ -15,7 +15,7 @@ class IndexPage implements \Framework5\IExecutable {
 		$content = " ";
 		
 		# display output
-		echo render('dev.view.Framework5\Dev\TemplateView',
+		echo render(':template',
 			array('title' => 'Execute Command', 'content' => $content));
 	}
 }

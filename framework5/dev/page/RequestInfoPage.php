@@ -46,7 +46,7 @@ class RequestInfoPage implements \Framework5\IExecutable {
 			$output.= render('dev.view.request.Framework5\Dev\DebugView', $debug);
 		
 		# display page
-		echo render('dev.view.Framework5\Dev\TemplateView', 
+		echo render(':template', 
 			array('content' => $output, 'title' => 'Request Info'));
 	}
 }

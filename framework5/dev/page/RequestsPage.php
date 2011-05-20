@@ -18,7 +18,7 @@ class RequestsPage implements \Framework5\IExecutable {
 		    $content.= "<a href=\"/dev/request/{$row->id}\">{$row->id}</a> at $time [<a href=\"/{$row->uri}\">/{$row->uri}</a>] <br/>";
 		}
 		
-		echo render('dev.view.Framework5\Dev\TemplateView',
+		echo render(':template',
 			array('title' => 'Requests', 'content' => $content));
 	}
 	
