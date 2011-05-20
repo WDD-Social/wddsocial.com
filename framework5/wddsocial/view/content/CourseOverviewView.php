@@ -22,6 +22,28 @@ class CourseOverviewView implements \Framework5\IView {
 						<h2>{$lang->text('description')}</h2>
 						<p>{$content->description}</p>
 					</div>
+					<div class="small">
+						<h2>Categories</h2>
+						<ul>
+HTML;
+		if (count($content->categories) > 0) {
+			foreach ($content->categories as $category) {
+				$html .= <<<HTML
+
+							<li><a href="/search/{$category->title}" title="{$lang->text('categories')} | {$category->title}">{$category->title}</a></li>
+HTML;
+			}
+		}
+		else {
+			$html .= <<<HTML
+
+							<p class="empty">Must be a boring course...</p>
+HTML;
+		}
+		$html .= <<<HTML
+
+						</ul>
+					</div>
 HTML;
 		return $html;
 	}

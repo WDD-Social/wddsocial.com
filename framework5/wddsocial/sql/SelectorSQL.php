@@ -427,6 +427,85 @@ class SelectorSQL{
 				GROUP BY a.id
 				ORDER BY `datetime` DESC) AS userLatest
 			WHERE userLatest.flagCount < 3",
+		
+		'getUserPublicLatest' => "
+			SELECT *
+			FROM (SELECT p.id, p.title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 30,
+							DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM projects AS p
+				LEFT JOIN users AS u ON (p.userID = u.id)
+				LEFT JOIN userProjects AS up ON (p.id = up.projectID)
+				LEFT JOIN projectFlags AS pf ON (p.id = pf.projectID)
+				WHERE u.id = :id OR up.userID = :id
+				GROUP BY p.id
+				UNION
+				SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT af.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 30,
+							DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM articles AS a
+				LEFT JOIN users AS u ON (a.userID = u.id)
+				LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
+				LEFT JOIN articleFlags AS af ON (a.id = af.articleID)
+				LEFT JOIN privacyLevels AS pl ON (a.privacyLevelID = pl.id)
+				WHERE (u.id = :id OR ua.userID = :id) AND pl.title = 'public'
+				GROUP BY a.id
+				ORDER BY `datetime` DESC) AS userLatest
+			WHERE userLatest.flagCount < 3",
 			
 			
 		/**
@@ -1366,6 +1445,19 @@ class SelectorSQL{
 			SELECT id, title, description, `month`
 			FROM courses
 			WHERE id = :id",
+		
+		'getCourseCategories' => "
+			SELECT c.id, c.title
+			FROM categories AS c
+			LEFT JOIN courseCategories AS cc ON (c.id = cc.categoryID)
+			WHERE cc.courseID = :id",
+		
+		'getCourseTeachers' => "
+			SELECT id, firstName, lastName, avatar, bio, vanityURL
+			FROM users AS u
+			LEFT JOIN teacherCourses AS tc ON (u.id = tc.userID)
+			WHERE tc.courseID = :id
+			ORDER BY u.lastName",
 			
 		'getProjectCourses' => "
 			SELECT id, title
@@ -1384,6 +1476,167 @@ class SelectorSQL{
 			FROM courses AS c
 			LEFT JOIN eventCourses AS ec ON (c.id = ec.courseID)
 			WHERE ec.eventID = :id",
+		
+		'getCourseLatest' => "
+			SELECT *
+			FROM (SELECT p.id, p.title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 30,
+							DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM projects AS p
+				LEFT JOIN users AS u ON (p.userID = u.id)
+				LEFT JOIN userProjects AS up ON (p.id = up.projectID)
+				LEFT JOIN projectFlags AS pf ON (p.id = pf.projectID)
+				LEFT JOIN projectCourses AS pc ON (p.id = pc.projectID)
+				WHERE pc.courseID = :id
+				GROUP BY p.id
+				UNION
+				SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT af.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 30,
+							DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM articles AS a
+				LEFT JOIN users AS u ON (a.userID = u.id)
+				LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
+				LEFT JOIN articleFlags AS af ON (a.id = af.articleID)
+				LEFT JOIN articleCourses AS ac ON (a.id = ac.articleID)
+				WHERE ac.courseID = :id
+				GROUP BY a.id
+				ORDER BY `datetime` DESC) AS userLatest
+			WHERE userLatest.flagCount < 3",
+		
+		'getCoursePublicLatest' => "
+			SELECT *
+			FROM (SELECT p.id, p.title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 30,
+							DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM projects AS p
+				LEFT JOIN users AS u ON (p.userID = u.id)
+				LEFT JOIN userProjects AS up ON (p.id = up.projectID)
+				LEFT JOIN projectFlags AS pf ON (p.id = pf.projectID)
+				LEFT JOIN projectCourses AS pc ON (p.id = pc.projectID)
+				WHERE pc.courseID = :id
+				GROUP BY p.id
+				UNION
+				SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT af.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 30,
+							DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM articles AS a
+				LEFT JOIN users AS u ON (a.userID = u.id)
+				LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
+				LEFT JOIN articleFlags AS af ON (a.id = af.articleID)
+				LEFT JOIN privacyLevels AS pl ON (a.privacyLevelID = pl.id)
+				LEFT JOIN articleCourses AS ac ON (a.id = ac.articleID)
+				WHERE ac.courseID = :id AND pl.title = 'public'
+				GROUP BY a.id
+				ORDER BY `datetime` DESC) AS userLatest
+			WHERE userLatest.flagCount < 3",
 			
 			
 			
