@@ -43,7 +43,7 @@ class SourcePage implements \Framework5\IExecutable {
 	<body>
 		<p>
 			<form id="source-location" action="/dev/source" method="get">
-				<input type="text" id="file" name="file" value="{$file}"/>
+				<input type="text" id="file" name="file" value="{$file}" size="180"/>
 				<input type="submit" value="go"/>
 			</form>
 		</p>
