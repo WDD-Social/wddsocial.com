@@ -16,18 +16,6 @@ $(function() {
 	/* FILTERS, CARDSTACKS, ADD MORE
 	****************************************************************** */
 	
-	/* $('#projects.slider').jslide({
-		width: 620,
-		height: 165,
-		items: 2,
-		loop: true,
-		slideshow: {
-			direction: 'next',
-			duration: 100,
-			delay: 500
-		}
-	}); */
-	
 	$('.add-more').live('click',function(){
 		console.log("ADD ANOTHER");
 		var addMoreLink = $(this);
