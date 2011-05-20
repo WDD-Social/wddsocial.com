@@ -139,7 +139,7 @@ class AccountPage implements \Framework5\IExecutable {
 		if ($postHometown != $this->user->hometown)
 			$fields['hometown'] = $postHometown;
 		
-		if (isset($_POST['birthday'])) {
+		if (isset($_POST['birthday']) and $_POST['birthday'] != '') {
 			$birthday = date_parse_from_format('F j, Y',$_POST['birthday']);
 			if ($birthday['error_count'] > 0) {
 				return new FormResponse(false, implode('. ', $birthday['errors']));

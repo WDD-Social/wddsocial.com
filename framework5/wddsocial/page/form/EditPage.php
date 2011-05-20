@@ -292,7 +292,7 @@ class EditPage implements \Framework5\IExecutable {
 			switch ($content->type) {
 				case 'project':
 			
-					if (isset($_POST['completed-date'])) {
+					if (isset($_POST['completed-date']) and $_POST['completed-date'] != '') {
 						$completeDate = date_parse_from_format('F, Y',$_POST['completed-date']);
 						if ($completeDate['error_count'] > 0) {
 							return new FormResponse(false, implode('. ', $completedate['errors']));
@@ -309,7 +309,7 @@ class EditPage implements \Framework5\IExecutable {
 					break;
 				case 'event':
 				
-					if (isset($_POST['date'])) {
+					if (isset($_POST['date']) and $_POST['date'] != '') {
 						$date = date_parse_from_format('F j, Y',$_POST['date']);
 						if ($date['error_count'] > 0) {
 							return new FormResponse(false, implode('. ', $date['errors']));
@@ -319,7 +319,7 @@ class EditPage implements \Framework5\IExecutable {
 						$startDate = $date['year'] . '-' . $month . '-' . $day;
 					}
 					
-					if (isset($_POST['start-time'])) {
+					if (isset($_POST['start-time']) and $_POST['start-time'] != '') {
 						$time = date_parse_from_format('g:i A',$_POST['start-time']);
 						if ($time['error_count'] > 0) {
 							return new FormResponse(false, implode('. ', $time['errors']));
