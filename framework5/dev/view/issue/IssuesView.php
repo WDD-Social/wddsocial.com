@@ -14,10 +14,6 @@ class IssuesView implements \Framework5\IView {
 		$html = <<<HTML
 
 			<table id="issues">
-				<tr>
-					<td>Issue Number</td>
-					<td>Message</td>
-				</tr>
 HTML;
 		
 		foreach ($bugs as $bug) {
