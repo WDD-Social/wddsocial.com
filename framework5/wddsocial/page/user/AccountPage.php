@@ -156,26 +156,32 @@ class AccountPage implements \Framework5\IExecutable {
 			$fields['birthday'] = $birthdayDate;
 		
 		$postWebsite = strip_tags($_POST['website']);
+		$postWebsite = StringCleaner::clean_link($postWebsite);
 		if ($postWebsite != $this->user->contact['website'])
 			$fields['website'] = $postWebsite;
 				
 		$postTwitter = strip_tags($_POST['twitter']);
+		$postTwitter = StringCleaner::clean_twitter($postTwitter);
 		if ($postTwitter != $this->user->contact['twitter'])
 			$fields['twitter'] = $postTwitter;
 		
 		$postFacebook = strip_tags($_POST['facebook']);
+		$postFacebook = StringCleaner::clean_facebook($postFacebook);
 		if ($postFacebook != $this->user->contact['facebook'])
 			$fields['facebook'] = $postFacebook;
 				
 		$postGithub = strip_tags($_POST['github']);
+		$postGithub = StringCleaner::clean_github($postGithub);
 		if ($postGithub != $this->user->contact['github'])
 			$fields['github'] = $postGithub;
 		
 		$postDribbble = strip_tags($_POST['dribbble']);
+		$postDribbble = StringCleaner::clean_dribbble($postDribbble);
 		if ($postDribbble != $this->user->contact['dribbble'])
 			$fields['dribbble'] = $postDribbble;
 		
 		$postForrst = strip_tags($_POST['forrst']);
+		$postForrst = StringCleaner::clean_forrst($postForrst);
 		if ($postForrst != $this->user->contact['forrst'])
 			$fields['forrst'] = $postForrst;
 		

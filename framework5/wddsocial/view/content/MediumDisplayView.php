@@ -446,7 +446,15 @@ HTML;
 					<article class="people">
 						<p class="item-image"><a href="/user/{$person->userURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
 						<p class="intro"><strong><a href="/user/{$person->userURL}" title="{$userVerbage}">$userDisplayName</a></strong> {$this->lang->text('joined')}.</p>
+HTML;
+		if (isset($person->description) and $person->description != '') {
+			$html .= <<<HTML
+
 						<p>{$person->description}</p>
+HTML;
+		}
+		$html .= <<<HTML
+
 						<p>{$person->date}</p>
 					</article><!-- END {$person->title} -->
 HTML;
