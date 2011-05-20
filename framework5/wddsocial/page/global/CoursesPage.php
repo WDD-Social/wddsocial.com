@@ -63,6 +63,7 @@ class CoursesPage implements \Framework5\IExecutable {
 			$content.= render('wddsocial.view.content.WDDSocial\DirectoryCourseItemView', $item);
 		}
 		
+		$content.= render(':section', array('section' => 'end_content_section'));
 		
 		$content.= render(':section', array('section' => 'end_content'));
 		
