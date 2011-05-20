@@ -90,7 +90,6 @@ HTML;
 		<script>!window.jQuery && document.write(unescape('%3Cscript src="/js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
 		<script src="/js/plugins.js"></script>
 		<script src="/js/libs/jquery.easing.1.3.js"></script>
-		<script src="/js/libs/jquery.jslide.js"></script>
 		<script src="/js/script.js"></script>
 		<!--[if lt IE 7 ]>
 			<script src="/js/libs/dd_belatedpng.js"></script>
