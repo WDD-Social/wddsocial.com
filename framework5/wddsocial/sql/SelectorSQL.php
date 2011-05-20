@@ -1186,11 +1186,11 @@ class SelectorSQL{
 		'getUpcomingEvents' => "
 			SELECT *
 			FROM (SELECT id, e.userID, icsUID, title, description, vanityURL, location, e.datetime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
-			FROM events AS e
-			LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
-			WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
-			GROUP BY e.id
-			ORDER BY startDateTime ASC) AS events
+				FROM events AS e
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
+				GROUP BY e.id
+				ORDER BY startDateTime ASC) AS events
 			WHERE events.flagCount < 3
 			LIMIT 0,3",
 			
@@ -1205,6 +1205,11 @@ class SelectorSQL{
 				ORDER BY startDateTime ASC) AS events
 			WHERE events.flagCount < 3
 			LIMIT 0,3",
+		
+		'getExpiredEvents' => "
+			SELECT icsUID
+			FROM events AS e
+			WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) < 0",
 		
 		'getEventByVanityURL' => "
 			SELECT id, userID, icsUID, title, description, content, vanityURL, 'event' AS `type`, location, DATE_FORMAT(startDateTime,'%M %D, %Y at %l:%i %p') AS `date`, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%M %e, %Y') AS `startDate`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, IF(TIMESTAMPDIFF(YEAR,NOW(),startDateTime) > 0,DATE_FORMAT(startDateTime,'%Y'),NULL) AS `year`, DATE_FORMAT(startDateTime, '%Y-%m-%d') AS `startDateInput`, DATE_FORMAT(startDateTime,'%k:%i:%s') AS `startTimeInput`, TIMESTAMPDIFF(HOUR,startDateTime,endDateTime) AS duration
