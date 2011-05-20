@@ -47,6 +47,7 @@ class SiteTemplate implements \Framework5\IView {
 		<link rel="shortcut icon" href="/images/site/social-favicon.ico">
 		<link rel="apple-touch-icon" href="/images/site/social-apple-touch-icon.png">
 		<link rel="stylesheet/less" href="/css/style.less">
+		<link rel="stylesheet" href="/css/jquery.fancybox-1.3.4.css">
 		<script src="/js/libs/modernizr-1.6.min.js"></script>
 		<script src="/js/libs/less-1.0.41.min.js"></script>
 		<script type="text/javascript">
@@ -95,6 +96,8 @@ HTML;
 		<script>!window.jQuery && document.write(unescape('%3Cscript src="/js/libs/jquery-1.4.2.js"%3E%3C/script%3E'))</script>
 		<script src="/js/plugins.js"></script>
 		<script src="/js/libs/jquery.easing.1.3.js"></script>
+		<script src="/js/libs/jquery.fancybox-1.3.4.pack.js"></script>
+		<script src="/js/libs/jquery.mousewheel-3.0.4.pack.js"></script>
 		<script src="/js/libs/date.js"></script>
 		<script src="/js/script.js"></script>
 		<!--[if lt IE 7 ]>

@@ -84,7 +84,7 @@ HTML;
 		if (count($content->images) > 0 and $content->type != 'job' and file_exists("images/uploads/{$content->images[0]->file}_full.jpg") and file_exists("images/uploads/{$content->images[0]->file}_large.jpg")) {
 			$html .= <<<HTML
 
-					<a href="/images/uploads/{$content->images[0]->file}_full.jpg" title="{$content->images[0]->title}"><img src="/images/uploads/{$content->images[0]->file}_large.jpg" alt="{$content->images[0]->title}" /></a>
+					<a href="/images/uploads/{$content->images[0]->file}_full.jpg" title="{$content->images[0]->title}" class="fancybox" rel="fancybox-media"><img src="/images/uploads/{$content->images[0]->file}_large.jpg" alt="{$content->images[0]->title}" /></a>
 					<div class="large no-margin">
 HTML;
 		}
