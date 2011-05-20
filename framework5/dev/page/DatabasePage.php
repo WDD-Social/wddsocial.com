@@ -27,7 +27,7 @@ class DatabasePage implements \Framework5\IExecutable {
 	
 	private function db_connect() {
 		# site db connection
-		import('wddsocial.core.controller.WDDSocial\Database');
+		import('wddsocial.controller.WDDSocial\Database');
 		$this->db = new \WDDSocial\Database();
 		$this->db->setAttribute(\PDO::ATTR_ERRMODE, \PDO::ERRMODE_EXCEPTION);
 	}
