@@ -125,7 +125,14 @@ class UserPage implements \Framework5\IExecutable {
 		
 		# query
 		$data = array('id' => $id);
-		$query = $this->db->prepare($this->sql->getUserLatest . " LIMIT $start, $limit");
+		
+		if (UserSession::is_authorized()) {
+			$query = $this->db->prepare($this->sql->getUserLatest . " LIMIT $start, $limit");
+		}
+		else {
+			$query = $this->db->prepare($this->sql->getUserPublicLatest . " LIMIT $start, $limit");
+		}
+		
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 		$query->execute($data);
 		return $query->fetchAll();
