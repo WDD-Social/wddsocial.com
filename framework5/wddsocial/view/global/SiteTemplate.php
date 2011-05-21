@@ -186,11 +186,21 @@ HTML;
 HTML;
 		}
 		
+		$currentPage = \Framework5\Request::segment(0);
+		
+		if (isset($currentPage) and $currentPage == 'search') {
+			$searchType = \Framework5\Request::segment(1);
+		}
+		else {
+			$searchType = 'people';
+		}
+		
 		$html .= <<<HTML
 
 					</ul>
 					<form action="/search" method="post">
 						<input type="text" name="term" placeholder="{$this->lang->text('search_placeholder')}" value="{$searchTerm}" />
+						<input type="hidden" name="searchType" value="{$searchType}" />
 						<input type="submit" value="{$this->lang->text('search')}" />
 					</form>
 				</nav>
