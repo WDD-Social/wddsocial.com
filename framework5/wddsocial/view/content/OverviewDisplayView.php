@@ -162,11 +162,12 @@ HTML;
 
 						<ul>
 HTML;
+			$searchType = $content->type . 's';
 			foreach ($content->categories as $category) {
 				$searchTerm = urlencode($category->title);
 				$html .= <<<HTML
 
-							<li><a href="/search/{$searchTerm}" title="{$lang->text('category_title',$category->title)}">{$category->title}</a></li>
+							<li><a href="/search/{$searchType}/{$searchTerm}" title="{$lang->text('category_title',$category->title)}">{$category->title}</a></li>
 HTML;
 			}
 			$html .= <<<HTML
