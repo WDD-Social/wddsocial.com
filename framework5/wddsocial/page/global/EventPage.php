@@ -22,6 +22,8 @@ class EventPage implements \Framework5\IExecutable {
 		# get event details
 		$event = $this->getEvent(\Framework5\Request::segment(1));
 		
+		if (Validator::event_has_been_flagged($event->id) or Validator::event_has_expired($event->id)) redirect("/");
+		
 		# handle form submission
 		if (isset($_POST['submit'])){
 			$response = $this->_process_form($event->id,$event->type);
