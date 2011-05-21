@@ -1,20 +1,22 @@
 <?php
 
 /*
-* WDD Social: Language Pack for 
+* IndexPage Language Pack - XX
+* 
+* @author tmatthewsdev (tmatthewsdev@gmail.com)
 */
 
-class CoursePageLang implements \Framework5\ILanguagePack {
-	
+class AboutPageLang implements \Framework5\ILanguagePack {
 	
 	public static function content($id, $var) {
 		switch ($id) {
 			
+			# page info
 			case 'page-title':
-				return 'Course';
+				return 'XX'; # About
 			
 			default:
 				throw new Exception("Language pack content '$id' not found");
-		}
+		}		
 	}
 }

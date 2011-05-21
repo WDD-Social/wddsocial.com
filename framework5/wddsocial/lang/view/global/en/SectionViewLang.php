@@ -62,6 +62,9 @@ class SectionViewLang implements \Framework5\ILanguagePack {
 			
 			case 'videos':
 				return 'Videos';
+			
+			default:
+				throw new Exception("Language pack content '$id' not found");
 		}		
 	}
 }
