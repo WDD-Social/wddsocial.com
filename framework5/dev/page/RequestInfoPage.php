@@ -23,7 +23,7 @@ class RequestInfoPage implements \Framework5\IExecutable {
 		
 		
 		# render page header
-		$output = "<h2>Request $request_id</h2><br/>";#TODO move to view
+		$output = "<h1>Request $request_id</h1><br/>";#TODO move to view
 		
 		# check for request details
 		if ($request = $info->get_request())
