@@ -36,7 +36,7 @@ class IssuesPage implements \Framework5\IExecutable {
 		
 		# get the db object
 		$sql = "
-			SELECT id, request_id, user_id, message 
+			SELECT id, request_id, user_id, timestamp, message 
 			FROM fw5_bugs 
 			ORDER BY id DESC";
 		

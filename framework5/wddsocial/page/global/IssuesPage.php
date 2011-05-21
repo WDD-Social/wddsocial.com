@@ -68,8 +68,8 @@ class IssuesPage implements \Framework5\IExecutable {
 		
 		# insert bug into db
 		$sql = "
-			INSERT INTO fw5_bugs (request_id, message, user_id)
-			VALUES (:request_id, :message, :user_id)";
+			INSERT INTO fw5_bugs (request_id, user_id, timestamp, message)
+			VALUES (:request_id, :user_id, NOW(), :message)";
 		$core_db = instance('core.controller.Framework5\Database');
 		$query = $core_db->prepare($sql);
 		$query->execute(array(
