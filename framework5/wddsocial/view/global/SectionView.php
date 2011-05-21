@@ -150,8 +150,8 @@ HTML
 
 					<div class="secondary">
 HTML;
-		foreach ($sorters as $sorter) {
-			$title = ucfirst($sorter);
+		foreach ($sorters as $url => $title) {
+			$title = ucfirst($title);
 			if ($sorter == $active)
 				$class = ' class="current"';
 			else
@@ -159,7 +159,7 @@ HTML;
 			
 			$string .= <<<HTML
 
-						<a href="{$base_link}$sorter" title="Sort | $title"$class>$title</a> 
+						<a href="{$base_link}$url" title="Sort | $title"$class>$title</a> 
 HTML;
 		}
 		$string .= <<<HTML

@@ -25,7 +25,7 @@ class CoursesPage implements \Framework5\IExecutable {
 		$content.= render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(2);
-		$sorters = array('month', 'alphabetically');
+		$sorters = array('month' => 'month', 'alphabetically' => 'alphabetically');
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
 		else $active = $sorters[0];

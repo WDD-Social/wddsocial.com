@@ -177,8 +177,6 @@ class DisplayViewLang implements \Framework5\ILanguagePack {
 				return 'Uh oh, no videos have been added.';
 			
 			
-			
-			
 			# Job
 			case 'jobtype':
 				switch ($var) {
