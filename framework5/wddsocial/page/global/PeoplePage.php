@@ -58,7 +58,7 @@ class PeoplePage implements \Framework5\IExecutable {
 		
 		# query
 		$query = $this->db->prepare($this->sql->getPeople . " ORDER BY $orderBy" . " LIMIT 0, {$paginator->limit}");
-		$query->execute(array('orderBy' => $orderBy));
+		$query->execute();
 		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
 		
 		# display section items
