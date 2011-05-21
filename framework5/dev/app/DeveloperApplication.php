@@ -63,6 +63,7 @@ final class DeveloperApplication extends ApplicationBase implements IApplication
 	
 	private function global_import() {
 		import('dev.controller.Framework5\Dev\Exception');
+		import('dev.controller.Framework5\Dev\Formatter');
 	}
 	
 	
