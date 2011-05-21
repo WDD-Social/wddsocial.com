@@ -50,6 +50,7 @@ class IssuesPage implements \Framework5\IExecutable {
 		
 		# get the request id of the page the error was reported on
 		$request_id = \Framework5\Request::segment(1);
+		$timestamp = time();
 		
 		# start wddsocial user session
 		import('wddsocial.controller.WDDSocial\UserSession');
@@ -68,7 +69,7 @@ class IssuesPage implements \Framework5\IExecutable {
 		
 		# insert bug into db
 		$sql = "
-			INSERT INTO fw5_bugs (request_id, user_id, timestamp, message)
+			INSERT INTO fw5_issues (request_id, user_id, timestamp, message)
 			VALUES (:request_id, :user_id, :timestamp, :message)";
 		$core_db = instance('core.controller.Framework5\Database');
 		$query = $core_db->prepare($sql);
@@ -76,7 +77,7 @@ class IssuesPage implements \Framework5\IExecutable {
 			'request_id' => $request_id,
 			'user_id' => $user_id,
 			'message' => $_POST['message'],
-			'timestamp' => time()));
+			'timestamp' => $timestamp));
 		
 		# get user info
 		$site_db = instance(':db');
@@ -94,6 +95,7 @@ class IssuesPage implements \Framework5\IExecutable {
 		$mailer->message = render("wddsocial.view.email.WDDSocial\FeedbackEmail", 
 			array('name' => "{$user->firstName} {$user->lastName}", 
 				  'email' => $user->email, 
+				  'timestamp' => $timestamp,
 				  'message' => $_POST['message']));
 		$mailer->send();
 		
