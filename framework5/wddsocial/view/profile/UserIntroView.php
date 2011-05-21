@@ -69,7 +69,7 @@ HTML;
 				$searchTerm = urlencode($like);
 				$html .= <<<HTML
 	
-								<li><a href="/search/$searchTerm" title="$like">$like</a></li>
+								<li><a href="/search/projects/$searchTerm" title="$like">$like</a></li>
 HTML;
 			}
 		}
@@ -93,7 +93,7 @@ HTML;
 				$searchTerm = urlencode($dislike);
 				$html .= <<<HTML
 	
-								<li><a href="/search/$searchTerm" title="$dislike">$dislike</a></li>
+								<li><a href="/search/projects/$searchTerm" title="$dislike">$dislike</a></li>
 HTML;
 			}
 		}

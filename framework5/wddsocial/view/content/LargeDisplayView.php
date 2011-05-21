@@ -68,7 +68,7 @@ HTML;
 		$categoryLinks = array();
 		foreach ($project->categories as $category) {
 			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+			array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
 		$categoryLinks = implode(' ', $categoryLinks);
 		$html .= <<<HTML
