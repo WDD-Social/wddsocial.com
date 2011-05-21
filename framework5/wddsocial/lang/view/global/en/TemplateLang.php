@@ -8,6 +8,7 @@ class TemplateLang implements \Framework5\ILanguagePack {
 	
 	public static function content($id, $var) {
 		switch ($id) {
+			
 			# navigation elements
 			case 'people':
 				return 'People';
@@ -26,56 +27,63 @@ class TemplateLang implements \Framework5\ILanguagePack {
 			
 			case 'jobs':
 				return 'Jobs';
-				
+			
+			
 			# user area
 			case 'search':
 				return 'Search';
 			
 			case 'search_placeholder':
 				return 'Search...';
-
+			
+			
 			# user signed in
-			case 'user_profile_title':
+			case 'user-profile-title':
 				return 'View My Profile';
 			
 			case 'create':
 				return 'Create';
 			
-			case 'create_title':
-				return 'Create';
+			case 'create-title':
+				return 'Share a Project, Article, Event or Job';
 			
 			case 'messages':
 				return 'Messages';
 			
-			case 'messages_title':
+			case 'messages-title':
 				return 'View My Messages';
 			
 			case 'account':
 				return 'Account';
 			
-			case 'account_title':
+			case 'account-title':
 				return 'View and Edit my Account Information';
 			
 			case 'signout':
 				return 'Sign Out';
 			
-			case 'signout_title':
+			case 'signout-title':
 				return 'Sign Out of WDD Social';
 			
-			# 	user not signed in
+			
+			# user not signed in
 			case 'signup':
 				return 'Sign Up';
 			
-			case 'signup_title':
+			case 'signup-title':
 				return 'Sign Up for WDD Social';
 			
 			case 'signin':
 				return 'Sign In';
 			
-			case 'signin_title':
+			case 'signin-title':
 				return 'Sign In for WDD Social';
 			
+			
 			# footer
+			case 'issue':
+				return 'Report an Issue';
+			
 			case 'developer':
 				return 'Developer';
 			
@@ -91,22 +99,27 @@ class TemplateLang implements \Framework5\ILanguagePack {
 			case 'privacy':
 				return 'Privacy';
 			
+			
 			# footer titles
-			case 'developer_desc':
+			case 'issue-title':
+				return 'Issue Tracker';
+			
+			case 'developer-title':
 				return 'Developer Resources';
 			
-			case 'about_desc':
+			case 'about-title':
 				return 'About Us';
 			
-			case 'contact_desc':
+			case 'contact-title':
 				return 'Contact Us';
 			
-			case 'terms_desc':
+			case 'terms-title':
 				return 'Terms of Service';
 			
-			case 'privacy_desc':
+			case 'privacy-title':
 				return 'Privacy Policy';
 			
+			# error
 			default:
 				throw new Exception("Language pack content '$id' not found");
 		}

@@ -82,12 +82,12 @@ HTML;
 		<footer>
 			<nav>
 				<ul>
-					<!-- <li><a href="developer" title="WDD Social | {$this->lang->text('developer_desc')}">{$this->lang->text('developer')}</a></li> -->
-					<li><a href="/issues/{$request_id}" title="WDD Social | Issue Tracker">Report an Issue</a></li>
-					<li><a href="/about" title="WDD Social | {$this->lang->text('about_desc')}">{$this->lang->text('about')}</a></li>
-					<li><a href="/contact" title="WDD Social | {$this->lang->text('contact_desc')}">{$this->lang->text('contact')}</a></li>
-					<li><a href="/terms" title="WDD Social | {$this->lang->text('terms_desc')}">{$this->lang->text('terms')}</a></li>
-					<li><a href="/privacy" title="WDD Social | {$this->lang->text('privacy_desc')}">{$this->lang->text('privacy')}</a></li>
+					<!-- <li><a href="developer" title="WDD Social | {$this->lang->text('developer-title')}">{$this->lang->text('developer')}</a></li> -->
+					<li><a href="/issues/{$request_id}" title="WDD Social | {$this->lang->text('issue-title')}">{$this->lang->text('issue')}</a></li>
+					<li><a href="/about" title="WDD Social | {$this->lang->text('about-title')}">{$this->lang->text('about')}</a></li>
+					<li><a href="/contact" title="WDD Social | {$this->lang->text('contact-title')}">{$this->lang->text('contact')}</a></li>
+					<li><a href="/terms" title="WDD Social | {$this->lang->text('terms-title')}">{$this->lang->text('terms')}</a></li>
+					<li><a href="/privacy" title="WDD Social | {$this->lang->text('privacy-title')}">{$this->lang->text('privacy')}</a></li>
 				</ul>
 			</nav>
 			<small>&copy; 2011 WDD Social</small>
@@ -130,11 +130,11 @@ HTML;
 			return <<<HTML
 				
 				<section id="user-area" class="signed-in">
-					<p><strong><a href="{$userProfile}" title="{$this->lang->text('user_profile_title')}"><img src="{$userAvatar}" alt="{$userName}"/>{$userName}</a></strong></p>
-					<p><a href="/create" title="{$this->lang->text('create_title')}">{$this->lang->text('create')}</a></p>
-				 	<p><a href="/messages" title="{$this->lang->text('messages_title')}">{$this->lang->text('messages')} <!--<span class="badge">0</span>--></a></p>
-				 	<p><a href="/account" title="{$this->lang->text('account_title')}">{$this->lang->text('account')}</a></p>
-				 	<p><a href="/signout" title="{$this->lang->text('signout_title')}">{$this->lang->text('signout')}</a></p>
+					<p><strong><a href="{$userProfile}" title="{$this->lang->text('user-profile-title')}"><img src="{$userAvatar}" alt="{$userName}"/>{$userName}</a></strong></p>
+					<p><a href="/create" title="{$this->lang->text('create-title')}">{$this->lang->text('create')}</a></p>
+				 	<p><a href="/messages" title="{$this->lang->text('messages-title')}">{$this->lang->text('messages')} <!--<span class="badge">0</span>--></a></p>
+				 	<p><a href="/account" title="{$this->lang->text('account-title')}">{$this->lang->text('account')}</a></p>
+				 	<p><a href="/signout" title="{$this->lang->text('signout-title')}">{$this->lang->text('signout')}</a></p>
 				 </section><!-- END USER AREA -->
 HTML;
 		}
@@ -144,8 +144,8 @@ HTML;
 			return <<<HTML
 
 				<section id="user-area" class="signed-out">
-					<p><a href="/signup" title="{$this->lang->text('signup_title')}">{$this->lang->text('signup')}</a></p>
-					<p><a href="/signin" title="{$this->lang->text('signin_title')}">{$this->lang->text('signin')}</a></p>
+					<p><a href="/signup" title="{$this->lang->text('signup-title')}">{$this->lang->text('signup')}</a></p>
+					<p><a href="/signin" title="{$this->lang->text('signin-title')}">{$this->lang->text('signin')}</a></p>
 				</section><!-- END USER AREA -->
 HTML;
 		}
