@@ -26,10 +26,14 @@ class EventsPage implements \Framework5\IExecutable {
 		$content.= render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(2);
-		$sorters = array('upcoming' => 'upcoming', 'alphabetically' => 'alphabetically', 'newest' => 'newest', 'oldest' => 'oldest');
+		$sorters = array(
+			'upcoming' => 'upcoming', 
+			'alphabetically' => 'alphabetically', 
+			'newest' => 'newest', 
+			'oldest' => 'oldest');
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
-		else $active = $sorters[0];
+		else $active = $sorters['upcoming'];
 		
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 

@@ -29,7 +29,7 @@ class ArticlesPage implements \Framework5\IExecutable {
 		$sorters = array('alphabetically' => 'alphabetically', 'newest' => 'newest', 'oldest' => 'oldest');
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
-		else $active = $sorters[1];
+		else $active = $sorters['newest'];
 		
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
