@@ -1937,7 +1937,210 @@ class SelectorSQL{
 		'getRandomCourses' => "
 			SELECT id
 			FROM courses
-			ORDER BY RAND()"
+			ORDER BY RAND()",
+			
+			
+		/**
+		* Search queries
+		*/
+			
+		'searchPeople' => "
+			SELECT DISTINCT(u.id), firstName, lastName, avatar, vanityURL, bio, hometown, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, ut.id as typeID,
+			IF(
+				TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, `datetime`, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 30,
+						DATE_FORMAT(`datetime`,'%M %D, %Y'),
+						IF(
+							TIMESTAMPDIFF(DAY, `datetime`, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, `datetime`, NOW()), 'days ago'),
+							'yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, `datetime`, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, `datetime`, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) = 0,
+					'just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, `datetime`, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, `datetime`, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
+			FROM users as u
+			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
+			LEFT JOIN userLikes AS ul ON (u.id = ul.userID)
+			LEFT JOIN categories AS c ON (c.id = ul.categoryID)
+			WHERE firstName LIKE :term OR lastName LIKE :term OR CONCAT_WS(' ',firstName,lastName) LIKE :term OR vanityURL LIKE :term OR c.title LIKE :term",
+		
+		'searchProjects' => "
+			SELECT *
+			FROM (SELECT p.id, p.title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, u.firstName AS userFirstName, u.lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 30,
+							DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, p.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, p.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM projects AS p
+				LEFT JOIN users AS u ON (p.userID = u.id)
+				LEFT JOIN userProjects AS up ON (p.id = up.projectID)
+				LEFT JOIN users AS allu ON (allu.id = up.userID)
+				LEFT JOIN projectCategories AS pc ON (p.id = pc.projectID)
+				LEFT JOIN categories AS c ON (c.id = pc.categoryID)
+				LEFT JOIN projectFlags AS pf ON (p.id = pf.projectID)
+				WHERE p.title LIKE :term OR p.description LIKE :term OR p.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term
+				GROUP BY p.id) AS projects
+			WHERE projects.flagCount < 3",
+		
+		'searchArticles' => "
+			SELECT *
+			FROM (SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, u.firstName AS userFirstName, u.lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT af.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 30,
+							DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM articles AS a
+				LEFT JOIN users AS u ON (a.userID = u.id)
+				LEFT JOIN articleFlags AS af ON (a.id = af.articleID)
+				LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
+				LEFT JOIN users AS allu ON (allu.id = ua.userID)
+				LEFT JOIN articleCategories AS ac ON (a.id = ac.articleID)
+				LEFT JOIN categories AS c ON (c.id = ac.categoryID)
+				WHERE a.title LIKE :term OR a.description LIKE :term OR a.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term
+				GROUP BY a.id) AS articles
+			WHERE articles.flagCount < 3",
+		
+		'searchPublicArticles' => "
+			SELECT *
+			FROM (SELECT a.id, a.title, a.description, a.vanityURL, a.datetime, 'article' AS `type`, u.id AS userID, u.firstName AS userFirstName, u.lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT af.userID) AS flagCount,
+				IF(
+					TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 59,
+					IF(
+						TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 23,
+						IF(
+							TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 30,
+							DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
+							IF(
+								TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 1,
+								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, NOW()), 'days ago'),
+								'Yesterday'
+							)
+						),
+						IF(
+							TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hours ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, a.datetime, NOW()), 'hour ago')
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) = 0,
+						'Just now',
+						IF(
+							TIMESTAMPDIFF(MINUTE, a.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minutes ago'),
+							CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, a.datetime, NOW()), 'minute ago')
+						)
+					)
+				) AS `date`
+				FROM articles AS a
+				LEFT JOIN users AS u ON (a.userID = u.id)
+				LEFT JOIN articleFlags AS af ON (a.id = af.articleID)
+				LEFT JOIN userArticles AS ua ON (a.id = ua.articleID)
+				LEFT JOIN users AS allu ON (allu.id = ua.userID)
+				LEFT JOIN articleCategories AS ac ON (a.id = ac.articleID)
+				LEFT JOIN categories AS c ON (c.id = ac.categoryID)
+				LEFT JOIN privacyLevels AS pl ON (a.privacyLevelID = pl.id)
+				WHERE pl.title = 'public' AND (a.title LIKE :term OR a.description LIKE :term OR a.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term)
+				GROUP BY a.id) AS articles
+			WHERE articles.flagCount < 3",
+		
+		'searchCourses' => "
+			SELECT c.id, c.title, c.description, `month`
+			FROM courses AS c
+			LEFT JOIN courseCategories AS cc ON (c.id = cc.courseID)
+			LEFT JOIN categories AS cat ON (cat.id = cc.categoryID)
+			WHERE c.id LIKE :term OR c.title LIKE :term OR c.description LIKE :term OR cat.title LIKE :term",
+		
+		'searchEvents' => "
+			SELECT *
+			FROM(SELECT e.id, e.userID, icsUID, e.title, e.description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+				FROM events AS e
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				LEFT JOIN eventCategories AS ec ON (e.id = ec.eventID)
+				LEFT JOIN categories AS c ON (c.id = ec.categoryID)
+				WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term)
+				GROUP BY e.id) AS events
+			WHERE events.flagCount < 3",
+		
+		'searchPublicEvents' => "
+			SELECT *
+			FROM(SELECT e.id, e.userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+				FROM events AS e
+				LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				LEFT JOIN eventCategories AS ec ON (e.id = ec.eventID)
+				LEFT JOIN categories AS c ON (c.id = ec.categoryID)
+				WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term)
+				GROUP BY e.id) AS events
+			WHERE events.flagCount < 3"
+	
 						
 	);
 	
