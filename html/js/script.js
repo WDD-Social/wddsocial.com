@@ -88,6 +88,7 @@ $(function() {
 	// Ajax Flagging
 	$('.secondary a.flag').live('click',function(){
 		var flag = $(this);
+		$(flag).toggleClass('current');
 		var URL = $(this).attr('href').substring(1).split('/');
 		if (URL[0] === 'flag') {
 			$.ajax({
@@ -99,7 +100,7 @@ $(function() {
 				},
 				success: function(response){
 					var rsp = $.parseJSON(response);
-					if (rsp.status == true) {
+					if (rsp.status == false) {
 						$(flag).toggleClass('current');
 					}
 				}
