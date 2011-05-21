@@ -28,13 +28,42 @@ class SearchPage implements \Framework5\IExecutable {
 				# if the last request came from any page except search results, and the search term is a category, redirect to project search results
 				$last_request = explode('/',$_SESSION['last_request']);
 				if ($last_request[0] != 'search') {
-					$query = $this->db->prepare($this->sql->getCategoryIDByTitle);
-					$query->execute(array('title' => urldecode($term)));
-					if ($query->rowCount() > 0) {
-						$searchType = 'projects';
-					}
-					else {
-						$searchType = 'people';
+					switch ($last_request[0]) {
+						case 'people':
+							$searchType = 'people';
+							break;
+						case 'projects':
+							$searchType = 'projects';
+							break;
+						case 'articles':
+							$searchType = 'articles';
+							break;
+						case 'courses':
+							$searchType = 'courses';
+							break;
+						case 'events':
+							$searchType = 'events';
+							break;
+						case 'jobs':
+							$searchType = 'jobs';
+							break;
+						default:
+							$query = $this->db->prepare($this->sql->getCategoryIDByTitle);
+							$query->execute(array('title' => urldecode($term)));
+							if ($query->rowCount() > 0) {
+								$searchType = 'projects';
+							}
+							else {
+								$query = $this->db->prepare($this->sql->getCourseByID);
+								$query->execute(array('id' => urldecode($term)));
+								if ($query->rowCount() > 0) {
+									$searchType = 'courses';
+								}
+								else {
+									$searchType = 'people';
+								}
+							}
+							break;
 					}
 				}
 				else {
