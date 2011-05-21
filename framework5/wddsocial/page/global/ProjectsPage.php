@@ -13,6 +13,7 @@ class ProjectsPage implements \Framework5\IExecutable {
 	public function __construct() {
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.ProjectsPageLang');
 	}
 	
 	
@@ -20,21 +21,19 @@ class ProjectsPage implements \Framework5\IExecutable {
 	public function execute() {
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
-		# display site header
-		$page_title = 'Projects';
-		
 		$content = render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(2);
-		$sorters = array('alphabetically', 'newest', 'oldest');
+		$sorters = array('alphabetically' => 'alphabetically', 'newest' => 'newest', 'oldest' => 'oldest');
 		
-		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
-		else $active = $sorters[1];
+		if (isset($sorter) and in_array($sorter, array_keys($sorters))) $active = $sorter;
+		else $active = $sorters['newest'];
 		
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'Projects', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/projects/1/', 'active' => $active));
+				'header' => $this->lang->text('projects-header'), 'sort' => true, 
+				'sorters' => $sorters, 'base_link' => '/projects/1/', 'active' => $active));
 		
 		$paginator = new Paginator(1,18);
 		
@@ -88,7 +87,7 @@ class ProjectsPage implements \Framework5\IExecutable {
 		
 		# display page
 		echo render(':template', 
-			array('title' => $page_title, 'content' => $content));
+			array('title' => $this->lang->text('page-title'), 'content' => $content));
 		
 	}
 }
