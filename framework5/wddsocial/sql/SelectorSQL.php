@@ -2008,7 +2008,7 @@ class SelectorSQL{
 		
 		'searchProjects' => "
 			SELECT *
-			FROM (SELECT p.id, p.title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, u.firstName AS userFirstName, u.lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
+			FROM (SELECT p.id, p.title, p.description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, u.firstName AS userFirstName, u.lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
 				IF(
 					TIMESTAMPDIFF(MINUTE, p.datetime, NOW()) > 59,
 					IF(
@@ -2044,8 +2044,10 @@ class SelectorSQL{
 				LEFT JOIN users AS allu ON (allu.id = up.userID)
 				LEFT JOIN projectCategories AS pc ON (p.id = pc.projectID)
 				LEFT JOIN categories AS c ON (c.id = pc.categoryID)
+				LEFT JOIN projectCourses AS pcour ON (p.id = pcour.projectID)
+				LEFT JOIN courses AS cour ON (cour.id = pcour.courseID)
 				LEFT JOIN projectFlags AS pf ON (p.id = pf.projectID)
-				WHERE p.title LIKE :term OR p.description LIKE :term OR p.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term
+				WHERE p.title LIKE :term OR p.description LIKE :term OR p.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term OR cour.id LIKE :term OR cour.title LIKE :term
 				GROUP BY p.id) AS projects
 			WHERE projects.flagCount < 3",
 		
@@ -2088,7 +2090,9 @@ class SelectorSQL{
 				LEFT JOIN users AS allu ON (allu.id = ua.userID)
 				LEFT JOIN articleCategories AS ac ON (a.id = ac.articleID)
 				LEFT JOIN categories AS c ON (c.id = ac.categoryID)
-				WHERE a.title LIKE :term OR a.description LIKE :term OR a.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term
+				LEFT JOIN articleCourses AS acour ON (a.id = acour.articleID)
+				LEFT JOIN courses AS cour ON (cour.id = acour.courseID)
+				WHERE a.title LIKE :term OR a.description LIKE :term OR a.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term OR cour.id LIKE :term OR cour.title LIKE :term
 				GROUP BY a.id) AS articles
 			WHERE articles.flagCount < 3",
 		
@@ -2131,8 +2135,10 @@ class SelectorSQL{
 				LEFT JOIN users AS allu ON (allu.id = ua.userID)
 				LEFT JOIN articleCategories AS ac ON (a.id = ac.articleID)
 				LEFT JOIN categories AS c ON (c.id = ac.categoryID)
+				LEFT JOIN articleCourses AS acour ON (a.id = acour.articleID)
+				LEFT JOIN courses AS cour ON (cour.id = acour.courseID)
 				LEFT JOIN privacyLevels AS pl ON (a.privacyLevelID = pl.id)
-				WHERE pl.title = 'public' AND (a.title LIKE :term OR a.description LIKE :term OR a.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term)
+				WHERE pl.title = 'public' AND (a.title LIKE :term OR a.description LIKE :term OR a.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term OR cour.id LIKE :term OR cour.title LIKE :term)
 				GROUP BY a.id) AS articles
 			WHERE articles.flagCount < 3",
 		
@@ -2150,7 +2156,9 @@ class SelectorSQL{
 				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
 				LEFT JOIN eventCategories AS ec ON (e.id = ec.eventID)
 				LEFT JOIN categories AS c ON (c.id = ec.categoryID)
-				WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term)
+				LEFT JOIN eventCourses AS ecour ON (e.id = ecour.eventID)
+				LEFT JOIN courses AS cour ON (cour.id = ecour.courseID)
+				WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term OR cour.id LIKE :term OR cour.title LIKE :term)
 				GROUP BY e.id) AS events
 			WHERE events.flagCount < 3",
 		
@@ -2162,7 +2170,9 @@ class SelectorSQL{
 				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
 				LEFT JOIN eventCategories AS ec ON (e.id = ec.eventID)
 				LEFT JOIN categories AS c ON (c.id = ec.categoryID)
-				WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term)
+				LEFT JOIN eventCourses AS ecour ON (e.id = ecour.eventID)
+				LEFT JOIN courses AS cour ON (cour.id = ecour.courseID)
+				WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term OR cour.id LIKE :term OR cour.title LIKE :term)
 				GROUP BY e.id) AS events
 			WHERE events.flagCount < 3"
 	
