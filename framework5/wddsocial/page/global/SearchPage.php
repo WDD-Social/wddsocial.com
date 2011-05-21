@@ -158,6 +158,11 @@ class SearchPage implements \Framework5\IExecutable {
 							$content.= render('wddsocial.view.content.WDDSocial\DirectoryCourseItemView', $course);
 						}
 						break;
+					case 'events':
+						foreach ($results as $event) {
+							$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'event','content' => $event));
+						}
+						break;
 				}
 			}
 			else {
@@ -213,6 +218,13 @@ class SearchPage implements \Framework5\IExecutable {
 				$query = $this->db->prepare($this->sql->searchCourses . " ORDER BY $orderBy" . " LIMIT $start, $limit");
 				$query->execute(array('term' => "%$term%"));
 				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\CourseVO');
+				return $query->fetchAll();
+				break;
+			case 'events':
+				import('wddsocial.model.WDDSocial\DisplayVO');
+				$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->searchEvents . " ORDER BY $orderBy" . " LIMIT $start, $limit"):$this->db->prepare($this->sql->searchPublicEvents . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query->execute(array('term' => "%$term%"));
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
 				return $query->fetchAll();
 				break;
 			default:
