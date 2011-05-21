@@ -67,6 +67,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	private function global_import() {
 		
 		import('wddsocial.controller.WDDSocial\Exception');
+		import('wddsocial.controller.WDDSocial\Validator');
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		import('wddsocial.helper.WDDSocial\StringCleaner');
@@ -82,5 +83,27 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		if (\WDDSocial\UserSession::is_authorized()) {
 			Lang::language(\WDDSocial\UserSession::user_lang());
 		}
+	}
+	
+	
+	
+	/**
+	* Exception handler
+	* 
+	* @param Exception e
+	*/
+	
+	public static function exception_handler($e) {
+		
+		# log_error defined in Controller
+		if (\Framework5\Settings::$log_exception) \Framework5\Logger::log_exception($e);
+		
+		# display the error page
+		$content = render('wddsocial.view.page.WDDSocial\ErrorView', $e);
+		
+		echo render(':template', 
+			array('title' => 'an error has occured', 'content' => $content));
+		
+		die; # kill script execution
 	}
 }

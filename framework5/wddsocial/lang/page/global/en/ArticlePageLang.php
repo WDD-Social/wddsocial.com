@@ -24,23 +24,9 @@ class ArticlePageLang implements \Framework5\ILanguagePack {
 			
 			case 'article_not_found':
 				return 'Article Not Found';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
-			case '':
-				return '';
 			
+			default:
+				throw new Exception("Language pack content '$id' not found");
 		}
 	}
 }

@@ -16,14 +16,14 @@ class IssuesPage implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
-		$bug_id = \Framework5\Request::segment(2);
+		$issue_id = \Framework5\Request::segment(2);
 		
-		if ($bug_id) {
-			$content = render('dev.view.issue.Framework5\Dev\IssueView', $this->bug_info($bug_id));
+		if ($issue_id) {
+			$content = render('dev.view.issue.Framework5\Dev\IssueView', $this->issue_info($issue_id));
 		}
 		
 		else {
-			$content = render('dev.view.issue.Framework5\Dev\IssuesView', $this->get_bugs());
+			$content = render('dev.view.issue.Framework5\Dev\IssuesView', $this->get_issues());
 		}
 		
 		# display output
@@ -32,12 +32,12 @@ class IssuesPage implements \Framework5\IExecutable {
 	
 	
 	
-	public function get_bugs($limit = 0, $page = 0) {
+	public function get_issues($limit = 0, $page = 0) {
 		
 		# get the db object
 		$sql = "
-			SELECT id, request_id, user_id, message 
-			FROM fw5_bugs 
+			SELECT id, request_id, user_id, timestamp, message 
+			FROM fw5_issues 
 			ORDER BY id DESC";
 		
 		$query = $this->db->query($sql);
@@ -47,12 +47,12 @@ class IssuesPage implements \Framework5\IExecutable {
 	
 	
 	
-	public function bug_info($id) {
+	public function issue_info($id) {
 		
 		# get the db object
 		$sql = "
 			SELECT id, request_id, user_id, message 
-			FROM fw5_bugs
+			FROM fw5_issues
 			WHERE id = :id";
 		
 		$query = $this->db->prepare($sql);

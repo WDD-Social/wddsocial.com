@@ -22,6 +22,7 @@ class ProjectPage implements \Framework5\IExecutable {
 		# get project details
 		$project = $this->getProject(\Framework5\Request::segment(1));
 		
+		if (Validator::project_has_been_flagged($project->id)) redirect("/");
 		
 		# handle form submission
 		if (isset($_POST['submit'])){
@@ -32,7 +33,6 @@ class ProjectPage implements \Framework5\IExecutable {
 				$project = $this->getProject(\Framework5\Request::segment(1));
 			}
 		}
-		
 		
 		# if the project does not exist
 		if ($project) {

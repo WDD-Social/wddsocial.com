@@ -12,6 +12,9 @@ class JobPageLang implements \Framework5\ILanguagePack {
 			
 			case 'not-found-page-title':
 				return 'Job Not Found';
+			
+			default:
+				throw new Exception("Language pack content '$id' not found");
 		}
 	}
 }

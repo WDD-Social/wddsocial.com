@@ -955,6 +955,11 @@ class SelectorSQL{
 			WHERE id = :id
 			LIMIT 1",
 		
+		'getProjectFlagCount' => "
+			SELECT COUNT(DISTINCT userID) AS flagCount
+			FROM projectFlags
+			WHERE projectID = :id",
+		
 		'getProjects' => "
 			SELECT *
 			FROM (SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
@@ -1092,6 +1097,11 @@ class SelectorSQL{
 			FROM articles
 			WHERE id = :id
 			LIMIT 1",
+		
+		'getArticleFlagCount' => "
+			SELECT COUNT(DISTINCT userID) AS flagCount
+			FROM articleFlags
+			WHERE articleID = :id",
 		
 		'getArticles' => "
 			SELECT *
@@ -1240,6 +1250,16 @@ class SelectorSQL{
 			WHERE id = :id
 			LIMIT 1",
 		
+		'getEventFlagCount' => "
+			SELECT COUNT(DISTINCT userID) AS flagCount
+			FROM eventFlags
+			WHERE eventID = :id",
+		
+		'hasEventExpired' => "
+			SELECT id
+			FROM events
+			WHERE id = :id AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1",
+		
 		'getEvents' => "
 			SELECT *
 			FROM(SELECT e.id, e.userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
@@ -1295,6 +1315,11 @@ class SelectorSQL{
 			FROM jobs
 			WHERE id = :id
 			LIMIT 1",
+		
+		'getJobFlagCount' => "
+			SELECT COUNT(DISTINCT userID) AS flagCount
+			FROM jobFlags
+			WHERE jobID = :id",
 		
 		'getJobAvatar' => "
 			SELECT avatar
@@ -2112,7 +2137,7 @@ class SelectorSQL{
 			WHERE articles.flagCount < 3",
 		
 		'searchCourses' => "
-			SELECT c.id, c.title, c.description, `month`
+			SELECT DISTINCT(c.id), c.title, c.description, `month`
 			FROM courses AS c
 			LEFT JOIN courseCategories AS cc ON (c.id = cc.courseID)
 			LEFT JOIN categories AS cat ON (cat.id = cc.categoryID)

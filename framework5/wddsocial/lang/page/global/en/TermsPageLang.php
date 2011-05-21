@@ -12,6 +12,9 @@ class TermsPageLang implements \Framework5\ILanguagePack {
 			
 			case 'page-title':
 				return 'Terms';
+			
+			default:
+				throw new Exception("Language pack content '$id' not found");
 		}
 	}
 }

@@ -19,6 +19,7 @@ class ArticlePage implements \Framework5\IExecutable {
 		# get article information
 		$article = $this->getArticle(\Framework5\Request::segment(1));
 		
+		if (Validator::article_has_been_flagged($article->id)) redirect("/");
 		
 		# handle form submission
 		if (isset($_POST['submit'])){

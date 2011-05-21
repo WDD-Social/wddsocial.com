@@ -15,12 +15,14 @@ class RequestView implements \Framework5\IView {
 		if (!get_class($details) == 'ExecutionDetailsView')
 			throw new Framework5\Exception("ExecutionDetailsView expects parameter of type ExecutionDetails");
 		
+		# format data
+		$details->time = Formatter::format_time($details->time);
 		
 		# render execution details
 		$html = <<<HTML
 
-		<p>time: {$details->time}</p>
-		<p>uri: {$details->uri}</p>
+		<p>{$details->time}</p>
+		<p><a href="/{$details->uri}">/{$details->uri}</a></p>
 		<p>remote address: {$details->remote_addr}</p>
 HTML;
 		

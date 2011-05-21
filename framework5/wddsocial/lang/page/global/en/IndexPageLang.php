@@ -39,6 +39,9 @@ class IndexPageLang implements \Framework5\ILanguagePack {
 			
 			case 'latest-header':
 				return 'Latest';
+			
+			default:
+				throw new Exception("Language pack content '$id' not found");
 		}		
 	}
 }

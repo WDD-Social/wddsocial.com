@@ -14,15 +14,15 @@ class SourcePage implements \Framework5\IExecutable {
 		$file = $_GET['file'];
 		
 		$html = <<<HTML
-		
+
 <!doctype html>
 <html>
 	<head>
 		<title>CodeMirror 2: PHP mode</title>
 		<link rel="shortcut icon" href="/images/site/framework5-favicon.ico">
 		
-		<link rel="stylesheet" href="/js/libs/codemirror/lib/codemirror.css">
-		<script src="/js/libs/codemirror/lib/codemirror.js"></script>
+		<link rel="stylesheet" href="/js/libs/codemirror/codemirror.css">
+		<script src="/js/libs/codemirror/codemirror.js"></script>
 		
 		<script src="/js/libs/codemirror/mode/xml/xml.js"></script>
 		<link rel="stylesheet" href="/js/libs/codemirror/mode/xml/xml.css">

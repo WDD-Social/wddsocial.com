@@ -67,6 +67,7 @@ class SigninPage implements \Framework5\IExecutable {
 		# filter input variables
 		$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
 		$password = filter_input(INPUT_POST, 'password');
+		$_POST['password'] = 'encrypted';
 		
 		# validate user input
 		if (!$email) {
