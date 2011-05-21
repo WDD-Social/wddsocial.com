@@ -15,6 +15,8 @@ class ContactPageLang implements \Framework5\ILanguagePack {
 			case 'page-title':
 				return 'Contact';
 			
+			default:
+				throw new Exception("Language pack content '$id' not found");
 		}		
 	}
 }

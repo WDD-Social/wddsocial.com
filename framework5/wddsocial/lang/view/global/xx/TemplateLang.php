@@ -40,6 +40,12 @@ class TemplateLang implements \Framework5\ILanguagePack {
 			case 'user_profile_title':
 				return 'XX'; # View My Profile
 			
+			case 'create':
+				return 'Create';
+			
+			case 'create_title':
+				return 'Create';
+			
 			case 'messages':
 				return 'XX'; # Messages
 			
@@ -61,10 +67,13 @@ class TemplateLang implements \Framework5\ILanguagePack {
 			# user not signed in
 			case 'signup':
 				return 'XX'; # Sign Up
+			
 			case 'signup_title':
 				return 'XX'; # Sign Up for WDD Social
+			
 			case 'signin':
 				return 'XX'; # Sign In
+			
 			case 'signin_title':
 				return 'XX'; # Sign In for WDD Social
 			

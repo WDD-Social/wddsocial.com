@@ -12,6 +12,9 @@ class EventPageLang implements \Framework5\ILanguagePack {
 			
 			case 'not-found-page-title':
 				return 'Event Not Found';
+			
+			default:
+				throw new Exception("Language pack content '$id' not found");
 		}
 	}
 }

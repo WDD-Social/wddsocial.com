@@ -28,7 +28,10 @@ class UserPageLang implements \Framework5\ILanguagePack {
 				return 'Dislikes';
 			
 			case 'latest':
-				return 'Latest';			
+				return 'Latest';
+			
+			default:
+				throw new Exception("Language pack content '$id' not found");			
 		}
 	}
 }
