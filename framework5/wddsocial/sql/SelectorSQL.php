@@ -955,6 +955,9 @@ class SelectorSQL{
 			WHERE id = :id
 			LIMIT 1",
 		
+		'getProjectFlagCount' => "
+			",
+		
 		'getProjects' => "
 			SELECT *
 			FROM (SELECT p.id, title, description, p.vanityURL, p.datetime, 'project' AS `type`, u.id AS userID, firstName AS userFirstName, lastName AS userLastName, u.avatar AS userAvatar, u.vanityURL AS userURL, COUNT(DISTINCT pf.userID) AS flagCount,
@@ -2112,7 +2115,7 @@ class SelectorSQL{
 			WHERE articles.flagCount < 3",
 		
 		'searchCourses' => "
-			SELECT c.id, c.title, c.description, `month`
+			SELECT DISTINCT(c.id), c.title, c.description, `month`
 			FROM courses AS c
 			LEFT JOIN courseCategories AS cc ON (c.id = cc.courseID)
 			LEFT JOIN categories AS cat ON (cat.id = cc.categoryID)
