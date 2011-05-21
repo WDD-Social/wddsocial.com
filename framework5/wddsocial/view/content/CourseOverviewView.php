@@ -31,7 +31,7 @@ HTML;
 				$searchTerm = urlencode($category->title);
 				$html .= <<<HTML
 
-							<li><a href="/search/{$searchTerm}" title="{$lang->text('categories')} | {$category->title}">{$category->title}</a></li>
+							<li><a href="/search/projects/{$searchTerm}" title="{$lang->text('category_title',$category->title)}">{$category->title}</a></li>
 HTML;
 			}
 		}
