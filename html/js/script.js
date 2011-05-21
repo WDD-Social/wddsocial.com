@@ -158,7 +158,9 @@ $(function() {
 	
 	// "Load more" functionality
 	$('p.load-more a').live('click',function(){
+		var link = $(this);
 		var parent = $(this).parent();
+		$(link).toggleClass('loading').html('<img src="images/site/icon-load-more.gif" alt="Loading..." />Loading...');
 		$.ajax({
 			url: '/ajax/more',
 			dataType: 'html',
@@ -170,6 +172,7 @@ $(function() {
 			},
 			success: function(response){
 				$(response).insertBefore(parent);
+				$(link).toggleClass('loading').html('Load More');
 				pageNumber++;
 				selectedSection = $(parent).parent();
 				filter($(selectedSection).find('div.filters a.current').html(),selectedSection,0)
