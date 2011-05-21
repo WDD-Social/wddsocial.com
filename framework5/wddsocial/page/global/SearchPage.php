@@ -153,6 +153,11 @@ class SearchPage implements \Framework5\IExecutable {
 							$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'article','content' => $article));
 						}
 						break;
+					case 'courses':
+						foreach ($results as $course) {
+							$content.= render('wddsocial.view.content.WDDSocial\DirectoryCourseItemView', $course);
+						}
+						break;
 				}
 			}
 			else {
@@ -201,6 +206,13 @@ class SearchPage implements \Framework5\IExecutable {
 				$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->searchArticles . " ORDER BY $orderBy" . " LIMIT $start, $limit"):$this->db->prepare($this->sql->searchPublicArticles . " ORDER BY $orderBy" . " LIMIT $start, $limit");
 				$query->execute(array('term' => "%$term%"));
 				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+				return $query->fetchAll();
+				break;
+			case 'courses':
+				import('wddsocial.model.WDDSocial\CourseVO');
+				$query = $this->db->prepare($this->sql->searchCourses . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query->execute(array('term' => "%$term%"));
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\CourseVO');
 				return $query->fetchAll();
 				break;
 			default:
