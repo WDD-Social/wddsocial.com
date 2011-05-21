@@ -24,7 +24,10 @@ class ProjectsPage implements \Framework5\IExecutable {
 		$content = render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(2);
-		$sorters = array('alphabetically' => 'alphabetically', 'newest' => 'newest', 'oldest' => 'oldest');
+		$sorters = array(
+			'alphabetically' => $this->lang->text('sort-alphabetically'), 
+			'newest' => $this->lang->text('sort-newest'), 
+			'oldest' => $this->lang->text('sort-oldest'));
 		
 		if (isset($sorter) and in_array($sorter, array_keys($sorters))) $active = $sorter;
 		else $active = $sorters['newest'];
