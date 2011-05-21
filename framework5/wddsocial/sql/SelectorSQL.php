@@ -2109,7 +2109,14 @@ class SelectorSQL{
 				LEFT JOIN privacyLevels AS pl ON (a.privacyLevelID = pl.id)
 				WHERE pl.title = 'public' AND (a.title LIKE :term OR a.description LIKE :term OR a.vanityURL LIKE :term OR c.title LIKE :term OR allu.firstName LIKE :term OR allu.lastName LIKE :term OR allu.vanityURL LIKE :term OR CONCAT_WS(' ',allu.firstName,allu.lastName) LIKE :term)
 				GROUP BY a.id) AS articles
-			WHERE articles.flagCount < 3"
+			WHERE articles.flagCount < 3",
+		
+		'searchCourses' => "
+			SELECT c.id, c.title, c.description, `month`
+			FROM courses AS c
+			LEFT JOIN courseCategories AS cc ON (c.id = cc.courseID)
+			LEFT JOIN categories AS cat ON (cat.id = cc.categoryID)
+			WHERE c.id LIKE :term OR c.title LIKE :term OR c.description LIKE :term OR cat.title LIKE :term"
 	
 						
 	);
