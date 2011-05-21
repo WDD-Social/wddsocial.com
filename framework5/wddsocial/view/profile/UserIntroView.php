@@ -46,7 +46,7 @@ HTML;
 				$bioText = 'You don&rsquo;t like talking about yourself very much do you? How about you <a href="/account" title="Edit your account information">add a bio</a> so people can get to know you?';
 			}
 			else {
-				$bioText = 'Clearly, ' . $user->firstName . ' doesn&rsquo;t like talking about himself very much. I guess we&rsquo;ll never really know him...';
+				$bioText = 'Well, I guess we&rsquo;ll never really know ' . $user->firstName . '.';
 			}
 		}
 		else {

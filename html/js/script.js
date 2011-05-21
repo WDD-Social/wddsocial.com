@@ -1,6 +1,6 @@
 $(function() {
 	
-	/* VISUAL TWEAKS, ENHANCEMENTS, AND SETUP
+	/* Visual tweaks, enhancements, and setup
 	****************************************************************** */
 	
 	$.ajaxSetup({
@@ -13,17 +13,18 @@ $(function() {
 	
 	
 	
-	/* FILTERS, CARDSTACKS, ADD MORE, FANCYBOX
+	/* Filters, cardstacks, add more, flagging, fancybox
 	****************************************************************** */
 	
+	// Fancybox setup
 	$('a.fancybox').fancybox({
 		titleShow: false,
 		cyclic: true,
 		showCloseButton: false
 	});
 	
+	// "Add Another" link in forms
 	$('.add-more').live('click',function(){
-		console.log("ADD ANOTHER");
 		var addMoreLink = $(this);
 		var newHTML = $(this).prev().clone(true);
 		if($(newHTML).is('input')){
@@ -41,6 +42,7 @@ $(function() {
 		return false;
 	});
 	
+	// filtering function
 	var filter = function(type, parent, duration){
 		if(typeof duration == 'undefined'){
 			duration = 500;
@@ -62,7 +64,7 @@ $(function() {
 		return false;
 	});
 	
-	
+	// Changing user type on account page
 	$('#user-type.radio input[type="radio"]').live('change', function(){
 		var type = $(this).attr('id');
 		var user = $(this).parent().parent().data('user');
@@ -83,9 +85,33 @@ $(function() {
 		});
 	});
 	
+	// Ajax Flagging
+	$('.secondary a.flag').live('click',function(){
+		var flag = $(this);
+		$(flag).toggleClass('current');
+		var URL = $(this).attr('href').substring(1).split('/');
+		if (URL[0] === 'flag') {
+			$.ajax({
+				url: '/ajax/flag',
+				dataType: 'text',
+				data: {
+					type: URL[1],
+					vanityURL: URL[2]
+				},
+				success: function(response){
+					var rsp = $.parseJSON(response);
+					if (rsp.status == false) {
+						$(flag).toggleClass('current');
+					}
+				}
+			});
+		}
+		return false;
+	});
 	
 	
-	/* AJAX LOAD MORE
+	
+	/* Ajax load more
 	****************************************************************** */
 	
 	// "Load more" variable setup

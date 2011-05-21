@@ -25,6 +25,9 @@ class Router implements \Framework5\IRouter {
 				
 			case 'content':
 				return 'ajax.request.Ajax\Content';
+				
+			case 'flag':
+				return 'ajax.request.Ajax\Flag';
 			
 			default:
 				return 'ajax.request.Ajax\InvalidRequest';
