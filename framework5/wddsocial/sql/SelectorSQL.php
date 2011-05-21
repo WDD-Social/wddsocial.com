@@ -2116,7 +2116,30 @@ class SelectorSQL{
 			FROM courses AS c
 			LEFT JOIN courseCategories AS cc ON (c.id = cc.courseID)
 			LEFT JOIN categories AS cat ON (cat.id = cc.categoryID)
-			WHERE c.id LIKE :term OR c.title LIKE :term OR c.description LIKE :term OR cat.title LIKE :term"
+			WHERE c.id LIKE :term OR c.title LIKE :term OR c.description LIKE :term OR cat.title LIKE :term",
+		
+		'searchEvents' => "
+			SELECT *
+			FROM(SELECT e.id, e.userID, icsUID, e.title, e.description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+				FROM events AS e
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				LEFT JOIN eventCategories AS ec ON (e.id = ec.eventID)
+				LEFT JOIN categories AS c ON (c.id = ec.categoryID)
+				WHERE TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term)
+				GROUP BY e.id) AS events
+			WHERE events.flagCount < 3",
+		
+		'searchPublicEvents' => "
+			SELECT *
+			FROM(SELECT e.id, e.userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+				FROM events AS e
+				LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				LEFT JOIN eventCategories AS ec ON (e.id = ec.eventID)
+				LEFT JOIN categories AS c ON (c.id = ec.categoryID)
+				WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term)
+				GROUP BY e.id) AS events
+			WHERE events.flagCount < 3"
 	
 						
 	);
