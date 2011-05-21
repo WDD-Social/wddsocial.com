@@ -67,6 +67,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 	private function global_import() {
 		
 		import('wddsocial.controller.WDDSocial\Exception');
+		import('wddsocial.controller.WDDSocial\Validator');
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		import('wddsocial.helper.WDDSocial\StringCleaner');
