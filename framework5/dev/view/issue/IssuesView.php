@@ -27,10 +27,11 @@ HTML;
 			
 			# limit characters
 			$bug->message = substr($bug->message, 0, 50);
+			$bug->timestamp = Formatter::format_time($bug->timestamp);
 			$html.= <<<HTML
 				<tr>
 					<td><a href="/dev/issues/{$bug->id}">Issue {$bug->id}</a></td>
-					<td>{$bug->}</td>
+					<td>{$bug->timestamp}</td>
 					<td>{$bug->message}</td>
 				</tr>
 
