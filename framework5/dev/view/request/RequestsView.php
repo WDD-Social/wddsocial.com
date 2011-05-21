@@ -23,7 +23,7 @@ HTML;
 
 		# render table rows
 		foreach ($requests as $request) {
-			$request->time = date("F j, Y, g:i a", $request->time);
+			$request->time = Formatter::format_time($request->time);
 			$html.= <<<HTML
 
 		<tr>
