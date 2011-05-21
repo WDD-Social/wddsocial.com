@@ -152,7 +152,7 @@ HTML
 HTML;
 		foreach ($sorters as $url => $title) {
 			$title = ucfirst($title);
-			if ($sorter == $active)
+			if ($url == $active)
 				$class = ' class="current"';
 			else
 				$class = '';
