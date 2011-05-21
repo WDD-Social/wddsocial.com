@@ -16,8 +16,15 @@ class ProjectsPageLang implements \Framework5\ILanguagePack {
 			case 'projects-header':
 				return 'XX'; # Projects
 			
-			case 'sorter-':
-				return 'alphabetically';
+			case 'sort-alphabetically':
+				return 'XX'; # alphabetically
+			
+			case 'sort-oldest':
+				return 'XX'; # oldest
+			
+			case 'sort-newest':
+				return 'XX'; # newest
+			
 			
 			default:
 				throw new Exception("Language pack content '$id' not found");
