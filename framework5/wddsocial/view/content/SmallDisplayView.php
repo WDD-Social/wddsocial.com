@@ -18,7 +18,6 @@ class SmallDisplayView implements \Framework5\IView {
 	*/
 	
 	public function render($options = null) {
-		
 		switch ($options['type']) {
 			case 'article':
 				return $this->article_display($options['content']);

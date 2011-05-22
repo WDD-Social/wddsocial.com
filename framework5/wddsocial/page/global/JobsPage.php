@@ -45,82 +45,88 @@ class JobsPage implements \Framework5\IExecutable {
 				'header' => $headers, 'sort' => true, 
 				'sorters' => $sorters, 'base_link' => "/jobs/{$type}/", 'active' => $active_sorter));
 		
-		$paginator = new Paginator(3,18);
-		
-		switch ($type) {
-			case 'all':
-				$where =  '';
-				break;
-			case 'full-time':
-				$where = " AND jobType = 'full-time'";
-				break;
-			case 'part-time':
-				$where = " AND jobType = 'part-time'";
-				break;
-			case 'contract':
-				$where = " AND jobType = 'contract'";
-				break;
-			case 'freelance':
-				$where = " AND jobType = 'freelance'";
-				break;
-			case 'internship':
-				$where = " AND jobType = 'internship'";
-				break;
-			default:
-				$where = '';
-				break;
+		if (!UserSession::is_authorized()) {
+			$content .= render('wddsocial.view.content.WDDSocial\SignInPromptView',array('section' => 'jobs'));
+			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'directory'));
 		}
-		
-		switch ($active_sorter) {
-			case 'newest':
-				$orderBy = '`datetime` DESC';
-				break;
+		else {
+			$paginator = new Paginator(3,18);
 			
-			case 'company':
-				$orderBy = 'company ASC';
-				break;
+			switch ($type) {
+				case 'all':
+					$where =  '';
+					break;
+				case 'full-time':
+					$where = " AND jobType = 'full-time'";
+					break;
+				case 'part-time':
+					$where = " AND jobType = 'part-time'";
+					break;
+				case 'contract':
+					$where = " AND jobType = 'contract'";
+					break;
+				case 'freelance':
+					$where = " AND jobType = 'freelance'";
+					break;
+				case 'internship':
+					$where = " AND jobType = 'internship'";
+					break;
+				default:
+					$where = '';
+					break;
+			}
 			
-			case 'location':
-				$orderBy = 'location ASC';
-				break;
+			switch ($active_sorter) {
+				case 'newest':
+					$orderBy = '`datetime` DESC';
+					break;
+				
+				case 'company':
+					$orderBy = 'company ASC';
+					break;
+				
+				case 'location':
+					$orderBy = 'location ASC';
+					break;
+				
+				default:
+					$orderBy = '`datetime` DESC';
+					break;
+			}
 			
-			default:
-				$orderBy = '`datetime` DESC';
-				break;
-		}
-		
-		# query
-		$query = $this->db->prepare($this->sql->getJobs . "$where ORDER BY $orderBy LIMIT 0, {$paginator->limit}");
-		$query->execute();
-		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
-		
-		if ($query->rowCount() > 0) {
-			# display section items
-			while($item = $query->fetch()){
-				$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', 
-					array('type' => 'job','content' => $item));
+			# query
+			$query = $this->db->prepare($this->sql->getJobs . "$where ORDER BY $orderBy LIMIT 0, {$paginator->limit}");
+			$query->execute();
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
+			
+			if ($query->rowCount() > 0) {
+				# display section items
+				while($item = $query->fetch()){
+					$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', 
+						array('type' => 'job','content' => $item));
+				}
+			}
+			else {
+				$content .= render('wddsocial.view.content.WDDSocial\NoJobs', array('type' => $type));
+			}
+			
+			$query = $this->db->prepare($this->sql->getJobs . "$where ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
+			$query->execute();
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$query->fetch();
+			
+			if ($query->rowCount() > 0) {
+				# display section footer
+				$content.= render(':section',
+					array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'jobs', 'load_more_link' => "/jobs/{$active}/{$paginator->next}"));	
+			}		
+			else {
+				# display section footer
+				$content.= render(':section',
+					array('section' => 'end_content_section', 'id' => 'directory'));
 			}
 		}
-		else {
-			$content .= render('wddsocial.view.content.WDDSocial\NoJobs', array('type' => $type));
-		}
-		
-		$query = $this->db->prepare($this->sql->getJobs . "$where ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
-		$query->execute();
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$query->fetch();
-		
-		if ($query->rowCount() > 0) {
-			# display section footer
-			$content.= render(':section',
-				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'jobs', 'load_more_link' => "/jobs/{$active}/{$paginator->next}"));	
-		}		
-		else {
-			# display section footer
-			$content.= render(':section',
-				array('section' => 'end_content_section', 'id' => 'directory'));	
-		}
-		
+				
 		$content .= render(':section', array('section' => 'end_content'));
 		
 		# display page
