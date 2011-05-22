@@ -13,6 +13,7 @@ class ArticlesPage implements \Framework5\IExecutable {
 	public function __construct() {
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.ArticlesPageLang');
 	}
 	
 	
@@ -20,13 +21,13 @@ class ArticlesPage implements \Framework5\IExecutable {
 	public function execute() {
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
-		# display site header
-		$page_title = 'Articles';
-		
 		$content = render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(2);
-		$sorters = array('alphabetically' => 'alphabetically', 'newest' => 'newest', 'oldest' => 'oldest');
+		$sorters = array(
+			'alphabetically' => $this->lang->text('sort-alphabetically'), 
+			'newest' => $this->lang->text('sort-newest'), 
+			'oldest' => $this->lang->text('sort-oldest'));
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
 		else $active = $sorters['newest'];
@@ -34,7 +35,8 @@ class ArticlesPage implements \Framework5\IExecutable {
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'Articles', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/articles/1/', 'active' => $active));
+				'header' => $this->lang->text('page-header'), 'sort' => true, 'sorters' => $sorters, 
+				'base_link' => '/articles/1/', 'active' => $active));
 		
 		$paginator = new Paginator(1,18);
 		
@@ -73,7 +75,8 @@ class ArticlesPage implements \Framework5\IExecutable {
 		if ($query->rowCount() > 0) {
 			# display section footer
 			$content.= render(':section',
-				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/articles/{$paginator->next}/$active"));	
+				array('section' => 'end_content_section', 'id' => 'directory', 
+				'load_more' => 'posts', 'load_more_link' => "/articles/{$paginator->next}/$active"));	
 		}
 		
 			
@@ -88,7 +91,7 @@ class ArticlesPage implements \Framework5\IExecutable {
 		
 		# display page
 		echo render(':template', 
-			array('title' => $page_title, 'content' => $content));
+			array('title' => $this->lang->text('page-title'), 'content' => $content));
 		
 	}
 }
