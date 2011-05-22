@@ -173,6 +173,67 @@ HTML;
 	
 	
 	/**
+	* Creates a job listing
+	*/
+	
+	private function job_display($job){
+		$lang = new \Framework5\Lang('wddsocial.lang.page.global.JobsPageLang');
+		
+		# company site
+		$companyLink = ($job->website == '')?"http://google.com/?q={$job->company}":"http://{$job->website}";
+		
+		# job posting avatar
+		$jobAvatar = (file_exists("images/jobs/{$job->avatar}_medium.jpg"))?"/images/jobs/{$job->avatar}_medium.jpg":"/images/site/job-default_medium.jpg";
+		
+		$html = <<<HTML
+
+					<article class="with-secondary">
+						<div class="secondary">
+HTML;
+		# Determines what type of secondary controls to present (Flag or Edit/Delete)
+		if (UserValidator::is_job_owner($job->id)) {
+			$html .= <<<HTML
+
+							<a href="/edit/job/{$job->vanityURL}" title="Edit &ldquo;{$job->title}&rdquo;" class="edit">Edit</a>
+							<a href="/delete/job/{$job->vanityURL}" title="Delete &ldquo;{$job->title}&rdquo;" class="delete">Delete</a>
+HTML;
+		}
+		else if (UserSession::is_authorized()) {
+			$flagClass = (UserSession::has_flagged($job->id,'job'))?' current':'';
+			$html .= <<<HTML
+
+							<a href="/flag/job/{$job->vanityURL}" title="Flag &ldquo;{$job->title}&rdquo;" class="flag$flagClass">Flag</a>
+HTML;
+		}
+		$html .= <<<HTML
+
+						</div><!-- END SECONDARY -->
+						
+						<p class="item-image"><a href="$companyLink" title="{$job->company}"><img src="$jobAvatar" alt="{$job->company}"/></a></p>
+						<h2><a href="/job/{$job->vanityURL}" title="{$job->title} | {$job->company}">{$job->title}</a></h2>
+						<p class="company"><a href="$companyLink" title="{$job->company}">{$job->company}</a></p>
+						<p><a href="http://maps.google.com/?q={$job->location}" title="{$lang->text('search_maps', $job->location)}">{$job->location}</a></p>
+						<p>{$job->description}</p>
+						<p class="job-type"><a href="/jobs#{$job->jobType}" title="{$lang->text('see_all_jobs', $job->jobType)}">{$job->jobType}</a></p>
+HTML;
+		
+		# Build categories
+		$categoryLinks = array();
+		foreach($job->categories as $category){
+			$searchTerm = urlencode($category);
+			array_push($categoryLinks,"<a href=\"/search/jobs/$searchTerm\" title=\"Categories | $category\">$category</a>");
+		}
+		$categoryLinks = implode(' ',$categoryLinks);
+		$html .= <<<HTML
+						<p class="tags">$categoryLinks</p>
+					</article><!-- END {$job->title} -->
+HTML;
+		return $html;
+	}
+	
+	
+	
+	/**
 	* Creates and formats the team string for display
 	*/
 	
