@@ -87,7 +87,7 @@ class SearchPage implements \Framework5\IExecutable {
 			if (!isset($term) or $term == '') redirect('/');
 			
 			# get sorters
-			$sorter = \Framework5\Request::segment(4);
+			$sorter = \Framework5\Request::segment(3);
 			switch ($type) {
 				case 'courses':
 					$sorters = array('month', 'alphabetically');
@@ -95,6 +95,9 @@ class SearchPage implements \Framework5\IExecutable {
 					break;
 				case 'events':
 					$sorters = array('upcoming', 'alphabetically', 'newest', 'oldest');
+					$default = 0;
+				case 'jobs':
+					$sorters = array('newest', 'company', 'location');
 					$default = 0;
 					break;
 				default:
@@ -123,11 +126,11 @@ class SearchPage implements \Framework5\IExecutable {
 				'sort' => true,
 				'sorters' => $sorters,
 				'active' => $active_sorter,
-				'base_link' => "/search/{$type}/{$term}/1/"
+				'base_link' => "/search/{$type}/{$term}/"
 			));
 			
 			
-			$paginator = new Paginator(1,18);
+			$paginator = new Paginator(4,18);
 			
 			switch ($active_sorter) {
 				case 'alphabetically':
@@ -203,6 +206,11 @@ class SearchPage implements \Framework5\IExecutable {
 								$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'event','content' => $event));
 							}
 							break;
+						case 'jobs':
+							foreach ($results as $event) {
+								$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'job','content' => $event));
+							}
+							break;
 					}
 				}
 				else {
@@ -270,7 +278,7 @@ class SearchPage implements \Framework5\IExecutable {
 				break;
 			case 'jobs':
 				import('wddsocial.model.WDDSocial\JobVO');
-				$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->searchJobs . " ORDER BY $orderBy" . " LIMIT $start, $limit"):$this->db->prepare($this->sql->searchPublicEvents . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query = $this->db->prepare($this->sql->searchJobs . " ORDER BY $orderBy" . " LIMIT $start, $limit");
 				$query->execute(array('term' => "%$term%"));
 				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 				return $query->fetchAll();
