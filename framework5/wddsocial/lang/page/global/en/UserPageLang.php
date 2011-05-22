@@ -31,7 +31,7 @@ class UserPageLang implements \Framework5\ILanguagePack {
 				return 'Latest';
 			
 			default:
-				throw new Exception("Language pack content '$id' not found");			
+				throw new Exception("Language pack content '$id' not found");
 		}
 	}
 }
