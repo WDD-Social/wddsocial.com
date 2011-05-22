@@ -56,12 +56,11 @@ class LargeDisplayView implements \Framework5\IView {
 		# output
 		$html = <<<HTML
 
-					<article class="slider-item">
+					<article>
 						<p class="item-image"><a href="/project/{$project->vanityURL}" title="{$project->title}"><img src="/images/uploads/{$project->images[0]->file}_large.jpg" alt="{$project->images[0]->title}" /></a></p>
 						<h2><a href="/project/{$project->vanityURL}" title="{$project->title}">{$project->title}</a></h2>
 						<p>{$teamLinks}</p>
 						<p>{$project->description}</p>
-						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$this->lang->text('comments_title', $project->title)}">{$this->lang->text('comments', $project->comments)}</a></p>
 HTML;
 		
 		# render categories
@@ -73,6 +72,7 @@ HTML;
 		$categoryLinks = implode(' ', $categoryLinks);
 		$html .= <<<HTML
 						<p class="tags">$categoryLinks</p>
+						<p class="comments"><a href="/project/{$project->vanityURL}#comments" title="{$this->lang->text('comments_title', $project->title)}">{$this->lang->text('comments', $project->comments)}</a></p>
 					</article><!-- END {$project->title} -->
 HTML;
 		

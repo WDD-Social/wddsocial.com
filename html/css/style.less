@@ -1045,7 +1045,7 @@ input, textarea, button{
 			overflow: hidden;
 			min-height: 165px;
 			
-			h2, p{
+			h2, p, p.tags, p.comments{
 				width: 61.290322580645161%;
 				padding-left: 38.609677419354838%;
 				}
@@ -1057,20 +1057,12 @@ input, textarea, button{
 				}
 			
 			.comments, .tags{
-				float: none;
-				position: absolute;
-				bottom: 0;
-				width: auto;
-				margin-top: 5%;
-				padding: 0;
+				
 				}
 			
 			.comments{
+				margin-top: 2%;
 				left: 38.609677419354838%;
-				}
-			
-			.tags{
-				right: 0;
 				}
 			}
 		
@@ -1293,6 +1285,12 @@ input, textarea, button{
 					padding: 2px;
 					}
 				}
+		}
+	
+	section#directory{
+		.job-type{
+			margin-bottom: 2%;
+			}
 		}
 	
 	section.no-margin{
