@@ -2185,6 +2185,19 @@ class SelectorSQL{
 				WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term OR cour.id LIKE :term OR cour.title LIKE :term)
 				GROUP BY e.id) AS events
 			WHERE events.flagCount < 3",
+		
+		'searchJobs' => "
+			SELECT *
+			FROM (SELECT j.id, j.userID, j.title, vanityURL, company, j.datetime, jt.title AS jobType, avatar, location, compensation, description, website, COUNT(DISTINCT jf.userID) AS flagCount
+				FROM jobs AS j
+				LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
+				LEFT JOIN jobFlags AS jf ON (j.id = jf.jobID)
+				LEFT JOIN jobCategories AS jc ON (j.id = jc.jobID)
+				LEFT JOIN categories AS c ON (c.id = jc.categoryID)
+				WHERE j.title LIKE :term OR company LIKE :term OR jt.title LIKE :term OR location LIKE :term OR compensation LIKE :term OR description LIKE :term OR c.title LIKE :term
+				GROUP BY j.id
+				ORDER BY j.datetime DESC) AS jobs
+			WHERE jobs.flagCount < 3",
 			
 			
 		/**
