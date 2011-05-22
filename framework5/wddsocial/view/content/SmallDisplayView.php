@@ -55,12 +55,15 @@ class SmallDisplayView implements \Framework5\IView {
 HTML;
 
 		# Build categories
+		$displayCategories = $article->categories;
+		shuffle($displayCategories);
 		$categoryLinks = array();
-		foreach ($article->categories as $category) {
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/articles/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+		for ($i = 0; $i < 2; $i++) {
+			if (isset($displayCategories[$i])) {
+				$searchTerm = urlencode($displayCategories[$i]);
+				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i])}\">{$displayCategories[$i]}</a>");
+			}
 		}
-		
 		$categoryLinks = implode(' ', $categoryLinks);
 		$html .= <<<HTML
 						<p class="tags">$categoryLinks</p>
@@ -127,12 +130,15 @@ HTML;
 HTML;
 
 		# Build categories
+		$displayCategories = $event->categories;
+		shuffle($displayCategories);
 		$categoryLinks = array();
-		foreach ($event->categories as $category) {
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/events/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+		for ($i = 0; $i < 2; $i++) {
+			if (isset($displayCategories[$i])) {
+				$searchTerm = urlencode($displayCategories[$i]);
+				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i])}\">{$displayCategories[$i]}</a>");
+			}
 		}
-		
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
 						<p class="tags">$categoryLinks</p>
@@ -200,10 +206,14 @@ HTML;
 HTML;
 		
 		# Build categories
+		$displayCategories = $job->categories;
+		shuffle($displayCategories);
 		$categoryLinks = array();
-		foreach($job->categories as $category){
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/jobs/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+		for ($i = 0; $i < 2; $i++) {
+			if (isset($displayCategories[$i])) {
+				$searchTerm = urlencode($displayCategories[$i]);
+				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i])}\">{$displayCategories[$i]}</a>");
+			}
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
