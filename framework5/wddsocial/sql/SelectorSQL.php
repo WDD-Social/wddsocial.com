@@ -2174,7 +2174,18 @@ class SelectorSQL{
 				LEFT JOIN courses AS cour ON (cour.id = ecour.courseID)
 				WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1 AND (e.title LIKE :term OR e.description LIKE :term OR location LIKE :term OR c.title LIKE :term OR cour.id LIKE :term OR cour.title LIKE :term)
 				GROUP BY e.id) AS events
-			WHERE events.flagCount < 3"
+			WHERE events.flagCount < 3",
+			
+			
+		/**
+		* Messaging queries
+		*/
+			
+		'getUnreadMessageCount' => "
+			SELECT COUNT(*) AS messageCount
+			FROM messages AS m
+			LEFT JOIN messageStatuses AS ms ON (m.status = ms.id)
+			WHERE toUserID = 1 AND ms.title = 'unread'"
 	
 						
 	);
