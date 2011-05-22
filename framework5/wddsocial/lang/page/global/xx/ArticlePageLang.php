@@ -10,7 +10,7 @@ class ArticlePageLang implements \Framework5\ILanguagePack {
 	
 	public static function content($id, $var) {
 		switch ($id) {
-			# 
+			
 			case 'author':
 				return 'XX'; # Author
 			
