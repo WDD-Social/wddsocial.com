@@ -331,7 +331,6 @@ body{
 	width: 100%;
 	padding: 0;
 	margin: 0;
-	min-width: 980px;
 	}
 	
 #wrap, footer{
@@ -1103,7 +1102,7 @@ input, textarea, button{
 		article{
 			overflow: hidden;
 			width: 82.258064516%;
-			margin: 0 0 30px 5.882352941%;
+			margin: 0 auto 30px;
 			
 			h2, p, form{
 				width: 88.823529412%;
@@ -2118,8 +2117,6 @@ footer{
 /* MEDIA QUERIES
 ====================================================================================================*/
 
-/*
-
 @media screen and (max-width: 950px) {
 	#content{
 		
@@ -2186,6 +2183,10 @@ footer{
 		
 		section.medium{
 			width: 66%;
+			
+			article{
+				width: 90%;
+				}
 			}
 		
 		section.small{
@@ -2215,6 +2216,10 @@ footer{
 					}
 				}
 			}
+		
+		#share{
+			display: none;
+			}
 		}
 	
 	#content.start-page{
@@ -2240,10 +2245,90 @@ footer{
 		}
 	}
 
+@media screen and (max-width: 780px) {
+	header{
+		nav{
+			ul{
+				/* font-size: 1.1em; */
+				}
+			}
+		}
+		
+	#content{
+		
+		section.mega{
+			}
+		
+		section.large{
+			
+			}
+		
+		section.medium{
+			clear: both;
+			width: 100%;
+			margin-bottom: 50px !important;
+			
+			article{
+				width: 95%;
+				}
+			}
+		
+		section.small{
+			float: left;
+			width: 48%;
+			margin-right: 4%;
+			
+			article{
+				.item-image{
+				
+					.calendar-icon{
+						.month{
+							font-size: .9em;
+							}
+						
+						.day{
+							font-size: 1.9em;
+							}
+						}
+					}
+				}
+			}
+		
+		section.small + section.small{
+			margin-right: 0;
+			}
+		
+		#people{
+			display: none;
+			}
+		
+		#contact{
+			width: 100%;
+			
+			ul{
+				width: 100%;
+				
+				img{
+					min-width: 40px;
+					max-width: 40px;
+					margin-right: 6.666666667%;
+					}
+				}
+			}
+		}
+	
+	#content.start-page{
+		section.small:last-child{
+			margin-left: 4%;
+			}
+		}
+	}
+
 @media screen and (max-device-width: 480px) {
-	Uncomment if you don't want iOS and WinMobile to mobile-optimize the text for you
-	j.mp/textsizeadjust 
-	html { -webkit-text-size-adjust:none; -ms-text-size-adjust:none; }
+	html {
+		-webkit-text-size-adjust: none;
+		-ms-text-size-adjust:none;
+		}
 	}
 
 @media screen and (max-width: 480px) {
@@ -2254,6 +2339,21 @@ footer{
 			float: none !important;
 			width: 100% !important;
 			margin: 0 auto 50px;
+			}
+		
+		section.large{
+			
+			}
+		
+		section.medium{
+			article{
+				width: 100%;
+				margin-left: 0;
+				}
+			}
+		
+		section.small{
+			
 			}
 		}
 		
@@ -2275,8 +2375,6 @@ footer{
 			}
 		}
 	}
-
-*/
 
 @media print {
 	* { background: transparent !important; color: @text-color !important; text-shadow: none !important; }
