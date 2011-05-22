@@ -142,6 +142,23 @@ class UserSession {
 	
 	
 	/**
+	* Get the current user's unread message count
+	*/
+	
+	public static function unread_message_count() {
+		$db = instance(':db');
+		$sql = instance(':sel-sql');
+		
+		$query = $db->prepare($sql->getUnreadMessageCount);
+		$query->execute(array('id' => UserSession::userid()));
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$result = $query->fetch();
+		return ($result->messageCount > 0)?$result->messageCount:'';
+	}
+	
+	
+	
+	/**
 	* Refreshes user's data (used when updating)
 	*/
 	

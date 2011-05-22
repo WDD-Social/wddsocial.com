@@ -125,6 +125,8 @@ HTML;
 			$userAvatar = UserSession::user_avatar('small'); # get the users avatar
 			$userName = UserSession::user_name();
 			$userProfile = UserSession::user_profile();
+			$messageCount = UserSession::unread_message_count();
+			$messageBadge = ($messageCount > 0)?" <span class=\"badge\">{$messageCount}</span>":'';
 			
 			# output
 			return <<<HTML
@@ -132,7 +134,7 @@ HTML;
 				<section id="user-area" class="signed-in">
 					<p><strong><a href="{$userProfile}" title="{$this->lang->text('user-profile-title')}"><img src="{$userAvatar}" alt="{$userName}"/>{$userName}</a></strong></p>
 					<p><a href="/create" title="{$this->lang->text('create-title')}">{$this->lang->text('create')}</a></p>
-				 	<p><a href="/messages" title="{$this->lang->text('messages-title')}">{$this->lang->text('messages')} <!--<span class="badge">0</span>--></a></p>
+				 	<p><a href="/messages" title="{$this->lang->text('messages-title')}">{$this->lang->text('messages')}$messageBadge</a></p>
 				 	<p><a href="/account" title="{$this->lang->text('account-title')}">{$this->lang->text('account')}</a></p>
 				 	<p><a href="/signout" title="{$this->lang->text('signout-title')}">{$this->lang->text('signout')}</a></p>
 				 </section><!-- END USER AREA -->
