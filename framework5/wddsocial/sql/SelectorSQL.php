@@ -969,7 +969,7 @@ class SelectorSQL{
 						TIMESTAMPDIFF(HOUR, p.datetime, NOW()) > 23,
 						IF(
 							TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 30,
-							DATE_FORMAT(p.datetime,'%M %D, %Y at %l:%i %p'),
+							DATE_FORMAT(p.datetime,'%M %D, %Y'),
 							IF(
 								TIMESTAMPDIFF(DAY, p.datetime, NOW()) > 1,
 								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, p.datetime, NOW()), 'days ago'),
@@ -1112,7 +1112,7 @@ class SelectorSQL{
 						TIMESTAMPDIFF(HOUR, a.datetime, NOW()) > 23,
 						IF(
 							TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 30,
-							DATE_FORMAT(a.datetime,'%M %D, %Y at %l:%i %p'),
+							DATE_FORMAT(a.datetime,'%M %D, %Y'),
 							IF(
 								TIMESTAMPDIFF(DAY, a.datetime, NOW()) > 1,
 								CONCAT_WS(' ', TIMESTAMPDIFF(DAY, a.datetime, NOW()), 'days ago'),
@@ -1325,6 +1325,16 @@ class SelectorSQL{
 			SELECT avatar
 			FROM jobs
 			WHERE id = :id",
+		
+		'getJobs' => "
+			SELECT *
+			FROM (SELECT j.id, j.userID, j.title, vanityURL, company, j.datetime, jt.title AS jobType, avatar, location, compensation, description, website, COUNT(DISTINCT jf.userID) AS flagCount
+				FROM jobs AS j
+				LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
+				LEFT JOIN jobFlags AS jf ON (j.id = jf.jobID)
+				GROUP BY j.id
+				ORDER BY j.datetime DESC) AS jobs
+			WHERE jobs.flagCount < 3",
 			
 			
 		/**

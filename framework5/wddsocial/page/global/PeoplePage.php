@@ -25,7 +25,7 @@ class PeoplePage implements \Framework5\IExecutable {
 		
 		$content = render(':section', array('section' => 'begin_content'));
 		
-		$sorter = \Framework5\Request::segment(2);
+		$sorter = \Framework5\Request::segment(1);
 		$sorters = array('alphabetically' => 'alphabetically', 'newest' => 'newest', 'oldest' => 'oldest');
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
@@ -34,9 +34,9 @@ class PeoplePage implements \Framework5\IExecutable {
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'People', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/people/1/', 'active' => $active));
+				'header' => 'People', 'sort' => true, 'sorters' => $sorters, 'base_link' => '/people/', 'active' => $active));
 		
-		$paginator = new Paginator(1,18);
+		$paginator = new Paginator(2,18);
 		
 		switch ($active) {
 			case 'alphabetically':
@@ -77,7 +77,7 @@ class PeoplePage implements \Framework5\IExecutable {
 		if ($query->rowCount() > 0) {
 			# display section footer
 			$content.= render(':section',
-				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/people/{$paginator->next}/$active"));	
+				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/people/{$active}/{$paginator->next}"));	
 		}		
 		else {
 			# display section footer

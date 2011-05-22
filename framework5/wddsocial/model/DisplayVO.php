@@ -95,132 +95,58 @@ class DisplayVO{
 			case 'project':
 				$query = $this->db->prepare($this->sql->getProjectCategories);
 				$query->execute($data);
-				$all = array();
-				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($all,$row->title);
-				}
-				if(count($all) > 1){
-					$rand = array_rand($all,2);
-					foreach($rand as $categoryKey){
-						array_push($this->categories,$all[$categoryKey]);
-					}
-				}else{
-					foreach($all as $category){
-						array_push($this->categories,$category);
-					}
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				while($row = $query->fetch()){
+					array_push($this->categories,$row->title);
 				}
 				break;
 			case 'article':
 				$query = $this->db->prepare($this->sql->getArticleCategories);
 				$query->execute($data);
-				$all = array();
-				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($all,$row->title);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				while($row = $query->fetch()){
+					array_push($this->categories,$row->title);
 				}
-				if(count($all) > 1){
-					$rand = array_rand($all,2);
-					foreach($rand as $categoryKey){
-						array_push($this->categories,$all[$categoryKey]);
-					}
-				}else{
-					foreach($all as $category){
-						array_push($this->categories,$category);
-					}
-				}
-				
 				break;
 			case 'event':
 				$query = $this->db->prepare($this->sql->getEventCategories);
 				$query->execute($data);
-				$all = array();
-				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($all,$row->title);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				while($row = $query->fetch()){
+					array_push($this->categories,$row->title);
 				}
-				if(count($all) > 1){
-					$rand = array_rand($all,2);
-					foreach($rand as $categoryKey){
-						array_push($this->categories,$all[$categoryKey]);
-					}
-				}else{
-					foreach($all as $category){
-						array_push($this->categories,$category);
-					}
-				}
-				
 				break;
 			case 'job':
 				$query = $this->db->prepare($this->sql->getJobCategories);
 				$query->execute($data);
-				$all = array();
-				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($all,$row->title);
-				}
-				if(count($all) > 1){
-					$rand = array_rand($all,2);
-					foreach($rand as $categoryKey){
-						array_push($this->categories,$all[$categoryKey]);
-					}
-				}else{
-					foreach($all as $category){
-						array_push($this->categories,$category);
-					}
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				while($row = $query->fetch()){
+					array_push($this->categories,$row->title);
 				}
 				break;
 			case 'projectComment':
 				$query = $this->db->prepare($this->sql->getProjectCategories);
 				$query->execute($data);
-				$all = array();
-				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($all,$row->title);
-				}
-				if(count($all) > 1){
-					$rand = array_rand($all,2);
-					foreach($rand as $categoryKey){
-						array_push($this->categories,$all[$categoryKey]);
-					}
-				}else{
-					foreach($all as $category){
-						array_push($this->categories,$category);
-					}
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				while($row = $query->fetch()){
+					array_push($this->categories,$row->title);
 				}
 				break;
 			case 'articleComment':
 				$query = $this->db->prepare($this->sql->getArticleCategories);
 				$query->execute($data);
-				$all = array();
-				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($all,$row->title);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				while($row = $query->fetch()){
+					array_push($this->categories,$row->title);
 				}
-				if(count($all) > 1){
-					$rand = array_rand($all,2);
-					foreach($rand as $categoryKey){
-						array_push($this->categories,$all[$categoryKey]);
-					}
-				}else{
-					foreach($all as $category){
-						array_push($this->categories,$category);
-					}
-				}
-				
 				break;
 			case 'eventComment':
 				$query = $this->db->prepare($this->sql->getEventCategories);
 				$query->execute($data);
-				$all = array();
-				while($row = $query->fetch(\PDO::FETCH_OBJ)){
-					array_push($all,$row->title);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				while($row = $query->fetch()){
+					array_push($this->categories,$row->title);
 				}
-				if(count($all) > 1){
-					$rand = array_rand($all,2);
-					foreach($rand as $categoryKey){
-						array_push($this->categories,$all[$categoryKey]);
-					}
-				}else{
-					foreach($all as $category){
-						array_push($this->categories,$category);
-					}
-				}
-				
 				break;
 		}
 	}

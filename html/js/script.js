@@ -123,7 +123,7 @@ $(function() {
 			pageSegment = 2;
 			break;
 		default:
-			pageSegment = 1;
+			pageSegment = 2;
 	}
 	var pageNumber = (urlArray[pageSegment] === undefined)?1:urlArray[pageSegment];
 	

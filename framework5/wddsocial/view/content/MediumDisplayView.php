@@ -124,10 +124,14 @@ HTML;
 HTML;
 		
 		# Build categories
+		$displayCategories = $project->categories;
+		shuffle($displayCategories);
 		$categoryLinks = array();
-		foreach ($project->categories as $category) {
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+		for ($i = 0; $i < 2; $i++) {
+			if (isset($displayCategories[$i])) {
+				$searchTerm = urlencode($displayCategories[$i]);
+				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i])}\">{$displayCategories[$i]}</a>");
+			}
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -192,10 +196,14 @@ HTML;
 HTML;
 		
 		# Build categories
+		$displayCategories = $projectComment->categories;
+		shuffle($displayCategories);
 		$categoryLinks = array();
-		foreach ($projectComment->categories as $category) {
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+		for ($i = 0; $i < 2; $i++) {
+			if (isset($displayCategories[$i])) {
+				$searchTerm = urlencode($displayCategories[$i]);
+				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i])}\">{$displayCategories[$i]}</a>");
+			}
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -290,10 +298,14 @@ HTML;
 HTML;
 		
 		# build categories
+		$displayCategories = $article->categories;
+		shuffle($displayCategories);
 		$categoryLinks = array();
-		foreach ($article->categories as $category) {
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/articles/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+		for ($i = 0; $i < 2; $i++) {
+			if (isset($displayCategories[$i])) {
+				$searchTerm = urlencode($displayCategories[$i]);
+				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i])}\">{$displayCategories[$i]}</a>");
+			}
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -355,10 +367,14 @@ HTML;
 HTML;
 		
 		# Build categories
+		$displayCategories = $articleComment->categories;
+		shuffle($displayCategories);
 		$categoryLinks = array();
-		foreach ($articleComment->categories as $category) {
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/articles/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+		for ($i = 0; $i < 2; $i++) {
+			if (isset($displayCategories[$i])) {
+				$searchTerm = urlencode($displayCategories[$i]);
+				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i])}\">{$displayCategories[$i]}</a>");
+			}
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -419,10 +435,14 @@ HTML;
 HTML;
 		
 		# Build categories
+		$displayCategories = $eventComment->categories;
+		shuffle($displayCategories);
 		$categoryLinks = array();
-		foreach($eventComment->categories as $category){
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/events/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+		for ($i = 0; $i < 2; $i++) {
+			if (isset($displayCategories[$i])) {
+				$searchTerm = urlencode($displayCategories[$i]);
+				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i])}\">{$displayCategories[$i]}</a>");
+			}
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML

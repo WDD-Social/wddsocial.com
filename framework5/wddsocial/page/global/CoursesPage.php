@@ -24,7 +24,7 @@ class CoursesPage implements \Framework5\IExecutable {
 		
 		$content.= render(':section', array('section' => 'begin_content'));
 		
-		$sorter = \Framework5\Request::segment(2);
+		$sorter = \Framework5\Request::segment(1);
 		$sorters = array('month' => 'month', 'alphabetically' => 'alphabetically');
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
@@ -34,9 +34,9 @@ class CoursesPage implements \Framework5\IExecutable {
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
 				'header' => 'Courses', 'sort' => true, 'sorters' => $sorters, 
-				'base_link' => '/courses/1/', 'active' => $active));
+				'base_link' => '/courses/', 'active' => $active));
 		
-		$paginator = new Paginator(1,18);
+		$paginator = new Paginator(2,18);
 		
 		switch ($active) {
 			case 'month':
