@@ -150,6 +150,12 @@ class SearchPage implements \Framework5\IExecutable {
 				case 'month':
 					$orderBy = '`month` ASC';
 					break;
+				case 'company':
+					$orderBy = 'company ASC';
+					break;
+				case 'location':
+					$orderBy = 'location ASC';
+					break;
 				default:
 					if ($type == 'events') {
 						$orderBy = 'title ASC';
@@ -163,52 +169,58 @@ class SearchPage implements \Framework5\IExecutable {
 					break;
 			}
 			
-			$results = $this->get_results($term, $type, 0, $paginator->limit, $orderBy);
-			
-			if (count($results) > 0) {
-				switch ($type) {
-					case 'people':
-						foreach ($results as $person) {
-							$content.= render('wddsocial.view.content.WDDSocial\DirectoryUserItemView', array('content' => $person));
-						}
-						break;
-					case 'projects':
-						foreach ($results as $project) {
-							$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'project','content' => $project));
-						}
-						break;
-					case 'articles':
-						foreach ($results as $article) {
-							$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'article','content' => $article));
-						}
-						break;
-					case 'courses':
-						foreach ($results as $course) {
-							$content.= render('wddsocial.view.content.WDDSocial\DirectoryCourseItemView', $course);
-						}
-						break;
-					case 'events':
-						foreach ($results as $event) {
-							$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'event','content' => $event));
-						}
-						break;
-				}
-			}
-			else {
-				$content .= render('wddsocial.view.content.WDDSocial\NoResults',array('type' => $type));
-			}
-			
-			$next_results = $this->get_results($term, $type, $paginator->limit, $paginator->per, $orderBy);
-			
-			if (count($next_results) > 0) {
-				# display section footer
-				$content.= render(':section', array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => "$type", 'load_more_link' => "/search/$type/{$paginator->next}/$active_sorter"));	
-			}		
-			else {
-				# display section footer
+			if (!UserSession::is_authorized() and $type == 'jobs') {
+				$content .= render('wddsocial.view.content.WDDSocial\SignInPromptView',array('section' => 'job_search'));
 				$content .= render(':section', array('section' => 'end_content_section', 'id' => 'directory'));
 			}
-			
+			else {
+				$results = $this->get_results($term, $type, 0, $paginator->limit, $orderBy);
+				
+				if (count($results) > 0) {
+					switch ($type) {
+						case 'people':
+							foreach ($results as $person) {
+								$content.= render('wddsocial.view.content.WDDSocial\DirectoryUserItemView', array('content' => $person));
+							}
+							break;
+						case 'projects':
+							foreach ($results as $project) {
+								$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'project','content' => $project));
+							}
+							break;
+						case 'articles':
+							foreach ($results as $article) {
+								$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'article','content' => $article));
+							}
+							break;
+						case 'courses':
+							foreach ($results as $course) {
+								$content.= render('wddsocial.view.content.WDDSocial\DirectoryCourseItemView', $course);
+							}
+							break;
+						case 'events':
+							foreach ($results as $event) {
+								$content.= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'event','content' => $event));
+							}
+							break;
+					}
+				}
+				else {
+					$content .= render('wddsocial.view.content.WDDSocial\NoResults',array('type' => $type));
+				}
+				
+				$next_results = $this->get_results($term, $type, $paginator->limit, $paginator->per, $orderBy);
+				
+				if (count($next_results) > 0) {
+					# display section footer
+					$content.= render(':section', array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => "$type", 'load_more_link' => "/search/$type/{$paginator->next}/$active_sorter"));	
+				}		
+				else {
+					# display section footer
+					$content .= render(':section', array('section' => 'end_content_section', 'id' => 'directory'));
+				}
+			}
+						
 			$content .= render(':section', array('section' => 'end_content'));
 			
 			# display page
@@ -254,6 +266,13 @@ class SearchPage implements \Framework5\IExecutable {
 				$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->searchEvents . " ORDER BY $orderBy" . " LIMIT $start, $limit"):$this->db->prepare($this->sql->searchPublicEvents . " ORDER BY $orderBy" . " LIMIT $start, $limit");
 				$query->execute(array('term' => "%$term%"));
 				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+				return $query->fetchAll();
+				break;
+			case 'jobs':
+				import('wddsocial.model.WDDSocial\JobVO');
+				$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->searchJobs . " ORDER BY $orderBy" . " LIMIT $start, $limit"):$this->db->prepare($this->sql->searchPublicEvents . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query->execute(array('term' => "%$term%"));
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 				return $query->fetchAll();
 				break;
 			default:
