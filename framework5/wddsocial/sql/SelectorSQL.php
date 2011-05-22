@@ -2164,7 +2164,7 @@ class SelectorSQL{
 		
 		'searchPublicEvents' => "
 			SELECT *
-			FROM(SELECT e.id, e.userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+			FROM(SELECT e.id, e.userID, icsUID, e.title, e.description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
 				FROM events AS e
 				LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
 				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
