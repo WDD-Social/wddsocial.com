@@ -23,7 +23,7 @@ class ProjectsPage implements \Framework5\IExecutable {
 		
 		$content = render(':section', array('section' => 'begin_content'));
 		
-		$sorter = \Framework5\Request::segment(2);
+		$sorter = \Framework5\Request::segment(1);
 		$sorters = array(
 			'alphabetically' => $this->lang->text('sort-alphabetically'), 
 			'newest' => $this->lang->text('sort-newest'), 
@@ -36,9 +36,9 @@ class ProjectsPage implements \Framework5\IExecutable {
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
 				'header' => $this->lang->text('projects-header'), 'sort' => true, 
-				'sorters' => $sorters, 'base_link' => '/projects/1/', 'active' => $active));
+				'sorters' => $sorters, 'base_link' => '/projects/', 'active' => $active));
 		
-		$paginator = new Paginator(1,18);
+		$paginator = new Paginator(2,18);
 		
 		switch ($active) {
 			case 'alphabetically':
@@ -77,7 +77,7 @@ class ProjectsPage implements \Framework5\IExecutable {
 		if ($query->rowCount() > 0) {
 			# display section footer
 			$content.= render(':section',
-				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/projects/{$paginator->next}/$active"));	
+				array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'posts', 'load_more_link' => "/projects/{$active}/{$paginator->next}"));	
 		}		
 		else {
 			# display section footer
