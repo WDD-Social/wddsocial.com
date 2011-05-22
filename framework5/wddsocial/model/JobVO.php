@@ -30,19 +30,9 @@ class JobVO{
 		$data = array('id' => $this->id);
 		$query = $this->db->prepare($this->sql->getJobCategories);
 		$query->execute($data);
-		$all = array();
-		while($row = $query->fetch(\PDO::FETCH_OBJ)){
-			array_push($all,$row->title);
-		}
-		if(count($all) > 1){
-			$rand = array_rand($all,2);
-			foreach($rand as $categoryKey){
-				array_push($this->categories,$all[$categoryKey]);
-			}
-		}else{
-			foreach($all as $category){
-				array_push($this->categories,$category);
-			}
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		while($row = $query->fetch()){
+			array_push($this->categories,$row->title);
 		}
 	}
 }
