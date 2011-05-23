@@ -90,25 +90,40 @@ class SearchPage implements \Framework5\IExecutable {
 			$sorter = \Framework5\Request::segment(3);
 			switch ($type) {
 				case 'courses':
-					$sorters = array('month', 'alphabetically');
-					$default = 1;
+					$sorters = array(
+						'month' => $this->lang->text('sort-month'),
+						'alphabetically' => $this->lang->text('sort-alphabetically')
+					);
+					$default = 'month';
 					break;
 				case 'events':
-					$sorters = array('upcoming', 'alphabetically', 'newest', 'oldest');
-					$default = 0;
+					$sorters = array(
+						'upcoming' => $this->lang->text('sort-upcoming'),
+						'alphabetically' => $this->lang->text('sort-alphabetically'),
+						'newest' => $this->lang->text('sort-newest'),
+						'oldest' => $this->lang->text('sort-oldest')
+					);
+					$default = 'upcoming';
 				case 'jobs':
-					$sorters = array('newest', 'company', 'location');
-					$default = 0;
+					$sorters = array(
+						'newest' => $this->lang->text('sort-newest'),
+						'company' => $this->lang->text('sort-company'),
+						'location' => $this->lang->text('sort-location')
+					);
+					$default = 'newest';
 					break;
 				default:
-					$sorters = array('alphabetically', 'newest', 'oldest');
-					$default = 0;
+					$sorters = array(
+						'alphabetically' => $this->lang->text('sort-alphabetically'),
+						'newest' => $this->lang->text('sort-newest'),
+						'oldest' => $this->lang->text('sort-oldest')
+					);
+					$default = 'newest';
 					break;
 			}
 			
 			# set active sorter
-			if (isset($sorter) and in_array($sorter, $sorters)) $active_sorter = $sorter;
-			else if (isset($sorter) and !in_array($sorter,$sorters)) redirect('/');
+			if (isset($sorter) and in_array($sorter, array_keys($sorters))) $active_sorter = $sorter;
 			else $active_sorter = $sorters[$default];
 			
 			# build content
