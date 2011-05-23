@@ -142,7 +142,9 @@ $(function() {
 		var autocomplete = $('#autocomplete');
 		$(autocomplete).empty();
 		for (var result in results) {
-			$('<li>' + results[result] + '</li>').appendTo(autocomplete);
+			var item = results[result];
+			var extra = (item.extra === undefined)?'':'<span class="extra">' + item.extra + '</span>';
+			$('<li><span class="term">' + item.title + '</span> ' + extra + '</li>').appendTo(autocomplete);
 		}
 	}
 	
@@ -168,8 +170,7 @@ $(function() {
 					var autocompleteResults = [];
 					if (obj.status) {
 						for (var result in obj.results) {
-							var item = obj.results[result];
-							autocompleteResults.push(item.title);
+							autocompleteResults.push(obj.results[result]);
 						}
 						populateAutocomplete(autocompleteResults);
 						
@@ -192,7 +193,7 @@ $(function() {
 	});
 						
 	$('#autocomplete > li').live('click',function(){
-		populateInput($(this).text());
+		populateInput($(this).find('.term').text());
 	});
 	
 	$('.autocompleter').live('focusout',function(){
