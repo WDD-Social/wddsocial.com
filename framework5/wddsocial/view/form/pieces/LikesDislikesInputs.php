@@ -29,14 +29,14 @@ HTML;
 		foreach ($options['likes'] as $like) {
 			$html .= <<<HTML
 
-							<input type="text" name="likes[]" id="like" placeholder="{$categories[$i-1]->title}" value="{$like}" />
+							<input type="text" name="likes[]" id="like" class="autocompleter" data-autocomplete="categories" autocomplete="off" placeholder="{$categories[$i-1]->title}" value="{$like}" />
 HTML;
 			$i++;
 		}
 		for ($i; $i < $randomLimit; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="likes[]" id="like" placeholder="{$categories[$i-1]->title}" />
+							<input type="text" name="likes[]" id="like" class="autocompleter" data-autocomplete="categories" autocomplete="off" placeholder="{$categories[$i-1]->title}" />
 HTML;
 		}
 		$html .= <<<HTML
@@ -62,14 +62,14 @@ HTML;
 		foreach ($options['dislikes'] as $dislike) {
 			$html .= <<<HTML
 
-							<input type="text" name="dislikes[]" id="dislike" placeholder="{$categories[$i-1]->title}" value="{$dislike}" />
+							<input type="text" name="dislikes[]" id="dislike" class="autocompleter" data-autocomplete="categories" autocomplete="off" placeholder="{$categories[$i-1]->title}" value="{$dislike}" />
 HTML;
 			$i++;
 		}
 		for ($i; $i < $randomLimit; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="dislikes[]" id="dislike" placeholder="{$categories[$i-1]->title}" />
+							<input type="text" name="dislikes[]" id="dislike" class="autocompleter" data-autocomplete="categories" autocomplete="off" placeholder="{$categories[$i-1]->title}" />
 HTML;
 		}
 		$html .= <<<HTML

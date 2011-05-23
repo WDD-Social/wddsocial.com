@@ -1,7 +1,5 @@
 <?php
 
-namespace Framework5;
-
 /** 
 * Framework5 Front Controller
 * 	all http requests are handled by this file.
@@ -20,10 +18,10 @@ try {
 	date_default_timezone_set('America/New_York');
 	
 	# get application controller from Framework5\Router, base on the uri segment
-	$package_name = Router::resolve(Request::segment(0));
+	$package_name = \Framework5\Router::resolve(\Framework5\Request::segment(0));
 	
 	# get application fully qualified name
-	$package = new Package($package_name);
+	$package = new \Framework5\Package($package_name);
 	
 	# check if the application is a valid package
 	if ($package->path_valid()) {
@@ -44,12 +42,12 @@ try {
 		debug('Application execution complete');
 		
 		# log execution stats
-		if (DEBUG_MODE and Settings::$log_execution)
-			Logger::log_execution();
+		if (DEBUG_MODE and \Framework5\Settings::$log_execution)
+			\Framework5\Logger::log_execution();
 		
 		# log debug information
-		if (DEBUG_MODE and Settings::$log_debug) 
-			Logger::log_debug(Debugger::dump());
+		if (DEBUG_MODE and \Framework5\Settings::$log_debug) 
+			\Framework5\Logger::log_debug(\Framework5\Debugger::dump());
 		
 	}
 	
