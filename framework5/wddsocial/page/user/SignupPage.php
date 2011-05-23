@@ -90,24 +90,36 @@ class SignupPage implements \Framework5\IExecutable {
 		$admin_sql = instance(':admin-sql');
 		$errors = array();
 		
-		# Check if email is unique
-		$query = $db->prepare($val_sql->checkIfUserEmailExists);
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$data = array('email' => $_POST['email']);
-		$query->execute($data);
-		$row = $query->fetch();
-		if ($row->count > 0) {
-			array_push($errors, 'email');
+		$email = filter_input(INPUT_POST, 'email', FILTER_VALIDATE_EMAIL);
+		if ($email) {
+			# Check if email is unique
+			$query = $db->prepare($val_sql->checkIfUserEmailExists);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$data = array('email' => $email);
+			$query->execute($data);
+			$row = $query->fetch();
+			if ($row->count > 0) {
+				array_push($errors, 'email');
+			}
+		}
+		else {
+			
 		}
 		
-		# Check if Full Sail email is unique
-		$query = $db->prepare($val_sql->checkIfUserFullSailEmailExists);
-		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$data = array('fullsailEmail' => $_POST['full-sail-email']);
-		$query->execute($data);
-		$row = $query->fetch();
-		if ($row->count > 0) {
-			array_push($errors, 'Full Sail email');
+		$fsemail = filter_input(INPUT_POST, 'full-sail-email', FILTER_VALIDATE_EMAIL);
+		if ($fsemail and (stristr($fsemail, '@fullsail.com') or stristr($fsemail, '@fullsail.edu'))) {
+			# Check if Full Sail email is unique
+			$query = $db->prepare($val_sql->checkIfUserFullSailEmailExists);
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$data = array('fullsailEmail' => $fsemail);
+			$query->execute($data);
+			$row = $query->fetch();
+			if ($row->count > 0) {
+				array_push($errors, 'Full Sail email');
+			}
+		}
+		else {
+			return new FormResponse(false, "Your Full Sail email must be an actual Full Sail email (fullsail.edu or fullsail.com).");
 		}
 		
 		# Display errors if information is not unique.
