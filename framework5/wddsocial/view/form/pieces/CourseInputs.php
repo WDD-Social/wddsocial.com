@@ -38,7 +38,7 @@ HTML;
 			foreach ($options['courses'] as $course) {
 				$html .= <<<HTML
 
-							<input type="text" name="courses[]" placeholder="{$courses[$i-1]->id}" value="{$course->id}" />
+							<input type="text" name="courses[]" class="autocompleter" data-autocomplete="courses" autocomplete="off" placeholder="{$courses[$i-1]->id}" value="{$course->id}" />
 HTML;
 				$i++;
 			}
@@ -46,7 +46,7 @@ HTML;
 		for ($i; $i < $randomLimit; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="courses[]" placeholder="{$courses[$i-1]->id}" />
+							<input type="text" name="courses[]" class="autocompleter" data-autocomplete="courses" autocomplete="off" placeholder="{$courses[$i-1]->id}" />
 HTML;
 		}
 		$html .= <<<HTML
