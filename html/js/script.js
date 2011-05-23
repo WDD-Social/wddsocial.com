@@ -13,17 +13,20 @@ $(function() {
 	
 	
 	
-	/* Filters, cardstacks, add more, flagging, fancybox
+	/* Fancybox
 	****************************************************************** */
 	
-	// Fancybox setup
 	$('a.fancybox').fancybox({
 		titleShow: false,
 		cyclic: true,
 		showCloseButton: false
 	});
 	
-	// "Add Another" link in forms
+	
+	
+	/* Add Another links
+	****************************************************************** */
+	
 	$('.add-more').live('click',function(){
 		var addMoreLink = $(this);
 		var newHTML = $(this).prev().clone(true);
@@ -42,7 +45,11 @@ $(function() {
 		return false;
 	});
 	
-	// filtering function
+	
+	
+	/* Filtering
+	****************************************************************** */
+	
 	var filter = function(type, parent, duration){
 		if(typeof duration == 'undefined'){
 			duration = 500;
@@ -64,7 +71,11 @@ $(function() {
 		return false;
 	});
 	
-	// Changing user type on account page
+	
+	
+	/* Account page user type switching
+	****************************************************************** */
+	
 	$('#user-type.radio input[type="radio"]').live('change', function(){
 		var type = $(this).attr('id');
 		var user = $(this).parent().parent().data('user');
@@ -85,7 +96,11 @@ $(function() {
 		});
 	});
 	
-	// Ajax Flagging
+	
+	
+	/* Flagging
+	****************************************************************** */
+	
 	$('.secondary a.flag').live('click',function(){
 		var flag = $(this);
 		$(flag).toggleClass('current');
@@ -107,6 +122,59 @@ $(function() {
 			});
 		}
 		return false;
+	});
+	
+	
+	
+	/* Autocompleters
+	****************************************************************** */
+	
+	var removeAutocomplete = function(){
+		if ($('#autocomplete').length) {
+			$('#autocomplete').remove();
+		}
+	}
+	
+	var populateAutocomplete = function(results){
+		if (!$('#autocomplete').length) {
+			$('<ul id="autocomplete"></ul>').appendTo('body');
+		}
+		var autocomplete = $('#autocomplete');
+		$(autocomplete).empty();
+		for (var result in results) {
+			$('<li>' + results[result] + '</li>').appendTo(autocomplete);
+		}
+	}
+	
+	$('.autocompleter').live('keyup',function(){
+		var input = $(this);
+		var searchTerm = $(input).val();
+		if (searchTerm.length > 0 && searchTerm !== '') {
+			$.ajax({
+				url: '/ajax/autocomplete',
+				data: {
+					type: $(input).data('autocomplete'),
+					term: searchTerm
+				},
+				success: function(response){
+					var obj = $.parseJSON(response);
+					var autocompleteResults = [];
+					if (obj.status) {
+						for (var result in obj.results) {
+							var user = obj.results[result];
+							autocompleteResults.push(user.name);
+						}
+						populateAutocomplete(autocompleteResults);
+					}
+					else {
+						removeAutocomplete();
+					}
+				}
+			});
+		}
+		else {
+			removeAutocomplete();
+		}
 	});
 	
 	
