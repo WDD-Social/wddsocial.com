@@ -1676,12 +1676,23 @@ section.location-and-time{
 	
 	li{
 		padding: 2px 7px;
+		font-weight: bold;
+		
+		.extra{
+			margin-left: 1%;
+			color: @text-light-color;
+			font-weight: 300;
+			}
 		}
 	
 	li:hover, li:focus{
 		color: #fff;
 		background-color: @green-light-15;
 		cursor: pointer;
+		
+		.extra{
+			color: #fff;
+			}
 		}
 	
 	li:last-child{
