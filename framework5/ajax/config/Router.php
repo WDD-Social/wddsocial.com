@@ -26,6 +26,9 @@ class Router implements \Framework5\IRouter {
 			case 'content':
 				return 'ajax.request.Ajax\Content';
 				
+			case 'autocomplete':
+				return 'ajax.request.Ajax\Autocompleter';
+				
 			case 'flag':
 				return 'ajax.request.Ajax\Flag';
 			
