@@ -38,7 +38,7 @@ HTML;
 
 						<fieldset>
 							<label for="team">$singular</label>
-							<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" placeholder="{$users[$i-1]->name}" value="{$team->firstName} {$team->lastName}" />
+							<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" autocomplete="off" placeholder="{$users[$i-1]->name}" value="{$team->firstName} {$team->lastName}" />
 							<label for="role">Project Role</label>
 							<input type="text" name="roles[]" id="role" placeholder="{$roles[$i-1]->title}" value="{$team->role}" />
 						</fieldset>
@@ -52,7 +52,7 @@ HTML;
 
 						<fieldset>
 							<label for="team">$singular</label>
-							<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" placeholder="{$users[$i-1]->name}" value="{$nameValue}" />
+							<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" autocomplete="off" placeholder="{$users[$i-1]->name}" value="{$nameValue}" />
 							<label for="role">Project Role</label>
 							<input type="text" name="roles[]" id="role" placeholder="{$roles[$i-1]->title}" />
 						</fieldset>
@@ -69,7 +69,7 @@ HTML;
 					foreach ($options['team'] as $team) {
 						$html .= <<<HTML
 
-							<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" placeholder="{$users[$i-1]->name}" value="{$team->firstName} {$team->lastName}" />
+							<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" autocomplete="off" placeholder="{$users[$i-1]->name}" value="{$team->firstName} {$team->lastName}" />
 HTML;
 						$i++;
 					}
@@ -78,7 +78,7 @@ HTML;
 					$nameValue = ($i == 1)?"{$_SESSION['user']->firstName} {$_SESSION['user']->lastName}":'';
 					$html .= <<<HTML
 
-						<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" placeholder="{$users[$i-1]->name}" value="{$nameValue}" />
+						<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" autocomplete="off" placeholder="{$users[$i-1]->name}" value="{$nameValue}" />
 HTML;
 				}
 				$html .= <<<HTML
