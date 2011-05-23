@@ -1660,12 +1660,39 @@ section.location-and-time{
 	}
 
 #autocomplete{
-	display: none;
-	position: fixed;
-	top: 30px;
+	position: absolute;
 	background-color: #fff;
-	padding: 10px;
+	border: 1px solid @text-light-color;
+	.border-radius(7px);
+	-moz-border-top-left-radius: 0;
+	-moz-border-top-right-radius: 0;
+	-webkit-border-top-left-radius: 0;
+	-webkit-border-top-right-radius: 0;
+	border-top-left-radius: 0;
+	border-top-right-radius: 0;
+	.box-shadow(0, 2px, 5px, rgba(0,0,0,.25));
 	list-style: none;
+	z-index: 1000;
+	
+	li{
+		padding: 2px 7px;
+		}
+	
+	li:hover, li:focus{
+		color: #fff;
+		background-color: @green-light-15;
+		cursor: pointer;
+		}
+	
+	li:last-child{
+		.border-radius(5px);
+		-moz-border-top-left-radius: 0;
+		-moz-border-top-right-radius: 0;
+		-webkit-border-top-left-radius: 0;
+		-webkit-border-top-right-radius: 0;
+		border-top-left-radius: 0;
+		border-top-right-radius: 0;
+		}
 	}
 
 .badge{
