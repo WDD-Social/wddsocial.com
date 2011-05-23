@@ -2217,7 +2217,7 @@ class SelectorSQL{
 			ORDER BY title",
 			
 		'autocompleteCourses' => "
-			SELECT id AS `title`
+			SELECT id AS `title`, title AS `extra`
 			FROM courses
 			WHERE id LIKE :term OR title LIKE :term
 			ORDER BY id",
