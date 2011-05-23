@@ -286,4 +286,25 @@ $(function() {
 		});
 		return false;
 	});
+	
+	
+	
+	/* Form validation
+	****************************************************************** */
+	
+	$('input[type="password"].check-length').live('keyup',function(){
+		if ($(this).val().length > 0) {
+			if ($(this).val().length >= 6) {
+				$(this).addClass('pass');
+				$(this).removeClass('fail');
+			}
+			else {
+				$(this).addClass('fail');
+				$(this).removeClass('pass');
+			}
+		}
+		else {
+			$(this).removeClass('pass fail');
+		}
+	});
 });

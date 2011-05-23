@@ -70,7 +70,7 @@ class AccountView implements \Framework5\IView {
 						</fieldset>
 						<fieldset>
 							<label for="new-password">New Password</label>
-							<input type="password" name="new-password" id="new-password" />
+							<input type="password" name="new-password" id="new-password" class="check-length" />
 							<small>6 or more characters, please</small>
 						</fieldset>
 						<input type="submit" name="submit" value="Save" />

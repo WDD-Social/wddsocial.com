@@ -34,7 +34,7 @@ class SignupView implements \Framework5\IView {
 						</fieldset>
 						<fieldset>
 							<label for="password">Password</label>
-							<input type="password" name="password" id="password" />
+							<input type="password" name="password" id="password" class="check-length" />
 							<small>6 or more characters</small>
 						</fieldset>
 HTML;
