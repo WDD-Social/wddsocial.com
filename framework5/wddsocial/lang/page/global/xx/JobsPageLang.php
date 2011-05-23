@@ -1,7 +1,8 @@
 <?php
 
 /*
-* WDD Social: Language Pack for 
+* WDD Social: Language Pack for JobsPage
+* Language: xx
 */
 
 class JobsPageLang implements \Framework5\ILanguagePack {
@@ -11,44 +12,44 @@ class JobsPageLang implements \Framework5\ILanguagePack {
 		switch ($id) {
 			
 			case 'page-title':
-				return 'Jobs';
+				return 'XX'; # Jobs
 			
 			
 			# content filters
 			case 'filter-all':
-				return 'all';
+				return 'XX'; # all
 			
 			case 'filter-full-time':
-				return 'full-time';
+				return 'XX'; # full-time
 			
 			case 'filter-part-time':
-				return 'part-time';
+				return 'XX'; # part-time
 			
 			case 'filter-contract':
-				return 'contract';
+				return 'XX'; # contract
 			
 			case 'filter-freelance':
-				return 'freelance';
+				return 'XX'; # freelance
 			
 			case 'filter-internship':
-				return 'internship';
+				return 'XX'; # internship
 			
 			
 			# content sorters
 			case 'sort-company':
-				return 'company';
+				return 'XX'; # company
 			
 			case 'sort-location':
-				return 'location';
+				return 'XX'; # location
 			
 			case 'sort-newest':
-				return 'newest';
+				return 'XX'; # newest
 			
 			case 'search_maps':
-				return "Search Google Maps for {$var}";
+				return "XX {$var}"; # Search Google Maps for {$var}
 			
 			case 'see_all_jobs':
-				return "See {$var} Job Postings";
+				return "XX {$var} XX"; # See {$var} Job Postings
 			
 			default:
 				throw new Exception("Language pack content '$id' not found");
