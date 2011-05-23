@@ -2201,6 +2201,17 @@ class SelectorSQL{
 			
 			
 		/**
+		* Autocomplete queries
+		*/
+			
+		'autocompleteUsers' => "
+			SELECT id, CONCAT_WS(' ',firstName,lastName) AS `name`
+			FROM users
+			WHERE firstName LIKE :term OR lastName LIKE :term OR CONCAT_WS(' ',firstName,lastName) LIKE :term
+			ORDER BY firstName, lastName",
+			
+			
+		/**
 		* Messaging queries
 		*/
 			
