@@ -2231,7 +2231,7 @@ class SelectorSQL{
 			SELECT COUNT(*) AS messageCount
 			FROM messages AS m
 			LEFT JOIN messageStatuses AS ms ON (m.status = ms.id)
-			WHERE toUserID = 1 AND ms.title = 'unread'"
+			WHERE toUserID = :id AND ms.title = 'unread'"
 	
 						
 	);

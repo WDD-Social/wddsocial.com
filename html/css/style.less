@@ -1922,6 +1922,14 @@ input[type="text"].error, input[type="email"].error, input[type="password"].erro
 	border-color: fadeout(@red,30%);
 	.box-shadow-inset(0, 1px, 1px, rgba(0,0,0,.15), 0 0 3px fadeout(@red,40%));
 	}
+
+input[type="text"].fail, input[type="email"].fail, input[type="password"].fail, textarea.fail{
+	background: #fff url('../images/site/icon-fail.png') no-repeat 99% center;
+	}
+
+input[type="text"].pass, input[type="email"].pass, input[type="password"].pass, textarea.pass{
+	background: #fff url('../images/site/icon-pass.png') no-repeat 99% center;
+	}
 	
 input + input{
 	margin-top: 4.25%;
