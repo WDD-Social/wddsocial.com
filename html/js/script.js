@@ -197,7 +197,7 @@ $(function() {
 	});
 	
 	$('.autocompleter').live('focusout',function(){
-		setTimeout(removeAutocomplete,100);
+		setTimeout(removeAutocomplete,250);
 	});
 	
 	
