@@ -13,6 +13,7 @@ class EventsPage implements \Framework5\IExecutable {
 	public function __construct() {
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.EventsPageLang');
 	}
 	
 	
@@ -20,17 +21,15 @@ class EventsPage implements \Framework5\IExecutable {
 	public function execute() {
 		import('wddsocial.model.WDDSocial\DisplayVO');
 		
-		# display site header
-		$page_title = 'Events';
 		
 		$content.= render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(1);
 		$sorters = array(
-			'upcoming' => 'upcoming', 
-			'alphabetically' => 'alphabetically', 
-			'newest' => 'newest', 
-			'oldest' => 'oldest');
+			'upcoming'       => $this->lang->text('sort-upcoming'),
+			'alphabetically' => $this->lang->text('sort-alphabetically'),
+			'newest'         => $this->lang->text('sort-newest'),
+			'oldest'         => $this->lang->text('sort-oldest'));
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
 		else $active = $sorters['upcoming'];
@@ -38,7 +37,7 @@ class EventsPage implements \Framework5\IExecutable {
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'Events', 'sort' => true, 'sorters' => $sorters, 
+				'header' => $this->lang->text('page-header'), 'sort' => true, 'sorters' => $sorters, 
 				'base_link' => '/events/', 'active' => $active));
 		
 		$paginator = new Paginator(2,18);
@@ -101,6 +100,6 @@ class EventsPage implements \Framework5\IExecutable {
 		
 		# display page
 		echo render(':template', 
-			array('title' => $page_title, 'content' => $content));
+			array('title' => $this->lang->text('page-title'), 'content' => $content));
 	}
 }
