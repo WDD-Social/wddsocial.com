@@ -2,7 +2,7 @@
 
 /*
 * WDD Social: Language Pack for CoursesPage
-* Language: en
+* Language: xx
 */
 
 class CoursesPageLang implements \Framework5\ILanguagePack {
@@ -12,18 +12,18 @@ class CoursesPageLang implements \Framework5\ILanguagePack {
 		switch ($id) {
 			
 			case 'page-title':
-				return 'Courses';
+				return 'XX'; # Courses
 			
 			case 'page-header':
-				return 'Courses';
+				return 'XX'; # Courses
 			
 			
 			# content sorters
 			case 'sort-month':
-				return 'month';
+				return 'XX'; # month
 			
 			case 'sort-alphabetically':
-				return 'alphabetically';
+				return 'XX'; # alphabetically
 			
 			default:
 				throw new Exception("Language pack content '$id' not found");
