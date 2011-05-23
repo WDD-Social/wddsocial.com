@@ -12,6 +12,7 @@ class CoursesPage implements \Framework5\IExecutable {
 	public function __construct() {
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.page.global.CoursesPageLang');
 	}
 	
 	
@@ -19,13 +20,12 @@ class CoursesPage implements \Framework5\IExecutable {
 	public function execute() {
 		import('wddsocial.model.WDDSocial\CourseVO');
 		
-		# display site header
-		$page_title = 'Courses';
-		
 		$content.= render(':section', array('section' => 'begin_content'));
 		
 		$sorter = \Framework5\Request::segment(1);
-		$sorters = array('month' => 'month', 'alphabetically' => 'alphabetically');
+		$sorters = array(
+			'month'          => $this->lang->text('sort-month'), 
+			'alphabetically' => $this->lang->text('sort-alphabetically'));
 		
 		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
 		else $active = $sorters['month'];
@@ -33,7 +33,7 @@ class CoursesPage implements \Framework5\IExecutable {
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
 				'classes' => array('mega', 'with-secondary'), 
-				'header' => 'Courses', 'sort' => true, 'sorters' => $sorters, 
+				'header' => $this->lang->text('page-header'), 'sort' => true, 'sorters' => $sorters, 
 				'base_link' => '/courses/', 'active' => $active));
 		
 		$paginator = new Paginator(2,18);
@@ -69,6 +69,6 @@ class CoursesPage implements \Framework5\IExecutable {
 		
 		# display page
 		echo render(':template', 
-			array('title' => $page_title, 'content' => $content));
+			array('title' => $this->lang->text('page-title'), 'content' => $content));
 	}
 }

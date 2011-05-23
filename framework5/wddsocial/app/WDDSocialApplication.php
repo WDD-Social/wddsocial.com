@@ -83,6 +83,9 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		if (\WDDSocial\UserSession::is_authorized()) {
 			Lang::language(\WDDSocial\UserSession::user_lang());
 		}
+		else {
+			Lang::language(\WDDSocial\UserSession::visitor_lang());
+		}
 	}
 	
 	

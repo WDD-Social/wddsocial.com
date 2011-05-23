@@ -23,21 +23,37 @@ class JobsPage implements \Framework5\IExecutable {
 		
 		$content = render(':section', array('section' => 'begin_content'));
 		
-		$types = array('all','full-time','part-time','contract','freelance','internship');
+		# job types filter
 		$type = \Framework5\Request::segment(1);
-		if (!isset($type) or $type == '') $type = 'all';
-		if (!in_array($type, $types)) redirect('/');
+		$job_types = array(
+			'all'        => $this->lang->text('filter-all'),
+			'full-time'  => $this->lang->text('filter-full-time'),
+			'part-time'  => $this->lang->text('filter-part-time'),
+			'contract'   => $this->lang->text('filter-contract'),
+			'freelance'  => $this->lang->text('filter-freelance'),
+			'internship' => $this->lang->text('filter-internship'));
 		
+		# if type is not set
+		if (!isset($type) or empty($type)) $type = 'all';
+		
+		# if invalid job type
+		if (!in_array($type, array_keys($job_types))) redirect('/');
+		
+		# job sorters
 		$sorter = \Framework5\Request::segment(2);
 		$sorters = array(
-			'newest' => $this->lang->text('sort-newest'),
-			'company' => $this->lang->text('sort-company'),
+			'newest'   => $this->lang->text('sort-newest'),
+			'company'  => $this->lang->text('sort-company'),
 			'location' => $this->lang->text('sort-location'));
 		
-		if (isset($sorter) and in_array($sorter, array_keys($sorters))) $active_sorter = $sorter;
-		else $active_sorter = $sorters['newest'];
+		if (isset($sorter) and in_array($sorter, array_keys($sorters))) 
+			$active_sorter = $sorter;
+		else $active_sorter = array_shift(array_keys($sorters));
 		
-		$headers = render('wddsocial.view.content.WDDSocial\JobsPageHeaderView', array('types' => $types, 'active' => $type, 'sorter' => $active_sorter));
+		
+		$headers = render('wddsocial.view.content.WDDSocial\JobsPageHeaderView', 
+			array('types' => $job_types, 'active' => $type, 'sorter' => $active_sorter));
+		
 		
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
@@ -45,57 +61,22 @@ class JobsPage implements \Framework5\IExecutable {
 				'header' => $headers, 'sort' => true, 
 				'sorters' => $sorters, 'base_link' => "/jobs/{$type}/", 'active' => $active_sorter));
 		
+		
 		if (!UserSession::is_authorized()) {
-			$content .= render('wddsocial.view.content.WDDSocial\SignInPromptView',array('section' => 'jobs'));
+			$content .= render('wddsocial.view.content.WDDSocial\SignInPromptView', array('section' => 'jobs'));
 			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'directory'));
 		}
+		
+		
 		else {
 			$paginator = new Paginator(3,18);
 			
-			switch ($type) {
-				case 'all':
-					$where =  '';
-					break;
-				case 'full-time':
-					$where = " AND jobType = 'full-time'";
-					break;
-				case 'part-time':
-					$where = " AND jobType = 'part-time'";
-					break;
-				case 'contract':
-					$where = " AND jobType = 'contract'";
-					break;
-				case 'freelance':
-					$where = " AND jobType = 'freelance'";
-					break;
-				case 'internship':
-					$where = " AND jobType = 'internship'";
-					break;
-				default:
-					$where = '';
-					break;
-			}
+			$where = $this->query_type($type);
+			$orderBy = $this->query_sorter($active_sorter);
 			
-			switch ($active_sorter) {
-				case 'newest':
-					$orderBy = '`datetime` DESC';
-					break;
-				
-				case 'company':
-					$orderBy = 'company ASC';
-					break;
-				
-				case 'location':
-					$orderBy = 'location ASC';
-					break;
-				
-				default:
-					$orderBy = '`datetime` DESC';
-					break;
-			}
-			
-			# query
-			$query = $this->db->prepare($this->sql->getJobs . "$where ORDER BY $orderBy LIMIT 0, {$paginator->limit}");
+			# get jobs
+			$query = $this->db->prepare(
+				$this->sql->getJobs . "$where ORDER BY $orderBy LIMIT 0, {$paginator->limit}");
 			$query->execute();
 			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
 			
@@ -106,31 +87,92 @@ class JobsPage implements \Framework5\IExecutable {
 						array('type' => 'job','content' => $item));
 				}
 			}
+			
 			else {
 				$content .= render('wddsocial.view.content.WDDSocial\NoJobs', array('type' => $type));
 			}
 			
-			$query = $this->db->prepare($this->sql->getJobs . "$where ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
+			
+			$query = $this->db->prepare(
+				$this->sql->getJobs . "$where ORDER BY $orderBy LIMIT {$paginator->limit}, {$paginator->per}");
 			$query->execute();
 			$query->setFetchMode(\PDO::FETCH_OBJ);
 			$query->fetch();
+			
 			
 			if ($query->rowCount() > 0) {
 				# display section footer
 				$content.= render(':section',
 					array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => 'jobs', 'load_more_link' => "/jobs/{$active}/{$paginator->next}"));	
-			}		
+			}
+			
 			else {
 				# display section footer
 				$content.= render(':section',
 					array('section' => 'end_content_section', 'id' => 'directory'));
 			}
 		}
+		
+		
 				
 		$content .= render(':section', array('section' => 'end_content'));
 		
 		# display page
 		echo render(':template', 
 			array('title' => $this->lang->text('page-title'), 'content' => $content));
+	}
+	
+	
+	
+	/**
+	* 
+	*/
+	
+	private function query_type($type) {
+		switch ($type) {
+			case 'all':
+				return '';
+			
+			case 'full-time':
+				return " AND jobType = 'full-time'";
+			
+			case 'part-time':
+				return " AND jobType = 'part-time'";
+			
+			case 'contract':
+				return " AND jobType = 'contract'";
+			
+			case 'freelance':
+				return " AND jobType = 'freelance'";
+			
+			case 'internship':
+				return " AND jobType = 'internship'";
+			
+			default:
+				return '';
+			
+		}
+	}
+	
+	
+	
+	/**
+	* 
+	*/
+	
+	private function query_sorter($active_sorter) {
+		switch ($active_sorter) {
+			case 'newest':
+				return '`datetime` DESC';
+			
+			case 'company':
+				return 'company ASC';
+			
+			case 'location':
+				return 'location ASC';
+			
+			default:
+				return '`datetime` DESC';
+		}
 	}
 }

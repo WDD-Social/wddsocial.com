@@ -23,6 +23,11 @@ class Router implements \Framework5\IRouter {
 				return 'wddsocial.page.global.WDDSocial\IndexPage';
 			
 			
+			# temp dev pages
+			case 'lang':
+				return 'wddsocial.page.temp.WDDSocial\SetLangPage';
+			
+			
 			# main navigation
 			case 'people':
 				return 'wddsocial.page.global.WDDSocial\PeoplePage';
