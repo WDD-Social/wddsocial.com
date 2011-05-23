@@ -104,6 +104,7 @@ class SearchPage implements \Framework5\IExecutable {
 						'oldest' => $this->lang->text('sort-oldest')
 					);
 					$default = 'upcoming';
+					break;
 				case 'jobs':
 					$sorters = array(
 						'newest' => $this->lang->text('sort-newest'),
