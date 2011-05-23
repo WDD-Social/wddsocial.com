@@ -28,7 +28,7 @@ HTML;
 			foreach ($options['categories'] as $category) {
 				$html .= <<<HTML
 
-							<input type="text" name="categories[]" placeholder="{$categories[$i-1]->title}" value="{$category->title}" />
+							<input type="text" name="categories[]" class="autocompleter" data-autocomplete="categories" autocomplete="off" placeholder="{$categories[$i-1]->title}" value="{$category->title}" />
 HTML;
 				$i++;
 			}
@@ -36,7 +36,7 @@ HTML;
 		for ($i; $i < $randomLimit; $i++) {
 			$html .= <<<HTML
 
-							<input type="text" name="categories[]" placeholder="{$categories[$i-1]->title}" />
+							<input type="text" name="categories[]" class="autocompleter" data-autocomplete="categories" autocomplete="off" placeholder="{$categories[$i-1]->title}" />
 HTML;
 		}
 		$html .= <<<HTML
