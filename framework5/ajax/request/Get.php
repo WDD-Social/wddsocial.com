@@ -13,7 +13,7 @@ class Get implements \Framework5\IExecutable {
 	public function execute() {
 		
 		# check user auth
-		if (!\WDDSocial\UserSession::is_authorized()) redirect('/');
+		if (!\WDDSocial\UserSession::is_authorized()) return false;
 		
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
