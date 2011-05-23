@@ -2205,10 +2205,22 @@ class SelectorSQL{
 		*/
 			
 		'autocompleteUsers' => "
-			SELECT id, CONCAT_WS(' ',firstName,lastName) AS `name`
+			SELECT CONCAT_WS(' ',firstName,lastName) AS title
 			FROM users
 			WHERE firstName LIKE :term OR lastName LIKE :term OR CONCAT_WS(' ',firstName,lastName) LIKE :term
 			ORDER BY firstName, lastName",
+			
+		'autocompleteCategories' => "
+			SELECT title
+			FROM categories
+			WHERE title LIKE :term
+			ORDER BY title",
+			
+		'autocompleteCourses' => "
+			SELECT id AS `title`
+			FROM courses
+			WHERE id LIKE :term OR title LIKE :term
+			ORDER BY id",
 			
 			
 		/**
