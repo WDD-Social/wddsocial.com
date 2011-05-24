@@ -39,7 +39,7 @@ class ExceptionView implements \Framework5\IView {
 			</tr>
 			<tr>
 				<td>Message</td>
-				<td>$options->message}</td>
+				<td>{$options->message}</td>
 			</tr>
 			<tr>
 				<td>Code</td>
