@@ -11,6 +11,11 @@ class Autocompleter implements \Framework5\IExecutable {
 	
 	public function execute() {
 		
+		# disable logging
+		\Framework5\Settings::$log_debug = false;
+		\Framework5\Settings::$log_execution = false;
+		\Framework5\Settings::$log_exception = false;
+		
 		# check user auth
 		if (!\WDDSocial\UserSession::is_authorized()) return false;
 		
