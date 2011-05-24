@@ -2231,7 +2231,39 @@ class SelectorSQL{
 			SELECT COUNT(*) AS messageCount
 			FROM messages AS m
 			LEFT JOIN messageStatuses AS ms ON (m.status = ms.id)
-			WHERE toUserID = :id AND ms.title = 'unread'"
+			WHERE toUserID = :id AND ms.title = 'unread'",
+		
+		'getContacts' => "
+			SELECT DISTINCT(contact) AS userID, CONCAT_WS(' ',u.firstName,u.lastName) AS userName, u.vanityURL AS userVanityURL, u.avatar AS userAvatar
+			FROM (SELECT fromID AS contact, `datetime`
+				FROM messages AS m
+				LEFT JOIN messageUsers AS mu ON (m.id = mu.messageID)
+				WHERE toID = :id
+				UNION
+				SELECT toID AS contact, `datetime`
+				FROM messages AS m
+				LEFT JOIN messageUsers AS mu ON (m.id = mu.messageID)
+				WHERE fromID = :id
+				ORDER BY `datetime` DESC) AS contacts
+			LEFT JOIN users AS u ON (u.id = contact)",
+		
+		'getUnreadCount' => "
+			SELECT COUNT(*) AS unreadCount
+			FROM messages AS m
+			LEFT JOIN messageUsers AS mu ON (m.id = mu.messageID)
+			LEFT JOIN messageStatuses AS ms ON (ms.id = m.status)
+			WHERE (fromID = :contactID AND toID = :currentUserID) AND ms.title = 'unread'
+			ORDER BY m.datetime",
+		
+		'getConversation' => "
+			SELECT m.id AS messageID, m.content AS messageContent, m.datetime AS messageDatetime, ms.title AS messageStatus, fu.id AS fromUserID, CONCAT_WS(' ',fu.firstName,fu.lastName) AS fromUserName, fu.vanityURL AS fromVanityURL, fu.avatar AS fromAvatar, tu.id AS toUserID, CONCAT_WS(' ',tu.firstName,tu.lastName) AS toUserName, tu.vanityURL AS toVanityURL, tu.avatar AS toAvatar
+			FROM messages AS m
+			LEFT JOIN messageUsers AS mu ON (m.id = mu.messageID)
+			LEFT JOIN messageStatuses AS ms ON (ms.id = m.status)
+			LEFT JOIN users AS fu ON (fu.id = fromID)
+			LEFT JOIN users AS tu ON (tu.id = toID)
+			WHERE (fromID = :currentUserID AND toID = :contactID) OR (fromID = :contactID AND toID = :currentUserID)
+			ORDER BY m.datetime"
 	
 						
 	);
