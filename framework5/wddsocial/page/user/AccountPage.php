@@ -70,12 +70,37 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		$fields = array();
 		$errors = array();
+		$requires = array();
 		
 		$postFirstName = strip_tags($_POST['first-name']);
 		$postLastName = strip_tags($_POST['last-name']);
 		$postEmail = strip_tags($_POST['email']);
 		$postFullSailEmail = strip_tags($_POST['full-sail-email']);
 		$postVanityURL = strtolower(preg_replace("#\W#", "", $_POST['vanityURL']));
+		
+		if ($postFirstName == '') {
+			array_push($requires, 'first name');
+		}
+		if ($postLastName == '') {
+			array_push($requires, 'last name');
+		}
+		if ($postEmail == '') {
+			array_push($requires, 'email address');
+		}
+		if ($postFullSailEmail == '') {
+			array_push($requires, 'Full Sail email address');
+		}
+		if (count($requires) > 0) {
+			$requireResponse = 'You must provide your ';
+			if (count($requires) > 1) {
+				$requireResponse .= NaturalLanguage::comma_list($requires);
+			}
+			else {
+				$requireResponse .= $requires[0];
+			}
+			$requireResponse .= ".";
+			return new FormResponse(false, $requireResponse);
+		}
 		
 		if ($_POST['user-type'] != $this->user->typeID)
 			$fields['typeID'] = $_POST['user-type'];
