@@ -26,7 +26,12 @@ class RequestsPage implements \Framework5\IExecutable {
 		# get the db object
 		$db = instance('core.controller.Framework5\Database');
 		
-		$sql = "SELECT * FROM fw5_request_log ORDER BY id DESC";
+		$sql = "
+			SELECT log.id, time, uri, exc.request_id as exception_thrown
+			FROM fw5_request_log as log
+			LEFT JOIN fw5_exception_log AS exc ON (log.id = exc.request_id)
+			ORDER BY id DESC
+			LIMIT 100";
 		$query = $db->query($sql);
 		
 		# setting the fetch mode
@@ -35,3 +40,4 @@ class RequestsPage implements \Framework5\IExecutable {
 		return $query->fetchAll();
 	}
 }
+			
