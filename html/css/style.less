@@ -327,7 +327,7 @@ html{
 	}
 	
 body{
-	font-weight: 200;
+	font-weight: 300;
 	width: 100%;
 	padding: 0;
 	margin: 0;
@@ -1561,11 +1561,19 @@ input, textarea, button{
 			text-transform: none;
 			}
 		
+		h2{
+			margin-bottom: 2%;
+			}
+		
 		img{
 			float: left;
 			width: 13.333333333%;
 			margin-right: 3.333333333%;
 			opacity: .9;
+			}
+			
+		.badge{
+			margin-right: 2%;
 			}
 		}
 	
@@ -2118,6 +2126,15 @@ table.dev{
 		
 		td:first-child{
 			text-align: left;
+			}
+		}
+	
+	tr.exception{
+		background-color: @red !important;
+		color: #fff;
+		
+		a, a:visited{
+			color: #fff;
 			}
 		}
 	}
