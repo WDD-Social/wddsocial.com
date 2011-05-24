@@ -12,7 +12,7 @@ class SignupView implements \Framework5\IView {
 	public function render($options = null) {
 		$html = <<<HTML
 
-					<form action="/signup" method="post" enctype="multipart/form-data">
+					<form action="/signup" id="signup" method="post" enctype="multipart/form-data">
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="first-name">First Name</label>
