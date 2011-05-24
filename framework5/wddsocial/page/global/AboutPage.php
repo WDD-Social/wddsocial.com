@@ -18,6 +18,8 @@ class AboutPage implements \Framework5\IExecutable {
 	public function execute() {
 		$content = " ";
 		
+		throw new Exception('test');
+		
 		echo render(':template', 
 			array('title' => $this->lang->text('page-title'), 'content' => $content));
 	}
