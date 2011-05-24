@@ -16,7 +16,11 @@ class TermsPage implements \Framework5\IExecutable {
 	
 	
 	public function execute() {
-		$content = " ";
+		$content .= render(':section', array('section' => 'begin_content'));
+		
+		$content .= render('wddsocial.view.page.WDDSocial\TermsView');
+		
+		$content .= render(':section', array('section' => 'end_content'));
 		
 		# display page
 		echo render(':template', 
