@@ -20,14 +20,14 @@ class Content implements \Framework5\IExecutable {
 		
 		switch ($_POST['section']) {
 			case 'getUserDetail':
-				echo $this->getUserDetail($_POST['usertype'], $_POST['userID']);
+				echo $this->get_user_detail($_POST['usertype'], $_POST['userID']);
 				break;
 		}
 	}
 	
 	
 	
-	private function getUserDetail($userType, $userID){
+	private function get_user_detail($userType, $userID){
 		$query = $this->db->prepare($this->sql->getUserDetailByID);
 		$query->execute(array('id' => $userID));
 		$query->setFetchMode(\PDO::FETCH_ASSOC);

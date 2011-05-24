@@ -20,10 +20,27 @@ $(function() {
 	/* Fancybox
 	****************************************************************** */
 	
+	// Images
 	$('a.fancybox').fancybox({
 		titleShow: false,
 		cyclic: true,
 		showCloseButton: false
+	});
+	
+	// Terms of Service
+	$('a#terms-link').fancybox({
+		titleShow: false,
+		autoScale: false,
+		autoDimensions: false,
+		scrolling: 'yes',
+		centerOnScroll: true,
+		width: '50%',
+		height: '80%',
+		padding: '50px',
+		margin: '20px',
+		onComplete: function() { 
+			$("#terms-content").css({'margin-right': '20px'});
+		} 
 	});
 	
 	

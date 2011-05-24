@@ -373,13 +373,13 @@ header{
 		display: block;
 		width: 140px;
 		height: 43px;
-		background: url('../images/site/social-logo-small.png') no-repeat 0 0;
+		background: url('../images/site/social-logo-small.png') no-repeat 0 -43px;
 		text-indent: -9999px;
 		}
 	
 	h1 a:hover, h1 a:active, h1 a:focus{
 		
-		background-position: 0 -43px;
+		background-position: 0 -86px;
 		outline: none;
 		}
 	
@@ -861,8 +861,6 @@ input, textarea, button{
 			clear: none;
 			float: left;
 			width: 32%;
-			min-height: 180px;
-			max-height: 200px;
 			margin-right: 2%;
 			margin-bottom: 5%;
 		
@@ -990,12 +988,12 @@ input, textarea, button{
 				}
 			}
 		
-		article.people{
-			min-height: 120px;
-			}
-		
 		article:nth-child(3n+2){
 			margin-right: 0;
+			}
+		
+		article:nth-child(4n+2){
+			clear: left;
 			}
 		
 		> .secondary.icons{
@@ -1818,6 +1816,10 @@ ul .empty{
 	margin-top: 20px;
 	}
 
+#terms-holder{
+	display: none;
+	}
+
 
 
 
@@ -2068,7 +2070,7 @@ a.button{
 	float: left;
 	width: 46.666666666666667%;
 	max-width: 140px;
-	margin-top: 4.25%;
+	margin-top: 6.5%;
 	text-align: center;
 	}
 
