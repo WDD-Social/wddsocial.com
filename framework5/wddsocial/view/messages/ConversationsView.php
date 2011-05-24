@@ -53,11 +53,14 @@ HTML;
 	
 	
 	private function renderConversation($convo) {
+		$userAvatar = (file_exists("images/avatars/{$convo->userAvatar}_medium.jpg"))?"/images/avatars/{$convo->userAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
+		$unreadClass = ($convo->unread > 0)?'unread':'';
+		$badge = ($convo->unread > 0)?"<span class=\"badge\">{$convo->unread}</span>":'';
 		return <<<HTML
-					<a href="#user" title="{$this->lang->text('view-convo-with', $convo->name)}" class="unread">
-						<img src="{$convo->avatar}" alt="{$convo->name}"/>
-						<h2><span class="badge">{$convo->total}</span> {$convo->name}</h2>
-						<p>{$convo->content}</p>
+					<a href="/messages/{$convo->userVanityURL}" title="{$this->lang->text('view-convo-with', $convo->userName)}" class="{$unreadClass}">
+						<img src="{$userAvatar}" alt="{$convo->userName}"/>
+						<h2>{$badge}{$convo->userName}</h2>
+						<p>{$convo->message}</p>
 					</a>
 HTML;
 	}
