@@ -182,6 +182,10 @@ class SignupPage implements \Framework5\IExecutable {
 			# Get new user's ID
 			$userID = $db->lastInsertID();
 			
+			# hide user password from dev log
+			$_POST['password'] = 'encrypted';
+			
+			
 			# get user verification code
 			$query = $db->prepare($sel_sql->getUserVerificationCode);
 			$query->setFetchMode(\PDO::FETCH_OBJ);

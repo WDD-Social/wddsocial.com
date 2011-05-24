@@ -8,7 +8,7 @@ namespace Framework5;
 
 class Factory extends StaticController {
 	
-	private static $_controllers = array(); # object container
+	private static $_controllers = array(); # associative array of package instances
 	private static $_imported_paths = array(); # package names of all imported packages
 	
 	/**
@@ -33,7 +33,7 @@ class Factory extends StaticController {
 		if (!$package->path_valid()) {
 			$message = "Factory could not load package '$package_name'. because the file does not exist.";
 			debug($message);
-			throw(new Exception($message));
+			throw new Exception($message);
 		}
 		
 		# import the file
@@ -41,7 +41,7 @@ class Factory extends StaticController {
 		
 		# ensure that the fully quailfied class is loaded 
 		if (!class_exists($package->fully_qualified))
-			throw new Exception("Package was imported, but class {$package->fully_qualified} does not exist");
+			throw new Exception("Package was imported, but class '{$package->fully_qualified}' does not exist");
 		
 		# add location to array
 		array_push(static::$_imported_paths, $package->path);
