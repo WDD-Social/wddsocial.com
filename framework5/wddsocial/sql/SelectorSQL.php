@@ -2234,7 +2234,7 @@ class SelectorSQL{
 			LEFT JOIN messageStatuses AS ms ON (m.status = ms.id)
 			WHERE toID = :id AND ms.title = 'unread'",
 		
-		'getContacts' => "
+		'getConversations' => "
 			SELECT DISTINCT(contact) AS userID, CONCAT_WS(' ',u.firstName,u.lastName) AS userName, u.vanityURL AS userVanityURL, u.avatar AS userAvatar
 			FROM (SELECT fromID AS contact, `datetime`
 				FROM messages AS m
@@ -2255,6 +2255,17 @@ class SelectorSQL{
 			LEFT JOIN messageStatuses AS ms ON (ms.id = m.status)
 			WHERE (fromID = :contactID AND toID = :currentUserID) AND ms.title = 'unread'
 			ORDER BY m.datetime",
+		
+		'getNewestMessageContent' => "
+			SELECT m.content AS messageContent
+			FROM messages AS m
+			LEFT JOIN messageUsers AS mu ON (m.id = mu.messageID)
+			LEFT JOIN messageStatuses AS ms ON (ms.id = m.status)
+			LEFT JOIN users AS fu ON (fu.id = fromID)
+			LEFT JOIN users AS tu ON (tu.id = toID)
+			WHERE (fromID = :currentUserID AND toID = :contactID) OR (fromID = :contactID AND toID = :currentUserID)
+			ORDER BY m.datetime
+			LIMIT 0, 1",
 		
 		'getConversation' => "
 			SELECT m.id AS messageID, m.content AS messageContent, m.datetime AS messageDatetime, ms.title AS messageStatus, fu.id AS fromUserID, CONCAT_WS(' ',fu.firstName,fu.lastName) AS fromUserName, fu.vanityURL AS fromVanityURL, fu.avatar AS fromAvatar, tu.id AS toUserID, CONCAT_WS(' ',tu.firstName,tu.lastName) AS toUserName, tu.vanityURL AS toVanityURL, tu.avatar AS toAvatar
