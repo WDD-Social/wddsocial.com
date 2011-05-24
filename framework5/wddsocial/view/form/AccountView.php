@@ -36,23 +36,25 @@ class AccountView implements \Framework5\IView {
 		$exampleBirthday = date('F j, Y',time() - (25*365.25*24*60*60));
 		$html .= <<<HTML
 
-					<form action="/account" method="post" enctype="multipart/form-data">
+					<h1 class="mega form">Edit your account and profile information</h1>
+					<h2 class="form">* Required</h2>
+					<form action="/account" id="account" method="post" enctype="multipart/form-data">
 						<h1>Basics</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
-							<label for="first-name">First Name</label>
+							<label for="first-name">First Name *</label>
 							<input type="text" name="first-name" id="first-name" value="{$user->firstName}" />
 						</fieldset>
 						<fieldset>
-							<label for="last-name">Last Name</label>
+							<label for="last-name">Last Name *</label>
 							<input type="text" name="last-name" id="last-name" value="{$user->lastName}" />
 						</fieldset>
 						<fieldset>
-							<label for="email">Email</label>
+							<label for="email">Email *</label>
 							<input type="email" name="email" id="email" value="{$user->email}" />
 						</fieldset>
 						<fieldset>
-							<label for="full-sail-email">Full Sail Email</label>
+							<label for="full-sail-email">Full Sail Email *</label>
 							<input type="email" name="full-sail-email" id="full-sail-email" value="{$user->fullsailEmail}" />
 							<small>Used for account verification</small>
 						</fieldset>
@@ -70,7 +72,7 @@ class AccountView implements \Framework5\IView {
 						</fieldset>
 						<fieldset>
 							<label for="new-password">New Password</label>
-							<input type="password" name="new-password" id="new-password" />
+							<input type="password" name="new-password" id="new-password" class="check-length" />
 							<small>6 or more characters, please</small>
 						</fieldset>
 						<input type="submit" name="submit" value="Save" />

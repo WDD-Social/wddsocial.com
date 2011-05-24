@@ -182,21 +182,6 @@ class SignupPage implements \Framework5\IExecutable {
 			# Get new user's ID
 			$userID = $db->lastInsertID();
 			
-			/*
-# Fetch user's avatar code
-			$query = $db->prepare($sel_sql->getUserAvatarByID);
-			$query->setFetchMode(\PDO::FETCH_OBJ);
-			$data = array('id' => $userID);
-			$query->execute($data);
-			$row = $query->fetch();
-			$avatar = $row->avatar;
-			
-			if($_FILES['avatar']['error'] != 4){
-				import('wddsocial.controller.processes.WDDSocial\Uploader');
-				Uploader::upload_user_avatar($_FILES['avatar'],"$avatar");
-			}
-*/
-			
 			# get user verification code
 			$query = $db->prepare($sel_sql->getUserVerificationCode);
 			$query->setFetchMode(\PDO::FETCH_OBJ);
