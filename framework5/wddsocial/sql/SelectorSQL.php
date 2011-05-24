@@ -548,8 +548,7 @@ class SelectorSQL{
 			SELECT id, firstName, lastName, verified, verificationCode
 			FROM users
 			WHERE (email = :email) AND `password` = MD5(:password)
-			LIMIT 1
-		",
+			LIMIT 1",
 		
 		'getUserSessionDataByID' => "
 			SELECT u.id, firstName, lastName, avatar, vanityURL, ut.title AS `type`
@@ -572,9 +571,15 @@ class SelectorSQL{
 			LIMIT 1",
 		
 		'getUserByName' => "
-			SELECT id
+			SELECT id, vanityURL
 			FROM users
 			WHERE CONCAT_WS(' ',firstName, lastName) = :name
+			LIMIT 1",
+		
+		'getUserIDByVanityURL' => "
+			SELECT id
+			FROM users
+			WHERE vanityURL = :vanityURL
 			LIMIT 1",
 		
 		'getUserByVerificationCode' => "
