@@ -7,6 +7,10 @@ $(function() {
 		type: "POST"
 	});
 	
+	if ($('p.error').text() == '') {
+		$('p.error').slideUp(0);
+	}
+	
 	$('.dashboard #latest').css({
 		minHeight: $('.dashboard #share').outerHeight(true) + $('.dashboard #events').outerHeight(true) + $('.dashboard #jobs').outerHeight(true)
 	});
@@ -292,6 +296,22 @@ $(function() {
 	/* Form validation
 	****************************************************************** */
 	
+	var displayFormError = function(form, message, count){
+		var clearFormError = function(){
+			$(form).find('p.error').slideUp(250,'easeOutQuad',function(){
+				$(form).find('p.error strong').html('');
+			});
+		}
+		
+		$(form).find('p.error strong').html(message);
+		$(form).find('p.error').slideDown(250,'easeOutQuad');
+		if (count === 'undefined') {
+			count = 1;
+		}
+		var duration = 2000*count;
+		setTimeout(clearFormError,duration);
+	}
+	
 	$('input[type="password"].check-length').live('keyup',function(){
 		if ($(this).val().length > 0) {
 			if ($(this).val().length >= 6) {
@@ -305,6 +325,43 @@ $(function() {
 		}
 		else {
 			$(this).removeClass('pass fail');
+		}
+	});
+	
+	$('#signup input').live('focusout',function(){
+		if ($(this).val().length > 0 && $(this).hasClass('error')) {
+			$(this).removeClass('error');
+		}
+	});
+	
+	$('#signup').live('submit',function(){
+		var errorMessages = [];
+		
+		$(this).find('input[type="text"], input[type="password"], input[type="email"]').each(function(){
+			if ($(this).val() == '') {
+				$(this).addClass('error');
+				if (errorMessages.length === 0) {
+					errorMessages.push('All fields are required.');
+				}
+			}
+		});
+		
+		if ($('input[type="password"]').val().length < 6) {
+			errorMessages.push('Your password must be at least 6 characters in length.');
+			input = $('input[type="password"]');
+			if (!$(input).hasClass('error')) {
+				$(input).addClass('error');
+			}
+		}
+		
+		if (!$('input[name="terms"]').is(':checked')) {
+			errorMessages.push('You must agree to our <a href=\"/terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>.');
+		}
+		
+		if (errorMessages.length > 0) {
+			var errorMessage = errorMessages.join('</strong></p><p class="error"><strong>');
+			displayFormError($(this),errorMessage, errorMessages.length);
+			return false;
 		}
 	});
 });
