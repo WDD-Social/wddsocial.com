@@ -88,7 +88,7 @@ HTML;
 			<table>
 			<tr>
 				<td>file</td>
-				<td>{$trace['file']}</td>
+				<td><a href="http://localhost/dev/source/?file={$trace['file']}">{$trace['file']}</a></td>
 			</tr>
 			
 			<tr>
@@ -116,8 +116,8 @@ HTML;
 			foreach ($trace['args'] as $arg_index => $arg_value) {
 				$html.= <<<HTML
 			<tr>
-				<td>[argument {$arg_index}]</td>
-				<td>{$arg_value}</td>
+				<td>&nbsp;</td>
+				<td>[arg {$arg_index}] => {$arg_value}</td>
 			</tr>
 HTML;
 			}
