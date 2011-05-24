@@ -27,8 +27,8 @@ class CoursesPage implements \Framework5\IExecutable {
 			'month'          => $this->lang->text('sort-month'), 
 			'alphabetically' => $this->lang->text('sort-alphabetically'));
 		
-		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
-		else $active = $sorters['month'];
+		if (isset($sorter) and in_array($sorter, array_keys($sorters))) $active = $sorter;
+		else $active = 'month';
 		
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 

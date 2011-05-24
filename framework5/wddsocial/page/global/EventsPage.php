@@ -31,8 +31,8 @@ class EventsPage implements \Framework5\IExecutable {
 			'newest'         => $this->lang->text('sort-newest'),
 			'oldest'         => $this->lang->text('sort-oldest'));
 		
-		if (isset($sorter) and in_array($sorter, $sorters)) $active = $sorter;
-		else $active = $sorters['upcoming'];
+		if (isset($sorter) and in_array($sorter, array_keys($sorters))) $active = $sorter;
+		else $active = 'upcoming';
 		
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
