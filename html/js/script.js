@@ -33,6 +33,7 @@ $(function() {
 		autoScale: false,
 		autoDimensions: false,
 		scrolling: 'yes',
+		centerOnScroll: true,
 		width: '50%',
 		height: '80%',
 		padding: '50px',
