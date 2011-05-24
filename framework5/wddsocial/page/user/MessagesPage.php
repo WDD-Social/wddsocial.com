@@ -11,6 +11,8 @@ class MessagesPage implements \Framework5\IExecutable {
 	
 	public function __construct() {
 		$this->lang = new \Framework5\Lang('wddsocial.lang.page.user.MessagesPageLang');
+		$this->db = instance(':db');
+		$this->sql = instance(':sel-sql');
 	}
 	
 	
@@ -20,14 +22,15 @@ class MessagesPage implements \Framework5\IExecutable {
 		# require authentication to access this page
 		UserSession::protect();
 		
-		
-		# conversations example data
-		$conv = new \stdClass();
-		$conv->name = "Tyler Matthews";
-		$conv->avatar = "/images/avatars/7e58d63b60197ceb55a1c487989a3720_medium.jpg";
-		$conv->total = "3";
-		$conv->content = "Holisticly engage multimedia based metrics with robust partnerships.";
-		$convs = array($conv, $conv);
+		# get contacts
+		$conversations = array();
+		import('wddsocial.model.WDDSocial\ConversationVO');
+		$query = $this->db->prepare($this->sql->getConversations);
+		$query->execute(array('id' => UserSession::userid()));
+		$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ConversationVO');
+		while ($item = $query->fetch()) {
+			array_push($conversations,$item);
+		}
 		
 		# current message example data
 		$msg = new \stdClass();
@@ -52,10 +55,7 @@ class MessagesPage implements \Framework5\IExecutable {
 				'classes' => array('small', 'with-secondary', 'filterable'),
 				'header' => $this->lang->text('conversations-header')));
 		
-		/*
-$content.= render('wddsocial.view.messages.WDDSocial\ConversationsView',
-			array('conversations' => $convs));
-*/
+		/* $content.= render('wddsocial.view.messages.WDDSocial\ConversationsView', array('conversations' => $conversations)); */
 		
 		$content.= render(':section', array('section' => 'end_content_section'));
 		
@@ -77,7 +77,6 @@ $content.= render('wddsocial.view.messages.WDDSocial\ConversationView',
 		
 		
 		# end content
-		$content.= render(':section', array('section' => 'end_content_section'));
 		$content.= render(':section', array('section' => 'end_content'));
 		
 		

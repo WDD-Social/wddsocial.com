@@ -39,7 +39,7 @@ class ExceptionView implements \Framework5\IView {
 			</tr>
 			<tr>
 				<td>Message</td>
-				<td>$options->message}</td>
+				<td>{$options->message}</td>
 			</tr>
 			<tr>
 				<td>Code</td>
@@ -54,37 +54,18 @@ class ExceptionView implements \Framework5\IView {
 				<td>{$options->line}</td>
 			</tr>
 		</table>
-		
-		<h3>Backtrace</h3>
-		<table>
-			<tr>
-				<td>Messsage</td>
-				<td>File</td>
-				<td>Line</td>
-				<td>Time</td>
-				<td>Memory</td>
-			</tr>
-		
+		<br/><br/>
 HTML;
 		
 		$trace_data = unserialize($options->trace);
 		if ($trace_data) {
-		
-		echo '<pre>';
-		htmlspecialchars(print_r($trace_data));
-		echo '</pre>';
-		
-			foreach ($trace_data as $trace) {
-				$html.= <<<HTML
-			<tr>
-				<td>{$trace->message}</td>
-				<td><a href="#" title="{$trace->path}">{$trace->file}</a></td>
-				<td>{$trace->line}</td>
-				<td>{$trace->time}</td>
-			</tr>
+			$html.= <<<HTML
+
+			<h3>Backtrace</h3>
 HTML;
-			}
+			$html.= $this->render_backtrace($trace_data);
 		}
+		
 		
 		# render table end
 		$html.= <<<HTML
@@ -92,8 +73,63 @@ HTML;
 			</table>
 HTML;
 		
-		
 		# return output
+		return $html;
+	}
+	
+	
+	
+	private function render_backtrace($trace_data) {
+		foreach ($trace_data as $index => $trace) {
+			
+			# begin backtrace table
+			$html.= <<<HTML
+
+			<table>
+			<tr>
+				<td>file</td>
+				<td><a href="http://localhost/dev/source/?file={$trace['file']}">{$trace['file']}</a></td>
+			</tr>
+			
+			<tr>
+				<td>line</td>
+				<td>{$trace['line']}</td>
+			</tr>
+			
+			<tr>
+				<td>function</td>
+				<td>{$trace['function']}</td>
+			</tr>
+			
+			<tr>
+				<td>class</td>
+				<td>{$trace['class']}</td>
+			</tr>
+			
+			<tr>
+				<td>type</td>
+				<td>{$trace['type']}</td>
+			</tr>
+HTML;
+			
+			# backtrace arguments
+			foreach ($trace['args'] as $arg_index => $arg_value) {
+				$html.= <<<HTML
+			<tr>
+				<td>&nbsp;</td>
+				<td>[arg {$arg_index}] => {$arg_value}</td>
+			</tr>
+HTML;
+			}
+			
+			# end backtrace table
+			$html.= <<<HTML
+
+			</table>
+			<br/><br/>
+HTML;
+		}
+		
 		return $html;
 	}
 }

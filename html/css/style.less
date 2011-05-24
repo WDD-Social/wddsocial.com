@@ -327,7 +327,7 @@ html{
 	}
 	
 body{
-	font-weight: 200;
+	font-weight: 300;
 	width: 100%;
 	padding: 0;
 	margin: 0;
@@ -373,13 +373,13 @@ header{
 		display: block;
 		width: 140px;
 		height: 43px;
-		background: url('../images/site/social-logo-small.png') no-repeat 0 0;
+		background: url('../images/site/social-logo-small.png') no-repeat 0 -43px;
 		text-indent: -9999px;
 		}
 	
 	h1 a:hover, h1 a:active, h1 a:focus{
 		
-		background-position: 0 -43px;
+		background-position: 0 -86px;
 		outline: none;
 		}
 	
@@ -1561,11 +1561,19 @@ input, textarea, button{
 			text-transform: none;
 			}
 		
+		h2{
+			margin-bottom: 2%;
+			}
+		
 		img{
 			float: left;
 			width: 13.333333333%;
 			margin-right: 3.333333333%;
 			opacity: .9;
+			}
+			
+		.badge{
+			margin-right: 2%;
 			}
 		}
 	
@@ -1808,6 +1816,10 @@ ul .empty{
 
 .extra-spacing{
 	margin-top: 20px;
+	}
+
+#terms-holder{
+	display: none;
 	}
 
 
@@ -2060,7 +2072,7 @@ a.button{
 	float: left;
 	width: 46.666666666666667%;
 	max-width: 140px;
-	margin-top: 4.25%;
+	margin-top: 6.5%;
 	text-align: center;
 	}
 
@@ -2119,6 +2131,13 @@ table.dev{
 		td:first-child{
 			text-align: left;
 			}
+		}
+	
+	tr.exception{
+		background-color: #FFE3E3 !important;
+		}
+	tr.exception:hover{
+		background-color: #FFD1D1 !important;
 		}
 	}
 	

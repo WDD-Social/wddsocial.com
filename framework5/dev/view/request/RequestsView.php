@@ -23,10 +23,18 @@ HTML;
 
 		# render table rows
 		foreach ($requests as $request) {
+			
+			# format timestamp
 			$request->time = Formatter::format_time($request->time);
+			
+			# format rows with exceptions
+			if ($request->exception_thrown) $rowClass = ' class="exception"';
+			else $rowClass = '';
+			
+			# output
 			$html.= <<<HTML
 
-		<tr>
+		<tr{$rowClass}>
 			<td><a href="/dev/request/{$request->id}">{$request->id}</a></td>
 			<td>{$request->time}</td>
 			<td><a href="/{$request->uri}">/{$request->uri}</a></td>

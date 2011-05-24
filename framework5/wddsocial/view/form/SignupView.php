@@ -43,11 +43,19 @@ HTML;
 
 						<fieldset class="terms">
 							<label for="terms">Boring Legal Stuff</label>
-							<p><input type="checkbox" name="terms" id="terms" /><label for="terms" class="plain">I have read and agree to the <a href="/terms" title="WDD Social Terms of Service" tabindex="1000">Terms of Service</a>.</label></p>
+							<p><input type="checkbox" name="terms" id="terms" /><label for="terms" class="plain">I have read and agree to the <a href="#terms-content" title="WDD Social Terms of Service" id="terms-link" tabindex="1000">Terms of Service</a>.</label></p>
 						</fieldset>
 						<p class="helper-link"><a href="/signin" title="Already a WDD Social member?" tabindex="1000">Already a member?</a></p>
 						<input type="submit" name="submit" value="Sign Up" />
 					</form>
+					<section id="terms-holder">
+						<div id="terms-content">
+HTML;
+		$html .= render('wddsocial.view.content.WDDSocial\TermsOfService');
+		$html .= <<<HTML
+
+						</div>
+					</section>
 HTML;
 		return $html;
 	}
