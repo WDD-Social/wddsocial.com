@@ -36,6 +36,8 @@ class AccountView implements \Framework5\IView {
 		$exampleBirthday = date('F j, Y',time() - (25*365.25*24*60*60));
 		$html .= <<<HTML
 
+					<h1 class="mega form">Edit your account and profile information</h1>
+					<h2 class="form">* Required</h2>
 					<form action="/account" id="account" method="post" enctype="multipart/form-data">
 						<h1>Basics</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
