@@ -2230,8 +2230,9 @@ class SelectorSQL{
 		'getUnreadMessageCount' => "
 			SELECT COUNT(*) AS messageCount
 			FROM messages AS m
+			LEFT JOIN messageUsers AS mu ON (m.id = mu.messageID)
 			LEFT JOIN messageStatuses AS ms ON (m.status = ms.id)
-			WHERE toUserID = :id AND ms.title = 'unread'",
+			WHERE toID = :id AND ms.title = 'unread'",
 		
 		'getContacts' => "
 			SELECT DISTINCT(contact) AS userID, CONCAT_WS(' ',u.firstName,u.lastName) AS userName, u.vanityURL AS userVanityURL, u.avatar AS userAvatar
