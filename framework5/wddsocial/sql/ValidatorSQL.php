@@ -248,7 +248,14 @@ class ValidatorSQL{
 		'checkIfCommentHasBeenFlagged' => "
 			SELECT userID
 			FROM commentFlags
-			WHERE commentID = :id AND userID = :userID"
+			WHERE commentID = :id AND userID = :userID",
+		
+		'checkIfConversationExists' => "
+			SELECT m.id AS messageID
+			FROM messages AS m
+			LEFT JOIN messageUsers AS mu ON (m.id = mu.messageID)
+			WHERE (fromID = :currentUserID AND toID = :contactID) OR (fromID = :contactID AND toID = :currentUserID)
+			ORDER BY m.datetime"
 	);
 	
 	public function __get($id){
