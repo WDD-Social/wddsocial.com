@@ -37,21 +37,21 @@ class Autocompleter implements \Framework5\IExecutable {
 	}
 	
 	private function get_users($term){
-		$query = $this->db->prepare($this->sql->autocompleteUsers);
+		$query = $this->db->prepare($this->sql->autocompleteUsers . ' LIMIT 0, 10');
 		$query->execute(array('term' => "$term%"));
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		return $query->fetchAll();
 	}
 	
 	private function get_categories($term){
-		$query = $this->db->prepare($this->sql->autocompleteCategories);
+		$query = $this->db->prepare($this->sql->autocompleteCategories . ' LIMIT 0, 10');
 		$query->execute(array('term' => "$term%"));
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		return $query->fetchAll();
 	}
 	
 	private function get_courses($term){
-		$query = $this->db->prepare($this->sql->autocompleteCourses);
+		$query = $this->db->prepare($this->sql->autocompleteCourses . ' LIMIT 0, 10');
 		$query->execute(array('term' => "$term%"));
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		return $query->fetchAll();

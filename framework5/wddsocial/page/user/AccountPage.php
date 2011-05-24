@@ -70,12 +70,37 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		$fields = array();
 		$errors = array();
+		$requires = array();
 		
 		$postFirstName = strip_tags($_POST['first-name']);
 		$postLastName = strip_tags($_POST['last-name']);
 		$postEmail = strip_tags($_POST['email']);
 		$postFullSailEmail = strip_tags($_POST['full-sail-email']);
 		$postVanityURL = strtolower(preg_replace("#\W#", "", $_POST['vanityURL']));
+		
+		if ($postFirstName == '') {
+			array_push($requires, 'first name');
+		}
+		if ($postLastName == '') {
+			array_push($requires, 'last name');
+		}
+		if ($postEmail == '') {
+			array_push($requires, 'email address');
+		}
+		if ($postFullSailEmail == '') {
+			array_push($requires, 'Full Sail email address');
+		}
+		if (count($requires) > 0) {
+			$requireResponse = 'You must provide your ';
+			if (count($requires) > 1) {
+				$requireResponse .= NaturalLanguage::comma_list($requires);
+			}
+			else {
+				$requireResponse .= $requires[0];
+			}
+			$requireResponse .= ".";
+			return new FormResponse(false, $requireResponse);
+		}
 		
 		if ($_POST['user-type'] != $this->user->typeID)
 			$fields['typeID'] = $_POST['user-type'];
@@ -117,17 +142,44 @@ class AccountPage implements \Framework5\IExecutable {
 		}
 		
 		if ($postVanityURL != $this->user->vanityURL) {
-			# Check if vanityURL is unique
-			$query = $this->db->prepare($this->val->checkIfUserVanityURLExists);
-			$query->setFetchMode(\PDO::FETCH_OBJ);
-			$data = array('vanityURL' => $postVanityURL);
-			$query->execute($data);
-			$row = $query->fetch();
-			if ($row->count > 0) {
-				array_push($errors, 'vanity URL');
+			if ($postVanityURL == '') {
+				$vanityURL = '';
+			
+				# Check if vanity URL is unique, create a new one until a unique is found
+				$query = $this->db->prepare($this->val->checkIfUserVanityURLExists);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				
+				$vanityURL = strtolower($postFirstName . $postLastName);
+				for ($i = 0; $i < 100; $i++) {
+					
+					if ($i > 0) {
+						$newVanityURL = $vanityURL . $i;
+					}
+					
+					$data = array('vanityURL' => $newVanityURL);
+					$query->execute($data);
+					$row = $query->fetch();
+					if ($row->count > 0) {	
+						continue;
+					}
+					else{
+						$fields['vanityURL'] = $newVanityURL;
+					}
+				}
 			}
 			else {
-				$fields['vanityURL'] = $postVanityURL;
+				# Check if vanityURL is unique
+				$query = $this->db->prepare($this->val->checkIfUserVanityURLExists);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				$data = array('vanityURL' => $postVanityURL);
+				$query->execute($data);
+				$row = $query->fetch();
+				if ($row->count > 0) {
+					array_push($errors, 'vanity URL');
+				}
+				else {
+					$fields['vanityURL'] = $postVanityURL;
+				}
 			}
 		}
 		

@@ -2217,7 +2217,7 @@ class SelectorSQL{
 			ORDER BY title",
 			
 		'autocompleteCourses' => "
-			SELECT id AS `title`
+			SELECT id AS `title`, title AS `extra`
 			FROM courses
 			WHERE id LIKE :term OR title LIKE :term
 			ORDER BY id",
@@ -2231,7 +2231,7 @@ class SelectorSQL{
 			SELECT COUNT(*) AS messageCount
 			FROM messages AS m
 			LEFT JOIN messageStatuses AS ms ON (m.status = ms.id)
-			WHERE toUserID = 1 AND ms.title = 'unread'"
+			WHERE toUserID = :id AND ms.title = 'unread'"
 	
 						
 	);

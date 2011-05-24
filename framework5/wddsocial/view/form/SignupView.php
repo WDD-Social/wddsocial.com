@@ -12,7 +12,7 @@ class SignupView implements \Framework5\IView {
 	public function render($options = null) {
 		$html = <<<HTML
 
-					<form action="/signup" method="post" enctype="multipart/form-data">
+					<form action="/signup" id="signup" method="post" enctype="multipart/form-data">
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="first-name">First Name</label>
@@ -34,7 +34,7 @@ class SignupView implements \Framework5\IView {
 						</fieldset>
 						<fieldset>
 							<label for="password">Password</label>
-							<input type="password" name="password" id="password" />
+							<input type="password" name="password" id="password" class="check-length" />
 							<small>6 or more characters</small>
 						</fieldset>
 HTML;
