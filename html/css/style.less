@@ -373,13 +373,13 @@ header{
 		display: block;
 		width: 140px;
 		height: 43px;
-		background: url('../images/site/social-logo-small.png') no-repeat 0 -43px;
+		background: url('../images/site/social-logo-small.png') no-repeat 0 0;
 		text-indent: -9999px;
 		}
 	
 	h1 a:hover, h1 a:active, h1 a:focus{
 		
-		background-position: 0 -86px;
+		background-position: 0 -43px;
 		outline: none;
 		}
 	
@@ -1610,10 +1610,21 @@ input, textarea, button{
 		form{
 			overflow: hidden;
 			
-			input[type="text"]{
+			textarea{
 				width: 89.173228346%;
+				min-height: 33px;
+				margin-top: 0;
+				margin-bottom: 0;
 				}
 			}
+		
+		.markasread{
+			margin-right: 1%;
+			}
+		}
+	
+	p.empty{
+		margin-bottom: 2%;
 		}
 	}
 
