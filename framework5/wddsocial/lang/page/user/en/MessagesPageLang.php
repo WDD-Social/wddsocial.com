@@ -17,7 +17,8 @@ class MessagesPageLang implements \Framework5\ILanguagePack {
 				return 'Conversations';
 			
 			case 'conversation-header':
-				return 'Conversation';
+				$text = (isset($var) and $var != '' and $var != ' ')?" with {$var}":'';
+				return "Conversation{$text}";
 			
 			case 'view-user-profile':
 				return "View {$var}' Profile";
