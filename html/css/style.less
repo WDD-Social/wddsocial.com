@@ -1939,12 +1939,12 @@ input[type="text"]:focus, input[type="email"]:focus, input[type="password"]:focu
 	.box-shadow-inset(0, 1px, 1px, rgba(0,0,0,.15), 0 0 3px @green);
 	}
 
-input[type="text"]::-webkit-input-placeholder{
+input[type="text"]::-webkit-input-placeholder, textarea::-webkit-input-placeholder{
 	font-weight: 200;
 	color: @text-light-color;
 	}
 	
-input[type="text"]:-moz-placeholder{
+input[type="text"]::-moz-placeholder, textarea::-moz-placeholder{
 	font-weight: 200;
 	color: @text-light-color;
 	}
