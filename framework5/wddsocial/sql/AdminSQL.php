@@ -484,7 +484,25 @@ class AdminSQL{
 		
 		'unflagComment' => "
 			DELETE FROM commentFlags
-			WHERE commentID = :id AND userID = :userID"
+			WHERE commentID = :id AND userID = :userID",
+		
+		/**
+		* Message Queries
+		*/
+		
+		'sendMessage' => "
+			INSERT INTO messages
+			SET content = :content, `datetime` = NOW();
+			
+			SET @messageID = LAST_INSERT_ID();
+			
+			INSERT INTO messageUsers
+			SET messageID = @messageID, fromID = :fromID, toID = :toID;",
+		
+		'markMessageAsRead' => "
+			UPDATE messages
+			SET `status` = 2
+			WHERE id = :id"
 		
 	);
 	
