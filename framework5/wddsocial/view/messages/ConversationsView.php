@@ -4,6 +4,8 @@ namespace WDDSocial;
 
 /*
 * 
+* 
+* @author Anthony Colangelo (me@acolangelo.com)
 * @author Tyler Matthews (tmatthewsdev@gmail.com)
 */
 
@@ -27,7 +29,7 @@ class ConversationsView implements \Framework5\IView {
 						<a href="/messages#unread" title="{$this->lang->text('unread-conversations-filter')}">{$this->lang->text('unread-filter')}</a> 
 					</div>-->
 					
-					<form action="/messages" method="post">
+					<form action="{$_SERVER['REQUEST_URI']}" method="post">
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<fieldset>
 							<label for="to">{$this->lang->text('start-a-convo')}</label>
@@ -61,6 +63,7 @@ HTML;
 		$unreadClass = ($convo->unread > 0)?'unread':'';
 		$badge = ($convo->unread > 0)?"<span class=\"badge\">{$convo->unread}</span>":'';
 		return <<<HTML
+
 					<a href="/messages/{$convo->userVanityURL}" title="{$this->lang->text('view-convo-with', $convo->userName)}" class="{$unreadClass} {$currentClass}">
 						<img src="{$userAvatar}" alt="{$convo->userName}"/>
 						<h2>{$badge}{$convo->userName}</h2>
