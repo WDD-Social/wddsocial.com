@@ -68,13 +68,13 @@ class CommonLang implements \Framework5\ILanguagePack {
 				return 'XX'; # No description has been added.
 			
 			case 'completion_date':
-				return "XX"; # Completed in {$var}.
+				return "XX {$var}"; # Completed in {$var}.
 			
 			case 'posted_date':
-				return "XX"; # Posted {$var}
+				return "XX {$var}"; # Posted {$var}
 			
 			case 'written_date':
-				return "XX"; # Written {$var}
+				return "XX {$var}"; # Written {$var}
 			
 			case 'categories':
 				return 'XX'; # Categories
@@ -94,6 +94,9 @@ class CommonLang implements \Framework5\ILanguagePack {
 			case 'apply_now':
 				return 'XX'; # Apply Now
 			
+			case 'join-date':
+				return "XX {$var}"; # Joined {$var}
+			
 			
 			# Natural Language
 			case 'view_user_profile':
@@ -105,13 +108,13 @@ class CommonLang implements \Framework5\ILanguagePack {
 			
 			# Members
 			case 'edit_team':
-				return "XX"; # Edit &ldquo;$var Team&rdquo;
+				return "XX {$var} XX"; # Edit &ldquo;$var Team&rdquo;
 			
 			case 'edit_authors':
-				return "XX"; # Edit &ldquo;$var Authors&rdquo;
+				return "XX {$var} XX"; # Edit &ldquo;$var Authors&rdquo;
 			
 			case 'edit_members':
-				return "XX"; # Edit &ldquo;$var Members&rdquo;
+				return "XX {$var} XX"; # Edit &ldquo;$var Members&rdquo;
 			
 			case 'no_members':
 				return "XX"; # No one has been added. Well, that&rsquo;s pretty lonely.
@@ -128,7 +131,7 @@ class CommonLang implements \Framework5\ILanguagePack {
 				return 'XX'; # Download iCal File
 			
 			case 'owner_edit_event':
-				return "XX $var XX"; # Edit $var Location and Time
+				return "XX {$var} XX"; # Edit $var Location and Time
 			
 			
 			# Comments
@@ -140,10 +143,10 @@ class CommonLang implements \Framework5\ILanguagePack {
 				return "{$var} | XX"; # {$var} | Comments
 			
 			case 'edit_comment':
-				return ""; # Edit Comment on &ldquo;{$var}&rdquo;
+				return "XX {$var}"; # Edit Comment on &ldquo;{$var}&rdquo;
 			
 			case 'delete_comment':
-				return ""; # Delete Comment on &ldquo;{$var}&rdquo;
+				return "XX {$var}"; # Delete Comment on &ldquo;{$var}&rdquo;
 			
 			case 'flag_comment':
 				return "XX {$var}"; # Flag Comment on &ldquo;{$var}&rdquo;
@@ -171,6 +174,18 @@ class CommonLang implements \Framework5\ILanguagePack {
 			
 			
 			# Media
+			case 'images':
+				return 'XX'; # Images
+			
+			case 'related-images';
+				return 'XX'; # Related Images
+			
+			case 'videos':
+				return 'XX'; # Videos
+			
+			case 'related-videos':
+				return 'XX'; # Related Videos
+			
 			case 'no_images':
 				return 'XX'; # Welp! No images have been added, so this page will look a little plain...
 			

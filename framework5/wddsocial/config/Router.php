@@ -142,6 +142,9 @@ class Router implements \Framework5\IRouter {
 			case 'flag':
 				return 'wddsocial.page.form.WDDSocial\FlagPage';
 			
+			case 'message':
+				return 'wddsocial.page.form.WDDSocial\MessagePage';
+			
 			
 			# 404
 			

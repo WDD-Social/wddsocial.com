@@ -10,7 +10,7 @@ namespace WDDSocial;
 class MediumDisplayView implements \Framework5\IView {	
 	
 	public function __construct() {
-		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
 	}
 	
 	/**

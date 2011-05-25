@@ -4,6 +4,8 @@ namespace WDDSocial;
 
 /*
 * 
+* 
+* @author Anthony Colangelo (me@acolangelo.com)
 * @author Tyler Matthews (tmatthewsdev@gmail.com)
 */
 
@@ -12,6 +14,8 @@ class ConversationView implements \Framework5\IView {
 	
 	public function __construct() {
 		$this->lang = new \Framework5\Lang('wddsocial.lang.page.user.MessagesPageLang');
+		$this->db = instance(':db');
+		$this->admin = instance(':admin-sql');
 	}
 	
 	
@@ -33,10 +37,12 @@ class ConversationView implements \Framework5\IView {
 
 					<article>
 						<p class="item-image"><a href="{$userProfile}" title="{$langViewProfile}"><img src="{$userAvatar}" alt="{$userName}"/></a></p>
-						<h2><a href="{$userProfile}" title="{$langViewProfile}">{$this->lang->text('you')}</a></h2>
-						<form action="" method="post">
+						<form action="{$_SERVER['REQUEST_URI']}" method="post">
 							<fieldset>
-								<input type="text" name="to" id="to" placeholder="{$this->lang->text('send-user-a-message', $options['user'])}" />
+								<textarea name="message" placeholder="{$this->lang->text('send-user-a-message', $options['user']->firstName)}"></textarea>
+								<input type="hidden" name="toID" value="{$options['user']->id}" />
+								<input type="hidden" name="process" value="send" />
+								<input type="submit" value="Send" />
 							</fieldset>
 						</form>
 					</article>
@@ -44,26 +50,17 @@ class ConversationView implements \Framework5\IView {
 HTML;
 		
 		# render messages
-		if (set($options['messages'])) {
+		if (count($options['messages']) > 0) {
 			foreach ($options['messages'] as $message) {
-				if ($message->sender_id == $this->_lastMessageId)
+				if ($message->fromUserID == $this->_lastMessageId)
 					$html.= $this->renderMessagePlain($message);
 				else
 					$html.= $this->renderMessageDetails($message);
 			}
 		}
-		
-		# no messages
 		else {
-			$html.= "<p>{$this->lang->text('no-messages')}</p>";
+			$html.= render('wddsocial.view.messages.WDDSocial\EmptyConversation',array('name' => $options['user']->firstName));
 		}
-		
-		# load more
-		$html.= <<<HTML
-					
-					<p class="load-more"><a href="#" title="{$this->lang->text('load-more-title')}">{$this->lang->text('load-more')}</a></p>
-HTML;
-		
 		return $html;
 	}
 	
@@ -75,14 +72,18 @@ HTML;
 	
 	private function renderMessageDetails($message) {
 		# save sender id
-		$this->_lastMessageId = $message->sender_id;
-		$langViewUserProfile = $this->lang->text('view-user-profile', $message->sender);
+		$this->_lastMessageId = $message->fromUserID;
+		$userAvatar = (file_exists("images/avatars/{$message->fromAvatar}_medium.jpg"))?"/images/avatars/{$message->fromAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
+		$langViewUserProfile = $this->lang->text('view-user-profile', $message->fromUserName);
+		$messageContent = nl2br($message->messageContent);
+		$markAsRead = ($message->messageStatusID == 1 and $message->fromUserID != UserSession::userid())?"<a href=\"/message/read/{$message->messageID}\" title=\"Mark Message As Read\" class=\"markasread\">Mark as Read</a> <span class=\"hidden\">|</span> ":'';
 		$html = <<<HTML
+
 					<article>
-						<p class="item-image"><a href="{$message->profile}" title="{$langViewUserProfile}"><img src="{$message->avatar}" alt="{$message->sender}"/></a></p>
-						<h2><a href="{$message->profile}" title="{$langViewUserProfile}">{$message->sender}</a></h2>
-						<p>{$message->content}</p>
-						<p>{$message->timestamp}</p>
+						<p class="item-image"><a href="{$message->fromVanityURL}" title="{$langViewUserProfile}"><img src="{$userAvatar}" alt="{$message->fromUserName}"/></a></p>
+						<h2><a href="{$message->profile}" title="{$langViewUserProfile}">{$message->fromUserName}</a></h2>
+						<p>{$messageContent}</p>
+						<p>{$markAsRead}<span class="time">{$message->date}</span></p>
 					</article>
 HTML;
 		return $html;
@@ -96,13 +97,13 @@ HTML;
 	
 	private function renderMessagePlain($message) {
 		# save sender id
-		$this->_lastMessageId = $message->sender_id;
+		$this->_lastMessageId = $message->fromUserID;
 		
 		$html = <<<HTML
 
 					<article>
-						<p>{$message->content}</p>
-						<p>{$message->timestamp}</p>
+						<p>{$message->messageContent}</p>
+						<p>{$message->date}</p>
 					</article>
 HTML;
 		return $html;

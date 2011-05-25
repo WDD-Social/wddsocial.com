@@ -94,6 +94,9 @@ class CommonLang implements \Framework5\ILanguagePack {
 			case 'apply_now':
 				return 'Apply Now';
 			
+			case 'join-date':
+				return "Joined {$var}";
+			
 			
 			# Natural Language
 			case 'view_user_profile':
@@ -105,13 +108,13 @@ class CommonLang implements \Framework5\ILanguagePack {
 			
 			# Members
 			case 'edit_team':
-				return "Edit &ldquo;$var Team&rdquo;";
+				return "Edit &ldquo;{$var} Team&rdquo;";
 			
 			case 'edit_authors':
-				return "Edit &ldquo;$var Authors&rdquo;";
+				return "Edit &ldquo;{$var} Authors&rdquo;";
 			
 			case 'edit_members':
-				return "Edit &ldquo;$var Members&rdquo;";
+				return "Edit &ldquo;{$var} Members&rdquo;";
 			
 			case 'no_members':
 				return "No one has been added. Well, that&rsquo;s pretty lonely.";
@@ -128,7 +131,7 @@ class CommonLang implements \Framework5\ILanguagePack {
 				return 'Download iCal File';
 			
 			case 'owner_edit_event':
-				return "Edit $var Location and Time";
+				return "Edit {$var} Location and Time";
 			
 			
 			# Comments
@@ -171,6 +174,18 @@ class CommonLang implements \Framework5\ILanguagePack {
 			
 			
 			# Media
+			case 'images':
+				return 'Images';
+			
+			case 'related-images';
+				return 'Related Images';
+			
+			case 'videos':
+				return 'Videos';
+			
+			case 'related-videos':
+				return 'Related Videos';
+			
 			case 'no_images':
 				return 'Welp! No images have been added, so this page will look a little plain...';
 			

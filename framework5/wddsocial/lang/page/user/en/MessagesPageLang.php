@@ -17,7 +17,8 @@ class MessagesPageLang implements \Framework5\ILanguagePack {
 				return 'Conversations';
 			
 			case 'conversation-header':
-				return 'Conversation';
+				$text = (isset($var) and $var != '' and $var != ' ')?" with {$var}":'';
+				return "Conversation{$text}";
 			
 			case 'view-user-profile':
 				return "View {$var}' Profile";
@@ -38,7 +39,7 @@ class MessagesPageLang implements \Framework5\ILanguagePack {
 				return 'Load more messages...';
 			
 			case 'no-messages':
-				return 'No messages to display';
+				return 'Looks like you have no conversations going on. Enter a friend&rsquo;s name in the field above to begin.';
 			
 			
 			# ConversationsView

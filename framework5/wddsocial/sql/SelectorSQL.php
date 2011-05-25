@@ -548,8 +548,7 @@ class SelectorSQL{
 			SELECT id, firstName, lastName, verified, verificationCode
 			FROM users
 			WHERE (email = :email) AND `password` = MD5(:password)
-			LIMIT 1
-		",
+			LIMIT 1",
 		
 		'getUserSessionDataByID' => "
 			SELECT u.id, firstName, lastName, avatar, vanityURL, ut.title AS `type`
@@ -572,9 +571,15 @@ class SelectorSQL{
 			LIMIT 1",
 		
 		'getUserByName' => "
-			SELECT id
+			SELECT id, vanityURL
 			FROM users
 			WHERE CONCAT_WS(' ',firstName, lastName) = :name
+			LIMIT 1",
+		
+		'getUserIDByVanityURL' => "
+			SELECT id
+			FROM users
+			WHERE vanityURL = :vanityURL
 			LIMIT 1",
 		
 		'getUserByVerificationCode' => "
@@ -2254,7 +2259,7 @@ class SelectorSQL{
 			LEFT JOIN messageUsers AS mu ON (m.id = mu.messageID)
 			LEFT JOIN messageStatuses AS ms ON (ms.id = m.status)
 			WHERE (fromID = :contactID AND toID = :currentUserID) AND ms.title = 'unread'
-			ORDER BY m.datetime",
+			ORDER BY m.datetime DESC",
 		
 		'getNewestMessageContent' => "
 			SELECT m.content AS messageContent
@@ -2264,18 +2269,47 @@ class SelectorSQL{
 			LEFT JOIN users AS fu ON (fu.id = fromID)
 			LEFT JOIN users AS tu ON (tu.id = toID)
 			WHERE (fromID = :currentUserID AND toID = :contactID) OR (fromID = :contactID AND toID = :currentUserID)
-			ORDER BY m.datetime
+			ORDER BY m.datetime DESC
 			LIMIT 0, 1",
 		
 		'getConversation' => "
-			SELECT m.id AS messageID, m.content AS messageContent, m.datetime AS messageDatetime, ms.title AS messageStatus, fu.id AS fromUserID, CONCAT_WS(' ',fu.firstName,fu.lastName) AS fromUserName, fu.vanityURL AS fromVanityURL, fu.avatar AS fromAvatar, tu.id AS toUserID, CONCAT_WS(' ',tu.firstName,tu.lastName) AS toUserName, tu.vanityURL AS toVanityURL, tu.avatar AS toAvatar
+			SELECT m.id AS messageID, m.content AS messageContent, m.datetime AS messageDatetime, m.status AS messageStatusID, ms.title AS messageStatus, fu.id AS fromUserID, CONCAT_WS(' ',fu.firstName,fu.lastName) AS fromUserName, fu.vanityURL AS fromVanityURL, fu.avatar AS fromAvatar, tu.id AS toUserID, CONCAT_WS(' ',tu.firstName,tu.lastName) AS toUserName, tu.vanityURL AS toVanityURL, tu.avatar AS toAvatar,
+			IF(
+				TIMESTAMPDIFF(MINUTE, m.datetime, NOW()) > 59,
+				IF(
+					TIMESTAMPDIFF(HOUR, m.datetime, NOW()) > 23,
+					IF(
+						TIMESTAMPDIFF(DAY, m.datetime, NOW()) > 30,
+						DATE_FORMAT(m.datetime,'%M %D, %Y at %l:%i %p'),
+						IF(
+							TIMESTAMPDIFF(DAY, m.datetime, NOW()) > 1,
+							CONCAT_WS(' ', TIMESTAMPDIFF(DAY, m.datetime, NOW()), 'days ago'),
+							'Yesterday'
+						)
+					),
+					IF(
+						TIMESTAMPDIFF(HOUR, m.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, m.datetime, NOW()), 'hours ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(HOUR, m.datetime, NOW()), 'hour ago')
+					)
+				),
+				IF(
+					TIMESTAMPDIFF(MINUTE, m.datetime, NOW()) = 0,
+					'Just now',
+					IF(
+						TIMESTAMPDIFF(MINUTE, m.datetime, NOW()) > 1,
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, m.datetime, NOW()), 'minutes ago'),
+						CONCAT_WS(' ', TIMESTAMPDIFF(MINUTE, m.datetime, NOW()), 'minute ago')
+					)
+				)
+			) AS `date`
 			FROM messages AS m
 			LEFT JOIN messageUsers AS mu ON (m.id = mu.messageID)
 			LEFT JOIN messageStatuses AS ms ON (ms.id = m.status)
 			LEFT JOIN users AS fu ON (fu.id = fromID)
 			LEFT JOIN users AS tu ON (tu.id = toID)
 			WHERE (fromID = :currentUserID AND toID = :contactID) OR (fromID = :contactID AND toID = :currentUserID)
-			ORDER BY m.datetime"
+			ORDER BY m.datetime DESC"
 	
 						
 	);

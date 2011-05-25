@@ -9,6 +9,10 @@ namespace WDDSocial;
 
 class DirectoryItemView implements \Framework5\IView {
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
+	}
+	
 	public function render($options = null) {
 		switch ($options['type']) {
 		
@@ -39,13 +43,15 @@ class DirectoryItemView implements \Framework5\IView {
 	*/
 	
 	private function content_display($content){
-		$userDisplayName = NaturalLanguage::display_name($content->userID,"{$content->userFirstName} {$content->userLastName}");
+		$userDisplayName = NaturalLanguage::display_name(
+			$content->userID,"{$content->userFirstName} {$content->userLastName}");
 		
 		switch ($content->type) {
 			case 'project':
 				$leadImage = $content->images[0];
 				$contentAvatar = (file_exists("images/uploads/{$leadImage->file}_medium.jpg"))?"/images/uploads/{$leadImage->file}_medium.jpg":"/images/site/job-default_medium.jpg";
 				break;
+			
 			case 'article':
 				$leadImage = $content->images[0];
 				if (file_exists("images/uploads/{$leadImage->file}_medium.jpg")) {
@@ -69,22 +75,27 @@ class DirectoryItemView implements \Framework5\IView {
 						<div class="secondary">
 HTML;
 		# Determines what type of secondary controls to present (Flag or Edit/Delete)
-		if(UserSession::is_current($content->userID)){
+		if (UserSession::is_current($content->userID)) {
+			$html.= <<<HTML
+
+							<a href="/edit/{$content->type}/{$content->vanityURL}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/{$content->type}/{$content->vanityURL}" title="Delete &ldquo;{$content->title}&rdquo;" class="delete">{$this->lang->text('delete')}</a>
+HTML;
+		}
+		
+		elseif (($content->type == 'project' and UserValidator::is_project_owner($content->id)) 
+		or ($content->type == 'article' and UserValidator::is_article_owner($content->id))) {
 			$html .= <<<HTML
 
-							<a href="/edit/{$content->type}/{$content->vanityURL}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
-							<a href="/delete/{$content->type}/{$content->vanityURL}" title="Delete &ldquo;{$content->title}&rdquo;" class="delete">Delete</a>
+							<a href="/edit/{$content->type}/{$content->vanityURL}" title="{$this->lang->text('edit', $content->title)}" class="edit">{$this->lang->text('edit')}</a>
 HTML;
-		}else if( ($content->type == 'project' and UserValidator::is_project_owner($content->id)) or ($content->type == 'article' and UserValidator::is_article_owner($content->id)) ){
-			$html .= <<<HTML
-
-							<a href="/edit/{$content->type}/{$content->vanityURL}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">Edit</a>
-HTML;
-		}else if(UserSession::is_authorized()){
+		}
+		
+		else if (UserSession::is_authorized()) {
 			$flagClass = (UserSession::has_flagged($content->id,$content->type))?' current':'';
 			$html .= <<<HTML
 
-							<a href="/flag/{$content->type}/{$content->vanityURL}" title="Flag &ldquo;{$content->title}&rdquo;" class="flag$flagClass">Flag</a>
+							<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$this->lang->text('flag_title', $content->title)}" class="flag$flagClass">{$this->lang->text('flag')}</a>
 HTML;
 		}	
 		$html .= <<<HTML
