@@ -20,6 +20,9 @@ class ExtraView implements \Framework5\IView {
 			case 'create':
 				return $this->create();
 			
+			case 'postajob':
+				return $this->postajob();
+			
 			case 'forgot_pass_intro':
 				return $this->forgot_pass_intro();
 			
@@ -68,6 +71,19 @@ HTML;
 		return <<<HTML
 
 					<h1 class="mega">What would you like to create?</h1>
+HTML;
+	}
+	
+	
+	
+	/**
+	* 
+	*/
+	
+	private function postajob(){
+		return <<<HTML
+
+					<h1 class="mega">Post a Job</h1>
 HTML;
 	}
 	
