@@ -1302,7 +1302,7 @@ class SelectorSQL{
 			LIMIT 0,3",
 		
 		'getJobByVanityURL' => "
-			SELECT j.id, userID, j.title, description, content, vanityURL, 'job' AS `type`, company, jt.id AS jobTypeID, jt.title AS jobType, avatar, location, compensation, website, email
+			SELECT j.id, userID, j.title, description, content, vanityURL, 'job' AS `type`, company, jt.id AS jobTypeID, jt.title AS jobType, avatar, location, compensation, website, email, securityCode
 			FROM jobs AS j
 			LEFT JOIN jobTypes AS jt ON (j.typeID = jt.id)
 			WHERE vanityURL = :vanityURL
