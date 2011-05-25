@@ -22,7 +22,6 @@ class Router implements \Framework5\IRouter {
 			case 'home':
 				return 'wddsocial.page.global.WDDSocial\IndexPage';
 			
-			
 			# temp dev pages
 			case 'lang':
 				return 'wddsocial.page.temp.WDDSocial\SetLangPage';
@@ -132,6 +131,9 @@ class Router implements \Framework5\IRouter {
 			
 			case 'create':
 				return 'wddsocial.page.form.WDDSocial\CreatePage';
+			
+			case 'postajob':
+				return 'wddsocial.page.form.WDDSocial\PostJobPage';
 			
 			case 'edit':
 				return 'wddsocial.page.form.WDDSocial\EditPage';
