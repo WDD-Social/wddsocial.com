@@ -89,7 +89,9 @@ class VideoProcessor {
 			return $result->id;
 		}
 		else {
-			$data = array('userID' => UserSession::userid(), 'embedCode' => $embedCode);
+			$currentUserID = (UserSession::is_authorized())?UserSession::userid():NULL;
+			
+			$data = array('userID' => $currentUserID, 'embedCode' => $embedCode);
 			$query = $db->prepare($admin_sql->addVideo);
 			$query->execute($data);
 			return $db->lastInsertID();
