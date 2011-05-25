@@ -17,7 +17,7 @@ class TermsOfService implements \Framework5\IView {
 					
 					
 					<h1>Basic Rules and Guidelines</h1>
-					<p>Anything you post on WDD Social can, and most likely will be, seen by <strong>peers</strong>, <strong>students</strong>, <strong>teachers</strong>, <strong>alumni</strong>, <strong>industry professionals</strong>, <strong>future employers</strong>, <strong>your mom</strong>, and <strong>that kid you &ldquo;liked&rdquo; in 4th grade</strong>. Please keep that in mind when posting <strong>anything</strong> on WDD Social.</p>
+					<p>Anything you post on WDD Social can, and most likely will, be seen by <strong>peers</strong>, <strong>students</strong>, <strong>teachers</strong>, <strong>alumni</strong>, <strong>industry professionals</strong>, <strong>future employers</strong>, <strong>your mom</strong>, and <strong>that kid you &ldquo;liked&rdquo; in 4th grade</strong>. Please keep that in mind when posting <strong>anything</strong> on WDD Social.</p>
 					<p>Here are a few basic rules, guidelines, and things to keep in mind:</p>
 					
 					
