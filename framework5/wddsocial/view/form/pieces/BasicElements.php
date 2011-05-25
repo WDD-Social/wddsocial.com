@@ -111,6 +111,9 @@ HTML;
 			case 'edit':
 				$buttonText = "Save";
 				break;
+			case 'postajob':
+				$buttonText = "Post Job";
+				break;
 		}
 		
 		return <<<HTML
