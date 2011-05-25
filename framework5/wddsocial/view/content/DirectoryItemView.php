@@ -33,6 +33,7 @@ class DirectoryItemView implements \Framework5\IView {
 			
 			default:
 				throw new Exception("DirectoryItemView requires parameter type (project, article, event, job, or course), '{$options['type']}' provided");
+		
 		}
 	}
 	
@@ -47,6 +48,7 @@ class DirectoryItemView implements \Framework5\IView {
 			$content->userID,"{$content->userFirstName} {$content->userLastName}");
 		
 		switch ($content->type) {
+			
 			case 'project':
 				$leadImage = $content->images[0];
 				$contentAvatar = (file_exists("images/uploads/{$leadImage->file}_medium.jpg"))?"/images/uploads/{$leadImage->file}_medium.jpg":"/images/site/job-default_medium.jpg";
@@ -78,8 +80,8 @@ HTML;
 		if (UserSession::is_current($content->userID)) {
 			$html.= <<<HTML
 
-							<a href="/edit/{$content->type}/{$content->vanityURL}" title="Edit &ldquo;{$content->title}&rdquo;" class="edit">{$this->lang->text('edit')}</a>
-							<a href="/delete/{$content->type}/{$content->vanityURL}" title="Delete &ldquo;{$content->title}&rdquo;" class="delete">{$this->lang->text('delete')}</a>
+							<a href="/edit/{$content->type}/{$content->vanityURL}" title="{$this->lang->text('edit_title', $content->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/{$content->type}/{$content->vanityURL}" title="{$this->lang->text('delete_title', $content->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 		}
 		
@@ -93,7 +95,7 @@ HTML;
 		
 		else if (UserSession::is_authorized()) {
 			$flagClass = (UserSession::has_flagged($content->id,$content->type))?' current':'';
-			$html .= <<<HTML
+			$html.= <<<HTML
 
 							<a href="/flag/{$content->type}/{$content->vanityURL}" title="{$this->lang->text('flag_title', $content->title)}" class="flag$flagClass">{$this->lang->text('flag')}</a>
 HTML;
@@ -106,7 +108,7 @@ HTML;
 						<h2><a href="/{$content->type}/{$content->vanityURL}" title="{$content->title}">{$content->title}</a></h2>
 						<p class="team">$membersText</p>
 						<p>{$content->description}</p>
-						<p class="comments"><a href="/{$content->type}/{$content->vanityURL}#comments" title="{$content->title} | Comments">{$content->comments} comments</a> <span class="hidden">|</span> <span class="time">{$content->date}</span></p>
+						<p class="comments"><a href="/{$content->type}/{$content->vanityURL}#comments" title="{$this->lang->text('comments_title', $content->title)}">{$this->lang->text('comments', $content->comments)}</a> <span class="hidden">|</span> <span class="time">{$content->date}</span></p>
 HTML;
 		
 		# Build categories
@@ -114,7 +116,8 @@ HTML;
 		$searchCategory = $content->type . 's';
 		foreach($content->categories as $category){
 			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/$searchCategory/$searchTerm\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks, 
+				"<a href=\"/search/$searchCategory/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -138,40 +141,41 @@ HTML;
 HTML;
 		# Determines what type of secondary controls to present (Flag or Edit/Delete)
 		if (UserValidator::is_event_owner($event->id)) {
-			$html .= <<<HTML
+			$html.= <<<HTML
 
-							<a href="/edit/event/{$event->vanityURL}" title="Edit &ldquo;{$event->title}&rdquo;" class="edit">Edit</a>
-							<a href="/delete/event/{$event->vanityURL}" title="Delete &ldquo;{$event->title}&rdquo;" class="delete">Delete</a>
+							<a href="/edit/event/{$event->vanityURL}" title="{$this->lang->text('edit_title', $event->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/event/{$event->vanityURL}" title="{$this->lang->text('delete_title', $event->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 		}
 		else if (UserSession::is_authorized()) {
 			$flagClass = (UserSession::has_flagged($event->id,$event->type))?' current':'';
-			$html .= <<<HTML
+			$html.= <<<HTML
 
-							<a href="/flag/event/{$event->vanityURL}" title="Flag &ldquo;{$event->title}&rdquo;" class="flag$flagClass">Flag</a>
+							<a href="/flag/event/{$event->vanityURL}" title="{$this->lang->text('flag_title', $event->title)}" class="flag$flagClass">{$this->lang->text('flag')}</a>
 HTML;
 		}
-		$html .= <<<HTML
+		$html.= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
-						<p class="item-image"><a href="/files/ics/wddsocial.{$event->icsUID}.ics" title="Download {$event->title} iCal File" class="calendar-icon">
+						<p class="item-image"><a href="/files/ics/wddsocial.{$event->icsUID}.ics" title="{$this->lang->text('download_ical', $event->title)}" class="calendar-icon">
 							<span class="month">{$event->month}</span> 
 							<span class="day">{$event->day}</span> 
-							<span class="download"><img src="/images/site/icon-download.png" alt="Download iCal File"/>iCal</span>
+							<span class="download"><img src="/images/site/icon-download.png" alt="{$this->lang->text('download_ical_file')}"/>iCal</span>
 						</a></p>
 						<h2><a href="/event/{$event->vanityURL}" title="{$event->title}">{$event->title}</a></h2>
 						<p class="location">{$event->location}</p>
 						<p>{$event->startTime} - {$event->endTime}</p>
 						<p>{$event->description}</p>
-						<p class="comments"><a href="/event/{$event->vanityURL}#comments" title="{$event->title} | Comments">{$event->comments} comments</a></p>
+						<p class="comments"><a href="/event/{$event->vanityURL}#comments" title="{$this->lang->text('comments_title', $event->title)}">{$this->lang->text('comments', $event->comments)}</a></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
-		foreach($event->categories as $category){
+		foreach ($event->categories as $category) {
 			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/events/$searchTerm\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks, 
+				"<a href=\"/search/events/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
 		$html .= <<<HTML
@@ -203,20 +207,20 @@ HTML;
 HTML;
 		# Determines what type of secondary controls to present (Flag or Edit/Delete)
 		if (UserValidator::is_job_owner($job->id)) {
-			$html .= <<<HTML
+			$html.= <<<HTML
 
-							<a href="/edit/job/{$job->vanityURL}" title="Edit &ldquo;{$job->title}&rdquo;" class="edit">Edit</a>
-							<a href="/delete/job/{$job->vanityURL}" title="Delete &ldquo;{$job->title}&rdquo;" class="delete">Delete</a>
+							<a href="/edit/job/{$job->vanityURL}" title="{$this->lang->text('edit_title', $job->title)}" class="edit">{$this->lang->text('edit')}</a>
+							<a href="/delete/job/{$job->vanityURL}" title="{$this->lang->text('delete_title', $job->title)}" class="delete">{$this->lang->text('delete')}</a>
 HTML;
 		}
 		else if (UserSession::is_authorized()) {
-			$flagClass = (UserSession::has_flagged($job->id,'job'))?' current':'';
+			$flagClass = (UserSession::has_flagged($job->id, 'job'))?' current':'';
 			$html .= <<<HTML
 
-							<a href="/flag/job/{$job->vanityURL}" title="Flag &ldquo;{$job->title}&rdquo;" class="flag$flagClass">Flag</a>
+							<a href="/flag/job/{$job->vanityURL}" title="{$this->lang->text('flag_title', $job->title)}" class="flag$flagClass">{$this->lang->text('flag')}</a>
 HTML;
 		}
-		$html .= <<<HTML
+		$html.= <<<HTML
 
 						</div><!-- END SECONDARY -->
 						
@@ -232,9 +236,9 @@ HTML;
 		$categoryLinks = array();
 		foreach($job->categories as $category){
 			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/jobs/$searchTerm\" title=\"Categories | $category\">$category</a>");
+			array_push($categoryLinks,"<a href=\"/search/jobs/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
 		}
-		$categoryLinks = implode(' ',$categoryLinks);
+		$categoryLinks = implode(' ', $categoryLinks);
 		$html .= <<<HTML
 						<p class="tags">$categoryLinks</p>
 					</article><!-- END {$job->title} -->
