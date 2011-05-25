@@ -303,7 +303,7 @@ button {
 	display: block;
 	height: 0;
 	visibility: hidden;
-	} 
+	}
 
 .clearfix:after {
 	clear: both;
@@ -2354,8 +2354,31 @@ footer{
 @media screen and (max-width: 780px) {
 	header{
 		nav{
+			
 			ul{
-				/* font-size: 1.1em; */
+				overflow: hidden;
+				clear: both;
+				float: none;
+				width: 100%;
+				margin: 0 auto;
+				font-size: 1.2em;
+				text-align: center;
+				
+				li{
+					float: none;
+					display: inline;
+					}
+				}
+				
+			form{
+				clear: both;
+				float: none;
+				width: 80%;
+				margin: 3% auto 0;
+				
+				input{
+					height: 12px;
+					}
 				}
 			}
 		}
@@ -2430,6 +2453,67 @@ footer{
 	#content.start-page{
 		section.small:last-child{
 			margin-left: 4%;
+			}
+		}
+	}
+
+@media screen and (max-width: 730px) {
+	header{
+		h1{
+			float: none;
+			
+			a, a:visited{
+				margin: 0 auto;
+				width: 204px;
+				height: 60px;
+				background: url('../images/site/social-logo-large.png') no-repeat 0 0;
+				}
+			
+			a:hover, a:active, a:focus{
+				background-position: 0 -60px;
+				}
+			}
+			
+		#user-area{
+			clear: both;
+			float: none;
+			width: 100%;
+			margin-bottom: 1%;
+			text-align: center;
+			
+			p{
+				float: none;
+				display: inline;
+				}
+			}
+			
+		nav{
+			
+			ul{
+				overflow: hidden;
+				clear: both;
+				float: none;
+				width: 100%;
+				margin: 0 auto;
+				font-size: 1.2em;
+				text-align: center;
+				
+				li{
+					float: none;
+					display: inline;
+					}
+				}
+				
+			form{
+				clear: both;
+				float: none;
+				width: 80%;
+				margin: 3% auto 0;
+				
+				input{
+					height: 12px;
+					}
+				}
 			}
 		}
 	}
