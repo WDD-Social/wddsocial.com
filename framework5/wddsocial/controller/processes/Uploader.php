@@ -16,7 +16,9 @@ class Uploader {
 		Resizer::image($image,$name,"_full",$dest,300,500);
 		Resizer::image($image,$name,"_medium",$dest,60,60,true);
 		Resizer::image($image,$name,"_small",$dest,15,15,true);
-		unlink("$dest/$name");
+		if (file_exists("$dest/$name")) {
+			unlink("$dest/$name");
+		}
 	}
 	
 	public static function upload_employer_avatar($image, $name){
@@ -25,7 +27,9 @@ class Uploader {
 		$dest = "{$root}images/jobs";
 		Resizer::image($image,$name,"_full",$dest,300,300);
 		Resizer::image($image,$name,"_medium",$dest,60,60,true);
-		unlink("$dest/$name");
+		if (file_exists("$dest/$name")) {
+			unlink("$dest/$name");
+		}
 	}
 	
 	public static function upload_content_images($images, $titles, $contentID, $contentTitle, $contentType){
@@ -33,13 +37,15 @@ class Uploader {
 		$admin_sql = instance(':admin-sql');
 		$sel_sql = instance(':sel-sql');
 		
+		$currentUserID = (UserSession::is_authorized())?UserSession::userid():NULL;
+		
 		for ($i = 0; $i < count($images['name']); $i++) {
 			if ($images['error'][$i] != 4) {
 				$imageNumber = $i + 1;
 				$imageTitle = ($titles[$i] == '')?"{$contentTitle} | Image $imageNumber":$titles[$i];
 				
 				$query = $db->prepare($admin_sql->addImage);
-				$data = array(	'userID' => $_SESSION['user']->id,
+				$data = array(	'userID' => $currentUserID,
 								'title' => $imageTitle);
 				$query->execute($data);
 				
@@ -84,7 +90,9 @@ class Uploader {
 		Resizer::image($image,$name,"_full",$dest,800,600);
 		Resizer::image($image,$name,"_large",$dest,300,250);
 		Resizer::image($image,$name,"_medium",$dest,60,60,true);
-		unlink("$dest/$name");
+		if (file_exists("$dest/$name")) {
+			unlink("$dest/$name");
+		}
 	}
 	
 	public static function create_ics_file($event){

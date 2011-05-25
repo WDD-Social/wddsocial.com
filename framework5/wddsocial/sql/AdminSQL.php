@@ -342,6 +342,11 @@ class AdminSQL{
 			INSERT INTO jobCategories (jobID, categoryID)
 			VALUES (:jobID, :categoryID)",
 		
+		'generateJobSecurityCode' => "
+			UPDATE jobs
+			SET securityCode = SUBSTRING(MD5(RAND()),1,16)
+			WHERE id = :id",
+		
 		'deleteJobCategory' => "
 			DELETE FROM jobCategories
 			WHERE jobID = :jobID AND categoryID = :categoryID",

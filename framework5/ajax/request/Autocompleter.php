@@ -16,9 +16,6 @@ class Autocompleter implements \Framework5\IExecutable {
 		\Framework5\Settings::$log_execution = false;
 		\Framework5\Settings::$log_exception = false;
 		
-		# check user auth
-		if (!\WDDSocial\UserSession::is_authorized()) return false;
-		
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
 		
