@@ -187,23 +187,25 @@ $(function() {
 					term: searchTerm
 				},
 				success: function(response){
-					var obj = $.parseJSON(response);
-					var autocompleteResults = [];
-					if (obj.status) {
-						for (var result in obj.results) {
-							autocompleteResults.push(obj.results[result]);
+					if (response) {
+						var obj = $.parseJSON(response);
+						var autocompleteResults = [];
+						if (obj.status) {
+							for (var result in obj.results) {
+								autocompleteResults.push(obj.results[result]);
+							}
+							populateAutocomplete(autocompleteResults);
+							
+							var offset = $(currentInput).offset();
+							$('#autocomplete').css({
+								top: offset.top + $(currentInput).outerHeight() - 1,
+								left: offset.left + $(currentInput).outerWidth()*.0125,
+								width: $(currentInput).outerWidth()*.975
+							});
 						}
-						populateAutocomplete(autocompleteResults);
-						
-						var offset = $(currentInput).offset();
-						$('#autocomplete').css({
-							top: offset.top + $(currentInput).outerHeight() - 1,
-							left: offset.left + $(currentInput).outerWidth()*.0125,
-							width: $(currentInput).outerWidth()*.975
-						});
-					}
-					else {
-						removeAutocomplete();
+						else {
+							removeAutocomplete();
+						}
 					}
 				}
 			});
