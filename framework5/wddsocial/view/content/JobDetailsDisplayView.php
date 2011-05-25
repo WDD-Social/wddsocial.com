@@ -13,7 +13,7 @@ class JobDetailsDisplayView implements \Framework5\IView {
 	
 	public function render($content = null) {
 		
-		$lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
 		
 		$companyLink = ($content->website == '')?"http://google.com/?q={$content->company}":"http://{$content->website}";
 		$jobAvatar = (file_exists("images/jobs/{$content->avatar}_medium.jpg"))?"/images/jobs/{$content->avatar}_medium.jpg":"/images/site/job-default_medium.jpg";

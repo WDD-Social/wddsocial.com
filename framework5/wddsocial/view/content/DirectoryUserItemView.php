@@ -10,10 +10,17 @@ namespace WDDSocial;
 
 class DirectoryUserItemView implements \Framework5\IView {
 	
+	public function __construct() {
+		$this->lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
+	}
+	
+	
 	public function render($options = null) {
 		$person = $options['content'];
-		$userVerbage = NaturalLanguage::view_profile($person->id,"{$person->firstName} {$person->lastName}");
-		$userDisplayName = NaturalLanguage::display_name($person->id,"{$person->firstName} {$person->lastName}");
+		$userVerbage = NaturalLanguage::view_profile(
+			$person->id,"{$person->firstName} {$person->lastName}");
+		$userDisplayName = NaturalLanguage::display_name(
+			$person->id,"{$person->firstName} {$person->lastName}");
 		$userAvatar = (file_exists("images/avatars/{$person->avatar}_medium.jpg"))?"/images/avatars/{$person->avatar}_medium.jpg":"/images/site/user-default_medium.jpg";
 		$userIntro = $this->getUserIntro($person);
 		$html = <<<HTML
@@ -22,7 +29,7 @@ class DirectoryUserItemView implements \Framework5\IView {
 						<p class="item-image"><a href="/user/{$person->vanityURL}" title="{$userVerbage}"><img src="$userAvatar" alt="$userDisplayName"/></a></p>
 						<h2><a href="/user/{$person->vanityURL}" title="{$userVerbage}">$userDisplayName</a></h2>
 						<p>{$userIntro}</p>
-						<p>Joined {$person->date}</p>
+						<p>{$this->lang->text('join-date', $person->date)}</p>
 					</article><!-- END {$person->title} -->
 HTML;
 		return $html;

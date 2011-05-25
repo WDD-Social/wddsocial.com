@@ -13,7 +13,7 @@ class MediaDisplayView implements \Framework5\IView {
 	
 	public function render($options = null) {
 	
-		$lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
+		$lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
 		
 		$imagesClass = ($options['active'] == 'images')?' class="current"':'';
 		$videosClass = ($options['active'] == 'videos')?' class="current"':'';

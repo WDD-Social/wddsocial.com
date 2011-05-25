@@ -22,7 +22,7 @@ class LargeDisplayView implements \Framework5\IView {
 	
 	public function __construct() {
 		# load localization package
-		$this->lang = new \Framework5\Lang('wddsocial.lang.view.content.DisplayViewLang');
+		$this->lang = new \Framework5\Lang('wddsocial.lang.CommonLang');
 	}
 	
 	

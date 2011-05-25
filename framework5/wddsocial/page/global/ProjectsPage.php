@@ -30,7 +30,7 @@ class ProjectsPage implements \Framework5\IExecutable {
 			'oldest' => $this->lang->text('sort-oldest'));
 		
 		if (isset($sorter) and in_array($sorter, array_keys($sorters))) $active = $sorter;
-		else $active = $sorters['newest'];
+		else $active = 'newest';
 		
 		$content.= render(':section', 
 			array('section' => 'begin_content_section', 'id' => 'directory', 
