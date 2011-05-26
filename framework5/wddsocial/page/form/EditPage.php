@@ -547,7 +547,7 @@ class EditPage implements \Framework5\IExecutable {
 				
 				if ($vanityURLChanged) {
 					# get edit code for email
-					$query = $db->prepare($sel_sql->getJobEditInfo);
+					$query = $this->db->prepare($this->sel->getJobEditInfo);
 					$query->execute(array('id' => $content->id));
 					$query->setFetchMode(\PDO::FETCH_OBJ);
 					$result = $query->fetch();
