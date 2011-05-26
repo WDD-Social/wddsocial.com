@@ -24,7 +24,6 @@ class JobPage implements \Framework5\IExecutable {
 		if (Validator::job_has_been_flagged($job->id)) redirect("/");
 			
 		if ($job) {
-			
 			$page_title = $job->title; # set page title
 			$content = render(':section', array('section' => 'begin_content'));
 			
