@@ -1331,6 +1331,12 @@ class SelectorSQL{
 			FROM jobs
 			WHERE id = :id",
 		
+		'getJobEditInfo' => "
+			SELECT securityCode, vanityURL
+			FROM jobs
+			WHERE id = :id
+			LIMIT 1",
+		
 		'getJobs' => "
 			SELECT *
 			FROM (SELECT j.id, j.userID, j.title, vanityURL, company, j.datetime, jt.title AS jobType, avatar, location, compensation, description, website, COUNT(DISTINCT jf.userID) AS flagCount
