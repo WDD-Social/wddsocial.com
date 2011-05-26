@@ -16,7 +16,7 @@ class ContentVO {
 		$this->db = instance(':db');
 		$this->sql = instance(':sel-sql');
 		$this->getCategories();
-		$this->getLinks();	
+		$this->getLinks();
 		if($this->type == 'project' or $this->type == 'article'){
 			$this->getTeam();
 		}
