@@ -7,7 +7,7 @@ namespace WDDSocial;
 *
 */
 class JobVO{
-	public $id, $userID, $title, $company, $description, $jobType, $avatar, $location, $compensation, $website, $categories = array(), $images = array();
+	public $id, $userID, $title, $company, $description, $jobType, $avatar, $location, $compensation, $website, $categories = array(), $links = array(), $images = array();
 	private $db, $sql;
 	
 	public function __construct(){
@@ -18,6 +18,7 @@ class JobVO{
 		
 		$this->type = 'job';
 		$this->get_categories();
+		$this->get_links();
 		$this->get_images();
 	}
 	
@@ -33,7 +34,23 @@ class JobVO{
 		$query->execute($data);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		while($row = $query->fetch()){
-			array_push($this->categories,$row->title);
+			array_push($this->categories,$row);
+		}
+	}
+	
+	
+	
+	/**
+	* Gets links for job
+	*/
+	
+	private function get_links(){
+		$data = array('id' => $this->id);
+		$query = $this->db->prepare($this->sql->getJobLinks);
+		$query->execute($data);
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		while($link = $query->fetch()){
+			array_push($this->links,$link);
 		}
 	}
 	

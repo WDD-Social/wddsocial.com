@@ -179,7 +179,6 @@ class EditPage implements \Framework5\IExecutable {
 				$html.= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', 
 					array('videos' => $content->videos));
 				
-				
 				# display category section
 				$html.= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', 
 					array('categories' => $content->categories));
