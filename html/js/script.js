@@ -77,7 +77,7 @@ $(function() {
 		}
 		if(type === 'All'){
 			$(parent).find('article').slideDown(duration,'easeInOutQuad');
-		}else{
+		}else {
 			var lowerType = type.toLowerCase();
 			$(parent)
 				.find('article.'+lowerType).slideDown(duration,'easeInOutQuad').parent()
@@ -289,7 +289,9 @@ $(function() {
 				$(link).toggleClass('loading').html('Load More');
 				pageNumber++;
 				selectedSection = $(parent).parent();
-				filter($(selectedSection).find('div.filters a.current').html(),selectedSection,0)
+				if (page === 'user' || page === '') {
+					filter($(selectedSection).find('div.filters a.current').html(),selectedSection,0)
+				}
 				$.ajax({
 					url: '/ajax/more',
 					dataType: 'html',
