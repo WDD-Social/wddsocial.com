@@ -91,8 +91,6 @@ class ProjectPage implements \Framework5\IExecutable {
 					'classes' => array('medium', 'with-secondary'), 'header' => 'Comments'));
 			$content .= render('wddsocial.view.content.WDDSocial\CommentDisplayView', $project->comments);
 			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'comments'));
-			$content .= render(':section', array('section' => 'end_content'));
-			
 		}
 		
 		else {
@@ -101,9 +99,9 @@ class ProjectPage implements \Framework5\IExecutable {
 			
 			$content = render(':section', array('section' => 'begin_content'));
 			$content .= "<h1>Project Not Found</h1>";
-			$content .= render(':section', array('section' => 'end_content'));
 		}
 		
+		$content .= render(':section', array('section' => 'end_content'));
 		
 		# display page
 		echo render(':template', 

@@ -103,9 +103,9 @@ class ArticlePage implements \Framework5\IExecutable {
 			$page_title = $lang->text('article_not_found');
 			$content = render(':section', array('section' => 'begin_content'));
 			$content.= "<h1>{$lang->text('article_not_found')}</h1>";
-			$content.= render(':section', array('section' => 'end_content'));
 		}
 		
+		$content.= render(':section', array('section' => 'end_content'));
 		
 		# display page
 		echo render(':template', 
