@@ -164,6 +164,8 @@ class PostJobPage implements \Framework5\IExecutable {
 		$result = $query->fetch();
 		
 		# send edit job post email
+		import('wddsocial.controller.WDDSocial\Mailer');
+		
 		$mailer = new Mailer();
 		$mailer->add_recipient($postCompany, $postEmail);
 		$mailer->subject = "WDD Social job post info";
