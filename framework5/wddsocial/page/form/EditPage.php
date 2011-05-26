@@ -558,7 +558,7 @@ class EditPage implements \Framework5\IExecutable {
 					$mailer = new Mailer();
 					$mailer->add_recipient($postCompany, $postEmail);
 					$mailer->subject = "WDD Social | Job Post \"{$postTitle}\"";
-					$mailer->message = render("wddsocial.view.email.WDDSocial\PostJobEmail",
+					$mailer->message = render("wddsocial.view.email.WDDSocial\EditJobEmail",
 						array('vanityURL' => $result->vanityURL, 'securityCode' => $result->securityCode));
 					$mailer->send();
 				}
