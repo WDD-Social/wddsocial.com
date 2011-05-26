@@ -146,7 +146,7 @@ class SearchPage implements \Framework5\IExecutable {
 			));
 			
 			
-			$paginator = new Paginator(4,18);
+			$paginator = new Paginator(4,30);
 			
 			switch ($active_sorter) {
 				case 'alphabetically':

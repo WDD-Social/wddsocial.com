@@ -40,7 +40,7 @@ class PeoplePage implements \Framework5\IExecutable {
 				'header' => $this->lang->text('page-header'), 'sort' => true, 
 				'sorters' => $sorters, 'base_link' => '/people/', 'active' => $active));
 		
-		$paginator = new Paginator(2,18);
+		$paginator = new Paginator(2,30);
 		
 		switch ($active) {
 			case 'alphabetically':

@@ -38,7 +38,7 @@ class ProjectsPage implements \Framework5\IExecutable {
 				'header' => $this->lang->text('projects-header'), 'sort' => true, 
 				'sorters' => $sorters, 'base_link' => '/projects/', 'active' => $active));
 		
-		$paginator = new Paginator(2,18);
+		$paginator = new Paginator(2,30);
 		
 		switch ($active) {
 			case 'alphabetically':
