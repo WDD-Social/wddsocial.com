@@ -146,6 +146,7 @@ HTML;
 			return <<<HTML
 
 				<section id="user-area" class="signed-out">
+					<p>{$this->lang->text('hiring')} <a href="/postajob" title="{$this->lang->text('post-a-job-title')}">{$this->lang->text('post-a-job')}</a></p>
 					<p><a href="/signup" title="{$this->lang->text('signup-title')}">{$this->lang->text('signup')}</a></p>
 					<p><a href="/signin" title="{$this->lang->text('signin-title')}">{$this->lang->text('signin')}</a></p>
 				</section><!-- END USER AREA -->

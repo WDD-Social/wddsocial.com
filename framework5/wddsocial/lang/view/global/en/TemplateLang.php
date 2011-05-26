@@ -79,6 +79,15 @@ class TemplateLang implements \Framework5\ILanguagePack {
 			case 'signin-title':
 				return 'Sign In for WDD Social';
 			
+			case 'hiring':
+				return 'Hiring?';
+			
+			case 'post-a-job':
+				return 'Post a Job';
+			
+			case 'post-a-job-title':
+				return 'WDD Social | Post a Job';
+			
 			
 			# footer
 			case 'issue':
