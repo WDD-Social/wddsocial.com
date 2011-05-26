@@ -20,7 +20,9 @@ class DeletePage implements \Framework5\IExecutable {
 	public function execute() {
 		
 		# require user auth
-		UserSession::protect();
+		if (\Framework5\Request::segment(1) != 'job') {
+			UserSession::protect();
+		}
 		
 		# handle form submission
 		if (isset($_POST['submit']) and $_POST['submit'] == 'Delete'){
@@ -97,8 +99,21 @@ class DeletePage implements \Framework5\IExecutable {
 			# check if user is content owner
 			if ($query->rowCount() > 0) {
 				$content = $query->fetch();
-				if (!UserValidator::is_owner($content->id,$type)) {
-					redirect('/');
+				switch ($type) {
+					case 'job':
+						$securityCode = \Framework5\Request::segment(3);
+						if (UserSession::is_authorized()) {
+							if (!UserValidator::is_owner($content->id,$type)) redirect('/');
+						}
+						else {
+							if ($securityCode != $content->securityCode) redirect('/');
+						}
+						break;
+					default:
+						if (!UserValidator::is_owner($content->id,$type)) {
+							redirect('/');
+						}
+						break;
 				}
 			}
 			
@@ -290,6 +305,13 @@ class DeletePage implements \Framework5\IExecutable {
 			return new FormResponse(false,'Uh oh, looks like there was an error. Please try again.');
 		}
 		
-		return new FormResponse(true,"{$_POST['redirect']}");
+		if (UserSession::is_authorized()) {
+			$redirectLocation = "{$_POST['redirect']}";
+		}
+		else if ($content->type == 'job') {
+			$redirectLocation = "/confirm/deletejob";
+		}
+		
+		return new FormResponse(true,"$redirectLocation");
 	}
 }
