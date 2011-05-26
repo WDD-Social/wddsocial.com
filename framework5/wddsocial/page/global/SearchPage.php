@@ -237,7 +237,7 @@ class SearchPage implements \Framework5\IExecutable {
 				
 				if (count($next_results) > 0) {
 					# display section footer
-					$content.= render(':section', array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => "$type", 'load_more_link' => "/search/$type/{$paginator->next}/$active_sorter"));	
+					$content.= render(':section', array('section' => 'end_content_section', 'id' => 'directory', 'load_more' => "$type", 'load_more_link' => "/search/$type/$active_sorter/{$paginator->next}"));	
 				}		
 				else {
 					# display section footer

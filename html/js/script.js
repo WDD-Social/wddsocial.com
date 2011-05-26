@@ -231,10 +231,13 @@ $(function() {
 	// "Load more" variable setup
 	var urlArray = window.location.pathname.substring(1).split('/'),
 		page = (urlArray[0] === '')?'/':urlArray[0];
-		
 	switch (page) {
 		case 'user':
 			pageSegment = 2;
+			break;
+		case 'search':
+			searchTerm = urlArray[2];
+			pageSegment = 4;
 			break;
 		default:
 			pageSegment = 2;
@@ -269,6 +272,17 @@ $(function() {
 				active: $('#directory .secondary .current').html().toLowerCase()
 			};
 	}
+	else if (page === 'search') {
+		var postsPerPage = $('#directory').find('article').length/pageNumber,
+			ajaxQuery = 'getSearchResults',
+			ajaxExtra = {
+				term: searchTerm,
+				type: $('#directory h1 .current').html().toLowerCase(),
+				sort: $('#directory .secondary .current').html().toLowerCase()
+			};
+	}
+	
+	console.log(pageNumber, postsPerPage);
 	
 	// "Load more" functionality
 	$('p.load-more a').live('click',function(){

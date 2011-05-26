@@ -32,6 +32,9 @@ class LoadMore implements \Framework5\IExecutable {
 			case 'getEvents':
 				echo $this->getEvents($_POST['start'],$_POST['limit'],$_POST['extra']['active']);
 				break;
+			case 'getSearchResults':
+				echo $this->getSearchResults($_POST['extra']['term'],$_POST['extra']['type'],$_POST['start'],$_POST['limit'],$_POST['extra']['sort']);
+				break;
 			default:
 				echo $this->getLatest($_POST['start'],$_POST['limit']);
 				break;
@@ -190,5 +193,133 @@ class LoadMore implements \Framework5\IExecutable {
 			$response .= render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => $item->type,'content' => $item));
 		}
 		return $response;
+	}
+	
+	
+	
+	private function getSearchResults($term, $type, $start, $limit, $sort){
+		
+		switch ($sort) {
+			case 'alphabetically':
+				if ($type == 'people') {
+					$orderBy = 'lastName ASC';
+				}
+				else {
+					$orderBy = 'title ASC';
+				}
+				break;
+			case 'newest':
+				$orderBy = '`datetime` DESC';
+				break;
+			case 'oldest':
+				$orderBy = '`datetime` ASC';
+				break;
+			case 'upcoming':
+				$orderBy = 'startDateTime ASC';
+				break;
+			case 'month':
+				$orderBy = '`month` ASC';
+				break;
+			case 'company':
+				$orderBy = 'company ASC';
+				break;
+			case 'location':
+				$orderBy = 'location ASC';
+				break;
+			default:
+				if ($type == 'events') {
+					$orderBy = 'title ASC';
+				}
+				else if ($type == 'courses') {
+					$orderBy = '`month` ASC';
+				}
+				else {
+					$orderBy = '`datetime` DESC';
+				}
+				break;
+		}
+		
+		switch ($type) {
+			case 'people':
+				import('wddsocial.model.WDDSocial\UserVO');
+				$query = $this->db->prepare($this->sql->searchPeople . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query->execute(array('term' => "%$term%"));
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\UserVO');
+				$results = $query->fetchAll();
+				break;
+			case 'projects':
+				import('wddsocial.model.WDDSocial\DisplayVO');
+				$query = $this->db->prepare($this->sql->searchProjects . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query->execute(array('term' => "%$term%"));
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+				$results = $query->fetchAll();
+				break;
+			case 'articles':
+				import('wddsocial.model.WDDSocial\DisplayVO');
+				$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->searchArticles . " ORDER BY $orderBy" . " LIMIT $start, $limit"):$this->db->prepare($this->sql->searchPublicArticles . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query->execute(array('term' => "%$term%"));
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+				$results = $query->fetchAll();
+				break;
+			case 'courses':
+				import('wddsocial.model.WDDSocial\CourseVO');
+				$query = $this->db->prepare($this->sql->searchCourses . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query->execute(array('term' => "%$term%"));
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\CourseVO');
+				$results = $query->fetchAll();
+				break;
+			case 'events':
+				import('wddsocial.model.WDDSocial\DisplayVO');
+				$query = (UserSession::is_authorized())?$this->db->prepare($this->sql->searchEvents . " ORDER BY $orderBy" . " LIMIT $start, $limit"):$this->db->prepare($this->sql->searchPublicEvents . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query->execute(array('term' => "%$term%"));
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\DisplayVO');
+				$results = $query->fetchAll();
+				break;
+			case 'jobs':
+				import('wddsocial.model.WDDSocial\JobVO');
+				$query = $this->db->prepare($this->sql->searchJobs . " ORDER BY $orderBy" . " LIMIT $start, $limit");
+				$query->execute(array('term' => "%$term%"));
+				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
+				$results = $query->fetchAll();
+				break;
+			default:
+				$results = array();
+				break;
+		}
+		
+		if (count($results) > 0) {
+			switch ($type) {
+				case 'people':
+					foreach ($results as $person) {
+						return render('wddsocial.view.content.WDDSocial\DirectoryUserItemView', array('content' => $person));
+					}
+					break;
+				case 'projects':
+					foreach ($results as $project) {
+						return render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'project','content' => $project));
+					}
+					break;
+				case 'articles':
+					foreach ($results as $article) {
+						return render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'article','content' => $article));
+					}
+					break;
+				case 'courses':
+					foreach ($results as $course) {
+						return render('wddsocial.view.content.WDDSocial\DirectoryCourseItemView', $course);
+					}
+					break;
+				case 'events':
+					foreach ($results as $event) {
+						return render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'event','content' => $event));
+					}
+					break;
+				case 'jobs':
+					foreach ($results as $event) {
+						return render('wddsocial.view.content.WDDSocial\DirectoryItemView', array('type' => 'job','content' => $event));
+					}
+					break;
+			}
+		}
 	}
 }
