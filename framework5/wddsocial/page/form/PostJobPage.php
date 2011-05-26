@@ -168,7 +168,7 @@ class PostJobPage implements \Framework5\IExecutable {
 		
 		$mailer = new Mailer();
 		$mailer->add_recipient($postCompany, $postEmail);
-		$mailer->subject = "WDD Social | Job Post &ldquo;{$postTitle}&rdquo;";
+		$mailer->subject = "WDD Social | Job Post \"{$postTitle}\"";
 		$mailer->message = render("wddsocial.view.email.WDDSocial\PostJobEmail",
 			array('vanityURL' => $result->vanityURL, 'securityCode' => $result->securityCode));
 		$mailer->send();
