@@ -69,7 +69,7 @@ class JobsPage implements \Framework5\IExecutable {
 		
 		
 		else {
-			$paginator = new Paginator(3,18);
+			$paginator = new Paginator(3,30);
 			
 			$where = $this->query_type($type);
 			$orderBy = $this->query_sorter($active_sorter);
