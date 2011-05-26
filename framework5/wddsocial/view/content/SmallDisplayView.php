@@ -209,9 +209,9 @@ HTML;
 		shuffle($displayCategories);
 		$categoryLinks = array();
 		for ($i = 0; $i < 2; $i++) {
-			if (isset($displayCategories[$i])) {
-				$searchTerm = urlencode($displayCategories[$i]);
-				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i])}\">{$displayCategories[$i]}</a>");
+			if (isset($displayCategories[$i]->title)) {
+				$searchTerm = urlencode($displayCategories[$i]->title);
+				array_push($categoryLinks,"<a href=\"/search/projects/$searchTerm\" title=\"{$this->lang->text('category_title', $displayCategories[$i]->title)}\">{$displayCategories[$i]->title}</a>");
 			}
 		}
 		$categoryLinks = implode(' ',$categoryLinks);
