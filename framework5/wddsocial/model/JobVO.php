@@ -7,7 +7,7 @@ namespace WDDSocial;
 *
 */
 class JobVO{
-	public $id, $userID, $title, $company, $description, $jobType, $avatar, $location, $compensation, $website, $categories = array();
+	public $id, $userID, $title, $company, $description, $jobType, $avatar, $location, $compensation, $website, $categories = array(), $images = array();
 	private $db, $sql;
 	
 	public function __construct(){
@@ -18,6 +18,7 @@ class JobVO{
 		
 		$this->type = 'job';
 		$this->get_categories();
+		$this->get_images();
 	}
 	
 	
@@ -33,6 +34,20 @@ class JobVO{
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		while($row = $query->fetch()){
 			array_push($this->categories,$row->title);
+		}
+	}
+	
+	
+	
+	/**
+	* Gets images for job
+	*/
+	
+	private function get_images(){
+		$query = $this->db->prepare($this->sql->getJobImages);
+		$query->execute(array('id' => $this->id));
+		while($image = $query->fetch(\PDO::FETCH_OBJ)){
+			array_push($this->images,$image);
 		}
 	}
 }

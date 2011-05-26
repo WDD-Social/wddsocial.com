@@ -1,3 +1,23 @@
+<?php
+
+$timezone = new DateTimeZone('America/New_York');
+$launch = new DateTime('2011-06-02 18:00:00',$timezone);
+$today = new DateTime(NULL,$timezone);
+
+$difference = $launch->diff($today);
+
+if ($difference->days == 0) {
+	$displayDate = 'today';
+}
+else if ($difference->days == 1) {
+	$displayDate = 'tomorrow';
+}
+else if ($difference->days > 1) {
+	$displayDate = "in just {$difference->days} days";
+}
+
+echo <<<HTML
+
 <!doctype html>
 <!--[if lt IE 7 ]><html lang="en" class="no-js ie6"><![endif]-->
 <!--[if IE 7 ]><html lang="en" class="no-js ie7"><![endif]-->
@@ -7,7 +27,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>WDD Social | Sign Up for Updates</title>
+		<title>WDD Social | Connecting the Full Sail web community.</title>
 		<meta name="description" content="Connecting the Full Sail University web community. 06.02.2011">
 		<meta name="author" content="Anthony Colangelo (http://www.acolangelo.com)">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,22 +38,19 @@
 	<body>
 		<section id="content">
 			<h1><a href="http://www.wddsocial.com/" title="WDD SOCIAL"><img alt="WDD Social" src="images/social.logo.png" /></a></h1>
-			<p class="error"></p>
-			<form action="http://wddsocial.us2.list-manage.com/subscribe/post?u=4a0576782dede3f5e3590fdfa&amp;id=314127fcd3" method="post" id="mc-embedded-subscribe-form" name="mc-embedded-subscribe-form">
-				<fieldset>
-					<label for="mce-EMAIL">Email Address:</label>
-					<input type="email" name="EMAIL" id="mce-EMAIL" autofocus />
-				</fieldset>
-				<fieldset>
-					<label for="mce-FNAME">First Name:</label>
-					<input type="text" name="FNAME" id="mce-FNAME" />
-				</fieldset>
-				<fieldset>
-					<label for="mce-LNAME">Last Name:</label>
-					<input type="text" name="LNAME" id="mce-LNAME" />
-				</fieldset>
-				<input type="submit" value="Subscribe" name="subscribe" id="mc-embedded-subscribe" />
-			</form>
+			<h1 class="mega">Launching {$displayDate}!</h1>
+			<section>
+				<h2>Official Launch and Presentation</h2>
+				<p>We&rsquo;ll be launching and presenting WDD Social at the Web Final presentations, and we&rsquo;d love for you to come join us!</p>
+				<address>
+					<p><strong>June 2nd, 2011, at 6:00 PM</strong></p>
+					<p>Full Sail 3F-129</p>
+				</address>
+				<h2>What is WDD Social?</h1>
+				<p>The mission of WDD Social is to connect the Full Sail University web community.</p>
+				<p>It is a place that allows students, teachers, and alumni to share the projects they&rsquo;ve been working on, discuss their thoughts about the industry, and much, much more.</p>
+				<p>Features include user profiles, project showcases, articles, events, private messaging, and even a job board.</p>
+			</section>
 		</section><!-- END CONTENT -->
 		<footer>
 			<p>Connecting the Full Sail web community.</p>
@@ -60,3 +77,4 @@
 		</script>
 	</body>
 </html>
+HTML;

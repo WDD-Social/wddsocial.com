@@ -147,6 +147,9 @@ class Router implements \Framework5\IRouter {
 			case 'message':
 				return 'wddsocial.page.form.WDDSocial\MessagePage';
 			
+			case 'confirm':
+				return 'wddsocial.page.form.WDDSocial\ConfirmPage';
+			
 			
 			# 404
 			

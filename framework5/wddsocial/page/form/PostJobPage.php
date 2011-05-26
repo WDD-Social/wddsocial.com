@@ -25,7 +25,7 @@ class PostJobPage implements \Framework5\IExecutable {
 		$content = render(':section', array('section' => 'begin_content'));
 		
 		if ($response->status) {
-			$content .= "<h1>Job has been posted.</h1>";
+			redirect('/confirm/createjob');
 		}
 		else {
 			$content .= render('wddsocial.view.form.WDDSocial\ExtraView', array('type' => 'postajob'));

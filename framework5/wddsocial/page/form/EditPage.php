@@ -197,7 +197,7 @@ class EditPage implements \Framework5\IExecutable {
 					array('section' => 'save'));
 				
 				#display course section
-				if ($_POST['type'] != 'job') {
+				if ($content->type != 'job') {
 					$html.= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
 						array('courses' => $content->courses, 'header' => true));
 				}
@@ -519,23 +519,31 @@ class EditPage implements \Framework5\IExecutable {
 			
 			
 			
-			# Add/Edit/Delete Courses
-			$currentCourses = array();
-			$newCourses = array();
-			foreach ($content->courses as $currentCourse) {
-				array_push($currentCourses, $currentCourse->id);
+			if ($content->type != 'job') {
+				# Add/Edit/Delete Courses
+				$currentCourses = array();
+				$newCourses = array();
+				foreach ($content->courses as $currentCourse) {
+					array_push($currentCourses, $currentCourse->id);
+				}
+				foreach ($_POST['courses'] as $newCourse) {
+					if ($newCourse != '')
+						array_push($newCourses, $newCourse);
+				}
+				CourseProcessor::update_courses($currentCourses, $newCourses, $content->type, $content->id);
 			}
-			foreach ($_POST['courses'] as $newCourse) {
-				if ($newCourse != '')
-					array_push($newCourses, $newCourse);
-			}
-			CourseProcessor::update_courses($currentCourses, $newCourses, $content->type, $content->id);
-			
+						
 			
 			
 			# Redirect to content page
 			$contentVanityURL = VanityURLProcessor::get($content->id, $content->type);
-			$redirectLocation = "/{$content->type}/{$contentVanityURL}";
+			
+			if (UserSession::is_authorized()) {
+				$redirectLocation = "/{$content->type}/{$contentVanityURL}";
+			}
+			else if ($content->type == 'job') {
+				$redirectLocation = "/confirm/editjob";
+			}
 		}
 		
 		return new FormResponse(true, "{$redirectLocation}");
