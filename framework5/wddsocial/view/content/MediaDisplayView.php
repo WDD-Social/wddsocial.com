@@ -30,8 +30,10 @@ HTML;
 		# display an image or video
 		switch ($options['active']) {
 			case 'images':
-				# Remove first image in array
-				array_shift($options['content']->images);
+				if ($options['type'] != 'job') {
+					# Remove first image in array
+					array_shift($options['content']->images);
+				}
 				if (count($options['content']->images) > 0) {
 					foreach ($options['content']->images as $image) {
 						$html .= <<<HTML
