@@ -156,6 +156,22 @@ class PostJobPage implements \Framework5\IExecutable {
 		
 		VideoProcessor::add_videos($_POST['videos'], $contentID, 'job');
 		
+		
+		# get edit code for email
+		$query = $db->prepare($sel_sql->getJobEditInfo);
+		$query->execute(array('id' => $contentID));
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$result = $query->fetch();
+		
+		# send edit job post email
+		$mailer = new Mailer();
+		$mailer->add_recipient($postCompany, $postEmail);
+		$mailer->subject = "WDD Social job post info";
+		$mailer->message = render("wddsocial.view.email.WDDSocial\VerificationEmail", 
+			array('vanityURL' => $result->vanityURL, 'securityCode' => $result->securityCode));
+		$mailer->send();
+		
+		
 		return new FormResponse(true);
 	}
 }
