@@ -152,7 +152,7 @@ HTML;
 
 					</div><!-- END DESCRIPTION -->
 					
-					<div class="small">
+					<div class="large no-margin">
 						<h2>{$lang->text('categories')}</h2>
 HTML;
 		
@@ -186,7 +186,7 @@ HTML;
 
 					</div><!-- END CATGORIES -->
 					
-					<div class="small no-margin">
+					<div class="large no-margin">
 						<h2>{$lang->text('links')}</h2>
 HTML;
 		$linkCount = 0;
