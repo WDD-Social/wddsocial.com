@@ -19,12 +19,12 @@ class ArticlePage implements \Framework5\IExecutable {
 		# get article information
 		$article = $this->getArticle(\Framework5\Request::segment(1));
 		
+		# redirect if article has reached flag limit
 		if (Validator::article_has_been_flagged($article->id)) redirect("/");
 		
 		# handle form submission
-		if (isset($_POST['submit'])){
+		if (isset($_POST['submit'])) {
 			$response = $this->_process_form($article->id,$article->type);
-			
 			if ($response->status) {
 				$article = null;
 				$article = $this->getArticle(\Framework5\Request::segment(1));
@@ -32,11 +32,8 @@ class ArticlePage implements \Framework5\IExecutable {
 		}
 		
 		
+		# if valid article, render
 		if ($article) {
-			
-			# page title
-			$page_title = $article->title;
-			
 			
 			$content = render(':section', array('section' => 'begin_content'));
 			
@@ -45,7 +42,8 @@ class ArticlePage implements \Framework5\IExecutable {
 				array('section' => 'begin_content_section', 'id' => 'Article', 
 					'classes' => array('large', 'with-secondary'), 'header' => $article->title));
 			$content.= render('wddsocial.view.content.WDDSocial\OverviewDisplayView', $article);
-			$content.= render(':section', array('section' => 'end_content_section', 'id' => 'Article'));
+			$content.= render(':section', 
+				array('section' => 'end_content_section', 'id' => 'Article'));
 			
 			
 			# translate and natural language
@@ -53,14 +51,18 @@ class ArticlePage implements \Framework5\IExecutable {
 				$author_header = $lang->text('authors');
 			else $author_header = $lang->text('author');
 			
+			
 			# display article authors
 			$content.= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'authors', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => $author_header));
 			$content.= render('wddsocial.view.content.WDDSocial\MembersDisplayView', $article);
-			$content.= render(':section', array('section' => 'end_content_section', 'id' => 'authors'));
+			$content.= render(':section', 
+				array('section' => 'end_content_section', 'id' => 'authors'));
 			
+			
+			# media display type
 			$media = \Framework5\Request::segment(2);
 			if (isset($media) and $media != '') {
 				switch ($media) {
@@ -74,10 +76,10 @@ class ArticlePage implements \Framework5\IExecutable {
 						$activeMedia = 'images';
 						break;
 				}
-			}
-			else {
+			} else {
 				$activeMedia = 'images';
 			}
+			
 			
 			# display article media
 			$content.= render(':section', 
@@ -92,14 +94,18 @@ class ArticlePage implements \Framework5\IExecutable {
 			# display article comments
 			$content.= render(':section', 
 				array('section' => 'begin_content_section', 'id' => 'comments', 
-					'classes' => array('medium', 'with-secondary'), 'header' => $lang->text('comments')));
-			$content.= render('wddsocial.view.content.WDDSocial\CommentDisplayView', $article->comments);
-			$content.= render(':section', array('section' => 'end_content_section', 'id' => 'comments'));
+					'classes' => array('medium', 'with-secondary'), 
+					'header' => $lang->text('comments')));
+			$content.= render('wddsocial.view.content.WDDSocial\CommentDisplayView', 
+				$article->comments);
+			$content.= render(':section', 
+				array('section' => 'end_content_section', 'id' => 'comments'));
 			
 		}
 		
+		
+		# article not fount
 		else {
-			# display site header
 			$page_title = $lang->text('article_not_found');
 			$content = render(':section', array('section' => 'begin_content'));
 			$content.= "<h1>{$lang->text('article_not_found')}</h1>";
@@ -109,7 +115,7 @@ class ArticlePage implements \Framework5\IExecutable {
 		
 		# display page
 		echo render(':template', 
-			array('title' => $page_title, 'content' => $content));
+			array('title' => $article->title, 'content' => $content));
 	}
 	
 	
@@ -140,7 +146,7 @@ class ArticlePage implements \Framework5\IExecutable {
 	private function _process_form($articleID,$contentType) {
 		import('wddsocial.model.WDDSocial\FormResponse');
 		import('wddsocial.controller.processes.WDDSocial\CommentProcessor');
-		CommentProcessor::add_comment($_POST['content'],$articleID,$contentType);
+		CommentProcessor::add_comment($_POST['content'], $articleID, $contentType);
 		return new FormResponse(true);
 	}
 }
