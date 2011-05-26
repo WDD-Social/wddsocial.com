@@ -25,6 +25,7 @@ class SignInPromptView implements \Framework5\IView {
 		return <<<HTML
 
 					<p><strong>You must be signed in to view our job postings.</strong> Would you like to <a href="/signin" title="Sign In to WDD Social">sign in now?</a></p>
+					<p>Or, you could <a href="/postajob" title="WDD Social | Post a Job">post a job</a> of your own.</p>
 HTML;
 	}
 	
@@ -32,6 +33,7 @@ HTML;
 		return <<<HTML
 
 					<p><strong>You must be signed in to search through our job postings.</strong> Would you like to <a href="/signin" title="Sign In to WDD Social">sign in now?</a></p>
+					<p>Or, you could <a href="/postajob" title="WDD Social | Post a Job">post a job</a> of your own.</p>
 HTML;
 	}
 }
