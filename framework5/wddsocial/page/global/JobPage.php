@@ -67,8 +67,7 @@ class JobPage implements \Framework5\IExecutable {
 				array('section' => 'begin_content_section', 'id' => 'media', 
 					'classes' => array('small', 'no-margin', 'side-sticky', 'with-secondary'), 
 					'header' => 'Media'));
-			$content .= render('wddsocial.view.content.WDDSocial\MediaDisplayView', 
-				array('content' => $job, 'active' => $activeMedia, 'base_link' => "/job/{$job->vanityURL}"));
+			$content .= render('wddsocial.view.content.WDDSocial\MediaDisplayView', array('content' => $job, 'active' => $activeMedia, 'base_link' => "/job/{$job->vanityURL}", 'type' => 'job'));
 			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'media'));
 			$content .= render(':section', array('section' => 'end_content'));
 			
