@@ -298,8 +298,10 @@ class EditPage implements \Framework5\IExecutable {
 			if ($postContent != $content->content)
 				$fields['content'] = $postContent;
 			
-			if ($postVanityURL != $content->vanityURL and $postVanityURL != '')
+			if ($postVanityURL != $content->vanityURL and $postVanityURL != '') {
 				$fields['vanityURL'] = $postVanityURL;
+				$vanityURLChanged = true;
+			}
 			else if ($postVanityURL == '')
 				VanityURLProcessor::generate($content->id, $content->type);
 			
@@ -542,6 +544,24 @@ class EditPage implements \Framework5\IExecutable {
 			}
 			else if ($content->type == 'job') {
 				$redirectLocation = "/confirm/editjob";
+				
+				if ($vanityURLChanged) {
+					# get edit code for email
+					$query = $db->prepare($sel_sql->getJobEditInfo);
+					$query->execute(array('id' => $content->id));
+					$query->setFetchMode(\PDO::FETCH_OBJ);
+					$result = $query->fetch();
+					
+					# send edit job post email
+					import('wddsocial.controller.WDDSocial\Mailer');
+					
+					$mailer = new Mailer();
+					$mailer->add_recipient($postCompany, $postEmail);
+					$mailer->subject = "WDD Social | Job Post \"{$postTitle}\"";
+					$mailer->message = render("wddsocial.view.email.WDDSocial\PostJobEmail",
+						array('vanityURL' => $result->vanityURL, 'securityCode' => $result->securityCode));
+					$mailer->send();
+				}
 			}
 		}
 		
