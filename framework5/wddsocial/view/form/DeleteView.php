@@ -80,7 +80,7 @@ class DeleteView implements \Framework5\IView {
 
 					<h1 class="mega form">Are you sure you want to delete $deleteTitle?</h1>
 					<form action="{$_SERVER['REQUEST_URI']}" method="post">
-						<h1>Attention $redirect</h1>
+						<h1>Attention</h1>
 						<p class="error"><strong>{$options['error']}</strong></p>
 						<p><strong>This action is final and cannot be undone</strong>.</p>
 						<p><strong>Related content can not be retrieved</strong>.</p>
