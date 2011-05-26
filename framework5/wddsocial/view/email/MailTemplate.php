@@ -22,7 +22,7 @@ return <<<HTML
 	<head>
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<title>WDD Social | TITLE GOES HERE</title>
+		<title>WDD Social | Email Notification</title>
 		<meta name="description" content="WDD Social | Connecting the Full Sail University web community.">
 		<meta name="author" content="Anthony Colangelo (http://www.acolangelo.com)">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
