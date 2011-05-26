@@ -22,8 +22,6 @@ class ContentVO {
 		}
 		if($this->type == 'project' or $this->type == 'article' or $this->type == 'event' or $this->type == 'job'){
 			$this->getImages();
-		}
-		if($this->type == 'project' or $this->type == 'article' or $this->type == 'event' or $this->type == 'job'){
 			$this->getVideos();
 		}
 		if($this->type == 'project' or $this->type == 'article' or $this->type == 'event'){
