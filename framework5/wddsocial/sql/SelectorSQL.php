@@ -623,6 +623,13 @@ class SelectorSQL{
 			FROM userDislikes AS ud
 			LEFT JOIN categories AS c ON (c.id = ud.categoryID)
 			WHERE userID = :id",
+		
+		'getAboutUs' => "
+			SELECT u.id, firstName, lastName, email, fullsailEmail, avatar, vanityURL, bio, hometown, DATE_FORMAT(birthday,'%M %e, %Y') AS birthday, TIMESTAMPDIFF(YEAR, birthday, NOW()) AS age, ut.title AS `type`, ut.id as typeID, website, twitter, facebook, github, dribbble, forrst
+			FROM users AS u
+			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
+			WHERE u.id = 1 OR u.id = 2
+			ORDER BY lastName",
 			
 		'getRecentlyActivePeople' =>"
 			SELECT DISTINCT f.contentID, f.contentTitle, f.contentVanityURL, f.userID, f.userFirstName, f.userLastName, f.userAvatar, f.userVanityURL, f.datetime, f.date, f.type

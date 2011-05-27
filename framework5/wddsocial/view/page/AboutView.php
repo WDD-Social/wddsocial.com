@@ -7,17 +7,15 @@ namespace WDDSocial;
 * @author Anthony Colangelo (me@acolangelo.com)
 */
 
-class TermsView implements \Framework5\IView {
+class AboutView implements \Framework5\IView {
 	
 	public function render($options = null) {
+		
 		$html .= <<<HTML
 				
-				<h1 class="mega">Terms of Service</h1>
+				<h1 class="mega">About WDD Social</h1>
 				<section class="long-content">
-HTML;
-		$html .= render('wddsocial.view.content.WDDSocial\TermsOfService');
-		$html .= <<<HTML
-
+					<p>WDD Social was started in March, 2011, by <a href="/user/" title=""></a>
 				</section>
 HTML;
 		return $html;
