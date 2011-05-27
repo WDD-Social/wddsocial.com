@@ -109,9 +109,7 @@ class ArticlePage implements \Framework5\IExecutable {
 		
 		# article not fount
 		else {
-			$page_title = $lang->text('article_not_found');
-			$content = render(':section', array('section' => 'begin_content'));
-			$content.= "<h1>{$lang->text('article_not_found')}</h1>";
+			redirect('/404');
 		}
 		
 		$content.= render(':section', array('section' => 'end_content'));

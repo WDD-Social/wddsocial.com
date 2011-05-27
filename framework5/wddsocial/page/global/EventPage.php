@@ -102,12 +102,7 @@ class EventPage implements \Framework5\IExecutable {
 		
 		# event does not exist
 		else {
-			$page_title = $this->lang->text('not-found-page-title');
-			$content = render(':section', array('section' => 'begin_content'));
-			
-			# display event not found view
-			$content .= "<h1>Event Not Found</h1>";
-			$content .= render(':section', array('section' => 'end_content'));
+			redirect('/404');
 		}
 		
 		# display page

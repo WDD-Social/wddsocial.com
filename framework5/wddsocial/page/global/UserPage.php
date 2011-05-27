@@ -79,14 +79,7 @@ class UserPage implements \Framework5\IExecutable {
 		
 		# user does not exist
 		else {
-			
-			# display site header
-			$page_title = $this->lang->text('not-found-page-title');
-			$content = render(':section', array('section' => 'begin_content'));
-			
-			# display user not found view
-			$content .= render('wddsocial.view.profile.WDDSocial\NotFoundView');
-			$content .= render(':section', array('section' => 'end_content'));
+			redirect('/404');
 		}
 		
 		

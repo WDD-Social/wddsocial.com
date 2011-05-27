@@ -94,11 +94,7 @@ class ProjectPage implements \Framework5\IExecutable {
 		}
 		
 		else {
-			
-			$page_title = $this->lang->text('not-found-page-title'); # set page title
-			
-			$content = render(':section', array('section' => 'begin_content'));
-			$content .= "<h1>Project Not Found</h1>";
+			redirect('/404');
 		}
 		
 		$content .= render(':section', array('section' => 'end_content'));
