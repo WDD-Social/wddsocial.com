@@ -2515,7 +2515,7 @@ footer{
 				width: 80%;
 				margin: 3% auto 0;
 				
-				input{
+				input[type="text"]{
 					height: 12px;
 					}
 				}
@@ -2541,8 +2541,8 @@ footer{
 				}
 				
 			form{
-				input{
-					height: 14px;
+				input[type="text"]{
+					height: 15px;
 					}
 				}
 			}
@@ -2577,7 +2577,21 @@ footer{
 	}
 
 @media screen and (max-width: 480px) {
-	#content{
+	header {
+		nav {
+			form{
+				input[type="text"]{
+					height: 15px;
+					}
+				
+				input[type="submit"]{
+					top: 4px;
+					}
+				}
+			}
+		}
+	
+	#content {
 		
 		> section{
 			overflow: hidden;
@@ -2587,7 +2601,35 @@ footer{
 			}
 		
 		section.large{
+			margin-right: 0;
 			
+			article{
+				overflow: hidden;
+				min-height: 0;
+				
+				h2, p, p.tags, p.comments{
+					position: relative;
+					width: 100%;
+					padding-left: 0;
+					}
+				
+				.item-image{
+					clear: both;
+					float: none;
+					width: 100%;
+					max-width: 300px;
+					margin: 0 auto;
+					}
+				
+				h2{
+					margin-top: 2%;
+					}
+				
+				.comments{
+					margin-top: 2%;
+					left: 0;
+					}
+				}
 			}
 		
 		section.medium{
@@ -2598,7 +2640,20 @@ footer{
 			}
 		
 		section.small{
-			
+			article{
+				.item-image{
+				
+					.calendar-icon{
+						.month{
+							font-size: .9em;
+							}
+						
+						.day{
+							font-size: 1.9em;
+							}
+						}
+					}
+				}
 			}
 		}
 		
