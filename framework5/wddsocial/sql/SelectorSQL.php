@@ -629,7 +629,7 @@ class SelectorSQL{
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
 			WHERE u.id = 1 OR u.id = 2
-			ORDER BY lastName",
+			ORDER BY RAND()",
 			
 		'getRecentlyActivePeople' =>"
 			SELECT DISTINCT f.contentID, f.contentTitle, f.contentVanityURL, f.userID, f.userFirstName, f.userLastName, f.userAvatar, f.userVanityURL, f.datetime, f.date, f.type

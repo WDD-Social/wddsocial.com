@@ -30,7 +30,9 @@ class AboutView implements \Framework5\IView {
 						<p>If you have questions, comments, insults, or if you just want to say hello, <a href="/contact" title="WDD Social | Contact">please contact us!</a></p>
 						<p>We&rsquo;re from Jersey, so we&rsquo;d love to chat!</p>
 						<p>Thanks for being awesome! See ya around the community!</p>
-						<p class="signoff">The WDD Social Team</p>
+						<p class="signoff"><strong>The WDD Social Team</strong></p>
+						<p class="signoff"><a href="/user/{$users[0]->vanityURL}" title="WDD Social | {$users[0]->firstName} {$users[0]->lastName}">{$users[0]->firstName} {$users[0]->lastName}</a></p>
+						<p class="signoff"><a href="/user/{$users[1]->vanityURL}" title="WDD Social | {$users[1]->firstName} {$users[1]->lastName}">{$users[1]->firstName} {$users[1]->lastName}</a></p>
 					</section>
 				</section>
 HTML;
