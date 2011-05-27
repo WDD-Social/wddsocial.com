@@ -2523,6 +2523,21 @@ footer{
 	#content{
 		
 		section.mega{
+			article{
+				clear: none;
+				float: left;
+				width: 47%;
+				margin-right: 3%;
+				margin-bottom: 5%;
+				}
+			
+			article:nth-child(3n+2){
+				margin-right: 3%;
+				}
+			
+			article:nth-child(2n+2){
+				margin-right: 0;
+				}
 			}
 		
 		section.large{
@@ -2654,6 +2669,21 @@ footer{
 	#content{
 		
 		section.mega{
+			article{
+				clear: none;
+				float: left;
+				width: 47%;
+				margin-right: 3%;
+				margin-bottom: 5%;
+				}
+			
+			article:nth-child(3n+2){
+				margin-right: 3%;
+				}
+			
+			article:nth-child(2n+2){
+				margin-right: 0;
+				}
 			}
 		
 		section.large{
@@ -2751,6 +2781,21 @@ footer{
 	}
 
 @media screen and (max-width: 730px) {
+	
+	h1.mega{
+		margin-bottom: 2%;
+		font-size: 1.6em;
+		}
+
+	h2.form{
+		clear: both;
+		float: none;
+		width: 100%;
+		padding-top: 0;
+		margin-bottom: 3%;
+		text-align: right;
+		}
+		
 	header{
 		h1{
 			float: none;
@@ -2811,9 +2856,36 @@ footer{
 				}
 			}
 		}
+	
+	#content{
+		section.mega{
+			article{
+				clear: both;
+				float: none;
+				width: 100%;
+				max-width: 430px;
+				margin: 0 auto !important;
+				}
+			}
+		}
 	}
 
 @media screen and (max-device-width: 730px) {
+	
+	h1.mega{
+		margin-bottom: 5%;
+		font-size: 1.6em;
+		}
+
+	h2.form{
+		clear: both;
+		float: none;
+		width: 100%;
+		padding-top: 0;
+		margin-bottom: 3%;
+		text-align: right;
+		}
+		
 	header{
 		h1{
 			float: none;
@@ -2871,6 +2943,18 @@ footer{
 				input[type="text"]{
 					height: 12px;
 					}
+				}
+			}
+		}
+	
+	#content{
+		section.mega{
+			article{
+				clear: both;
+				float: none;
+				width: 100%;
+				max-width: 430px;
+				margin: 0 auto !important;
 				}
 			}
 		}
