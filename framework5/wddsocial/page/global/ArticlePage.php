@@ -31,6 +31,9 @@ class ArticlePage implements \Framework5\IExecutable {
 			}
 		}
 		
+		if (!UserSession::is_authorized() and $article->privacyLevelID != 1) {
+			redirect('/');
+		}
 		
 		# if valid article, render
 		if ($article) {

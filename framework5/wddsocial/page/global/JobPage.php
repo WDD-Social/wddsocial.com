@@ -21,6 +21,8 @@ class JobPage implements \Framework5\IExecutable {
 		
 		$job = $this->getJob(\Framework5\Request::segment(1));
 		
+		if (!UserSession::is_authorized()) redirect("/");
+		
 		if (Validator::job_has_been_flagged($job->id)) redirect("/");
 			
 		if ($job) {

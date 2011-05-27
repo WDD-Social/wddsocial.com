@@ -34,6 +34,10 @@ class EventPage implements \Framework5\IExecutable {
 			}
 		}
 		
+		if (!UserSession::is_authorized() and $event->privacyLevelID != 1) {
+			redirect('/');
+		}
+		
 		# if the event exists
 		if ($event) {
 			
