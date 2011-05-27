@@ -111,7 +111,6 @@ $(function() {
 				},
 				success: function(response){
 					$('#user-type-details').html(response).slideDown(250);
-					console.log(response);
 				}
 			});
 		});
@@ -281,8 +280,6 @@ $(function() {
 				sort: $('#directory .secondary .current').html().toLowerCase()
 			};
 	}
-	
-	console.log(pageNumber, postsPerPage);
 	
 	// "Load more" functionality
 	$('p.load-more a').live('click',function(){
