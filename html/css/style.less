@@ -1301,7 +1301,6 @@ input, textarea, button{
 		}
 	
 	section#error{
-		overflow: hidden;
 		width: 100%;
 		img{
 			display: block;
@@ -1315,6 +1314,23 @@ input, textarea, button{
 			width: 100%;
 			max-width: 500px;
 			margin: 0 auto 20px;
+			}
+		}
+	
+	section#about{
+		width: 100%;
+		section.long-content{
+			width: 80%;
+			max-width: 600px;
+			
+			.image-link img{
+				width: 46.5%;
+				max-width: 300px;
+				}
+			
+			.image-link:first-of-type img{
+				margin-right: 6%;
+				}
 			}
 		}
 	
@@ -2931,6 +2947,24 @@ footer{
 				width: 100%;
 				max-width: 430px;
 				margin: 0 auto !important;
+				}
+			}
+	
+		section#about{
+			section.long-content{
+				width: 100%;
+				
+				.image-link img{
+					display: block;
+					clear: both;
+					width: 100%;
+					max-width: 300px;
+					margin: 0 auto 30px;
+					}
+				
+				.image-link:first-of-type img{
+					margin-right: auto;
+					}
 				}
 			}
 		}
