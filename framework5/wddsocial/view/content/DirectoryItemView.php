@@ -220,6 +220,7 @@ HTML;
 							<a href="/flag/job/{$job->vanityURL}" title="{$this->lang->text('flag_title', $job->title)}" class="flag$flagClass">{$this->lang->text('flag')}</a>
 HTML;
 		}
+		$jobTypeLink = strtolower($job->jobType);
 		$html.= <<<HTML
 
 						</div><!-- END SECONDARY -->
@@ -229,14 +230,14 @@ HTML;
 						<p class="company"><a href="$companyLink" title="{$job->company}">{$job->company}</a></p>
 						<p><a href="http://maps.google.com/?q={$job->location}" title="{$lang->text('search_maps', $job->location)}">{$job->location}</a></p>
 						<p>{$job->description}</p>
-						<p class="job-type"><a href="/jobs#{$job->jobType}" title="{$lang->text('see_all_jobs', $job->jobType)}">{$job->jobType}</a></p>
+						<p class="job-type"><a href="/jobs/{$jobTypeLink}" title="{$lang->text('see_all_jobs', $job->jobType)}">{$job->jobType}</a></p>
 HTML;
 		
 		# Build categories
 		$categoryLinks = array();
 		foreach($job->categories as $category){
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/jobs/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+			$searchTerm = urlencode($category->title);
+			array_push($categoryLinks,"<a href=\"/search/jobs/$searchTerm\" title=\"{$this->lang->text('category_title', $category->title)}\">{$category->title}</a>");
 		}
 		$categoryLinks = implode(' ', $categoryLinks);
 		$html .= <<<HTML
