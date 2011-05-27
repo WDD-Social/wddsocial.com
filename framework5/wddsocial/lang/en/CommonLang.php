@@ -207,10 +207,12 @@ class CommonLang implements \Framework5\ILanguagePack {
 				}
 			
 			case 'job_type_intern':
-				return "an <strong><a href=\"/jobs\" title=\"{$var} Jobs\">{$var}</a></strong>";
+				$link = strtolower($var);
+				return "an <strong><a href=\"/jobs/{$link}\" title=\"{$var} Jobs\">{$var}</a></strong>";
 			
 			case 'job_type_gig':
-				 return "a <strong><a href=\"/jobs\" title=\"{$var} Jobs\">{$var}</a></strong> gig";
+				$link = strtolower($var);
+				return "a <strong><a href=\"/jobs/{$link}\" title=\"{$var} Jobs\">{$var}</a></strong> gig";
 			
 			case 'edit_job_title':
 				return "Edit {$var['title']} at {$var['company']} Details";
