@@ -126,7 +126,7 @@ HTML;
 			$userName = UserSession::user_name();
 			$userProfile = UserSession::user_profile();
 			$messageCount = UserSession::unread_message_count();
-			$messageBadge = ($messageCount > 0)?" <span class=\"badge\">{$messageCount}</span>":'';
+			$messageBadge = ($messageCount > 0)?"&nbsp;<span class=\"badge\">{$messageCount}</span>":'';
 			
 			# output
 			return <<<HTML
