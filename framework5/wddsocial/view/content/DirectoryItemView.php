@@ -235,8 +235,8 @@ HTML;
 		# Build categories
 		$categoryLinks = array();
 		foreach($job->categories as $category){
-			$searchTerm = urlencode($category);
-			array_push($categoryLinks,"<a href=\"/search/jobs/$searchTerm\" title=\"{$this->lang->text('category_title', $category)}\">$category</a>");
+			$searchTerm = urlencode($category->title);
+			array_push($categoryLinks,"<a href=\"/search/jobs/$searchTerm\" title=\"{$this->lang->text('category_title', $category->title)}\">{$category->title}</a>");
 		}
 		$categoryLinks = implode(' ', $categoryLinks);
 		$html .= <<<HTML
