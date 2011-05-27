@@ -193,7 +193,7 @@ HTML;
 					</div><!-- END SECONDARY -->	
 HTML;
 		}
-			
+		$jobTypeLink = strtolower($job->jobType);
 		$html .= <<<HTML
 
 						<p class="item-image"><a href="$companyLink" title="{$job->company}"><img src="$jobAvatar" alt="{$job->company}"/></a></p>
@@ -201,7 +201,7 @@ HTML;
 						<p class="company"><a href="$companyLink" title="{$job->company}">{$job->company}</a></p>
 						<p><a href="http://maps.google.com/?q={$job->location}" title="{$this->lang->text('search_maps', $job->location)}">{$job->location}</a></p>
 						<p>{$job->description}</p>
-						<p class="job-type"><a href="/jobs#{$job->jobType}" title="{$this->lang->text('see_all_jobs', $job->jobType)}">{$job->jobType}</a></p>
+						<p class="job-type"><a href="/jobs/{$jobTypeLink}" title="{$this->lang->text('see_all_jobs', $job->jobType)}">{$job->jobType}</a></p>
 HTML;
 		
 		# Build categories
