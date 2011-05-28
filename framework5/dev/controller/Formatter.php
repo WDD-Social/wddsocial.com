@@ -9,7 +9,7 @@ namespace Framework5\Dev;
 
 class Formatter extends \Framework5\StaticController {
 	
-	public function date_format($timestamp) {
+	public function format_time($timestamp) {
 		return date("F j, Y, g:i a", $timestamp);
 	}
 }
