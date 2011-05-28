@@ -60,6 +60,14 @@ class MessagesPage implements \Framework5\IExecutable {
 		
 		# conversation selected
 		$conversationUser = \Framework5\Request::segment(1);
+		
+		# redirect user to /messages if they try to message themselves
+		$query = $this->db->prepare($this->sql->getUserIDByVanityURL);
+		$query->execute(array('vanityURL' => $conversationUser));
+		$query->setFetchMode(\PDO::FETCH_OBJ);
+		$result = $query->fetch();
+		if (UserSession::userid() == $result->id) redirect('/messages');
+		
 		if (isset($conversationUser) and !empty($conversationUser)) {
 			import('wddsocial.model.WDDSocial\UserVO');
 			$data = array('vanityURL' => $conversationUser);
