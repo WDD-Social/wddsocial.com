@@ -48,9 +48,20 @@ class IssuesPage implements \Framework5\IExecutable {
 	
 	private function _process_form() {
 		
+		# validate user input
+		if (!isset($_POST['message'])) {
+			$this->errorMsg = 'Please describe the problem your having';
+			return false;
+		}
+		
 		# get the request id of the page the error was reported on
 		$request_id = \Framework5\Request::segment(1);
 		$timestamp = time();
+		
+		# get database dependencies
+		$site_db = instance(':db');
+		$sel_sql = instance(':sel-sql');
+		$core_db = instance('core.controller.Framework5\Database');
 		
 		# start wddsocial user session
 		import('wddsocial.controller.WDDSocial\UserSession');
@@ -61,40 +72,35 @@ class IssuesPage implements \Framework5\IExecutable {
 			$user_id = \WDDSocial\UserSession::userid();
 		}
 		
-		# validate user input
-		if (!isset($_POST['message'])) {
-			$this->errorMsg = 'Please describe the problem your having';
-			return false;
-		}
-		
-		# insert bug into db
+		# insert bug into database
 		$sql = "
 			INSERT INTO fw5_issues (request_id, user_id, timestamp, message)
 			VALUES (:request_id, :user_id, :timestamp, :message)";
-		$core_db = instance('core.controller.Framework5\Database');
 		$query = $core_db->prepare($sql);
 		$query->execute(array(
 			'request_id' => $request_id,
 			'user_id' => $user_id,
 			'message' => $_POST['message'],
 			'timestamp' => $timestamp));
+		$issue_id = $query->lastInsertId();
 		
 		# get user info
-		$site_db = instance(':db');
-		$sel_sql = instance(':sel-sql');
-		$query = $site_db->prepare($sel_sql->getUserByID);
+		$query = $site_db->prepare($sel_sql->getUserBasicByID);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$query->execute(array('id' => $user_id));
 		$user = $query->fetch();
 		
+		
 		# send notification email
 		import('wddsocial.controller.WDDSocial\Mailer');
+		
 		$mailer = new Mailer();
 		$mailer->add_recipient('Social Feedback', 'feedback@wddsocial.com');
 		$mailer->subject = "WDD Social Issue Reported";
-		$mailer->message = render("wddsocial.view.email.WDDSocial\FeedbackEmail", 
+		$mailer->message = render("wddsocial.view.email.WDDSocial\NewIssueEmail", 
 			array('name' => "{$user->firstName} {$user->lastName}", 
-				  'email' => $user->email, 
+				  'email' => $user->email,
+				  'issue-id' => $issue_id,
 				  'timestamp' => $timestamp,
 				  'message' => $_POST['message']));
 		$mailer->send();
