@@ -21,6 +21,8 @@ class JobPage implements \Framework5\IExecutable {
 		
 		$job = $this->getJob(\Framework5\Request::segment(1));
 		
+		if (!UserSession::is_authorized()) redirect("/");
+		
 		if (Validator::job_has_been_flagged($job->id)) redirect("/");
 			
 		if ($job) {
@@ -74,12 +76,7 @@ class JobPage implements \Framework5\IExecutable {
 		
 		# the job listing does not exist
 		else {
-			# display header
-			$page_title = $this->lang->text('not-found-page-title');
-			$content = render(':section', array('section' => 'begin_content'));
-			
-			$content .= "<h1>Job Not Found</h1>";
-			$content .= render(':section', array('section' => 'end_content'));
+			redirect('/404');
 		}
 		
 		# display page

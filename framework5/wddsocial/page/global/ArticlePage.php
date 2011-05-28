@@ -31,6 +31,9 @@ class ArticlePage implements \Framework5\IExecutable {
 			}
 		}
 		
+		if (!UserSession::is_authorized() and $article->privacyLevelID != 1) {
+			redirect('/');
+		}
 		
 		# if valid article, render
 		if ($article) {
@@ -106,9 +109,7 @@ class ArticlePage implements \Framework5\IExecutable {
 		
 		# article not fount
 		else {
-			$page_title = $lang->text('article_not_found');
-			$content = render(':section', array('section' => 'begin_content'));
-			$content.= "<h1>{$lang->text('article_not_found')}</h1>";
+			redirect('/404');
 		}
 		
 		$content.= render(':section', array('section' => 'end_content'));

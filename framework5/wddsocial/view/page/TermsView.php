@@ -3,7 +3,6 @@
 namespace WDDSocial;
 
 /*
-* Displays various 404 Pages
 * 
 * @author Anthony Colangelo (me@acolangelo.com)
 */

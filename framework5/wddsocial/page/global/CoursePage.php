@@ -79,9 +79,7 @@ class CoursePage implements \Framework5\IExecutable {
 			}
 		}
 		else {
-			$content .= render(':section', array('section' => 'begin_content_section', 'id' => 'course', 'classes' => array('large'), 'header' => 'Course not found'));
-			
-			$content .= render(':section', array('section' => 'end_content_section', 'id' => 'course'));
+			redirect('/404');
 		}
 		
 		$content .= render(':section', array('section' => 'end_content'));

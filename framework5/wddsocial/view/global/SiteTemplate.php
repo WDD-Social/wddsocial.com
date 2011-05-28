@@ -46,10 +46,9 @@ class SiteTemplate implements \Framework5\IView {
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<link rel="shortcut icon" href="/images/site/social-favicon.ico">
 		<link rel="apple-touch-icon" href="/images/site/social-apple-touch-icon.png">
-		<link rel="stylesheet/less" href="/css/style.less">
+		<link rel="stylesheet" href="/css/style.css">
 		<link rel="stylesheet" href="/css/jquery.fancybox-1.3.4.css">
 		<script src="/js/libs/modernizr-1.6.min.js"></script>
-		<script src="/js/libs/less-1.0.41.min.js"></script>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
 			_gaq.push(['_setAccount', 'UA-17688306-7']);
@@ -126,7 +125,7 @@ HTML;
 			$userName = UserSession::user_name();
 			$userProfile = UserSession::user_profile();
 			$messageCount = UserSession::unread_message_count();
-			$messageBadge = ($messageCount > 0)?" <span class=\"badge\">{$messageCount}</span>":'';
+			$messageBadge = ($messageCount > 0)?"&nbsp;<span class=\"badge\">{$messageCount}</span>":'';
 			
 			# output
 			return <<<HTML
