@@ -29,4 +29,20 @@ class Formatter extends \Framework5\StaticController {
 	public static function format_user_content($text) {
 		return $text;
 	}
+	
+	
+	
+	/**
+	*
+	* 	formats links into anchor tags
+	*/
+	
+	public static function format_links($content) {
+		$matches = array();
+		preg_match_all('((https?)\:\/\/([\w-]+\.)?([\w-])+\.(\w)+\/?[\w\?\.\=\&\-\#\+\/]+)',$content,$matches);
+		foreach ($matches[0] as $link) {
+			$content = str_replace($link,"<a href=\"$link\" title=\"$link\">$link</a>",$content);
+		}
+		return $content;
+	}
 }
