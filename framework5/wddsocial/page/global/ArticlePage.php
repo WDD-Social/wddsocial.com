@@ -76,11 +76,21 @@ class ArticlePage implements \Framework5\IExecutable {
 						$activeMedia = 'videos';
 						break;
 					default:
-						$activeMedia = 'images';
+						if (count($article->images) == 0 and count($article->videos) > 0) {
+							$activeMedia = 'videos';
+						}
+						else {
+							$activeMedia = 'images';
+						}
 						break;
 				}
 			} else {
-				$activeMedia = 'images';
+				if (count($article->images) == 0 and count($article->videos) > 0) {
+					$activeMedia = 'videos';
+				}
+				else {
+					$activeMedia = 'images';
+				}
 			}
 			
 			

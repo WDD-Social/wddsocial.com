@@ -21,7 +21,7 @@ class MediaDisplayView implements \Framework5\IView {
 		$html = <<<HTML
 
 					<div class="secondary cardstack">
-						<a href="{$options['base_link']}" title="{$lang->text('related-images')}"$imagesClass>{$lang->text('images')}</a> 
+						<a href="{$options['base_link']}/images" title="{$lang->text('related-images')}"$imagesClass>{$lang->text('images')}</a> 
 						<a href="{$options['base_link']}/videos" title="{$lang->text('related-videos')}"$videosClass>{$lang->text('videos')}</a>
 					</div><!-- END SECONDARY -->
 					<div class="{$options['active']}">

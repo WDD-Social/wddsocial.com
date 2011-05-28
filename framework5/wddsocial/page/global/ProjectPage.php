@@ -67,12 +67,22 @@ class ProjectPage implements \Framework5\IExecutable {
 						$activeMedia = 'videos';
 						break;
 					default:
-						$activeMedia = 'images';
+						if (count($project->images) == 0 and count($project->videos) > 0) {
+							$activeMedia = 'videos';
+						}
+						else {
+							$activeMedia = 'images';
+						}
 						break;
 				}
 			}
 			else {
-				$activeMedia = 'images';
+				if (count($project->images) == 0 and count($project->videos) > 0) {
+					$activeMedia = 'videos';
+				}
+				else {
+					$activeMedia = 'images';
+				}
 			}
 			
 			# display project media

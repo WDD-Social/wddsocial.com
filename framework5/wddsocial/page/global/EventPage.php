@@ -72,12 +72,22 @@ class EventPage implements \Framework5\IExecutable {
 						$activeMedia = 'videos';
 						break;
 					default:
-						$activeMedia = 'images';
+						if (count($event->images) == 0 and count($event->videos) > 0) {
+							$activeMedia = 'videos';
+						}
+						else {
+							$activeMedia = 'images';
+						}
 						break;
 				}
 			}
 			else {
-				$activeMedia = 'images';
+				if (count($event->images) == 0 and count($event->videos) > 0) {
+					$activeMedia = 'videos';
+				}
+				else {
+					$activeMedia = 'images';
+				}
 			}
 			
 			# display event media
