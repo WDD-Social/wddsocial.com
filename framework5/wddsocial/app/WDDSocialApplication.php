@@ -71,6 +71,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		import('wddsocial.controller.WDDSocial\UserValidator');
 		import('wddsocial.helper.WDDSocial\NaturalLanguage');
 		import('wddsocial.helper.WDDSocial\StringCleaner');
+		import('wddsocial.controller.WDDSocial\Formatter');
 		import('wddsocial.sql.WDDSocial\SelectorSQL');
 		import('wddsocial.controller.WDDSocial\Paginator');
 		
