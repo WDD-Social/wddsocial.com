@@ -22,7 +22,8 @@ class Formatter extends \Framework5\StaticController {
 	
 	/**
 	* Formats user input
-	* Changes links into anchor tags
+	* 	formats links into anchor tags
+	* 	formats @ addresses to wddsocial username, or twitter
 	*/
 	
 	public static function format_user_content($text) {
