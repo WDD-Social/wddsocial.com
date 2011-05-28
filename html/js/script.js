@@ -170,6 +170,15 @@ $(function() {
 	
 	var currentInput;
 	
+	var alignList = function(){
+		var offset = $(currentInput).offset();
+		$('#autocomplete').css({
+			top: offset.top + $(currentInput).outerHeight() - 1,
+			left: offset.left + $(currentInput).outerWidth()*.0125,
+			width: $(currentInput).outerWidth()*.97
+		});
+	}
+	
 	var populateInput = function(term){
 		$(currentInput).val(term);
 		removeAutocomplete();
@@ -194,13 +203,7 @@ $(function() {
 								autocompleteResults.push(obj.results[result]);
 							}
 							populateAutocomplete(autocompleteResults);
-							
-							var offset = $(currentInput).offset();
-							$('#autocomplete').css({
-								top: offset.top + $(currentInput).outerHeight() - 1,
-								left: offset.left + $(currentInput).outerWidth()*.0125,
-								width: $(currentInput).outerWidth()*.975
-							});
+							alignList();
 						}
 						else {
 							removeAutocomplete();
@@ -220,6 +223,10 @@ $(function() {
 	
 	$('.autocompleter').live('focusout',function(){
 		setTimeout(removeAutocomplete,250);
+	});
+	
+	$(window).bind('resize',function(){
+		alignList();
 	});
 	
 	
