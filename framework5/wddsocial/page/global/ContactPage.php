@@ -81,7 +81,7 @@ class ContactPage implements \Framework5\IExecutable {
 		$mailer = new Mailer();
 		$mailer->add_recipient('Social Feedback', 'feedback@wddsocial.com');
 		$mailer->subject = "WDD Social Feedback";
-		$mailer->message = render("wddsocial.view.email.WDDSocial\FeedbackEmail", 
+		$mailer->message = render("wddsocial.view.email.WDDSocial\ContactFormEmail", 
 			array('name' => $name, 'email' => $email, 'message' => $message));
 		$mailer->send();
 		
