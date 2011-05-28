@@ -62,12 +62,15 @@ HTML;
 		$currentClass = ($convo->userVanityURL == \Framework5\Request::segment(1))?'current':'';
 		$unreadClass = ($convo->unread > 0)?'unread':'';
 		$badge = ($convo->unread > 0)?"<span class=\"badge\">{$convo->unread}</span>":'';
+		$messageContent = nl2br($convo->message);
+		$messageContentTruncated = substr($messageContent,0,128);
+		$messageContentTruncated .= (strlen($messageContent) > strlen($messageContentTruncated))?'...':'';
 		return <<<HTML
 
 					<a href="/messages/{$convo->userVanityURL}" title="{$this->lang->text('view-convo-with', $convo->userName)}" class="{$unreadClass} {$currentClass}">
 						<img src="{$userAvatar}" alt="{$convo->userName}"/>
 						<h2>{$badge}{$convo->userName}</h2>
-						<p>{$convo->message}</p>
+						<p>{$messageContentTruncated}</p>
 					</a>
 HTML;
 	}
