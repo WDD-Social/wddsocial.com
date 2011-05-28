@@ -114,9 +114,10 @@ HTML;
 		
 		
 		if ($content->description != '') {
+			$linkedDescription = Formatter::format_links($content->description);
 			$html .= <<<HTML
 
-						<p>{$content->description}</p>
+						<p>{$linkedDescription}</p>
 HTML;
 		}
 		
@@ -237,11 +238,12 @@ HTML;
 HTML;
 		
 		if ($content->content != '') {
-			$article = nl2br($content->content);
+			$longDescription = nl2br($content->content);
+			$linkedLongDescription = Formatter::format_links($longDescription);
 			$html .= <<<HTML
 
 					<section class="content">
-						<p>{$article}</p>
+						<p>{$linkedLongDescription}</p>
 HTML;
 			if ($content->type == 'job') {
 				$html .= <<<HTML
