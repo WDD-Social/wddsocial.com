@@ -23,7 +23,7 @@ class NewIssueEmail implements \Framework5\IView {
 			<p>From: {$options['name']} (<a href="mailto:{$options['email']}">{$options['email']}</a>)</p>
 			<p>Time: {$options['timestamp']}</p>
 			<p>{$options['message']}</p>
-			<p><a href="http://dev.wddsocial.com/dev/issue/{$options['issue-id']}">View Issue in the Developer Panel</a></p>
+			<p><a href="http://dev.wddsocial.com/dev/issues/{$options['issue-id']}">View Issue in the Developer Panel</a></p>
 			<p class="signOff">WDD Social Issue Notification</p>
 HTML;
 	}
