@@ -306,12 +306,10 @@ class DeletePage implements \Framework5\IExecutable {
 		}
 		
 		if (UserSession::is_authorized()) {
-			if ($_POST['type'] == 'user') {
-				$redirectLocation = "/";
-			}
-			else {
-				$redirectLocation = "{$_POST['redirect']}";
-			}
+			$redirectLocation = "{$_POST['redirect']}";
+		}
+		else if ($_POST['type'] == 'user') {
+			$redirectLocation = "/";
 		}
 		else if ($content->type == 'job') {
 			$redirectLocation = "/confirm/deletejob";
