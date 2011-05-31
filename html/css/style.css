@@ -1746,11 +1746,11 @@ textarea:focus {
 }
 input[type="text"]::-webkit-input-placeholder, textarea::-webkit-input-placeholder {
   font-weight: 200;
-  color: #b2b2b2;
+  color: #cccccc;
 }
 input[type="text"]::-moz-placeholder, textarea::-moz-placeholder {
   font-weight: 200;
-  color: #b2b2b2;
+  color: #cccccc;
 }
 textarea {
   min-width: 88.5%;
