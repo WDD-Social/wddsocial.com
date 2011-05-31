@@ -18,6 +18,11 @@ class SignupPage implements \Framework5\IExecutable {
 			# auto signin user on success
 			if ($response->status) {
 				if (UserSession::signin($_POST['email'], $_POST['password']))
+					
+					# hide user password from dev log
+					$_POST['password'] = 'encrypted';
+					
+					# redirect user to dashboard
 					header('Location: /');
 			}
 		}
@@ -181,9 +186,6 @@ class SignupPage implements \Framework5\IExecutable {
 			
 			# Get new user's ID
 			$userID = $db->lastInsertID();
-			
-			# hide user password from dev log
-			$_POST['password'] = 'encrypted';
 			
 			
 			# get user verification code
