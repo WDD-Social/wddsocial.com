@@ -149,6 +149,10 @@ $(function() {
 	/* Autocompleters
 	****************************************************************** */
 	
+	var currentInput,
+		resultCurrent = 0,
+		resultMax = 0;
+	
 	var removeAutocomplete = function(){
 		if ($('#autocomplete').length) {
 			$('#autocomplete').remove();
@@ -166,9 +170,13 @@ $(function() {
 			var extra = (item.extra === undefined)?'':'<span class="extra">' + item.extra + '</span>';
 			$('<li><span class="term">' + item.title + '</span> ' + extra + '</li>').appendTo(autocomplete);
 		}
+		resultMax = $('#autocomplete li').length - 1;
 	}
 	
-	var currentInput;
+	var populateInput = function(term){
+		$(currentInput).val(term);
+		removeAutocomplete();
+	}
 	
 	var alignList = function(){
 		var offset = $(currentInput).offset();
@@ -179,15 +187,10 @@ $(function() {
 		});
 	}
 	
-	var populateInput = function(term){
-		$(currentInput).val(term);
-		removeAutocomplete();
-	}
-	
 	$('.autocompleter').live('keyup focusin',function(e){
 		currentInput = $(this);
 		var searchTerm = $(currentInput).val();
-		if (searchTerm.length > 0 && searchTerm !== '' && e.keyCode !== 27) {
+		if (searchTerm.length > 0 && searchTerm !== '' && e.which !== 27 && e.which !== 38 && e.which !== 40) {
 			$.ajax({
 				url: '/ajax/autocomplete',
 				data: {
@@ -211,6 +214,14 @@ $(function() {
 					}
 				}
 			});
+		}
+		else if (e.which === 38) {
+			/* resultHover(resultCurrent--); */
+			/* console.log(resultCurrent--); */
+		}
+		else if (e.which === 40) {
+			/* resultHover(resultCurrent++); */
+			/* console.log(resultCurrent++); */
 		}
 		else {
 			removeAutocomplete();
