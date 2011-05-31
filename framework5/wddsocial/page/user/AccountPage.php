@@ -251,7 +251,8 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		$update = array();
 		foreach ($fields as $fieldName => $fieldContent) {
-			array_push($update,"$fieldName = '$fieldContent'");
+			$cleanString = addslashes($fieldContent);
+			array_push($update,"$fieldName = '$cleanString'");
 		}
 		$update = implode(', ',$update);
 		if ($update != '') {
