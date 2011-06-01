@@ -34,13 +34,21 @@ HTML;
 				$i = 1;
 				if (isset($options['team'])) {
 					foreach ($options['team'] as $team) {
+						if (is_object($team)) {
+							$teamName = $team->firstName . ' ' . $team->lastName;
+							$teamRole = $team->role;
+						}
+						else {
+							$teamName = $team;
+							$teamRole = $options['roles'][$i-1];
+						}
 						$html .= <<<HTML
 
 						<fieldset>
 							<label for="team">$singular</label>
-							<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" autocomplete="off" placeholder="{$users[$i-1]->name}" value="{$team->firstName} {$team->lastName}" />
+							<input type="text" name="team[]" id="team" class="autocompleter" data-autocomplete="users" autocomplete="off" placeholder="{$users[$i-1]->name}" value="{$teamName}" />
 							<label for="role">Project Role</label>
-							<input type="text" name="roles[]" id="role" placeholder="{$roles[$i-1]->title}" value="{$team->role}" />
+							<input type="text" name="roles[]" id="role" placeholder="{$roles[$i-1]->title}" value="{$teamRole}" />
 						</fieldset>
 HTML;
 						$i++;
