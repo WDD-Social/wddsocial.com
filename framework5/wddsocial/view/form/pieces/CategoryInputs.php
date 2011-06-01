@@ -17,7 +17,6 @@ class CategoryInputs implements \Framework5\IView {
 		$query = $db->query($sql->getRandomCategories . " LIMIT $randomLimit");
 		$query->setFetchMode(\PDO::FETCH_OBJ);
 		$categories = $query->fetchAll();
-		
 		$html = <<<HTML
 
 						<h1 id="categories">Categories</h1>
@@ -26,9 +25,15 @@ HTML;
 		$i = 1;
 		if (isset($options['categories'])) {
 			foreach ($options['categories'] as $category) {
+				if (is_object($category)) {
+					$categoryTitle = $category->title;
+				}
+				else {
+					$categoryTitle = $category;
+				}
 				$html .= <<<HTML
 
-							<input type="text" name="categories[]" class="autocompleter" data-autocomplete="categories" autocomplete="off" placeholder="{$categories[$i-1]->title}" value="{$category->title}" />
+							<input type="text" name="categories[]" class="autocompleter" data-autocomplete="categories" autocomplete="off" placeholder="{$categories[$i-1]->title}" value="{$categoryTitle}" />
 HTML;
 				$i++;
 			}
