@@ -551,7 +551,7 @@ class EditPage implements \Framework5\IExecutable {
 				}
 			}
 			if (!Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type)) {
-				return new FormResponse(false, "Please upload images in a supported image type (JPG, PNG, or GIF).");
+				return new FormResponse(false, "There was an error uploading your images, please check image size and type requirements try again.");
 			}
 			
 			
@@ -610,7 +610,7 @@ class EditPage implements \Framework5\IExecutable {
 				$query->setFetchMode(\PDO::FETCH_OBJ);
 				$result = $query->fetch();
 				if (!Uploader::upload_employer_avatar($_FILES['company-avatar'],"{$result->avatar}")) {
-					return new FormResponse(false, "Please upload the company avatar in a supported image type (JPG, PNG, or GIF).");
+					return new FormResponse(false, "There was an error uploading the company avatar, please check image size and type requirements try again.");
 				}
 			}
 			

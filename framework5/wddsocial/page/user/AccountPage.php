@@ -400,7 +400,7 @@ class AccountPage implements \Framework5\IExecutable {
 		if($_FILES['avatar']['error'] != 4){
 			import('wddsocial.controller.processes.WDDSocial\Uploader');
 			if (!Uploader::upload_user_avatar($_FILES['avatar'],"{$this->user->avatar}")) {
-				return new FormResponse(false, "Please upload your avatar in a supported image type (JPG, PNG, or GIF).");
+				return new FormResponse(false, "There was an error uploading your avatar, please check image size and type requirements try again.");
 			}
 		}
 		

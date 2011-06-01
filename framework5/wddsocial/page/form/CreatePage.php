@@ -321,12 +321,12 @@ class CreatePage implements \Framework5\IExecutable {
 			$query->setFetchMode(\PDO::FETCH_OBJ);
 			$result = $query->fetch();
 			if (!Uploader::upload_employer_avatar($_FILES['company-avatar'],"{$result->avatar}")) {
-				return new FormResponse(false, "Please upload the company avatar in a supported image type (JPG, PNG, or GIF).");
+				return new FormResponse(false, "There was an error uploading the company avatar, please check image size and type requirements try again.");
 			}
 		}
 		
 		if (!Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type'])) {
-			return new FormResponse(false, "Please upload images in a supported image type (JPG, PNG, or GIF).");
+			return new FormResponse(false, "There was an error uploading your images, please check image size and type requirements try again.");
 		}
 		
 		VideoProcessor::add_videos($_POST['videos'], $contentID, $_POST['type']);
