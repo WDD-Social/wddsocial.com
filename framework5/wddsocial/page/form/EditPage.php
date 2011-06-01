@@ -36,7 +36,7 @@ class EditPage implements \Framework5\IExecutable {
 				redirect("{$response->message}");
 			}
 			
-			$content = $_POST;
+			$addPostData = true;
 		}
 			
 		$types = array('project', 'article', 'event', 'job', 'comment');
@@ -113,6 +113,11 @@ class EditPage implements \Framework5\IExecutable {
 			redirect('/');
 		}
 		
+		if ($addPostData) {
+			$content->title = $_POST['title'];
+			$content->description = $_POST['description'];
+			$content->content = $_POST['content'];
+		}
 		
 		# page title
 		$typeTitle = ucfirst($content->type);
@@ -237,6 +242,43 @@ class EditPage implements \Framework5\IExecutable {
 		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		import('wddsocial.controller.processes.WDDSocial\Deleter');
 		
+		# check for required form values
+		$required = array('title','description');
+		
+		switch ($_POST['type']) {
+			case 'article':
+				array_push($required,'content');
+				break;
+			case 'event':
+				array_push($required,'location');
+				array_push($required,'date');
+				array_push($required,'start-time');
+				break;
+			case 'job':
+				array_push($required,'company');
+				array_push($required,'location');
+				array_push($required,'email');
+				break;
+		}
+		
+		$incomplete = false;
+		foreach ($required as $value) {
+			if ($_POST[$value] == null or $_POST[$value] == '') $incomplete = true;
+		}
+		
+		if ($incomplete) {
+			return new FormResponse(false, "Please complete all required fields.");
+		}
+		
+		if ($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4) {
+			if (!Uploader::valid_image($_FILES['company-avatar'])) {
+				return new FormResponse(false, "Please upload the company avatar in a supported image type (JPG, PNG, or GIF).");
+			}
+		}
+		
+		if (!Uploader::valid_images($_FILES['image-files'])) {
+			return new FormResponse(false, "Please upload images in a supported image type (JPG, PNG, or GIF).");
+		}
 		
 		# Get basic content data
 		switch ($_POST['type']) {
@@ -280,12 +322,6 @@ class EditPage implements \Framework5\IExecutable {
 		else {
 			# Get basic fields for update
 			$fields = array();
-		
-			if ($content->type == 'job' and $_FILES['company-avatar']['error'] != 4) {
-				if (!Uploader::valid_image($_FILES['company-avatar'])) {
-					return new FormResponse(false, "Please upload the company avatar in a supported image type (JPG, PNG, or GIF).");
-				}
-			}
 			
 			$postTitle = strip_tags($_POST['title']);
 			$postDescription = strip_tags($_POST['description']);
@@ -523,6 +559,19 @@ class EditPage implements \Framework5\IExecutable {
 				array_push($newTitles, $linkTitle);
 			}
 			LinkProcessor::update_links($currentLinks, $newLinks,  $currentTitles, $newTitles, $content->id, $content->type);
+			
+			
+			
+			if ($content->type == 'job' and $_FILES['company-avatar']['error'] != 4) {
+				$data = array('id' => $content->id);
+				$query = $this->db->prepare($this->sel->getJobAvatar);
+				$query->execute($data);
+				$query->setFetchMode(\PDO::FETCH_OBJ);
+				$result = $query->fetch();
+				if (!Uploader::upload_employer_avatar($_FILES['company-avatar'],"{$result->avatar}")) {
+					return new FormResponse(false, "Please upload the company avatar in a supported image type (JPG, PNG, or GIF).");
+				}
+			}
 			
 			
 			
