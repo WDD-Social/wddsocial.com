@@ -63,6 +63,7 @@ class AccountPage implements \Framework5\IExecutable {
 	private function process_form(){
 		
 		import('wddsocial.model.WDDSocial\FormResponse');
+		import('wddsocial.controller.processes.WDDSocial\Uploader');
 		import('wddsocial.controller.processes.WDDSocial\CourseProcessor');
 		import('wddsocial.controller.processes.WDDSocial\LikesDislikesProcessor');
 		
