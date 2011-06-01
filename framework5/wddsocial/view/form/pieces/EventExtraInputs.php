@@ -13,26 +13,30 @@ class EventExtraInputs implements \Framework5\IView {
 		$exampleDate = date('F j, Y',time() + (7*24*60*60));
 		$exampleTime = date('g:00 A',time() + (60*60));
 		if (isset($options['data'])) {
-			$dateValue = ($options['data']->startDate == '')?'':$options['data']->startDate;
+			
+			if (is_array($options['data'])) {
+				$locationValue = ($options['data']['location'] == '')?'':$options['data']['location'];
+				$dateValue = ($options['data']['date'] == '')?'':$options['data']['date'];
+				$timeValue = ($options['data']['start-time'] == '')?'':$options['data']['start-time'];
+				$durationValue = (isset($options['data']['duration']))?$options['data']['duration']:2;
+			}
+			else if (is_object($options['data'])) {
+				$locationValue = ($options['data']->location == '')?'':$options['data']->location;
+				$dateValue = ($options['data']->startDate == '')?'':$options['data']->startDate;
+				$timeValue = ($options['data']->startTime == '')?'':$options['data']->startTime;
+				$durationValue = (isset($options['data']->duration))?$options['data']->duration:2;
+			}
 		}
 		else {
 			$dateValue = $exampleDate;
-		}
-		
-		if (isset($options['data'])) {
-			$timeValue = ($options['data']->startTime == '')?'':$options['data']->startTime;
-		}
-		else {
 			$timeValue = $exampleTime;
 		}
-		
-		$durationValue = (isset($options['data']->duration))?$options['data']->duration:2;
 		
 		return <<<HTML
 
 						<fieldset>
 							<label for="location">Where is it at? *</label>
-							<input type="text" name="location" id="location" value="{$options['data']->location}" />
+							<input type="text" name="location" id="location" value="{$locationValue}" />
 						</fieldset>
 						<fieldset>
 							<label for="date">What day? *</label>
