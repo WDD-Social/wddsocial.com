@@ -33,6 +33,8 @@ class BasicElements implements \Framework5\IView {
 		if (isset($options['data']) and is_array($options['data'])) {
 			$content->type = $options['data']['type'];
 			$content->title = $options['data']['title'];
+			$content->description = $options['data']['description'];
+			$content->content = $options['data']['content'];
 		}
 		else if (is_object($options['data'])) {
 			$content = $options['data'];
