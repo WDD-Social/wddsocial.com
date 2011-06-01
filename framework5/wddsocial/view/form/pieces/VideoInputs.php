@@ -20,7 +20,12 @@ HTML;
 		$i = 1;
 		if (isset($options['videos'])) {
 			foreach ($options['videos'] as $video) {
-				$embedCode = htmlspecialchars($video->embedCode);
+				if (is_object($video)) {
+					$embedCode = htmlspecialchars($video->embedCode);
+				}
+				else {
+					$embedCode = htmlspecialchars($video);
+				}
 				$html .= <<<HTML
 
 						<fieldset>
