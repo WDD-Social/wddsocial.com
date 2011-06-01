@@ -470,7 +470,9 @@ class EditPage implements \Framework5\IExecutable {
 					}
 				}
 			}
-			Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type);
+			if (!Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $content->id, $_POST['title'], $content->type)) {
+				return new FormResponse(false, "Please upload images in a supported image type (JPG, PNG, or GIF).");
+			}
 			
 			
 			
