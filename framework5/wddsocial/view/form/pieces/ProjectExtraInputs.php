@@ -12,7 +12,12 @@ class ProjectExtraInputs implements \Framework5\IView {
 	public function render($options = null) {
 		$now = date('F, Y');
 		if (isset($options['data'])) {
-			$dateValue = ($options['data']->completeDate == '')?'':$options['data']->completeDate;
+			if (is_array($options['data'])) {
+				$dateValue = ($options['data']['completed-date'] == '')?'':$options['data']['completed-date'];
+			}
+			else if (is_object($options['data'])) {
+				$dateValue = ($options['data']->completeDate == '')?'':$options['data']->completeDate;
+			}
 		}
 		else {
 			$dateValue = $now;
