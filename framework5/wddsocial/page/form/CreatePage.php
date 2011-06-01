@@ -79,8 +79,7 @@ class CreatePage implements \Framework5\IExecutable {
 						break;
 				}
 				
-				$content .= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
-					array('header' => $teamTitle, 'type' => $_POST['type']));
+				$content .= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', array('header' => $teamTitle, 'type' => $_POST['type'], 'team' => $_POST['team'], 'roles' => $_POST['roles']));
 			}
 			
 			# display image section
