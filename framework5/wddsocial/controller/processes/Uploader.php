@@ -10,25 +10,39 @@ namespace WDDSocial;
 
 class Uploader {
 	public static function upload_user_avatar($image, $name){
-		import('wddsocial.helper.WDDSocial\Resizer');
-		$root = \Framework5\Request::root_path();
-		$dest = "{$root}images/avatars";
-		Resizer::image($image,$name,"_full",$dest,300,500);
-		Resizer::image($image,$name,"_medium",$dest,60,60,true);
-		Resizer::image($image,$name,"_small",$dest,15,15,true);
-		if (file_exists("$dest/$name")) {
-			unlink("$dest/$name");
+		$type = mime_content_type($image['tmp_name']);
+		if ($type == 'image/jpeg' or $type == 'image/png' or $type == 'image/gif') {
+			import('wddsocial.helper.WDDSocial\Resizer');
+			$root = \Framework5\Request::root_path();
+			$dest = "{$root}images/avatars";
+			Resizer::image($image,$name,"_full",$dest,300,500);
+			Resizer::image($image,$name,"_medium",$dest,60,60,true);
+			Resizer::image($image,$name,"_small",$dest,15,15,true);
+			if (file_exists("$dest/$name")) {
+				unlink("$dest/$name");
+			}
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	
 	public static function upload_employer_avatar($image, $name){
-		import('wddsocial.helper.WDDSocial\Resizer');
-		$root = \Framework5\Request::root_path();
-		$dest = "{$root}images/jobs";
-		Resizer::image($image,$name,"_full",$dest,300,300);
-		Resizer::image($image,$name,"_medium",$dest,60,60,true);
-		if (file_exists("$dest/$name")) {
-			unlink("$dest/$name");
+		$type = mime_content_type($image['tmp_name']);
+		if ($type == 'image/jpeg' or $type == 'image/png' or $type == 'image/gif') {
+			import('wddsocial.helper.WDDSocial\Resizer');
+			$root = \Framework5\Request::root_path();
+			$dest = "{$root}images/jobs";
+			Resizer::image($image,$name,"_full",$dest,300,300);
+			Resizer::image($image,$name,"_medium",$dest,60,60,true);
+			if (file_exists("$dest/$name")) {
+				unlink("$dest/$name");
+			}
+			return true;
+		}
+		else {
+			return false;
 		}
 	}
 	
@@ -38,48 +52,63 @@ class Uploader {
 		$sel_sql = instance(':sel-sql');
 		
 		$currentUserID = (UserSession::is_authorized())?UserSession::userid():NULL;
+		for ($i = 0; $i < count($images['name']); $i++) {
+			if ($images['error'][$i] != 4) {
+				$type = mime_content_type($images['tmp_name'][$i]);
+				if ($type != 'image/jpeg' or $type != 'image/png' or $type != 'image/gif') {
+					return false;
+				}
+			}
+		}
 		
 		for ($i = 0; $i < count($images['name']); $i++) {
 			if ($images['error'][$i] != 4) {
-				$imageNumber = $i + 1;
-				$imageTitle = ($titles[$i] == '')?"{$contentTitle} | Image $imageNumber":$titles[$i];
-				
-				$query = $db->prepare($admin_sql->addImage);
-				$data = array(	'userID' => $currentUserID,
-								'title' => $imageTitle);
-				$query->execute($data);
-				
-				$imageID = $db->lastInsertID();
-				
-				$query = $db->prepare($sel_sql->getImageFilename);
-				$data = array('id' => $imageID);
-				$query->execute($data);
-				$query->setFetchMode(\PDO::FETCH_OBJ);
-				$result = $query->fetch();
-				
-				switch ($contentType) {
-					case 'project':
-						$data = array('projectID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addProjectImage);
-						break;
-					case 'article':
-						$data = array('articleID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addArticleImage);
-						break;
-					case 'event':
-						$data = array('eventID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addEventImage);
-						break;
-					case 'job':
-						$data = array('jobID' => $contentID, 'imageID' => $imageID);
-						$query = $db->prepare($admin_sql->addJobImage);
-						break;
+				$type = mime_content_type($images['tmp_name'][$i]);
+				if ($type == 'image/jpeg' or $type == 'image/png' or $type == 'image/gif') {
+					$imageNumber = $i + 1;
+					$imageTitle = ($titles[$i] == '')?"{$contentTitle} | Image $imageNumber":$titles[$i];
+					
+					$query = $db->prepare($admin_sql->addImage);
+					$data = array(	'userID' => $currentUserID,
+									'title' => $imageTitle);
+					$query->execute($data);
+					
+					$imageID = $db->lastInsertID();
+					
+					$query = $db->prepare($sel_sql->getImageFilename);
+					$data = array('id' => $imageID);
+					$query->execute($data);
+					$query->setFetchMode(\PDO::FETCH_OBJ);
+					$result = $query->fetch();
+					
+					switch ($contentType) {
+						case 'project':
+							$data = array('projectID' => $contentID, 'imageID' => $imageID);
+							$query = $db->prepare($admin_sql->addProjectImage);
+							break;
+						case 'article':
+							$data = array('articleID' => $contentID, 'imageID' => $imageID);
+							$query = $db->prepare($admin_sql->addArticleImage);
+							break;
+						case 'event':
+							$data = array('eventID' => $contentID, 'imageID' => $imageID);
+							$query = $db->prepare($admin_sql->addEventImage);
+							break;
+						case 'job':
+							$data = array('jobID' => $contentID, 'imageID' => $imageID);
+							$query = $db->prepare($admin_sql->addJobImage);
+							break;
+					}
+					$query->execute($data);
+					
+					$newImage = array(	'tmp_name' => $images['tmp_name'][$i],
+										'type' => $images['type'][$i]);
+					Uploader::upload_image($newImage,"{$result->file}");
+					return true;
 				}
-				$query->execute($data);
-				
-				$newImage = array(	'tmp_name' => $images['tmp_name'][$i],
-									'type' => $images['type'][$i]);
-				Uploader::upload_image($newImage,"{$result->file}");
+				else {
+					return false;
+				}
 			}
 		}
 	}
