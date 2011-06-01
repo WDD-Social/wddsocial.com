@@ -25,7 +25,7 @@ class JobExtraInputs implements \Framework5\IView {
 				$locationValue = ($options['data']->location == '')?'':$options['data']->location;
 				$compensationValue = ($options['data']->compensation == '')?'':$options['data']->compensation;
 				$websiteValue = ($options['data']->website == '')?'':$options['data']->website;
-				$emailValue = ($options['data']->email)?'':$options['data']->email;
+				$emailValue = ($options['data']->email == '')?'':$options['data']->email;
 			}
 		}
 		else {
