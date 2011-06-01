@@ -107,6 +107,10 @@ class AccountPage implements \Framework5\IExecutable {
 			return new FormResponse(false, "Please upload your avatar in a supported image type (JPG, PNG, or GIF).");
 		}
 		
+		if (!Uploader::valid_image_size($_FILES['avatar'])) {
+			return new FormResponse(false, "The avatar you tried to upload is too large. The maximum size is 700k. Please upload a smaller image.");
+		}
+		
 		if ($_POST['user-type'] != $this->user->typeID)
 			$fields['typeID'] = $_POST['user-type'];
 		
