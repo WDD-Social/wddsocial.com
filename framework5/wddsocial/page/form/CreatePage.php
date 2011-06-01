@@ -159,7 +159,7 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		$incomplete = false;
 		foreach ($required as $value) {
-			if ($_POST[$value] == null) $incomplete = true;
+			if ($_POST[$value] == null or $_POST[$value] == '') $incomplete = true;
 		}
 		
 		if ($incomplete) {
