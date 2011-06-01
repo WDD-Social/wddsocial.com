@@ -239,11 +239,14 @@ HTML;
 		
 		if ($content->content != '') {
 			$longDescription = nl2br($content->content);
-			$linkedLongDescription = Formatter::format_links($longDescription);
+			$markedUpDescription = str_replace(array('<header>','</header>','</h2><br />'),array('<h2>','</h2>','</h2>'),$longDescription);
+			$linkedLongDescription = Formatter::format_links($markedUpDescription);
 			$html .= <<<HTML
 
 					<section class="content">
-						<p>{$linkedLongDescription}</p>
+						<p>
+{$linkedLongDescription}
+						</p>
 HTML;
 			if ($content->type == 'job') {
 				$html .= <<<HTML
