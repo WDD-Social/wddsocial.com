@@ -74,6 +74,7 @@ final class WDDSocialApplication extends ApplicationBase implements IApplication
 		import('wddsocial.controller.WDDSocial\Formatter');
 		import('wddsocial.sql.WDDSocial\SelectorSQL');
 		import('wddsocial.controller.WDDSocial\Paginator');
+		import('wddsocial.controller.WDDSocial\Hash');
 		
 	}
 	
