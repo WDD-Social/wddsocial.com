@@ -36,188 +36,183 @@ class EditPage implements \Framework5\IExecutable {
 				redirect("{$response->message}");
 			}
 		}
+			
+		$types = array('project', 'article', 'event', 'job', 'comment');
+		$type = \Framework5\Request::segment(1);
+		$vanityURL = \Framework5\Request::segment(2);
 		
+		# if type is not valid, redirect
+		if (!in_array($type, $types) or !isset($vanityURL)) redirect('/');
 		
+		# set query based on content type
+		switch ($type) {
+			case 'project':
+				$query = $this->db->prepare($this->sel->getProjectByVanityURL);
+				break;
+			case 'article':
+				$query = $this->db->prepare($this->sel->getArticleByVanityURL);
+				break;
+			case 'event':
+				$query = $this->db->prepare($this->sel->getEventByVanityURL);
+				break;
+			case 'job':
+				$query = $this->db->prepare($this->sel->getJobByVanityURL);
+				break;
+			case 'comment':
+				$query = $this->db->prepare($this->sel->getCommentByID);
+				break;
+			default:
+				redirect('/');
+				break;
+		}
+		
+		if ($type == 'job') {
+			import('wddsocial.model.WDDSocial\JobVO');
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
+		}
+		else if ($type == 'comment') {
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+		}
 		else {
-			
-			$types = array('project', 'article', 'event', 'job', 'comment');
-			$type = \Framework5\Request::segment(1);
-			$vanityURL = \Framework5\Request::segment(2);
-			
-			# if type is not valid, redirect
-			if (!in_array($type, $types) or !isset($vanityURL)) redirect('/');
-			
-			# set query based on content type
+			import('wddsocial.model.WDDSocial\ContentVO');
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
+		}
+		
+		if ($type == 'comment') {
+			$query->execute(array('id' => $vanityURL));
+		}
+		else {
+			$query->execute(array('vanityURL' => $vanityURL));
+		}
+		
+		# if content exists
+		if ($query->rowCount() > 0) {
+			$content = $query->fetch();
 			switch ($type) {
-				case 'project':
-					$query = $this->db->prepare($this->sel->getProjectByVanityURL);
-					break;
-				case 'article':
-					$query = $this->db->prepare($this->sel->getArticleByVanityURL);
-					break;
-				case 'event':
-					$query = $this->db->prepare($this->sel->getEventByVanityURL);
-					break;
 				case 'job':
-					$query = $this->db->prepare($this->sel->getJobByVanityURL);
-					break;
-				case 'comment':
-					$query = $this->db->prepare($this->sel->getCommentByID);
+					$securityCode = \Framework5\Request::segment(3);
+					if (UserSession::is_authorized()) {
+						if (!UserValidator::is_owner($content->id,$type)) redirect('/');
+					}
+					else {
+						if ($securityCode != $content->securityCode) redirect('/');
+					}
 					break;
 				default:
-					redirect('/');
+					if (!UserValidator::is_owner($content->id,$type)) {
+						redirect('/');
+					}
 					break;
 			}
-			
-			if ($type == 'job') {
-				import('wddsocial.model.WDDSocial\JobVO');
-				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\JobVO');
-			}
-			else if ($type == 'comment') {
-				$query->setFetchMode(\PDO::FETCH_OBJ);
-			}
-			else {
-				import('wddsocial.model.WDDSocial\ContentVO');
-				$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\ContentVO');
-			}
-			
-			if ($type == 'comment') {
-				$query->execute(array('id' => $vanityURL));
-			}
-			else {
-				$query->execute(array('vanityURL' => $vanityURL));
-			}
-			
-			# if content exists
-			if ($query->rowCount() > 0) {
-				$content = $query->fetch();
-				switch ($type) {
-					case 'job':
-						$securityCode = \Framework5\Request::segment(3);
-						if (UserSession::is_authorized()) {
-							if (!UserValidator::is_owner($content->id,$type)) redirect('/');
-						}
-						else {
-							if ($securityCode != $content->securityCode) redirect('/');
-						}
-						break;
-					default:
-						if (!UserValidator::is_owner($content->id,$type)) {
-							redirect('/');
-						}
-						break;
-				}
-			}
-			
-			# invalid content
-			else {
-				redirect('/');
-			}
-			
-			
-			# page title
-			$typeTitle = ucfirst($content->type);
-			$contentTitle = ($type == 'comment')?"Comment":$content->title;
-			$page_title = "Edit {$typeTitle} | {$contentTitle}";
-			
-			# open content section
-			$html = render(':section', array('section' => 'begin_content'));
-			
-			if ($type == 'comment') {
-				$html.= render('wddsocial.view.form.WDDSocial\CommentEditView', 
-					array('data' => $content, 'error' => $response->message));
-			}
-			
-			else {
-			
-				# display basic form header
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-					array('section' => 'header', 'data' => $content, 
-						'error' => $response->message, 'process' => 'edit'));
-				
-				# display content type-specific options
-				if ($content->type == 'project' or $content->type == 'article' or 
-				$content->type == 'event' or $content->type == 'job') {
-					$typeCapitalized = ucfirst($content->type);
-					$html.= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs", 
-						array('data' => $content));
-				}
-				
-				# Save button
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-					array('section' => 'save'));
-				
-				# display team member section for appropriate content types
-				if ($content->type == 'project' or $content->type == 'article') {
-					switch ($content->type) {
-						case 'project':
-							$teamTitle = 'Team Members';
-							break;
-						
-						case 'article':
-							$teamTitle = 'Authors';
-							break;
-					}
-					
-					$html.= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
-						array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
-					
-					# Save button
-					$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-						array('section' => 'save'));
-				}
-				
-				# display image section
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', 
-					array('images' => $content->images));
-				
-				# Save button
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-					array('section' => 'save'));
-				
-				# display video section
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', 
-					array('videos' => $content->videos));
-				
-				# display category section
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', 
-					array('categories' => $content->categories));
-				
-				# Save button
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-					array('section' => 'save'));
-				
-				# display link section
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs', 
-					array('links' => $content->links));
-				
-				# Save button
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-					array('section' => 'save'));
-				
-				#display course section
-				if ($content->type != 'job') {
-					$html.= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
-						array('courses' => $content->courses, 'header' => true));
-				}
-				
-				# display other options
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', 
-					array('data' => $content));
-				
-				# display form footer
-				$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-					array('section' => 'footer'));
-			}
-			
-			# end content section
-			$html.= render(':section', array('section' => 'end_content'));
-			
-			# display page
-			echo render(':template', 
-				array('title' => $page_title, 'content' => $html));
-			
 		}
+		
+		# invalid content
+		else {
+			redirect('/');
+		}
+		
+		
+		# page title
+		$typeTitle = ucfirst($content->type);
+		$contentTitle = ($type == 'comment')?"Comment":$content->title;
+		$page_title = "Edit {$typeTitle} | {$contentTitle}";
+		
+		# open content section
+		$html = render(':section', array('section' => 'begin_content'));
+		
+		if ($type == 'comment') {
+			$html.= render('wddsocial.view.form.WDDSocial\CommentEditView', 
+				array('data' => $content, 'error' => $response->message));
+		}
+		
+		else {
+		
+			# display basic form header
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'header', 'data' => $content, 
+					'error' => $response->message, 'process' => 'edit'));
+			
+			# display content type-specific options
+			if ($content->type == 'project' or $content->type == 'article' or 
+			$content->type == 'event' or $content->type == 'job') {
+				$typeCapitalized = ucfirst($content->type);
+				$html.= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs", 
+					array('data' => $content));
+			}
+			
+			# Save button
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'save'));
+			
+			# display team member section for appropriate content types
+			if ($content->type == 'project' or $content->type == 'article') {
+				switch ($content->type) {
+					case 'project':
+						$teamTitle = 'Team Members';
+						break;
+					
+					case 'article':
+						$teamTitle = 'Authors';
+						break;
+				}
+				
+				$html.= render('wddsocial.view.form.pieces.WDDSocial\TeamMemberInputs', 
+					array('header' => $teamTitle, 'type' => $content->type, 'team' => $content->team));
+				
+				# Save button
+				$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+					array('section' => 'save'));
+			}
+			
+			# display image section
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs', 
+				array('images' => $content->images));
+			
+			# Save button
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'save'));
+			
+			# display video section
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs', 
+				array('videos' => $content->videos));
+			
+			# display category section
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs', 
+				array('categories' => $content->categories));
+			
+			# Save button
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'save'));
+			
+			# display link section
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs', 
+				array('links' => $content->links));
+			
+			# Save button
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'save'));
+			
+			#display course section
+			if ($content->type != 'job') {
+				$html.= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
+					array('courses' => $content->courses, 'header' => true));
+			}
+			
+			# display other options
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', 
+				array('data' => $content));
+			
+			# display form footer
+			$html.= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
+				array('section' => 'footer'));
+		}
+		
+		# end content section
+		$html.= render(':section', array('section' => 'end_content'));
+		
+		# display page
+		echo render(':template', 
+			array('title' => $page_title, 'content' => $html));
 	}
 	
 	
@@ -283,6 +278,12 @@ class EditPage implements \Framework5\IExecutable {
 		else {
 			# Get basic fields for update
 			$fields = array();
+		
+			if ($content->type == 'job' and $_FILES['company-avatar']['error'] != 4) {
+				if (!Uploader::valid_image($_FILES['company-avatar'])) {
+					return new FormResponse(false, "Please upload the company avatar in a supported image type (JPG, PNG, or GIF).");
+				}
+			}
 			
 			$postTitle = strip_tags($_POST['title']);
 			$postDescription = strip_tags($_POST['description']);
