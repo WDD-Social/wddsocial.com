@@ -13,7 +13,7 @@ class ValidatorSQL{
 		'checkUserPassword' => "
 			SELECT COUNT(*) AS `count`
 			FROM users
-			WHERE id = :id AND `password` = MD5(:password)",
+			WHERE id = :id AND `password` = MD5(CONCAT(MD5(:password),:salt))",
 		
 		'checkIfUserVanityURLExists' => "
 			SELECT COUNT(*) AS `count`

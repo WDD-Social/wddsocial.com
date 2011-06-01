@@ -9,44 +9,7 @@ namespace WDDSocial;
 */
 class SelectorSQL{
 	
-	# Switch NOW() to DATE_ADD(NOW(), INTERVAL 3 HOUR) when going live!!!
-	
 	private $_info = array(
-		
-		/**
-		* Creates getDateDiff function
-		*/
-		
-		'createDateTimeFunc' => '
-			DELIMITER //
-
-			CREATE FUNCTION getDateDiffEN(contentDate DATETIME)
-				RETURNS VARCHAR(64)
-				
-				BEGIN
-					IF TIMESTAMPDIFF(MINUTE, contentDate, NOW()) > 59
-						THEN 
-							IF TIMESTAMPDIFF(HOUR, contentDate, NOW()) > 23
-								THEN
-									IF TIMESTAMPDIFF(DAY, contentDate, NOW()) > 30
-										THEN RETURN DATE_FORMAT(contentDate,"%M %D, %Y at %l:%i %p");
-									ELSEIF TIMESTAMPDIFF(DAY, contentDate, NOW()) > 1
-										THEN RETURN CONCAT_WS(" ", TIMESTAMPDIFF(DAY, contentDate, NOW()), "days ago");
-									ELSE RETURN "Yesterday";
-									END IF;
-							ELSEIF TIMESTAMPDIFF(HOUR, contentDate, NOW()) > 1
-								THEN RETURN CONCAT_WS(" ", TIMESTAMPDIFF(HOUR, contentDate, NOW()), "hours ago");
-							ELSE RETURN CONCAT_WS(" ", TIMESTAMPDIFF(HOUR, contentDate, NOW()), "hour ago");
-							END IF;
-					ELSEIF TIMESTAMPDIFF(MINUTE, contentDate, NOW()) = 0
-						THEN RETURN "Just now";
-					ELSEIF TIMESTAMPDIFF(MINUTE, contentDate, NOW()) > 1
-						THEN RETURN CONCAT_WS(" ", TIMESTAMPDIFF(MINUTE, contentDate, NOW()), "minutes ago");
-					ELSE RETURN CONCAT_WS(" ", TIMESTAMPDIFF(MINUTE, contentDate, NOW()), "minute ago");
-					END IF;
-				END //
-			
-			DELIMITER ;',
 		
 		/**
 		* Activity feed queries
@@ -541,13 +504,13 @@ class SelectorSQL{
 			SELECT u.id, firstName, lastName, avatar, vanityURL, ut.title AS `type`, languageID as `lang`
 			FROM users AS u
 			LEFT JOIN userTypes AS ut ON (u.typeID = ut.id)
-			WHERE (email = :email OR fullsailEmail = :email) AND `password` = MD5(:password)
+			WHERE (email = :email OR fullsailEmail = :email) AND `password` = MD5(CONCAT(MD5(:password),:salt))
 			LIMIT 1",
 		
 		'changeFullsailEmailInfo' => "
 			SELECT id, firstName, lastName, verified, verificationCode
 			FROM users
-			WHERE (email = :email) AND `password` = MD5(:password)
+			WHERE (email = :email) AND `password` = MD5(CONCAT(MD5(:password),:salt))
 			LIMIT 1",
 		
 		'getUserSessionDataByID' => "

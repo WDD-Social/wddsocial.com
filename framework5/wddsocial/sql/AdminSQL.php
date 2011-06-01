@@ -16,7 +16,7 @@ class AdminSQL{
 		
 		'addUser' => "
 			INSERT INTO users (typeID, firstName, lastName, email, fullsailEmail, `password`, vanityURL, `datetime`)
-			VALUES (:typeID, :firstName, :lastName, :email, :fullsailEmail, MD5(:password), :vanityURL, NOW());
+			VALUES (:typeID, :firstName, :lastName, :email, :fullsailEmail, MD5(CONCAT(MD5(:password),:salt)), :vanityURL, NOW());
 			
 			SET @last_id = LAST_INSERT_ID();
 			
@@ -33,8 +33,8 @@ class AdminSQL{
 		
 		'changePassword' => "
 			UPDATE users
-			SET `password` = MD5(:new)
-			WHERE id = :id AND `password` = MD5(:old)",
+			SET `password` = MD5(CONCAT(MD5(:new),:salt))
+			WHERE id = :id AND `password` = MD5(CONCAT(MD5(:old),:salt))",
 		
 		'verifyUserByID' => "
 			UPDATE users
