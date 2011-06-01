@@ -36,9 +36,15 @@ HTML;
 		$i = 1;
 		if (isset($options['courses'])) {
 			foreach ($options['courses'] as $course) {
+				if (is_object($course)) {
+					$courseID = htmlspecialchars($course->id);
+				}
+				else {
+					$courseID = htmlspecialchars($course);
+				}
 				$html .= <<<HTML
 
-							<input type="text" name="courses[]" class="autocompleter" data-autocomplete="courses" autocomplete="off" placeholder="{$courses[$i-1]->id}" value="{$course->id}" />
+							<input type="text" name="courses[]" class="autocompleter" data-autocomplete="courses" autocomplete="off" placeholder="{$courses[$i-1]->id}" value="{$courseID}" />
 HTML;
 				$i++;
 			}
