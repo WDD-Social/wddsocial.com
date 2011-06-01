@@ -307,6 +307,14 @@ class EditPage implements \Framework5\IExecutable {
 			if (!Uploader::valid_image($_FILES['company-avatar'])) {
 				return new FormResponse(false, "Please upload the company avatar in a supported image type (JPG, PNG, or GIF).");
 			}
+			
+			if (!Uploader::valid_image_size($_FILES['company-avatar'])) {
+				return new FormResponse(false, "The company avatar you tried to upload is too large. The maximum size is 700k. Please upload a smaller image.");
+			}
+		}
+		
+		if (!Uploader::valid_image_sizes($_FILES['image-files'])) {
+			return new FormResponse(false, "The images you tried to upload are too large. The maximum size is 700k. Please upload smaller images.");
 		}
 		
 		if (!Uploader::valid_images($_FILES['image-files'])) {

@@ -170,6 +170,14 @@ class CreatePage implements \Framework5\IExecutable {
 			if (!Uploader::valid_image($_FILES['company-avatar'])) {
 				return new FormResponse(false, "Please upload the company avatar in a supported image type (JPG, PNG, or GIF).");
 			}
+			
+			if (!Uploader::valid_image_size($_FILES['company-avatar'])) {
+				return new FormResponse(false, "The company avatar you tried to upload is too large. The maximum size is 700k. Please upload a smaller image.");
+			}
+		}
+		
+		if (!Uploader::valid_image_sizes($_FILES['image-files'])) {
+			return new FormResponse(false, "The images you tried to upload are too large. The maximum size is 700k. Please upload smaller images.");
 		}
 		
 		if (!Uploader::valid_images($_FILES['image-files'])) {
@@ -185,10 +193,10 @@ class CreatePage implements \Framework5\IExecutable {
 		switch ($_POST['type']) {
 			case 'project':
 			
-				if (isset($_POST['completed-date'])) {
+				if (isset($_POST['completed-date']) and $_POST['completed-date'] != '') {
 					$completeDate = date_parse_from_format('F, Y',$_POST['completed-date']);
 					if ($completeDate['error_count'] > 0) {
-						return new FormResponse(false, implode('. ', $completedate['errors']));
+						return new FormResponse(false, implode('. ', $completeDate['errors']));
 					}
 					$month = (strlen($completeDate['month']) == 1)?'0'.$completeDate['month']:$completeDate['month'];
 					$postCompleteDate = $completeDate['year'] . '-' . $month . '-01';
