@@ -325,9 +325,7 @@ class CreatePage implements \Framework5\IExecutable {
 			}
 		}
 		
-		if (!Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type'])) {
-			return new FormResponse(false, "There was an error uploading your images, please check image size and type requirements try again.");
-		}
+		Uploader::upload_content_images($_FILES['image-files'], $_POST['image-titles'], $contentID, $_POST['title'], $_POST['type']);
 		
 		VideoProcessor::add_videos($_POST['videos'], $contentID, $_POST['type']);
 		
