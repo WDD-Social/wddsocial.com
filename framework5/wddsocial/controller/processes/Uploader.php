@@ -132,6 +132,7 @@ class Uploader {
 				}
 			}
 		}
+		return true;
 	}
 	
 	public static function upload_image($image, $name){
