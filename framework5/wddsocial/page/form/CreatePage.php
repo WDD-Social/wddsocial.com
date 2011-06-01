@@ -65,7 +65,7 @@ class CreatePage implements \Framework5\IExecutable {
 			if ($_POST['type'] == 'project' or $_POST['type'] == 'article' or 
 			$_POST['type'] == 'event' or $_POST['type'] == 'job') {
 				$typeCapitalized = ucfirst($_POST['type']);
-				$content .= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs");
+				$content .= render("wddsocial.view.form.pieces.WDDSocial\\{$typeCapitalized}ExtraInputs",array('data' => $_POST));
 			}
 			
 			# display team member section for appropriate content types
@@ -87,27 +87,24 @@ class CreatePage implements \Framework5\IExecutable {
 			$content .= render('wddsocial.view.form.pieces.WDDSocial\ImageInputs');
 			
 			# display video section
-			$content .= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs');
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\VideoInputs',array('videos' => $_POST['videos']));
 			
 			# display category section
-			$content .= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs');
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\CategoryInputs',array('categories' => $_POST['categories']));
 			
 			# display link section
-			$content .= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs');
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\LinkInputs',array('links' => $_POST['link-urls'], 'link-titles' => $_POST['link-titles']));
 			
 			#display course section
 			if ($_POST['type'] != 'job') {
-				$content .= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', 
-					array('header' => true));
+				$content .= render('wddsocial.view.form.pieces.WDDSocial\CourseInputs', array('header' => true, 'courses' => $_POST['courses']));
 			}
 			
 			# display other options
-			$content .= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', 
-				array('data' => $_POST));
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\OtherInputs', array('data' => $_POST));
 			
 			# display form footer
-			$content .= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', 
-				array('section' => 'footer'));
+			$content .= render('wddsocial.view.form.pieces.WDDSocial\BasicElements', array('section' => 'footer'));
 		}
 		
 		
@@ -168,6 +165,16 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		if ($incomplete) {
 			return new FormResponse(false, "Please complete all required fields.");
+		}
+		
+		if ($_POST['type'] == 'job' and $_FILES['company-avatar']['error'] != 4) {
+			if (!Uploader::valid_image($_FILES['company-avatar'])) {
+				return new FormResponse(false, "Please upload the company avatar in a supported image type (JPG, PNG, or GIF).");
+			}
+		}
+		
+		if (!Uploader::valid_images($_FILES['image-files'])) {
+			return new FormResponse(false, "Please upload images in a supported image type (JPG, PNG, or GIF).");
 		}
 		
 		$postTitle = strip_tags($_POST['title']);
