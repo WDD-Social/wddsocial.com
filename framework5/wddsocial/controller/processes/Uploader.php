@@ -10,7 +10,7 @@ namespace WDDSocial;
 
 class Uploader {
 	public static function valid_image($image){
-		$type = mime_content_type($image['tmp_name']);
+		$type = $image['type'];
 		if ($type == 'image/jpeg' or $type == 'image/png' or $type == 'image/gif') {
 			return true;
 		}
@@ -19,11 +19,34 @@ class Uploader {
 		}
 	}
 	
-	public static function valid_images($images){
+	public static function valid_images($images){	
+		return true;
 		for ($i = 0; $i < count($images['name']); $i++) {
 			if ($images['error'][$i] != 4) {
-				$type = mime_content_type($images['tmp_name'][$i]);
+				$type = $images['type'][$i];
 				if ($type != 'image/jpeg' or $type != 'image/png' or $type != 'image/gif') {
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	public static function valid_image_size($image){
+		$size = $image['size']/1024;
+		if ($size > 700) {
+			return false;
+		}
+		else {
+			return true;
+		}
+	}
+	
+	public static function valid_image_sizes($images){
+		for ($i = 0; $i < count($images['name']); $i++) {
+			if ($images['error'][$i] != 4) {
+				$size = $image['size'][$i]/1024;
+				if ($size > 700) {
 					return false;
 				}
 			}
@@ -74,18 +97,10 @@ class Uploader {
 		$sel_sql = instance(':sel-sql');
 		
 		$currentUserID = (UserSession::is_authorized())?UserSession::userid():NULL;
-		for ($i = 0; $i < count($images['name']); $i++) {
-			if ($images['error'][$i] != 4) {
-				$type = mime_content_type($images['tmp_name'][$i]);
-				if ($type != 'image/jpeg' or $type != 'image/png' or $type != 'image/gif') {
-					return false;
-				}
-			}
-		}
 		
 		for ($i = 0; $i < count($images['name']); $i++) {
 			if ($images['error'][$i] != 4) {
-				$type = mime_content_type($images['tmp_name'][$i]);
+				$type = $images['type'][$i];
 				if ($type == 'image/jpeg' or $type == 'image/png' or $type == 'image/gif') {
 					$imageNumber = $i + 1;
 					$imageTitle = ($titles[$i] == '')?"{$contentTitle} | Image $imageNumber":$titles[$i];
@@ -126,7 +141,6 @@ class Uploader {
 					$newImage = array(	'tmp_name' => $images['tmp_name'][$i],
 										'type' => $images['type'][$i]);
 					Uploader::upload_image($newImage,"{$result->file}");
-					return true;
 				}
 				else {
 					return false;
