@@ -963,7 +963,14 @@ input, textarea, button {
 }
 #content section.large section.content {
   clear: both;
-  padding-top: 3%;
+  padding-top: 5px;
+}
+#content section.large section.content h2 {
+  margin-top: 10px;
+  margin-bottom: 5px;
+}
+#content section.large section.content h2:first-child {
+  margin-top: 0;
 }
 #content section.large article {
   overflow: hidden;
