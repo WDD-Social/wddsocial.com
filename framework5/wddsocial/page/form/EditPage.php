@@ -388,7 +388,8 @@ class EditPage implements \Framework5\IExecutable {
 						array_push($update,"endDatetime = $fieldContent");
 					}
 					else {
-						array_push($update,"$fieldName = '$fieldContent'");
+						$cleanString = addslashes($fieldContent);
+						array_push($update,"$fieldName = '$cleanString'");
 					}
 				}
 				$update = implode(', ',$update);
