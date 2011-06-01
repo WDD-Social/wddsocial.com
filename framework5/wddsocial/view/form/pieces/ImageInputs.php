@@ -40,6 +40,7 @@ HTML;
 		$html .= <<<HTML
 
 						<h1 id="images">$imagesHeader</h1>
+						<p><strong>JPG</strong>, <strong>PNG</strong>, or <strong>GIF</strong>. Maximum size is <strong>700k</strong>.</p>
 HTML;
 		# display image uploaders
 		for ($i = 1; $i < 4; $i++) {

@@ -81,6 +81,7 @@ class AccountView implements \Framework5\IView {
 						<fieldset>
 							<label for="avatar">New Avatar</label>
 							<input type="file" name="avatar" id="avatar" />
+							<small><strong>JPG</strong>, <strong>PNG</strong>, or <strong>GIF</strong>. Maximum size is <strong>700k</strong>.</small>
 						</fieldset>
 						<fieldset>
 							<label for="hometown">Hometown</label>
