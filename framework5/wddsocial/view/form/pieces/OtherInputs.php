@@ -13,6 +13,7 @@ class OtherInputs implements \Framework5\IView {
 		if (is_array($options['data'])) {
 			$content->title = $options['data']['title'];
 			$content->type = $options['data']['type'];
+			$content->vanityURL = $options['data']['vanityURL'];
 		}
 		else if (is_object($options['data'])) {
 			$content = $options['data'];
