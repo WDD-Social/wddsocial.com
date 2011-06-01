@@ -117,6 +117,39 @@ class EditPage implements \Framework5\IExecutable {
 			$content->title = $_POST['title'];
 			$content->description = $_POST['description'];
 			$content->content = $_POST['content'];
+			$content->videos = $_POST['videos'];
+			$content->categories = $_POST['categories'];
+			$content->courses = $_POST['courses'];
+			$content->vanityURL = $_POST['vanityURL'];
+			switch ($content->type) {
+				case 'project':
+					$content->completeDate = $_POST['completed-date'];
+					break;
+				case 'event':
+					$content->location = $_POST['location'];
+					$content->startDate = $_POST['date'];
+					$content->startTime = $_POST['start-time'];
+					$content->duration = $_POST['duration'];
+					break;
+				case 'job':
+					$content->jobTypeID = $_POST['job-type'];
+					$content->company = $_POST['company'];
+					$content->location = $_POST['location'];
+					$content->compensation = $_POST['compensation'];
+					$content->website = $_POST['website'];
+					$content->email = $_POST['email'];
+					break;
+			}
+			if ($content->type == 'project' or $content->type == 'article') {
+				$content->team = array();
+				for ($i=0;$i<count($_POST['team']);$i++) {
+					array_push($content->team,(object) array('firstName' => $_POST['team'][$i], 'lastName' => '', 'role' => $_POST['roles'][$i]));
+				}
+			}
+			$content->links = array();
+			for ($i=0;$i<count($_POST['link-urls']);$i++) {
+				array_push($content->links,(object) array('title' => $_POST['link-titles'][$i], 'link' => $_POST['link-urls'][$i]));
+			}
 		}
 		
 		# page title
