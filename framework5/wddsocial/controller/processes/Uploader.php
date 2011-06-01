@@ -20,11 +20,10 @@ class Uploader {
 	}
 	
 	public static function valid_images($images){	
-		return true;
 		for ($i = 0; $i < count($images['name']); $i++) {
 			if ($images['error'][$i] != 4) {
 				$type = $images['type'][$i];
-				if ($type != 'image/jpeg' or $type != 'image/png' or $type != 'image/gif') {
+				if ($type != 'image/jpeg' and $type != 'image/png' and $type != 'image/gif') {
 					return false;
 				}
 			}
@@ -45,7 +44,7 @@ class Uploader {
 	public static function valid_image_sizes($images){
 		for ($i = 0; $i < count($images['name']); $i++) {
 			if ($images['error'][$i] != 4) {
-				$size = $image['size'][$i]/1024;
+				$size = $images['size'][$i]/1024;
 				if ($size > 700) {
 					return false;
 				}
