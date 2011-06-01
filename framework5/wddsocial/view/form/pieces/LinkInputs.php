@@ -19,14 +19,22 @@ HTML;
 		$i = 1;
 		if (isset($options['links'])) {
 			foreach ($options['links'] as $link) {
+				if (is_object($link)) {
+					$linkTitle = $link->title;
+					$linkLink = $link->link;
+				}
+				else {
+					$linkTitle = $options['link-titles'][$i-1];
+					$linkLink = $link;
+				}
 				$html .= <<<HTML
 
 						<fieldset>
 							<label for="link-title">Link Title</label>
-							<input type="text" name="link-titles[]" id="link-title" value="{$link->title}" />
+							<input type="text" name="link-titles[]" id="link-title" value="{$linkTitle}" />
 							
 							<label for="link-url">Link URL</label>
-							<input type="text" name="link-urls[]" id="link-url" placeholder="example.com" value="{$link->link}" />
+							<input type="text" name="link-urls[]" id="link-url" placeholder="example.com" value="{$linkLink}" />
 						</fieldset>
 HTML;
 				$i++;
