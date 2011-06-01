@@ -102,6 +102,10 @@ class AccountPage implements \Framework5\IExecutable {
 			return new FormResponse(false, $requireResponse);
 		}
 		
+		if (!Uploader::valid_image($_FILES['avatar'])) {
+			return new FormResponse(false, "Please upload your avatar in a supported image type (JPG, PNG, or GIF).");
+		}
+		
 		if ($_POST['user-type'] != $this->user->typeID)
 			$fields['typeID'] = $_POST['user-type'];
 		
