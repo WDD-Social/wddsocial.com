@@ -86,11 +86,11 @@ class BasicElements implements \Framework5\IView {
 						</fieldset>
 						<fieldset>
 							<label for="description">Short Description *</label>
-							<textarea name="description" id="description" class="short"$descriptionAutofocus>{$content->description}</textarea>
+							<textarea name="description" maxlength="128" id="description" class="short"$descriptionAutofocus>{$content->description}</textarea>
 							<small>Keep it short, <span class="count">128</span> characters left</small>
 						<fieldset>
 							<label for="content">$contentTitle$required</label>
-							<textarea name="content" id="content"$textareaClass>{$content->content}</textarea>
+							<textarea name="content" maxlength="65536" id="content"$textareaClass>{$content->content}</textarea>
 							<small>You&rsquo;ve got <span class="count">65,536</span> characters left to use, so make it count.</small>
 						</fieldset>
 HTML;

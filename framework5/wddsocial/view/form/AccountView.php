@@ -93,7 +93,7 @@ class AccountView implements \Framework5\IView {
 						</fieldset>
 						<fieldset>
 							<label for="bio">Bio</label>
-							<textarea id="bio" name="bio">{$user->bio}</textarea>
+							<textarea id="bio" name="bio" maxlength="255">{$user->bio}</textarea>
 							<small>Describe yourself in <span class="count">255</span> characters or less</small>
 						</fieldset>
 HTML;
