@@ -277,8 +277,7 @@ input[type="date"],input[type="time"],input[type="number"]{width:98%;}
 input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus,input[type="date"]:focus,input[type="time"]:focus,input[type="number"]:focus,input[type="url"]:focus,textarea:focus{border-color:#5b8c2a;outline:none;-moz-box-shadow:0 1px 1px rgba(0, 0, 0, 0.15) inset,0 0 3px #74b336;-webkit-box-shadow:0 1px 1px rgba(0, 0, 0, 0.15) inset,0 0 3px #74b336;box-shadow:0 1px 1px rgba(0, 0, 0, 0.15) inset,0 0 3px #74b336;}
 input[type="text"]::-webkit-input-placeholder,textarea::-webkit-input-placeholder{font-weight:200;color:#cccccc;}
 input[type="text"]::-moz-placeholder,textarea::-moz-placeholder{font-weight:200;color:#cccccc;}
-textarea{min-width:88.5%;max-width:88.5%;min-height:100px;margin:5px auto 20px;resize:vertical;}
-textarea#content{overflow-y:scroll;}
+textarea{min-width:88.5%;max-width:88.5%;min-height:100px;margin:5px auto 20px;resize:vertical;overflow-y:auto;}
 textarea.short{min-height:40px;overflow:auto;}
 textarea.long{min-height:200px;}
 textarea.placeholder{color:#b2b2b2;}
