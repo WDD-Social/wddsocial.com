@@ -398,10 +398,7 @@ class AccountPage implements \Framework5\IExecutable {
 		}
 		
 		if($_FILES['avatar']['error'] != 4){
-			import('wddsocial.controller.processes.WDDSocial\Uploader');
-			if (!Uploader::upload_user_avatar($_FILES['avatar'],"{$this->user->avatar}")) {
-				return new FormResponse(false, "There was an error uploading your avatar, please check image size and type requirements try again.");
-			}
+			Uploader::upload_user_avatar($_FILES['avatar'],"{$this->user->avatar}");
 		}
 		
 		UserSession::refresh();
