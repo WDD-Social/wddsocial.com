@@ -9,6 +9,27 @@ namespace WDDSocial;
 */
 
 class Uploader {
+	public static function valid_image($image){
+		$type = mime_content_type($image['tmp_name']);
+		if ($type == 'image/jpeg' or $type == 'image/png' or $type == 'image/gif') {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+	
+	public static function valid_images($images){
+		for ($i = 0; $i < count($images['name']); $i++) {
+			if ($images['error'][$i] != 4) {
+				$type = mime_content_type($images['tmp_name'][$i]);
+				if ($type != 'image/jpeg' or $type != 'image/png' or $type != 'image/gif') {
+					return false;
+				}
+			}
+		}
+	}
+	
 	public static function upload_user_avatar($image, $name){
 		$type = mime_content_type($image['tmp_name']);
 		if ($type == 'image/jpeg' or $type == 'image/png' or $type == 'image/gif') {
