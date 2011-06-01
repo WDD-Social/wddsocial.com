@@ -58,7 +58,7 @@ class UserSession {
 		# check login information
 		$query = $db->prepare($sql->getUserByLogin);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$data = array('email' => $email, 'password' => $password);
+		$data = array('email' => $email, 'password' => $password, 'salt' => Hash::$salt);
 		$query->execute($data);
 		
 		if ($query->rowCount() == 0)

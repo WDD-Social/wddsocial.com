@@ -93,16 +93,16 @@ class NewPasswordPage implements \Framework5\IExecutable {
 	private function _process_form() {
 		
 		$email    = $_POST['email'];
-		$password = md5($_POST['password']);
+		$password = $_POST['password'];
 		
 		# update users password in database
 		$query = $this->db->prepare("
 			UPDATE users
-			SET password = :password, passwordCode = NULL
+			SET password = MD5(CONCAT(MD5(:password),:salt)), passwordCode = NULL
 			WHERE passwordCode = :passwordCode;");
 		
 		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$data = array('password' => $password, 'passwordCode' => $this->code);
+		$data = array('password' => $password, 'passwordCode' => $this->code, 'salt' => Hash::$salt);
 		$query->execute($data);
 		
 		return true;

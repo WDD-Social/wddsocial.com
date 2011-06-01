@@ -179,6 +179,7 @@ class SignupPage implements \Framework5\IExecutable {
 				'email' => $_POST['email'],
 				'fullsailEmail' => $_POST['full-sail-email'],
 				'password' => $_POST['password'],
+				'salt' => Hash::$salt,
 				'vanityURL' => $vanityURL);
 			
 			# Insert user into database

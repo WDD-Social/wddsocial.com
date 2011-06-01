@@ -103,12 +103,14 @@ class AccountPage implements \Framework5\IExecutable {
 			return new FormResponse(false, $requireResponse);
 		}
 		
-		if (!Uploader::valid_image($_FILES['avatar'])) {
-			return new FormResponse(false, "Please upload your avatar in a supported image type (JPG, PNG, or GIF).");
-		}
-		
-		if (!Uploader::valid_image_size($_FILES['avatar'])) {
-			return new FormResponse(false, "The avatar you tried to upload is too large. The maximum size is 700k. Please upload a smaller image.");
+		if($_FILES['avatar']['error'] != 4){
+			if (!Uploader::valid_image($_FILES['avatar'])) {
+				return new FormResponse(false, "Please upload your avatar in a supported image type (JPG, PNG, or GIF).");
+			}
+			
+			if (!Uploader::valid_image_size($_FILES['avatar'])) {
+				return new FormResponse(false, "The avatar you tried to upload is too large. The maximum size is 700k. Please upload a smaller image.");
+			}
 		}
 		
 		if ($_POST['user-type'] != $this->user->typeID)
@@ -384,12 +386,12 @@ class AccountPage implements \Framework5\IExecutable {
 			}
 			else {
 				$query = $this->db->prepare($this->val->checkUserPassword);
-				$query->execute(array('id' => $this->user->id, 'password' => $_POST['old-password']));
+				$query->execute(array('id' => $this->user->id, 'password' => $_POST['old-password'], 'salt' => Hash::$salt));
 				$query->setFetchMode(\PDO::FETCH_OBJ);
 				$result = $query->fetch();
 				if ($result->count > 0) {
 					$query = $this->db->prepare($this->admin->changePassword);
-					$query->execute(array('id' => $this->user->id, 'old' => $_POST['old-password'], 'new' => $_POST['new-password']));
+					$query->execute(array('id' => $this->user->id, 'old' => $_POST['old-password'], 'new' => $_POST['new-password'], 'salt' => Hash::$salt));
 				}
 				else {
 					return new FormResponse(false, "Your old password was incorrect, please try again.");

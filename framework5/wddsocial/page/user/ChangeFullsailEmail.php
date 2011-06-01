@@ -93,7 +93,7 @@ class ChangeFullsailEmail implements \Framework5\IExecutable {
 		# check users email and password
 		$query = $db->prepare($sel_sql->changeFullsailEmailInfo);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$query->execute(array('email' => $email, 'password' => $password));
+		$query->execute(array('email' => $email, 'password' => $password, 'salt' => Hash::$salt));
 		
 		if ($query->rowCount() == 0) {
 			$this->errorMessage = "Your primary email or password was incorrect";
