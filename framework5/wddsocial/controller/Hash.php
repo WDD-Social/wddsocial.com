@@ -8,5 +8,5 @@ namespace WDDSocial;
 */
 
 class Hash {
-	
+	public static $salt = 'salt';
 }
