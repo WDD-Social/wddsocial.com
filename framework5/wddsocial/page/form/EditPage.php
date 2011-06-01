@@ -35,6 +35,8 @@ class EditPage implements \Framework5\IExecutable {
 				# redirect user to new content page
 				redirect("{$response->message}");
 			}
+			
+			$content = $_POST;
 		}
 			
 		$types = array('project', 'article', 'event', 'job', 'comment');
