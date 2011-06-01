@@ -28,6 +28,7 @@ class Uploader {
 				}
 			}
 		}
+		return true;
 	}
 	
 	public static function upload_user_avatar($image, $name){
@@ -139,7 +140,7 @@ class Uploader {
 		import('wddsocial.helper.WDDSocial\Resizer');
 		$dest = "images/uploads";
 		Resizer::image($image,$name,"_full",$dest,800,600);
-		Resizer::image($image,$name,"_large",$dest,300,250);
+		Resizer::image($image,$name,"_large",$dest,300,600);
 		Resizer::image($image,$name,"_medium",$dest,60,60,true);
 		if (file_exists("$dest/$name")) {
 			unlink("$dest/$name");
