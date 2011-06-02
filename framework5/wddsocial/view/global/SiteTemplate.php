@@ -48,6 +48,7 @@ class SiteTemplate implements \Framework5\IView {
 		<link rel="stylesheet" href="/css/style.css">
 		<link rel="stylesheet" href="/css/jquery.fancybox-1.3.4.css">
 		<script src="/js/libs/modernizr-1.6.min.js"></script>
+		<script src="/js/libs/respond.min.js"></script>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
 			_gaq.push(['_setAccount', 'UA-17688306-8']);

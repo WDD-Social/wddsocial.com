@@ -10,7 +10,7 @@ namespace WDDSocial;
 
 class Resizer {
 	public static function image($upload, $name, $extra, $dest, $new_width = 800, $new_height = 600, $crop = false){
-		if(move_uploaded_file($upload['tmp_name'],"$dest/$name")){
+		if(@move_uploaded_file($upload['tmp_name'],"$dest/$name")){
 			$image = "$dest/$name";
 		}else if(file_exists("$dest/$name")){
 			$image = "$dest/$name";

@@ -74,15 +74,16 @@ HTML;
 		# save sender id
 		$this->_lastMessageId = $message->fromUserID;
 		$userAvatar = (file_exists("images/avatars/{$message->fromAvatar}_medium.jpg"))?"/images/avatars/{$message->fromAvatar}_medium.jpg":"/images/site/user-default_medium.jpg";
-		$langViewUserProfile = $this->lang->text('view-user-profile', $message->fromUserName);
+		$userVerbage = NaturalLanguage::view_profile($message->fromUserID,"{$message->fromUserName}");
+		$userDisplayName = NaturalLanguage::display_name($message->fromUserID,"{$message->fromUserName}");
 		$messageContent = nl2br($message->messageContent);
 		$linkedMessageContent = Formatter::format_links($messageContent);
 		$markAsRead = ($message->messageStatusID == 1 and $message->fromUserID != UserSession::userid())?"<a href=\"/message/read/{$message->messageID}\" title=\"Mark Message As Read\" class=\"markasread\">Mark as Read</a> <span class=\"hidden\">|</span> ":'';
 		$html = <<<HTML
 
 					<article>
-						<p class="item-image"><a href="{$message->fromVanityURL}" title="{$langViewUserProfile}"><img src="{$userAvatar}" alt="{$message->fromUserName}"/></a></p>
-						<h2><a href="{$message->profile}" title="{$langViewUserProfile}">{$message->fromUserName}</a></h2>
+						<p class="item-image"><a href="/user/{$message->fromVanityURL}" title="{$userVerbage}"><img src="{$userAvatar}" alt="{$message->fromUserName}"/></a></p>
+						<h2><a href="/user/{$message->fromVanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
 						<p>{$linkedMessageContent}</p>
 						<p>{$markAsRead}<span class="time">{$message->date}</span></p>
 					</article>

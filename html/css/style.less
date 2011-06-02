@@ -729,7 +729,6 @@ input, textarea, button{
 					float: left;
 					display: block;
 					width: 31%;
-					max-height: 105px;
 					margin-right: 3.5%;
 					margin-bottom: 2%;
 					
@@ -855,10 +854,6 @@ input, textarea, button{
 		
 		.secondary{
 			width: 40%;
-			}
-		
-		> .secondary{
-			width: 65%;
 			}
 		
 		article{
@@ -1462,7 +1457,6 @@ input, textarea, button{
 			overflow: hidden;
 			float: left;
 			display: block;
-			max-height: 105px;
 			
 			img{
 				width: 100%;
@@ -1997,19 +1991,22 @@ input[type="text"]::-moz-placeholder, textarea::-moz-placeholder{
 textarea{
 	min-width: 88.5%;
 	max-width: 88.5%;
-	min-height: 100px;
+	min-height: 200px;
 	margin: 5px auto 20px;
 	resize: vertical;
-	overflow-y: auto;
+	overflow-y: auto !important;
 	}
 
 textarea.short{
 	min-height: 40px;
-	overflow: auto;
+	}
+
+textarea.medium{
+	min-height: 100px;
 	}
 
 textarea.long{
-	min-height: 200px;
+	min-height: 300px;
 	}
 	
 textarea.placeholder{

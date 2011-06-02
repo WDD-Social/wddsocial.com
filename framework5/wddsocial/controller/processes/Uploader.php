@@ -54,7 +54,7 @@ class Uploader {
 	}
 	
 	public static function upload_user_avatar($image, $name){
-		$type = mime_content_type($image['tmp_name']);
+		$type = $image['type'];
 		if ($type == 'image/jpeg' or $type == 'image/png' or $type == 'image/gif') {
 			import('wddsocial.helper.WDDSocial\Resizer');
 			$root = \Framework5\Request::root_path();
@@ -73,7 +73,7 @@ class Uploader {
 	}
 	
 	public static function upload_employer_avatar($image, $name){
-		$type = mime_content_type($image['tmp_name']);
+		$type = $image['type'];
 		if ($type == 'image/jpeg' or $type == 'image/png' or $type == 'image/gif') {
 			import('wddsocial.helper.WDDSocial\Resizer');
 			$root = \Framework5\Request::root_path();

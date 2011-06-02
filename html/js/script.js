@@ -19,6 +19,8 @@ $(function() {
 	
 	/* Form helpers
 	****************************************************************** */
+	
+	// Character counters
 	var addCommas = function(nStr){
 		nStr += '';
 		x = nStr.split('.');
@@ -41,8 +43,28 @@ $(function() {
 		updateCounter($(this));
 	});
 	
-	$('textarea[maxlength]').live('keyup keydown keypress',function(){
+	$('textarea[maxlength]').live('keyup keypress',function(){
 		updateCounter($(this));
+	});
+	
+	// Preview text
+	var updateText = function(input){
+		$(input).next('small').find('strong').text($(input).val());
+	}
+	
+	$('input.preview').each(function(){
+		if ($(this).val().length > 0) {
+			updateText($(this));
+		}
+	});
+	
+	$('input.preview').live('keyup keypress',function(){
+		if ($(this).val().length > 0) {
+			updateText($(this));
+		}
+		else {
+			$(this).next('small').find('strong').text('example');
+		}
 	});
 	
 	
@@ -209,12 +231,14 @@ $(function() {
 	}
 	
 	var alignList = function(){
-		var offset = $(currentInput).offset();
-		$('#autocomplete').css({
-			top: offset.top + $(currentInput).outerHeight() - 1,
-			left: offset.left + $(currentInput).outerWidth()*.0125,
-			width: $(currentInput).outerWidth()*.97
-		});
+		if ($('#autocomplete').length) {
+			var offset = $(currentInput).offset();
+			$('#autocomplete').css({
+				top: offset.top + $(currentInput).outerHeight() - 1,
+				left: offset.left + $(currentInput).outerWidth()*.0125,
+				width: $(currentInput).outerWidth()*.97
+			});
+		}
 	}
 	
 	$('.autocompleter').live('keyup focusin',function(e){
@@ -348,7 +372,7 @@ $(function() {
 				$(link).toggleClass('loading').html('Load More');
 				pageNumber++;
 				selectedSection = $(parent).parent();
-				if (page === 'user' || page === '') {
+				if (page === 'user' || page === '/') {
 					filter($(selectedSection).find('div.filters a.current').html(),selectedSection,0)
 				}
 				$.ajax({

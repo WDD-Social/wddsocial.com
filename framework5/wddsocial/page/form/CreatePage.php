@@ -186,7 +186,7 @@ class CreatePage implements \Framework5\IExecutable {
 		
 		$postTitle = strip_tags($_POST['title']);
 		$postDescription = strip_tags($_POST['description']);
-		$postContent = strip_tags($_POST['content'],'<link><header>');
+		$postContent = strip_tags($_POST['content'],'<header>');
 		$postVanityURL = strtolower(preg_replace("#\W#", "", $_POST['vanityURL']));
 		
 		# Basic insert of content
