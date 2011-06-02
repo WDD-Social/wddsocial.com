@@ -50,7 +50,7 @@ class SiteTemplate implements \Framework5\IView {
 		<script src="/js/libs/modernizr-1.6.min.js"></script>
 		<script type="text/javascript">
 			var _gaq = _gaq || [];
-			_gaq.push(['_setAccount', 'UA-17688306-7']);
+			_gaq.push(['_setAccount', 'UA-17688306-8']);
 			_gaq.push(['_trackPageview']);
 			(function() {
 				var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
