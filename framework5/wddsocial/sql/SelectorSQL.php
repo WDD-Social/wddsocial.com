@@ -507,6 +507,12 @@ class SelectorSQL{
 			WHERE (email = :email OR fullsailEmail = :email) AND `password` = MD5(CONCAT(MD5(:password),:salt))
 			LIMIT 1",
 		
+		'getUserByPasswordCode' => "
+			SELECT id, email
+			FROM users
+			WHERE passwordCode = :passwordCode
+			LIMIT 1",
+		
 		'changeFullsailEmailInfo' => "
 			SELECT id, firstName, lastName, verified, verificationCode
 			FROM users
