@@ -17,6 +17,36 @@ $(function() {
 	
 	
 	
+	/* Form helpers
+	****************************************************************** */
+	var addCommas = function(nStr){
+		nStr += '';
+		x = nStr.split('.');
+		x1 = x[0];
+		x2 = x.length > 1 ? '.' + x[1] : '';
+		var rgx = /(\d+)(\d{3})/;
+		while (rgx.test(x1)) {
+			x1 = x1.replace(rgx, '$1' + ',' + '$2');
+		}
+		return x1 + x2;
+	}
+	
+	var updateCounter = function(input){
+		var countField = $(input).next('small').find('span.count');
+		var left = $(input).attr('maxlength') - $(input).val().length;
+		$(countField).text(addCommas(left));
+	}
+	
+	$('textarea[maxlength]').each(function(){
+		updateCounter($(this));
+	});
+	
+	$('textarea[maxlength]').live('keyup keydown keypress',function(){
+		updateCounter($(this));
+	});
+	
+	
+	
 	/* Fancybox
 	****************************************************************** */
 	
