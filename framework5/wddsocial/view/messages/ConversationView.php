@@ -108,7 +108,6 @@ HTML;
 					<article>
 						<p>{$linkedMessageContent}</p>
 						<p>{$markAsRead}<span class="time">{$message->date}</span></p>
-						<p>{$message->date}</p>
 					</article>
 HTML;
 		return $html;
