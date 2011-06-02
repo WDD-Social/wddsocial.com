@@ -8,8 +8,4 @@ while ($event = $query->fetch()) {
 	if (file_exists($file)) {
 		unlink($file);
 	}
-	else {
-		echo "<p>$file not found</p>";
-	}
 }
-echo "DOCUMENT ROOT {$_SERVER['DOCUMENT_ROOT']}";
