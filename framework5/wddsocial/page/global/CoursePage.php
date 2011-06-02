@@ -47,7 +47,7 @@ class CoursePage implements \Framework5\IExecutable {
 			$content .= render(':section',
 				array('section' => 'begin_content_section', 'id' => 'latest',
 					'classes' => array('medium', 'with-secondary', 'filterable'),
-					'header' => 'Latest', 'extra' => 'latest_filters'));
+					'header' => 'Latest', 'extra' => 'course_latest_filters'));
 			
 			$paginator = new Paginator(2,20);
 			

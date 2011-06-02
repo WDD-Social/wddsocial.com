@@ -134,6 +134,13 @@ HTML
 						<a href="{$_SERVER['REQUEST_URI']}#articles" title="{$this->lang->text('latest_articles')}">{$this->lang->text('articles')}</a>
 					</div><!-- END SECONDARY -->
 HTML
+			,'course_latest_filters' => <<<HTML
+<div class="secondary filters">
+						<a href="{$_SERVER['REQUEST_URI']}#all" title="{$this->lang->text('filter_all_title')}" class="current">{$this->lang->text('all')}</a>
+						<a href="{$_SERVER['REQUEST_URI']}#projects" title="{$this->lang->text('filter_projects_title')}">{$this->lang->text('projects')}</a> 
+						<a href="{$_SERVER['REQUEST_URI']}#articles" title="{$this->lang->text('filter_articles_title')}">{$this->lang->text('articles')}</a>
+					</div><!-- END SECONDARY -->
+HTML
 			,'slider_controls' => <<<HTML
 <div class="slider-controls"><a href="{$_SERVER['REQUEST_URI']}" title="Featured 1" class="current">1</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 2">2</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 3">3</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 4">4</a> <a href="{$_SERVER['REQUEST_URI']}" title="Featured 5">5</a></div>
 HTML
