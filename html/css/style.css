@@ -131,7 +131,6 @@ input,textarea,button{font-weight:200;}
 #content section.mega div.small{float:left;width:14.893617021%;margin-right:2.127659574%;}
 #content section.mega div.no-margin{margin-right:0;}
 #content section.mega .secondary{width:40%;}
-#content section.mega>.secondary{width:65%;}
 #content section.mega article{clear:none;float:left;width:32%;min-height:200px;margin-right:2%;margin-bottom:5%;}#content section.mega article .secondary{width:auto;}
 #content section.mega article h2,#content section.mega article p{width:80%;padding-left:20%;}
 #content section.mega article h2,#content section.mega article p:nth-child(3){width:70%;}
