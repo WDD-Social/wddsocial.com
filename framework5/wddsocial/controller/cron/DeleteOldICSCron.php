@@ -8,3 +8,4 @@ while ($event = $query->fetch()) {
 		unlink("files/ics/wddsocial.{$event->icsUID}.ics");
 	}
 }
+echo "Cron happened.";
