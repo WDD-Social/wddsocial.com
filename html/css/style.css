@@ -109,7 +109,7 @@ input,textarea,button{font-weight:200;}
 #content>section article{clear:both;position:relative;margin-bottom:2%;}#content>section article h2,#content>section article p{float:left;}
 #content>section article .item-image{float:left;position:absolute;top:0px;}#content>section article .item-image a,#content>section article .item-image a:visited{display:block;width:100%;}#content>section article .item-image a img,#content>section article .item-image a:visited img{display:block;width:100%;opacity:.9;}
 #content>section article .item-image a:hover img,#content>section article .item-image a:focus img{opacity:1;}
-#content>section article .images a,#content>section article .images a:visited{overflow:hidden;float:left;display:block;width:31%;max-height:105px;margin-right:3.5%;margin-bottom:2%;}#content>section article .images a img,#content>section article .images a:visited img{width:100%;margin:0 auto;opacity:.9;}
+#content>section article .images a,#content>section article .images a:visited{overflow:hidden;float:left;display:block;width:31%;margin-right:3.5%;margin-bottom:2%;}#content>section article .images a img,#content>section article .images a:visited img{width:100%;margin:0 auto;opacity:.9;}
 #content>section article .images a:hover img,#content>section article .images a:focus img{opacity:1;}
 #content>section article .images a:last-child{margin-right:0;}
 #content>section article .tags,#content>section article .job-type{margin-bottom:0;}#content>section article .tags a,#content>section article .job-type a,#content>section article .tags a:visited,#content>section article .job-type a:visited{font-weight:bold;color:#b2b2b2;}
@@ -205,7 +205,7 @@ input,textarea,button{font-weight:200;}
 #content .load-more a:hover,#content .load-more a:focus{border-color:#e5e5e5;text-decoration:none;}
 #content .load-more a:active{border-color:#ccc;background-color:#f2f2f2;}
 #content .load-more a.loading{color:#444444;}
-#media .images a,#media .images a:visited{overflow:hidden;float:left;display:block;max-height:105px;}#media .images a img,#media .images a:visited img{width:100%;margin:0 auto;opacity:.9;}
+#media .images a,#media .images a:visited{overflow:hidden;float:left;display:block;}#media .images a img,#media .images a:visited img{width:100%;margin:0 auto;opacity:.9;}
 #media .images a:hover img,#media .images a:focus img{opacity:1;}
 #media.medium .images a,#media.medium .images a:visited{width:22.580645161%;margin-right:3.55%;margin-bottom:3%;}
 #media.medium .images a:nth-child(2n+4){margin-right:0;}
