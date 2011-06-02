@@ -21,9 +21,9 @@ class RequestView implements \Framework5\IView {
 		# render execution details
 		$html = <<<HTML
 
-		<p>{$details->time}</p>
-		<p><a href="/{$details->uri}">/{$details->uri}</a></p>
-		<p>remote address: {$details->remote_addr}</p>
+		<p>
+			<strong>Request {$details->id}</strong> was made to page <a href="/{$details->uri}">http://wddsocial/{$details->uri}</a> on {$details->time} from remote address <a href="http://www.networksolutions.com/whois/results.jsp?ip={$details->remote_addr}" title="Whois information for {$details->remote_addr}">{$details->remote_addr}</a>
+		</p>
 HTML;
 		
 		# render post data

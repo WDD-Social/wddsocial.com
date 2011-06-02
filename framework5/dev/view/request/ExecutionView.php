@@ -22,9 +22,11 @@ class ExecutionView implements \Framework5\IView {
 		return <<<HTML
 
 		<h2>Execution Info</h2>
-			<p>start time: {$options->start_time}</p>
-			<p>execution time: {$options->exec_time}</p>
-			<p>memory peak: {$options->memory_peak}</p>
+			<p>
+				start timestamp: {$options->start_time}<br/>
+				execution time: {$options->exec_time}<br/>
+				memory peak: {$options->memory_peak}<br/>
+			</p>
 HTML;
 	}
 }
