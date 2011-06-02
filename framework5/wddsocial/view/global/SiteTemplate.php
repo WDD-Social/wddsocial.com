@@ -96,7 +96,6 @@ HTML;
 		<script src="/js/libs/jquery.easing.1.3.js"></script>
 		<script src="/js/libs/jquery.fancybox-1.3.4.pack.js"></script>
 		<script src="/js/libs/jquery.mousewheel-3.0.4.pack.js"></script>
-		<script src="/js/libs/date.js"></script>
 		<script src="/js/script.js"></script>
 		<!--[if lt IE 7 ]>
 			<script src="/js/libs/dd_belatedpng.js"></script>
