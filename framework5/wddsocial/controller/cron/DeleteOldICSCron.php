@@ -5,6 +5,6 @@ $query = $pdo->query("SELECT icsUID FROM events AS e WHERE TIMESTAMPDIFF(MINUTE,
 $query->setFetchMode(PDO::FETCH_OBJ);
 while ($event = $query->fetch()) {
 	if (file_exists("files/ics/wddsocial.{$event->icsUID}.ics")) {
-		unlink("files/ics/wddsocial.{$event->uid}.ics");
+		unlink("files/ics/wddsocial.{$event->icsUID}.ics");
 	}
 }
