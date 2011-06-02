@@ -45,6 +45,21 @@ HTML;
 							<label for="terms">Boring Legal Stuff</label>
 							<p><input type="checkbox" name="terms" id="terms" /><label for="terms" class="plain">I have read and agree to the <a href="#terms-content" title="WDD Social Terms of Service" id="terms-link" tabindex="1000">Terms of Service</a>.</label></p>
 						</fieldset>
+HTML;
+		require_once '../framework5/wddsocial/helper/recaptchalib.php';
+		$publickey = "6Lfu6sQSAAAAAJbZCeNyocJviy5TJTZZIifBgoBz";
+		$html .= recaptcha_get_html($publickey);
+		$html .= <<<HTML
+
+						 <script type="text/javascript"
+					       src="http://www.google.com/recaptcha/api/challenge?k=6Lfu6sQSAAAAAJbZCeNyocJviy5TJTZZIifBgoBz">
+					    </script>
+					    <noscript>
+					       <iframe src="http://www.google.com/recaptcha/api/noscript?k=6Lfu6sQSAAAAAJbZCeNyocJviy5TJTZZIifBgoBz" frameborder="0"></iframe><br>
+					       <textarea name="recaptcha_challenge_field" rows="3" cols="40">
+					       </textarea>
+					       <input type="hidden" name="recaptcha_response_field" value="manual_challenge">
+					    </noscript>
 						<p class="helper-link"><a href="/signin" title="Already a WDD Social member?" tabindex="1000">Already a member?</a></p>
 						<input type="submit" name="submit" value="Sign Up" />
 					</form>

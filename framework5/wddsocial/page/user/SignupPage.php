@@ -82,6 +82,15 @@ class SignupPage implements \Framework5\IExecutable {
 			return new FormResponse(false, "You must agree to our <a href=\"/terms\" title=\"WDD Social Terms of Service\">Terms of Service</a>");
 		}
 		
+		require_once '../framework5/wddsocial/helper/recaptchalib.php';
+		$privatekey = "6Lfu6sQSAAAAAMZj_x1CxNNRTJSRRrW9KwzqqlgA";
+		$captchaResponse = recaptcha_check_answer($privatekey, $_SERVER["REMOTE_ADDR"], $_POST["recaptcha_challenge_field"], $_POST["recaptcha_response_field"]);
+
+		if (!$captchaResponse->is_valid) {
+			// What happens when the CAPTCHA was entered incorrectly
+			return new FormResponse(false, "Your reCAPTCHA response was incorrect, please try again");
+		}
+		
 		# check if user accepted terms
 		if (strlen($_POST['password']) < 6) {
 			return new FormResponse(false, "Your password was not long enough. Passwords must be at least 6 characters long, please try again.");
