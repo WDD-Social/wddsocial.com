@@ -372,7 +372,7 @@ $(function() {
 				$(link).toggleClass('loading').html('Load More');
 				pageNumber++;
 				selectedSection = $(parent).parent();
-				if (page === 'user' || page === '') {
+				if (page === 'user' || page === '/') {
 					filter($(selectedSection).find('div.filters a.current').html(),selectedSection,0)
 				}
 				$.ajax({
