@@ -22,7 +22,7 @@ class RequestView implements \Framework5\IView {
 		$html = <<<HTML
 
 		<p>
-			<strong>Request {$details->id}</strong> was made to page <a href="/{$details->uri}">http://wddsocial/{$details->uri}</a> on {$details->time} from remote address <a href="http://www.networksolutions.com/whois/results.jsp?ip={$details->remote_addr}" title="Whois information for {$details->remote_addr}">{$details->remote_addr}</a>
+			<strong>Request {$details->id}</strong> was made to page <a href="/{$details->uri}">http://wddsocial.com/{$details->uri}</a> on {$details->time} from remote address <a href="http://www.networksolutions.com/whois/results.jsp?ip={$details->remote_addr}" title="Whois information for {$details->remote_addr}">{$details->remote_addr}</a>
 		</p>
 HTML;
 		
