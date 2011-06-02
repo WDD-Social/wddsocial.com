@@ -95,7 +95,7 @@ class AccountView implements \Framework5\IView {
 						<fieldset>
 							<label for="bio">Bio</label>
 							<textarea id="bio" name="bio" maxlength="255">{$user->bio}</textarea>
-							<small>Describe yourself in <span class="count">255</span> characters or less</small>
+							<small>Describe yourself. <span class="count">255</span> characters left.</small>
 						</fieldset>
 HTML;
 		$html .= render('wddsocial.view.form.pieces.WDDSocial\UserTypeSelector', array('typeID' => $user->typeID, 'id' => ' id="user-type"'));
