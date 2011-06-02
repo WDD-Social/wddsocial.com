@@ -60,7 +60,7 @@ class AccountView implements \Framework5\IView {
 						</fieldset>
 						<fieldset>
 							<label for="vanityURL">Custom Vanity URL</label>
-							<input type="text" name="vanityURL" id="vanityURL" value="{$user->vanityURL}" />
+							<input type="text" name="vanityURL" id="vanityURL" class="preview" autocomplete="off" value="{$user->vanityURL}" />
 							<small>wddsocial.com/user/<strong>{$user->vanityURL}</strong></small>
 						</fieldset>
 						<input type="submit" name="submit" value="Save" />
@@ -133,27 +133,27 @@ HTML;
 						</fieldset>
 						<fieldset>
 							<label for="twitter">Twitter</label>
-							<input type="text" name="twitter" id="twitter" placeholder="username" value="{$user->contact['twitter']}" />
+							<input type="text" name="twitter" id="twitter" class="preview" autocomplete="off" placeholder="username" value="{$user->contact['twitter']}" />
 							<small>twitter.com/<strong>username</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="facebook">Facebook</label>
-							<input type="text" name="facebook" id="facebook" placeholder="username" value="{$user->contact['facebook']}" />
+							<input type="text" name="facebook" id="facebook" class="preview" autocomplete="off" placeholder="username" value="{$user->contact['facebook']}" />
 							<small>facebook.com/<strong>username</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="github">Github</label>
-							<input type="text" name="github" id="github" placeholder="username" value="{$user->contact['github']}" />
+							<input type="text" name="github" id="github" class="preview" autocomplete="off" placeholder="username" value="{$user->contact['github']}" />
 							<small>github.com/<strong>username</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="dribbble">Dribbble</label>
-							<input type="text" name="dribbble" id="dribbble" placeholder="username" value="{$user->contact['dribbble']}" />
+							<input type="text" name="dribbble" id="dribbble" class="preview" autocomplete="off" placeholder="username" value="{$user->contact['dribbble']}" />
 							<small>dribbble.com/<strong>username</strong></small>
 						</fieldset>
 						<fieldset>
 							<label for="forrst">Forrst</label>
-							<input type="text" name="forrst" id="forrst" placeholder="username" value="{$user->contact['forrst']}" />
+							<input type="text" name="forrst" id="forrst" class="preview" placeholder="username" autocomplete="off" value="{$user->contact['forrst']}" />
 							<small>forrst.com/people/<strong>username</strong></small>
 						</fieldset>
 						
