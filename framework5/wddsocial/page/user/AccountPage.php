@@ -380,26 +380,40 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		# Change Password	
 		
-		if (strlen($_POST['new-password']) > 0) {
+		if (!empty($_POST['new-password'])) {
 			if (strlen($_POST['new-password']) < 6) {
 				return new FormResponse(false, "Your new password was not long enough. Passwords must be at least 6 characters long, please try again.");
 			}
-			if (strlen($_POST['old-password']) <= 0) {
+			if (empty($_POST['old-password'])) {
 				return new FormResponse(false, "You need to enter your old password to change your password.");
 			}
-			else {
-				$query = $this->db->prepare($this->val->checkUserPassword);
-				$query->execute(array('id' => $this->user->id, 'password' => $_POST['old-password'], 'salt' => Hash::$salt));
-				$query->setFetchMode(\PDO::FETCH_OBJ);
-				$result = $query->fetch();
-				if ($result->count > 0) {
-					$query = $this->db->prepare($this->admin->changePassword);
-					$query->execute(array('id' => $this->user->id, 'old' => $_POST['old-password'], 'new' => $_POST['new-password'], 'salt' => Hash::$salt));
-				}
-				else {
-					return new FormResponse(false, "Your old password was incorrect, please try again.");
-				}
+			
+			$query = $this->db->prepare($this->val->checkUserPassword);
+			$query->execute(array(
+				'id' => $this->user->id, 
+				'password' => $_POST['old-password'], 
+				'salt' => Hash::$salt));
+			
+			$query->setFetchMode(\PDO::FETCH_OBJ);
+			$result = $query->fetch();
+			
+			if ($result->count > 0) {
+				$query = $this->db->prepare($this->admin->changePassword);
+				$query->execute(array(
+					'id' => $this->user->id, 
+					'old' => $_POST['old-password'], 
+					'new' => $_POST['new-password'], 
+					'salt' => Hash::$salt));
+				
+				# encrypt user data
+				$_POST['old-password'] = 'encrypted';
+				$_POST['new-password'] = 'encrypted';
 			}
+			
+			else {
+				return new FormResponse(false, "Your old password was incorrect, please try again.");
+			}
+			
 		}
 		
 		if($_FILES['avatar']['error'] != 4){
