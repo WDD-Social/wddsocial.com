@@ -209,12 +209,14 @@ $(function() {
 	}
 	
 	var alignList = function(){
-		var offset = $(currentInput).offset();
-		$('#autocomplete').css({
-			top: offset.top + $(currentInput).outerHeight() - 1,
-			left: offset.left + $(currentInput).outerWidth()*.0125,
-			width: $(currentInput).outerWidth()*.97
-		});
+		if ($('#autocomplete').length) {
+			var offset = $(currentInput).offset();
+			$('#autocomplete').css({
+				top: offset.top + $(currentInput).outerHeight() - 1,
+				left: offset.left + $(currentInput).outerWidth()*.0125,
+				width: $(currentInput).outerWidth()*.97
+			});
+		}
 	}
 	
 	$('.autocompleter').live('keyup focusin',function(e){
