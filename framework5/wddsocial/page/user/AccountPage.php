@@ -204,9 +204,10 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		if (isset($_POST['birthday']) and $_POST['birthday'] != '') {
 			$birthday = date_parse_from_format('F j, Y',$_POST['birthday']);
+			/* Display date errors
 			if ($birthday['error_count'] > 0) {
 				return new FormResponse(false, implode('. ', $birthday['errors']));
-			}
+			}*/
 			$month = (strlen($birthday['month']) == 1)?'0'.$birthday['month']:$birthday['month'];
 			$day = (strlen($birthday['day']) == 1)?'0'.$birthday['day']:$birthday['day'];
 			$birthdayDate = $birthday['year'] . '-' . $month . '-' . $day;
@@ -280,9 +281,10 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		if (isset($_POST['start-date']) and $_POST['start-date'] != '') {
 			$startDate = date_parse_from_format('F, Y',$_POST['start-date']);
+			/* Display date errors
 			if ($startDate['error_count'] > 0) {
 				return new FormResponse(false, implode('. ', $startDate['errors']));
-			}
+			} */
 			$month = (strlen($startDate['month']) == 1)?'0'.$startDate['month']:$startDate['month'];
 			$startDate = $startDate['year'] . '-' . $month . '-01';
 		}
@@ -296,9 +298,10 @@ class AccountPage implements \Framework5\IExecutable {
 		
 		if (isset($_POST['graduation-date']) and $_POST['graduation-date'] != '') {
 			$graduationDate = date_parse_from_format('F, Y',$_POST['graduation-date']);
+			/* Display date errors
 			if ($graduationDate['error_count'] > 0) {
 				return new FormResponse(false, implode('. ', $graduationDate['errors']));
-			}
+			} */
 			$month = (strlen($graduationDate['month']) == 1)?'0'.$graduationDate['month']:$graduationDate['month'];
 			$graduationDate = $graduationDate['year'] . '-' . $month . '-01';
 		}

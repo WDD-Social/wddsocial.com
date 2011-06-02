@@ -195,9 +195,10 @@ class CreatePage implements \Framework5\IExecutable {
 			
 				if (isset($_POST['completed-date']) and $_POST['completed-date'] != '') {
 					$completeDate = date_parse_from_format('F, Y',$_POST['completed-date']);
+					/* Display date errors
 					if ($completeDate['error_count'] > 0) {
 						return new FormResponse(false, implode('. ', $completeDate['errors']));
-					}
+					} */
 					$month = (strlen($completeDate['month']) == 1)?'0'.$completeDate['month']:$completeDate['month'];
 					$postCompleteDate = $completeDate['year'] . '-' . $month . '-01';
 				}
@@ -228,9 +229,10 @@ class CreatePage implements \Framework5\IExecutable {
 			
 				if (isset($_POST['date'])) {
 					$date = date_parse_from_format('F j, Y',$_POST['date']);
+					/* Display date errors
 					if ($date['error_count'] > 0) {
 						return new FormResponse(false, implode('. ', $date['errors']));
-					}
+					} */
 					$month = (strlen($date['month']) == 1)?'0'.$date['month']:$date['month'];
 					$day = (strlen($date['day']) == 1)?'0'.$date['day']:$date['day'];
 					$startDate = $date['year'] . '-' . $month . '-' . $day;
@@ -238,9 +240,10 @@ class CreatePage implements \Framework5\IExecutable {
 				
 				if (isset($_POST['start-time'])) {
 					$time = date_parse_from_format('g:i A',$_POST['start-time']);
+					/* Display date errors
 					if ($time['error_count'] > 0) {
 						return new FormResponse(false, implode('. ', $time['errors']));
-					}
+					} */
 					$hour = (strlen($time['hour']) == 1)?'0'.$time['hour']:$time['hour'];
 					$minute = (strlen($time['minute']) == 1)?'0'.$time['minute']:$time['minute'];
 					$startTime = $hour . ':' . $minute . ':00';
