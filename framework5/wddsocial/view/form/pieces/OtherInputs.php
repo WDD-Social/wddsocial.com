@@ -33,7 +33,7 @@ class OtherInputs implements \Framework5\IView {
 						<h1 id="other-options">Other Options</h1>
 						<fieldset>
 							<label for="vanityURL">Custom Vanity URL</label>
-							<input type="text" name="vanityURL" id="vanityURL" placeholder="$vanityPlaceholder" value="{$content->vanityURL}" />
+							<input type="text" name="vanityURL" id="vanityURL" class="preview" autocomplete="off" placeholder="$vanityPlaceholder" value="{$content->vanityURL}" />
 							<small>wddsocial.com/{$content->type}/<strong>{$vanity}</strong></small>
 						</fieldset>
 HTML;
