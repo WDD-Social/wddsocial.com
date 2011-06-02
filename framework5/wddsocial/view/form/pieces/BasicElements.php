@@ -94,6 +94,7 @@ class BasicElements implements \Framework5\IView {
 							<label for="content">$contentTitle$required</label>
 							<textarea name="content" maxlength="65536" id="content"$textareaClass>{$content->content}</textarea>
 							<small>You&rsquo;ve got <span class="count">65,536</span> characters left to use, so make it count.</small>
+							<small>Use the <strong>&lt;header&gt;</strong> tag to format section headers.</small>
 						</fieldset>
 HTML;
 	}
