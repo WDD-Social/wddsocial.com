@@ -111,7 +111,7 @@ input,textarea,button{font-weight:200;}
 #content>section article .item-image a:hover img,#content>section article .item-image a:focus img{opacity:1;}
 #content>section article .images a,#content>section article .images a:visited{overflow:hidden;float:left;display:block;width:31%;margin-right:3.5%;margin-bottom:2%;}#content>section article .images a img,#content>section article .images a:visited img{width:100%;margin:0 auto;opacity:.9;}
 #content>section article .images a:hover img,#content>section article .images a:focus img{opacity:1;}
-#content>section article .images a:last-child{margin-right:0;}
+#content>section article .images a:nth-child(3n-3){margin-right:0;}
 #content>section article .tags,#content>section article .job-type{margin-bottom:0;}#content>section article .tags a,#content>section article .job-type a,#content>section article .tags a:visited,#content>section article .job-type a:visited{font-weight:bold;color:#b2b2b2;}
 #content>section article .tags a:hover,#content>section article .job-type a:hover,#content>section article .tags a:focus,#content>section article .job-type a:focus{color:#2e7599;}
 #content>section article .tags a:active,#content>section article .job-type a:active{color:#225772;}
