@@ -77,6 +77,34 @@ class CoursePage implements \Framework5\IExecutable {
 				$content .= render(':section',
 					array('section' => 'end_content_section', 'id' => 'latest'));	
 			}
+			
+			$content .= render(':section',
+				array('section' => 'begin_content_section',
+				'id' => 'events',
+				'classes' => array('small', 'no-margin', 'side-sticky'),
+				'header' => $this->lang->text('events-header'))
+			);	
+			
+			import('wddsocial.model.WDDSocial\EventVO');
+			# query
+			$limit = 3;
+			if (UserSession::is_authorized()) $query = $this->db->prepare($this->sql->getCourseEvents . " LIMIT 0, $limit");
+			else $query = $this->db->prepare($this->sql->getCoursePublicEvents . " LIMIT 0, $limit");
+			$query->setFetchMode(\PDO::FETCH_CLASS,'WDDSocial\EventVO');
+			$query->execute(array('id' => $course->id));	
+			
+			if ($query->rowCount() > 0) {
+				while ($event = $query->fetch()) {
+					$content .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', array('type' => $event->type,'content' => $event));
+				}
+			}
+			else {
+				$content .= render('wddsocial.view.content.WDDSocial\SmallDisplayEmptyView',array('type' => 'events'));
+			}
+			
+			# create section footer
+			$content .= render(':section', 
+				array('section' => 'end_content_section', 'id' => 'events'));
 		}
 		else {
 			redirect('/404');
