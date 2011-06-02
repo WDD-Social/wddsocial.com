@@ -280,13 +280,18 @@ class IndexPage implements \Framework5\IExecutable {
 			$limit = 2;
 		}		
 		
-		# create section items
-		$row = $query->fetchAll();
-		for ($i = 0; $i<$limit; $i++) {
-			if (isset($row[$i])) {
-				$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
-					array('type' => $row[$i]->type,'content' => $row[$i]));
+		if ($query->rowCount() > 0) {
+			# create section items
+			$row = $query->fetchAll();
+			for ($i = 0; $i<$limit; $i++) {
+				if (isset($row[$i])) {
+					$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
+						array('type' => $row[$i]->type,'content' => $row[$i]));
+				}
 			}
+		}
+		else {
+			$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayEmptyView',array('type' => 'events'));
 		}
 		
 		# create section footer
@@ -314,10 +319,15 @@ class IndexPage implements \Framework5\IExecutable {
 				'classes' => array('small', 'no-margin', 'side-sticky'), 
 				'header' => $this->lang->text('jobs-header')));
 		
-		# Create section items
-		while ($row = $query->fetch()){
-			$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
-				array('type' => $row->type,'content' => $row));
+		if ($query->rowCount() > 0) {
+			# Create section items
+			while ($row = $query->fetch()){
+				$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayView', 
+					array('type' => $row->type,'content' => $row));
+			}
+		}
+		else {
+			$html .= render('wddsocial.view.content.WDDSocial\SmallDisplayEmptyView',array('type' => 'jobs'));
 		}
 		
 		# Create section footer
