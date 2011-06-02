@@ -277,7 +277,8 @@ input[type="text"]:focus,input[type="email"]:focus,input[type="password"]:focus,
 input[type="text"]::-webkit-input-placeholder,textarea::-webkit-input-placeholder{font-weight:200;color:#cccccc;}
 input[type="text"]::-moz-placeholder,textarea::-moz-placeholder{font-weight:200;color:#cccccc;}
 textarea{min-width:88.5%;max-width:88.5%;min-height:200px;margin:5px auto 20px;resize:vertical;overflow-y:auto !important;}
-textarea.short{min-height:40px;overflow:auto;}
+textarea.short{min-height:40px;}
+textarea.medium{min-height:100px;}
 textarea.long{min-height:300px;}
 textarea.placeholder{color:#b2b2b2;}
 input[type="text"].error,input[type="email"].error,input[type="password"].error,textarea.error{border-color:rgba(166, 0, 0, 0.7);-moz-box-shadow:0 1px 1px rgba(0, 0, 0, 0.15) inset,0 0 3px rgba(166, 0, 0, 0.6);-webkit-box-shadow:0 1px 1px rgba(0, 0, 0, 0.15) inset,0 0 3px rgba(166, 0, 0, 0.6);box-shadow:0 1px 1px rgba(0, 0, 0, 0.15) inset,0 0 3px rgba(166, 0, 0, 0.6);}
