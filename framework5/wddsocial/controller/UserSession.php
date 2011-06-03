@@ -281,7 +281,7 @@ class UserSession {
 	
 	
 	public static function visitor_lang() {
-		if (isset($_SESSION['lang'])) return $_SESSION['lang'];
+		if (set($_SESSION['lang'])) return $_SESSION['lang'];
 		else return 'en';
 	}
 	
