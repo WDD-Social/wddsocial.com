@@ -375,6 +375,11 @@ $(function() {
 				if (page === 'user' || page === '/') {
 					filter($(selectedSection).find('div.filters a.current').html(),selectedSection,0)
 				}
+				$('a.fancybox').fancybox({
+					titleShow: false,
+					cyclic: true,
+					showCloseButton: false
+				});
 				$.ajax({
 					url: '/ajax/more',
 					dataType: 'html',

@@ -101,12 +101,13 @@ HTML;
 		# save sender id
 		$this->_lastMessageId = $message->fromUserID;
 		$messageContent = nl2br($message->messageContent);
+		$markAsRead = ($message->messageStatusID == 1 and $message->fromUserID != UserSession::userid())?"<a href=\"/message/read/{$message->messageID}\" title=\"Mark Message As Read\" class=\"markasread\">Mark as Read</a> <span class=\"hidden\">|</span> ":'';
 		$linkedMessageContent = Formatter::format_links($messageContent);
 		$html = <<<HTML
 
 					<article>
 						<p>{$linkedMessageContent}</p>
-						<p>{$message->date}</p>
+						<p>{$markAsRead}<span class="time">{$message->date}</span></p>
 					</article>
 HTML;
 		return $html;

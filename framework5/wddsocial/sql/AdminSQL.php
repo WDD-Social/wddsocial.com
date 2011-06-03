@@ -36,6 +36,11 @@ class AdminSQL{
 			SET `password` = MD5(CONCAT(MD5(:new),:salt))
 			WHERE id = :id AND `password` = MD5(CONCAT(MD5(:old),:salt))",
 		
+		'resetPassword' => "
+			UPDATE users
+			SET password = MD5(CONCAT(MD5(:password),:salt)), passwordCode = NULL
+			WHERE passwordCode = :passwordCode",
+		
 		'verifyUserByID' => "
 			UPDATE users
 			SET verified = 1

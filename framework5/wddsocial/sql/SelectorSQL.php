@@ -507,6 +507,12 @@ class SelectorSQL{
 			WHERE (email = :email OR fullsailEmail = :email) AND `password` = MD5(CONCAT(MD5(:password),:salt))
 			LIMIT 1",
 		
+		'getUserByPasswordCode' => "
+			SELECT id, email
+			FROM users
+			WHERE passwordCode = :passwordCode
+			LIMIT 1",
+		
 		'changeFullsailEmailInfo' => "
 			SELECT id, firstName, lastName, verified, verificationCode
 			FROM users
@@ -1251,6 +1257,27 @@ class SelectorSQL{
 				LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
 				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
 				WHERE p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
+				GROUP BY e.id) AS events
+			WHERE events.flagCount < 3",
+		
+		'getCourseEvents' => "
+			SELECT *
+			FROM(SELECT e.id, e.userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+				FROM events AS e
+				LEFT JOIN eventCourses AS ec ON (e.id = ec.eventID)
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				WHERE ec.courseID = :id AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
+				GROUP BY e.id) AS events
+			WHERE events.flagCount < 3",
+		
+		'getCoursePublicEvents' => "
+			SELECT *
+			FROM(SELECT e.id, e.userID, icsUID, e.title, description, vanityURL, 'event' AS `type`, location, e.datetime, startDateTime, DATE_FORMAT(startDateTime,'%b') AS `month`, DATE_FORMAT(startDateTime,'%e') AS `day`, DATE_FORMAT(startDateTime,'%l:%i %p') AS `startTime`, DATE_FORMAT(endDateTime,'%l:%i %p') AS `endTime`, COUNT(DISTINCT ef.userID) AS flagCount
+				FROM events AS e
+				LEFT JOIN eventCourses AS ec ON (e.id = ec.eventID)
+				LEFT JOIN eventFlags AS ef ON (e.id = ef.eventID)
+				LEFT JOIN privacyLevels AS p ON (e.privacyLevelID = p.id)
+				WHERE ec.courseID = :id AND p.title = 'Public' AND TIMESTAMPDIFF(MINUTE,NOW(),endDateTime) > -1
 				GROUP BY e.id) AS events
 			WHERE events.flagCount < 3",
 			

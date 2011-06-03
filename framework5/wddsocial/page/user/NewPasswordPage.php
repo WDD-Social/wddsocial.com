@@ -12,6 +12,8 @@ class NewPasswordPage implements \Framework5\IExecutable {
 	public function __construct() {
 		//$this->lang = new \Framework5\Lang('wddsocial.lang');
 		$this->db = instance(':db');
+		$this->sel = instance(':sel-sql');
+		$this->admin = instance(':admin-sql');
 	}
 	
 	
@@ -96,14 +98,9 @@ class NewPasswordPage implements \Framework5\IExecutable {
 		$password = $_POST['password'];
 		
 		# update users password in database
-		$query = $this->db->prepare("
-			UPDATE users
-			SET password = MD5(CONCAT(MD5(:password),:salt)), passwordCode = NULL
-			WHERE passwordCode = :passwordCode;");
-		
+		$query = $this->db->prepare($this->admin->resetPassword);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$data = array('password' => $password, 'passwordCode' => $this->code, 'salt' => Hash::$salt);
-		$query->execute($data);
+		$query->execute(array('password' => $password, 'passwordCode' => $this->code, 'salt' => Hash::$salt));
 		
 		return true;
 	}
@@ -115,15 +112,9 @@ class NewPasswordPage implements \Framework5\IExecutable {
 	*/
 	
 	private function _verify_code($code) {
-		$query = $this->db->prepare("
-			SELECT id, email
-			FROM users
-			WHERE passwordCode = :passwordCode
-			LIMIT 1");
-		
+		$query = $this->db->prepare($this->sel->getUserByPasswordCode);
 		$query->setFetchMode(\PDO::FETCH_OBJ);
-		$data = array('passwordCode' => $code);
-		$query->execute($data);
+		$query->execute(array('passwordCode' => $code));
 		
 		if ($query->rowCount() == 0) {
 			$this->errorMsg = 'Invalid code';
