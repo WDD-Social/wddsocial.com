@@ -132,7 +132,7 @@ HTML;
 			$html .= <<<HTML
 
 						<li>
-							<a href="http://forrst.com/{$user->contact['forrst']}" title="Visit $ownership Forrst Profile">
+							<a href="http://forrst.com/people/{$user->contact['forrst']}" title="Visit $ownership Forrst Profile">
 							<img src="/images/site/icon-contact-forrst.png" alt="Visit $ownership Forrst Profile" />
 							<p><strong>Forrst</strong> forrst.com/{$user->contact['forrst']}</p>
 							</a>
