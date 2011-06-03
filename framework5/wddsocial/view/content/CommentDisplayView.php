@@ -64,11 +64,12 @@ HTML;
 HTML;
 				}
 				$linkedComment = Formatter::format_links($comment->content);
+				$finalComment = nl2br($linkedComment);
 				$html .= <<<HTML
 						
 						<p class="item-image"><a href="/user/{$comment->vanityURL}" title="{$userVerbage}"><img src="$userAvatar" alt="{$userDisplayName}"/></a></p>
 						<h2><a href="/user/{$comment->vanityURL}" title="{$userVerbage}">{$userDisplayName}</a></h2>
-						<p>{$linkedComment}</p>
+						<p>{$finalComment}</p>
 						<p class="comments">{$comment->date}</p>
 					</article>
 HTML;
