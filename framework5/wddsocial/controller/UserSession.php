@@ -196,7 +196,7 @@ class UserSession {
 	
 	public static function is_authorized() {
 		static::session_started();
-		if ($_SESSION['authorized'] and isset($_SESSION['user'])) return true;
+		if (isset($_SESSION['authorized']) and isset($_SESSION['user']) and is_bool($_SESSION['authorized']) and $_SESSION['authorized']) return true;
 		else return false;
 	}
 	
@@ -281,7 +281,7 @@ class UserSession {
 	
 	
 	public static function visitor_lang() {
-		if (set($_SESSION['lang'])) return $_SESSION['lang'];
+		if (isset($_SESSION['lang'])) return $_SESSION['lang'];
 		else return 'en';
 	}
 	
