@@ -134,7 +134,7 @@ HTML;
 						<li>
 							<a href="http://forrst.com/people/{$user->contact['forrst']}" title="Visit $ownership Forrst Profile">
 							<img src="/images/site/icon-contact-forrst.png" alt="Visit $ownership Forrst Profile" />
-							<p><strong>Forrst</strong> forrst.com/{$user->contact['forrst']}</p>
+							<p><strong>Forrst</strong> forrst.com/people/{$user->contact['forrst']}</p>
 							</a>
 						</li>
 HTML;
