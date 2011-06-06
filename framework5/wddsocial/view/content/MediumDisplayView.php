@@ -105,12 +105,15 @@ HTML;
 
 						<p class="images">
 HTML;
-			foreach ($project->images as $image) {
-				if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
-					$html .= <<<HTML
-
-							<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}" class="fancybox" rel="fancybox-project{$project->vanityURL}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+			for ($i = 0; $i < 3; $i++) {
+				if (isset($project->images[$i])) {
+					$image = $project->images[$i];
+					if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
+						$html .= <<<HTML
+	
+								<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}" class="fancybox" rel="fancybox-project{$project->vanityURL}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
+					}
 				}
 			}
 			$html .= <<<HTML
@@ -270,22 +273,23 @@ HTML;
 						<p>{$article->description}</p>
 HTML;
 		
-		# Build images if needed
+		# Build images if needed\
 		if(count($article->images) > 0){
 			$html .= <<<HTML
 
 						<p class="images">			
 HTML;
-
-			foreach ($article->images as $image) {
-				if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
-					$html .= <<<HTML
-
-							<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}" class="fancybox" rel="fancybox-article{$article->vanityURL}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
+			for ($i = 0; $i < 3; $i++) {
+				if (isset($article->images[$i])) {
+					$image = $article->images[$i];
+					if (file_exists("images/uploads/{$image->file}_full.jpg") and file_exists("images/uploads/{$image->file}_large.jpg")) {
+						$html .= <<<HTML
+	
+								<a href="/images/uploads/{$image->file}_full.jpg" title="{$image->title}" class="fancybox" rel="fancybox-article{$article->vanityURL}"><img src="/images/uploads/{$image->file}_large.jpg" alt="{$image->title}"/></a>
 HTML;
+					}
 				}
 			}
-			
 			$html .= <<<HTML
 
 						</p>			
